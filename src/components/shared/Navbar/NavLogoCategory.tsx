@@ -7,6 +7,7 @@ import favoriteIcons from "@/assets/icons/heart.png";
 import profileIcon from "@/assets/icons/Profile.png";
 import shoppingIcon from "@/assets/icons/shopping-bag.png";
 import { Heart, Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const category = [
   {
@@ -33,10 +34,18 @@ const NavLogoCategory = () => {
         {/* ======= category ========== */}
         <div className="flex lg:gap-x-6 gap-x-3">
           {category.map((item) => (
-            <div key={item.id}>
-              <a href={item.href} className="uppercase ">
+            <div key={item.id} className="relative group">
+              <Link
+                href={item.href}
+                className="uppercase group-hover:text-primary-black font-medium "
+              >
                 {item.label}
-              </a>
+              </Link>
+              <span
+                className={cn(
+                  "absolute left-0 bottom-0 h-[2px] w-full bg-black transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left"
+                )}
+              ></span>
             </div>
           ))}
         </div>

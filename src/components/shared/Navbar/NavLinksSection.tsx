@@ -53,7 +53,12 @@ const NavLinksSection = () => {
             </Link>
             <span
               className={cn(
-                "absolute left-0 -bottom-[7px] h-[2px] w-full bg-black transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-right"
+                "absolute left-0 h-full  w-full bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-right"
+              )}
+            ></span>
+            <span
+              className={cn(
+                "absolute left-0 h-full  w-full bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left"
               )}
             ></span>
           </div>
