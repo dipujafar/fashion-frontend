@@ -12,6 +12,7 @@
   --color-primary-red: #e12728;
   --color-primary-yellow: #ffd700;
   --color-primary-gray: #8a8a8a;
+  --color-primary-gray: #616161;
 }
 
 :root {
@@ -130,5 +131,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .page-title {
+    @apply text-2xl text-primary-gray text-center lg:mb-8 mb-4;
   }
 }

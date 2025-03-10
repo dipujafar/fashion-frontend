@@ -5,7 +5,7 @@ import NavLogoCategory from "./NavLogoCategory";
 
 const Navbar = () => {
   return (
-    <div>
+    <div className="overflow-hidden">
       <TopInfo></TopInfo>
       <NavLogoCategory></NavLogoCategory>
       <NavLinksSection></NavLinksSection>

@@ -36,7 +36,7 @@ const quickLink = [
 
 const QuickLinks = () => {
   return (
-    <div className="py-2 border-t border-t-black/30 w-full xl:mt-10 mt-6 flex justify-between text-primary-black/70 text-sm">
+    <div className="py-2 border-t border-t-black/30 w-full xl:mt-10 md:mt-6 mt-3 flex justify-between text-primary-black/70 text-sm">
       <p>Copyright © 2024 AnyJob. All rights reserved.</p>
       <div className="flex gap-x-4">
         {quickLink.map((link) => (
