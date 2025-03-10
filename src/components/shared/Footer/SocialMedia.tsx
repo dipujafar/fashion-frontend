@@ -9,7 +9,8 @@ import { motion } from "framer-motion";
 import {
   childrenVariants,
   parentVariants,
-} from "@/Animation/framerMotionVariants";
+} from "@/app/animations/FramerMotionValiants";
+
 const SocialMedia = () => {
   return (
     <div className="flex gap-x-6 w-full items-center">

@@ -23,7 +23,7 @@ const navLinks = [
   {
     id: 4,
     label: "ABOUT US",
-    href: "/#",
+    href: "/about-us",
   },
   {
     id: 5,
@@ -36,31 +36,30 @@ const NavLinksSection = () => {
   const currentPath = usePathname();
   return (
     <div
-      className="bg-primary-white shadow-2xl py-2"
-      style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
+      className="bg-primary-white shadow-2xl py-2 z-0"
+      // style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
     >
       <Container className="flex items-center justify-center lg:gap-x-10">
         {navLinks.map((link) => (
-          <div key={link.id} className="group relative">
+          <div key={link.id} className="group relative overflow-hidden">
+            {/* Background Hover Effect */}
+            <span
+              className={cn(
+                "absolute inset-0 bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100",
+                "z-0"
+              )}
+            ></span>
+
+            {/* Navigation Link */}
             <Link
               href={link.href}
               className={cn(
-                "uppercase py-2 px-6 font-medium",
+                "relative uppercase py-2 px-6 font-medium z-10 transition-colors duration-300",
                 link.href === currentPath && "border-b-2 border-b-black"
               )}
             >
               {link.label}
             </Link>
-            <span
-              className={cn(
-                "absolute left-0 h-full  w-full bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-right"
-              )}
-            ></span>
-            <span
-              className={cn(
-                "absolute left-0 h-full  w-full bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left"
-              )}
-            ></span>
           </div>
         ))}
       </Container>
