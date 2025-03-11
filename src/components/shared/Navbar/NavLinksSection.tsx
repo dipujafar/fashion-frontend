@@ -9,10 +9,10 @@ const NavLinksSection = ({ className }: { className?: string }) => {
   const currentPath = usePathname();
   return (
     <div
-      className="bg-primary-white shadow-2xl py-2 z-0"
-      // style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
+      className="bg-primary-white py-2 z-0"
+      style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
     >
-      <Container className="flex items-center justify-center lg:gap-x-10">
+      <Container className="flex items-center justify-center  lg:gap-x-10">
         {navLinks.map((link) => (
           <div key={link.id} className="group relative overflow-hidden">
             {/* Background Hover Effect */}

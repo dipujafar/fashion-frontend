@@ -3,6 +3,7 @@ import "./globals.css";
 import { Figtree } from "next/font/google";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
+import TopInfo from "@/components/shared/Navbar/TopInfo";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -27,7 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${figtree.className}  antialiased`}>
-        <Navbar></Navbar>
+        <TopInfo></TopInfo>
+        <div className="sticky top-0 z-50 ">
+          <Navbar></Navbar>
+        </div>
+
         <div className="min-h-[calc(100vh-140px)] md:pt-10 md:pb-16 pt-5 pb-8">
           {children}
         </div>

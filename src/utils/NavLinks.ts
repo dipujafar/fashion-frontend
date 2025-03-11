@@ -12,7 +12,7 @@ export const navLinks = [
   {
     id: 3,
     label: "STYLE BLOG",
-    href: "/#",
+    href: "/blogs",
   },
   {
     id: 4,
