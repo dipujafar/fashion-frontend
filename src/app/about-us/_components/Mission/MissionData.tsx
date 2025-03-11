@@ -2,7 +2,7 @@
 import {
   childrenVariants,
   parentVariants,
-} from "@/app/animations/FramerMotionValiants";
+} from "@/animations/FramerMotionValiants";
 import { motion } from "framer-motion";
 const missions = [
   "Redefines the fashion shopping experience through sustainable choices.",
@@ -22,8 +22,9 @@ const MissionData = () => {
       <motion.div
         variants={parentVariants}
         initial="initial"
-        animate="animate"
+        whileInView="animate"
         exit="exit"
+        viewport={{ once: true }}
         className="space-y-4"
       >
         {missions.map((mission, index) => (

@@ -2,7 +2,7 @@
 import {
   childrenVariants,
   parentVariants,
-} from "@/app/animations/FramerMotionValiants";
+} from "@/animations/FramerMotionValiants";
 import { motion } from "framer-motion";
 import valuesImage from "@/assets/images/about-us/valuesImage2.png";
 import Image from "next/image";
@@ -17,20 +17,22 @@ const Values = [
 
 const ValuesData = () => {
   return (
-    <div className="md:space-y-10 space-y-5">
+    <div>
       <motion.div
         initial={{ opacity: 0, y: "-10%" }}
         whileInView={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: "-10%" }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
         viewport={{ once: true }}
+        className="md:space-y-8 space-y-5"
       >
         <motion.div
           variants={parentVariants}
           initial="initial"
-          animate="animate"
+          whileInView="animate"
           exit="exit"
-          className="space-y-9"
+          viewport={{ once: true }}
+          className="lg:space-y-9 space-y-3"
         >
           {Values.map((value, index) => (
             <motion.div
@@ -84,24 +86,26 @@ const ValuesData = () => {
             </motion.div>
           ))}
         </motion.div>
+        <motion.div
+          variants={childrenVariants}
+          className="flex items-center gap-x-4"
+        >
+          <Image
+            src={valuesImage}
+            alt="valuesImage"
+            className="rounded-lg"
+          ></Image>
+          <div>
+            <h6 className="text-lg">Simple & Fast </h6>
+            <Link
+              href={"/#"}
+              className="md:text-2xl underline text-primary-red font-bold"
+            >
+              Join Us in Our Mission
+            </Link>
+          </div>
+        </motion.div>
       </motion.div>
-
-      <div className="flex items-center gap-x-4">
-        <Image
-          src={valuesImage}
-          alt="valuesImage"
-          className="rounded-lg"
-        ></Image>
-        <div>
-          <h6 className="text-lg">Simple & Fast </h6>
-          <Link
-            href={"/#"}
-            className="text-2xl underline text-primary-red font-bold"
-          >
-            Join Us in Our Mission
-          </Link>
-        </div>
-      </div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import {
   childrenVariants,
   parentVariants,
-} from "@/app/animations/FramerMotionValiants";
+} from "@/animations/FramerMotionValiants";
 
 const SocialMedia = () => {
   return (

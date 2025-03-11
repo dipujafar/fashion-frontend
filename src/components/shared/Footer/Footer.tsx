@@ -6,7 +6,7 @@ import QuickLinks from "./QuickLinks";
 
 const Footer = () => {
   return (
-    <Container className="lg:my-14 my-8 overflow-hidden">
+    <Container>
       <div
         style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
         className="bg-primary-white lg:py-8 py-5 flex flex-col justify-center items-center  gap-y-4 rounded-2xl px-5 shadow-xl"

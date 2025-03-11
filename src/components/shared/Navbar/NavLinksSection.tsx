@@ -3,36 +3,9 @@ import Link from "next/link";
 import Container from "../Container";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { navLinks } from "@/utils/NavLinks";
 
-const navLinks = [
-  {
-    id: 1,
-    label: "Home",
-    href: "/",
-  },
-  {
-    id: 2,
-    label: "Shop",
-    href: "/#",
-  },
-  {
-    id: 3,
-    label: "STYLE BLOG",
-    href: "/#",
-  },
-  {
-    id: 4,
-    label: "ABOUT US",
-    href: "/about-us",
-  },
-  {
-    id: 5,
-    label: "EXPLORE USERS",
-    href: "/#",
-  },
-];
-
-const NavLinksSection = () => {
+const NavLinksSection = ({ className }: { className?: string }) => {
   const currentPath = usePathname();
   return (
     <div
@@ -46,7 +19,8 @@ const NavLinksSection = () => {
             <span
               className={cn(
                 "absolute inset-0 bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100",
-                "z-0"
+                "z-0",
+                currentPath === link.href && "scale-x-100"
               )}
             ></span>
 
@@ -54,8 +28,7 @@ const NavLinksSection = () => {
             <Link
               href={link.href}
               className={cn(
-                "relative uppercase py-2 px-6 font-medium z-10 transition-colors duration-300",
-                link.href === currentPath && "border-b-2 border-b-black"
+                "relative uppercase py-2 px-6 font-medium z-10 transition-colors duration-300"
               )}
             >
               {link.label}

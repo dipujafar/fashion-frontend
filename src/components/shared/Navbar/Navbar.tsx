@@ -8,7 +8,9 @@ const Navbar = () => {
     <div className="overflow-hidden">
       <TopInfo></TopInfo>
       <NavLogoCategory></NavLogoCategory>
-      <NavLinksSection></NavLinksSection>
+      <div className="hidden md:block">
+        <NavLinksSection></NavLinksSection>
+      </div>
     </div>
   );
 };

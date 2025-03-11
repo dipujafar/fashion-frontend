@@ -3,6 +3,8 @@ import React from "react";
 import StatisticSection from "./StatisticSection";
 import Mission from "./Mission/Mission";
 import Values from "./Values/Values";
+import Team from "./Team/Team";
+import ImagePreview from "./ImagePreview";
 
 const AboutPageContainer = () => {
   return (
@@ -23,11 +25,14 @@ const AboutPageContainer = () => {
             eco-friendly, and community-driven.
           </p>
         </div>
-
-        <StatisticSection></StatisticSection>
+        <div className="md:space-y-4 space-y-2">
+          <ImagePreview></ImagePreview>
+          <StatisticSection></StatisticSection>
+        </div>
       </div>
       <Mission></Mission>
       <Values></Values>
+      <Team></Team>
     </Container>
   );
 };

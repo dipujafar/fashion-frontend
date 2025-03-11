@@ -25,12 +25,12 @@ const TopInfo = () => {
   return (
     <header className="bg-primary-black text-primary-white py-2">
       <Container className="flex justify-between items-center text-sm ">
-        <div className="xl:space-x-8 space-x-4 ">
+        <div className="xl:space-x-8 space-x-4  text-center w-full md:w-fit ">
           <Link href={"tel:+ 123 (456) 789-987"}>+ 123 (456) 789-987</Link>
           <Link href={"mailto:contact@fashion.com"}>contact@fashion.com</Link>
         </div>
 
-        <div className="xl:space-x-4 space-x-2">
+        <div className="xl:space-x-4 space-x-2 hidden md:block">
           {quickLink.map((link, index) => (
             <Link
               key={index}

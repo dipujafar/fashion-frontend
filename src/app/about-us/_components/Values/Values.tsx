@@ -9,7 +9,7 @@ const Values = () => {
         Empowering Change Through Fashion, Sustainability, and Giving Back
       </h4>
       {/* ================ values ================ */}
-      <div className="flex flex-col-reverse lg:flex-row justify-between items-center mt-10">
+      <div className="flex flex-col-reverse lg:flex-row justify-between mt-10 gap-5">
         <div className="lg:w-2/5">
           <ValuesData></ValuesData>
         </div>
