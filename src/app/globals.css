@@ -12,7 +12,6 @@
   --color-primary-white: #fff;
   --color-primary-red: #e12728;
   --color-primary-yellow: #ffd700;
-  --color-primary-gray: #8a8a8a;
   --color-primary-gray: #616161;
   --color-primary-red: #e12728;
 }
@@ -140,4 +139,24 @@
   .page-title {
     @apply md:text-2xl text-xl text-primary-gray;
   }
+}
+
+/* =========== react pagination styles =================== */
+.rpb-item {
+  border: 1px solid lightgray !important;
+  border-radius: 16px !important;
+}
+
+.rpb-item:hover {
+  border: 2px solid #616161 !important;
+  border-radius: 16px !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.rpb-item--active {
+  background-color: #000 !important;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  scrollbar-width: none;
 }
