@@ -12,7 +12,7 @@ const AboutPageContainer = () => {
       <div className="lg:space-y-8 space-y-4">
         <h1 className="page-title text-center">Our Stroy</h1>
         <div className="space-y-4">
-          <h4 className="text-center lg:text-4xl text-2xl font-bold max-w-2xl mx-auto">
+          <h4 className="section-title max-w-2xl mx-auto">
             Fashi-on Scope: Redefining Fashion with Purpose
           </h4>
           <p className="md:text-center text-lg max-w-5xl mx-auto text-primary-gray">

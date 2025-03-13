@@ -14,6 +14,7 @@
   --color-primary-yellow: #ffd700;
   --color-primary-gray: #616161;
   --color-primary-red: #e12728;
+  --color-primary-light-pink: #fff4f4;
 }
 
 @theme inline {
@@ -138,6 +139,9 @@
 @layer components {
   .page-title {
     @apply md:text-2xl text-xl text-primary-gray;
+  }
+  .section-title {
+    @apply text-center lg:text-4xl text-2xl font-bold;
   }
 }
 

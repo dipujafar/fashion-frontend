@@ -7,7 +7,7 @@ import React from "react";
 
 const BlogCard = ({ data }: { data: TBlogsData }) => {
   return (
-    <Card className="border-none  hover:scale-105 hover:-translate-y-2 duration-300">
+    <Card className="border-none  hover:scale-105 hover:-translate-y-3 duration-500">
       <CardContent className="space-y-4">
         <Image
           src={data?.image}

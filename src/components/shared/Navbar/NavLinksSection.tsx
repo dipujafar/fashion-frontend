@@ -4,9 +4,12 @@ import Container from "../Container";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/lib/NavLinks";
+import { activeNavLink } from "@/utils/activeNavLink";
 
 const NavLinksSection = ({ className }: { className?: string }) => {
   const currentPath = usePathname();
+  const paths = currentPath.split("/");
+
   return (
     <div
       className="bg-primary-white py-2 z-0"
@@ -20,7 +23,7 @@ const NavLinksSection = ({ className }: { className?: string }) => {
               className={cn(
                 "absolute inset-0 bg-black/10 transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100",
                 "z-0",
-                currentPath === link.href && "scale-x-100"
+                activeNavLink(paths, link?.href, currentPath) && "scale-x-100"
               )}
             ></span>
 

@@ -34,7 +34,7 @@ const SocialMedia = () => {
         whileInView={{
           opacity: 1,
           y: "0%",
-          transition: { duration: 0.8, easing: "easeIn" },
+          transition: { duration: 0.5, easing: "easeIn" },
         }}
         viewport={{ once: true }}
         exit={{ opacity: 0, y: "10%" }}
