@@ -1,6 +1,6 @@
 "use client";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { navLinks } from "@/lib/NavLinks";
+import { navLinks } from "@/lib/navLinks";
 import { TableOfContents } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

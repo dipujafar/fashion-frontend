@@ -22,6 +22,6 @@ export const navLinks = [
   {
     id: 5,
     label: "EXPLORE USERS",
-    href: "/#",
+    href: "/users",
   },
 ];

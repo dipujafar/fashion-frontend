@@ -3,8 +3,8 @@ import Link from "next/link";
 import Container from "../Container";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { navLinks } from "@/lib/NavLinks";
 import { activeNavLink } from "@/utils/activeNavLink";
+import { navLinks } from "@/lib/navLinks";
 
 const NavLinksSection = ({ className }: { className?: string }) => {
   const currentPath = usePathname();
