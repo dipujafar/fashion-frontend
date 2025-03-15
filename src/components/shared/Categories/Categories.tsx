@@ -4,7 +4,6 @@ import {
   parentVariants,
 } from "@/animations/FramerMotionValiants";
 import { Checkbox } from "@/components/ui/checkbox";
-import { userTypes } from "@/lib/userTypeData";
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
@@ -35,12 +34,12 @@ const containerVariants = {
   },
 };
 
-const UserTypes = () => {
+const Categories = ({ title, data }: { title: string; data: any[] }) => {
   const [show, hide] = useState(true);
   return (
     <div className="xl:space-y-4 space-y-3 ">
       <div className="py-2 border-b flex items-center justify-between">
-        <h4 className="text-lg font-bold">USER TYPE</h4>
+        <h4 className="text-lg font-bold uppercase">{title}</h4>
         <div>
           <button
             onClick={() => {
@@ -68,18 +67,18 @@ const UserTypes = () => {
           viewport={{ once: true }}
           className="space-y-4"
         >
-          {userTypes?.map((userType) => (
+          {data?.map((type) => (
             <motion.div
               variants={childrenVariants}
-              key={userType?._id}
+              key={type?._id}
               className="flex items-center space-x-3"
             >
-              <Checkbox id={userType?.value} className="border-primary-gray" />
+              <Checkbox id={type?.value} className="border-primary-gray" />
               <label
-                htmlFor={userType?.value}
+                htmlFor={type?.value}
                 className=" text-primary-gray leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-lg"
               >
-                {userType?.label}
+                {type?.label}
               </label>
             </motion.div>
           ))}
@@ -89,4 +88,4 @@ const UserTypes = () => {
   );
 };
 
-export default UserTypes;
+export default Categories;

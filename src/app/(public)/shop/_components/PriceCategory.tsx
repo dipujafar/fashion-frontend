@@ -3,11 +3,13 @@ import {
   childrenVariants,
   parentVariants,
 } from "@/animations/FramerMotionValiants";
-import { Checkbox } from "@/components/ui/checkbox";
-import { userTypes } from "@/lib/userTypeData";
+import { RangeSlider } from "@/components/ui/dual-range-slider";
+
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import reverseIcon from "@/assets/icons/reverseIcon.png";
+import Image from "next/image";
 
 const containerVariants = {
   visible: {
@@ -35,12 +37,13 @@ const containerVariants = {
   },
 };
 
-const UserTypes = () => {
+const PriceCategory = () => {
   const [show, hide] = useState(true);
+  const [values, setValues] = useState([0, 500]);
   return (
     <div className="xl:space-y-4 space-y-3 ">
       <div className="py-2 border-b flex items-center justify-between">
-        <h4 className="text-lg font-bold">USER TYPE</h4>
+        <h4 className="text-lg font-bold uppercase">PRICE</h4>
         <div>
           <button
             onClick={() => {
@@ -58,7 +61,6 @@ const UserTypes = () => {
         animate={show ? "visible" : "hidden"}
         exit="hidden"
         variants={containerVariants}
-        className="overflow-hidden"
       >
         <motion.div
           variants={parentVariants}
@@ -66,27 +68,28 @@ const UserTypes = () => {
           whileInView="animate"
           exit="exit"
           viewport={{ once: true }}
-          className="space-y-4"
         >
-          {userTypes?.map((userType) => (
-            <motion.div
-              variants={childrenVariants}
-              key={userType?._id}
-              className="flex items-center space-x-3"
-            >
-              <Checkbox id={userType?.value} className="border-primary-gray" />
-              <label
-                htmlFor={userType?.value}
-                className=" text-primary-gray leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-lg"
-              >
-                {userType?.label}
-              </label>
-            </motion.div>
-          ))}
+          <div>
+            <RangeSlider
+              value={values}
+              onValueChange={(price) => setValues(price)}
+              max={values[1] >= 950 ? values[1] + 100 : 1000}
+              step={1}
+            />
+          </div>
+          <div className=" flex items-center justify-between mt-5 gap-x-2">
+            <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center">
+              ${values[0]}
+            </div>
+            <Image src={reverseIcon} alt="reverseIcon"></Image>
+            <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center">
+              ${values[1]}
+            </div>
+          </div>
         </motion.div>
       </motion.div>
     </div>
   );
 };
 
-export default UserTypes;
+export default PriceCategory;

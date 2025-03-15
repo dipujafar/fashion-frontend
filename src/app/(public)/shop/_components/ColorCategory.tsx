@@ -3,8 +3,7 @@ import {
   childrenVariants,
   parentVariants,
 } from "@/animations/FramerMotionValiants";
-import { Checkbox } from "@/components/ui/checkbox";
-import { userTypes } from "@/lib/userTypeData";
+import { colorData } from "@/lib/colorData";
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
@@ -35,12 +34,12 @@ const containerVariants = {
   },
 };
 
-const UserTypes = () => {
+const ColorCategory = () => {
   const [show, hide] = useState(true);
   return (
     <div className="xl:space-y-4 space-y-3 ">
       <div className="py-2 border-b flex items-center justify-between">
-        <h4 className="text-lg font-bold">USER TYPE</h4>
+        <h4 className="text-lg font-bold uppercase">Color</h4>
         <div>
           <button
             onClick={() => {
@@ -66,21 +65,18 @@ const UserTypes = () => {
           whileInView="animate"
           exit="exit"
           viewport={{ once: true }}
-          className="space-y-4"
+          className="flex flex-wrap gap-2"
         >
-          {userTypes?.map((userType) => (
+          {colorData?.map((colorData) => (
             <motion.div
+              key={colorData._id}
+              className="size-[34px] rounded-full border flex justify-center items-center border-primary-gray/50 cursor-pointer"
               variants={childrenVariants}
-              key={userType?._id}
-              className="flex items-center space-x-3"
             >
-              <Checkbox id={userType?.value} className="border-primary-gray" />
-              <label
-                htmlFor={userType?.value}
-                className=" text-primary-gray leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-lg"
-              >
-                {userType?.label}
-              </label>
+              <div
+                className="size-7 rounded-full"
+                style={{ backgroundColor: colorData?.color }}
+              ></div>
             </motion.div>
           ))}
         </motion.div>
@@ -89,4 +85,4 @@ const UserTypes = () => {
   );
 };
 
-export default UserTypes;
+export default ColorCategory;
