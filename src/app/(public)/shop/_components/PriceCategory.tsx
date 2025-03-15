@@ -78,11 +78,11 @@ const PriceCategory = () => {
             />
           </div>
           <div className=" flex items-center justify-between mt-5 gap-x-2">
-            <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center">
+            <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center text-primary-gray">
               ${values[0]}
             </div>
             <Image src={reverseIcon} alt="reverseIcon"></Image>
-            <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center">
+            <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center text-primary-gray">
               ${values[1]}
             </div>
           </div>
