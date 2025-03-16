@@ -1,17 +1,83 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Rating } from "@/components/ui/rating";
+import { TProduct } from "@/types";
+import { userTagColor } from "@/utils/userTagColor";
+import { Check, Heart, MapPin } from "lucide-react";
 import Image from "next/image";
 
-const ProductCard = ({ data }: any) => {
+const ProductCard = ({ data }: { data: TProduct }) => {
   return (
-    <Card className="border-none  hover:scale-105 hover:-translate-y-3 duration-500">
-      <CardContent className="space-y-4">
+    <Card className="border-none shadow-none  p-0">
+      <CardContent className="space-y-4 p-0">
         {/* ===================================== product image =============================== */}
         <div className="relative">
-          <Image src={data?.image} alt="product_image"></Image>
+          <Image
+            src={data?.image}
+            alt="product_image"
+            width={1200}
+            height={1200}
+            className="md:max-h-80 max-h-72 object-cover origin-center rounded"
+          ></Image>
+          {/* ===================== product offers ================ */}
+          <div className="bg-primary-light-pink absolute top-2 left-2 p-1 rounded">
+            <h3 className="uppercase text-[12px] font-bold text-[#E1272880] ">
+              {data?.offers}
+            </h3>
+          </div>
+          {/* ===================== product tag ================ */}
+          <div className="bg-[#87CEEB] absolute bottom-2 left-2 p-1 rounded">
+            <h3 className="uppercase text-[12px] font-bold text-primary-white ">
+              {data?.tag}
+            </h3>
+          </div>
+          {/* ===================== favorite button ================ */}
+          <div className="bg-primary-white absolute bottom-2 right-2 size-7 flex justify-center items-center rounded-full cursor-pointer group duration-500">
+            <Heart
+              size={20}
+              className="group-hover:fill-primary-black duration-500"
+            ></Heart>
+          </div>
         </div>
         {/* ===================================== product details =============================== */}
-        <div className="">
-          <div></div>
+        <div className="space-y-[2px]">
+          {/*  ===== user image and user type ======== */}
+          <div className="flex items-center justify-between">
+            <div className="relative">
+              <Image
+                src={data?.userImage}
+                alt="user_image"
+                width={1200}
+                height={1200}
+                className="size-8 rounded-full "
+              ></Image>
+              <div
+                className="rounded-full size-3 flex justify-center items-center absolute top-0 -right-1"
+                style={{ backgroundColor: userTagColor(data?.userType) }}
+              >
+                <Check size={14} color="#fff"></Check>
+              </div>
+            </div>
+            <div
+              className="px-2 rounded text-primary-white text-sm font-bold"
+              style={{ backgroundColor: userTagColor(data?.userType) }}
+            >
+              {data?.userType}
+            </div>
+          </div>
+          {/* ===================== product title ================ */}
+          <p className="text-primary-gray">{data?.title}</p>
+          <h6 className="text-lg text-primary-black">{data?.size}</h6>
+          <h5 className="font-bold text-primary-black">${data?.price}</h5>
+          {/* ===================== product rating ================ */}
+          <div className="flex items-center gap-x-1">
+            <Rating rating={data?.rating}></Rating>
+            <p className="text-primary-gray">({data?.rating})</p>
+          </div>
+          {/* ===================== location ================ */}
+          <div className="flex items-center gap-x-1 text-primary-gray">
+            <MapPin size={18} />
+            <p>{data?.location}</p>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -69,15 +69,18 @@ const PriceCategory = () => {
           exit="exit"
           viewport={{ once: true }}
         >
-          <div>
+          <motion.div variants={childrenVariants}>
             <RangeSlider
               value={values}
               onValueChange={(price) => setValues(price)}
               max={values[1] >= 950 ? values[1] + 100 : 1000}
               step={1}
             />
-          </div>
-          <div className=" flex items-center justify-between mt-5 gap-x-2">
+          </motion.div>
+          <motion.div
+            variants={childrenVariants}
+            className=" flex items-center justify-between mt-5 gap-x-2"
+          >
             <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center text-primary-gray">
               ${values[0]}
             </div>
@@ -85,7 +88,7 @@ const PriceCategory = () => {
             <div className="mr-2 border w-full flex-1 rounded flex items-center justify-center text-primary-gray">
               ${values[1]}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
     </div>

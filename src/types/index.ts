@@ -15,3 +15,17 @@ export type TUser = {
   coverImage: string;
   bestOn?: string;
 };
+
+export type TProduct = {
+  _id: number;
+  image: string;
+  userImage: string;
+  userType: string;
+  title: string;
+  price: number;
+  rating: number;
+  location: string;
+  tag?: string;
+  size: string;
+  offers?: string;
+};
