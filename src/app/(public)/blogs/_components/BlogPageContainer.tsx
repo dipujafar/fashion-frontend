@@ -1,15 +1,9 @@
-"use client";
 import BlogCard from "@/components/shared/Cards/BlogCard";
+import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 import { blogsData } from "@/lib/dummyData.tsx";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Pagination } from "react-pagination-bar";
 
 const BlogPageContainer = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const router = useRouter();
-  const pagePostsLimit = 9;
   return (
     <div>
       {/* ============ All blogs ============== */}
@@ -21,16 +15,7 @@ const BlogPageContainer = () => {
         ))}
       </div>
       {/* Pagination */}
-
-      <div className="mt-10 text-end ">
-        <Pagination
-          currentPage={currentPage}
-          itemsPerPage={pagePostsLimit}
-          onPageChange={(pageNumber) => router.push(`?page=${pageNumber}`)}
-          totalItems={30}
-          pageNeighbours={1}
-        />
-      </div>
+      <PaginationSection></PaginationSection>
     </div>
   );
 };

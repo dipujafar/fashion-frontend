@@ -9,6 +9,7 @@ import AllProducts from "./AllProducts";
 import { RecommendedCategory } from "./RecommendedCategory";
 import { UserTypeCategory } from "./UserTypeCategory";
 import { SmallDeviceFilter } from "./SmallDeviceFilter";
+import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 
 const ShopPageContainer = () => {
   return (
@@ -38,6 +39,8 @@ const ShopPageContainer = () => {
           <AllProducts></AllProducts>
         </div>
       </div>
+      {/* Pagination */}
+      <PaginationSection></PaginationSection>
     </div>
   );
 };
