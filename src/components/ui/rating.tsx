@@ -12,12 +12,13 @@ const ratingVariants = cva(
 interface RatingProps extends VariantProps<typeof ratingVariants> {
   rating: number; // The rating value (can be decimal, e.g., 4.5)
   className?: string; // Optional className for additional styling
+  size?: number; // Optional size for stars (default is 20)
 }
 
 const Rating = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div"> & RatingProps
->(({ rating, className, ...props }, ref) => {
+>(({ rating, className, size = 20, ...props }, ref) => {
   return (
     <div ref={ref} className={cn(ratingVariants(), className)} {...props}>
       {[...Array(5)].map((_, index) => {
@@ -28,7 +29,7 @@ const Rating = React.forwardRef<
           <span key={index} className="relative inline-block">
             {/* Background star (empty) */}
             <Star
-              size={20}
+              size={size}
               className="text-gray-400"
               fill="none"
               stroke="currentColor"
@@ -41,7 +42,7 @@ const Rating = React.forwardRef<
                 style={{ width: `${fillPercentage * 100}%` }}
               >
                 <Star
-                  size={20}
+                  size={size}
                   className="text-[#FF8A00]"
                   fill="currentColor"
                   stroke="currentColor"

@@ -143,6 +143,10 @@
   .section-title {
     @apply text-center lg:text-4xl text-2xl font-bold;
   }
+
+  .section-name {
+    @apply lg:text-3xl text-xl font-medium uppercase;
+  }
 }
 
 /* =========== react pagination styles =================== */
