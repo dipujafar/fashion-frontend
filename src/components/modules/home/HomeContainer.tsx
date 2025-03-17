@@ -1,6 +1,6 @@
 import AboutUsSection from "./AboutUsSection";
 import BlogsUpdate from "./BlogsUpdate";
-import FeatureProduct from "./FeatureProduct";
+import FeatureProduct from "./FeatureProdut/FeatureProduct";
 
 const HomeContainer = () => {
   return (

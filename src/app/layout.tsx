@@ -4,7 +4,7 @@ import { Figtree } from "next/font/google";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
 import TopInfo from "@/components/shared/Navbar/TopInfo";
-import ScrollLoader from "@/components/shared/ScrollLoader";
+
 import "react-pagination-bar/dist/index.css";
 
 const figtree = Figtree({

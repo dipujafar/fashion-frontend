@@ -9,7 +9,7 @@ import Link from "next/link";
 
 const ProductCard = ({ data }: { data: TProduct }) => {
   return (
-    <Card className="border-none shadow-none  p-0">
+    <Card className="border-none shadow-none p-0">
       <CardContent className="space-y-4 p-0">
         {/* ===================================== product image =============================== */}
         <div className="relative">
@@ -21,8 +21,8 @@ const ProductCard = ({ data }: { data: TProduct }) => {
               height={1200}
               className="md:max-h-80 max-h-52 object-cover origin-center rounded cursor-pointer"
             ></Image>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/40 flex justify-center items-center duration-500">
-              <div className="space-y-2 ">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/40 flex justify-center items-center  transform scale-y-0 group-hover:scale-y-100 transition-all duration-700 origin-top">
+              <div className="space-y-2">
                 <Link href={"#"} className="block">
                   <CommonButton>VIEW DETAILS</CommonButton>
                 </Link>
@@ -34,18 +34,21 @@ const ProductCard = ({ data }: { data: TProduct }) => {
               </div>
             </div>
           </div>
+
           {/* ===================== product offers ================ */}
           <div className="bg-primary-light-pink absolute top-2 left-2 p-1 rounded">
-            <h3 className="uppercase text-[12px] font-bold text-[#E1272880] ">
+            <h3 className="uppercase text-[12px] font-bold text-[#E1272880]">
               {data?.offers}
             </h3>
           </div>
+
           {/* ===================== product tag ================ */}
           <div className="bg-[#87CEEB] absolute bottom-2 left-2 p-1 rounded">
-            <h3 className="uppercase text-[12px] font-bold text-primary-white ">
+            <h3 className="uppercase text-[12px] font-bold text-primary-white">
               {data?.tag}
             </h3>
           </div>
+
           {/* ===================== favorite button ================ */}
           <div className="bg-primary-white absolute bottom-2 right-2 size-7 flex justify-center items-center rounded-full cursor-pointer group duration-500">
             <Heart
@@ -54,9 +57,10 @@ const ProductCard = ({ data }: { data: TProduct }) => {
             ></Heart>
           </div>
         </div>
+
         {/* ===================================== product details =============================== */}
         <div className="md:space-y-[2px] space-y-[1px]">
-          {/*  ===== user image and user type ======== */}
+          {/* ===== user image and user type ======== */}
           <div className="flex items-center gap-x-1 gap-y-1 justify-between">
             <div className="relative">
               <Image
@@ -64,7 +68,7 @@ const ProductCard = ({ data }: { data: TProduct }) => {
                 alt="user_image"
                 width={1200}
                 height={1200}
-                className="md:size-8 size-6 rounded-full "
+                className="md:size-8 size-6 rounded-full"
               ></Image>
               <div
                 className="rounded-full size-3 flex justify-center items-center absolute top-0 -right-1"
@@ -80,12 +84,14 @@ const ProductCard = ({ data }: { data: TProduct }) => {
               {data?.userType}
             </div>
           </div>
+
           {/* ===================== product title ================ */}
           <p className="text-primary-gray md:text-base text-sm">
             {data?.title}
           </p>
           <h6 className="md:text-lg text-primary-black">{data?.size}</h6>
           <h5 className="font-bold text-primary-black">${data?.price}</h5>
+
           {/* ===================== product rating ================ */}
           <div className="flex items-center gap-x-1">
             <Rating rating={data?.rating} size={18}></Rating>
@@ -93,6 +99,7 @@ const ProductCard = ({ data }: { data: TProduct }) => {
               ({data?.rating})
             </p>
           </div>
+
           {/* ===================== location ================ */}
           <div className="flex items-center gap-x-1 text-primary-gray md:text-base text-sm">
             <MapPin size={18} />

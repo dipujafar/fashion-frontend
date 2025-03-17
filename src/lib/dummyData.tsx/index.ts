@@ -124,7 +124,7 @@ export const productsData = [
   },
   {
     _id: 2,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_2.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "Eco-friendly store",
     title: "Denim midi skirt with pockets",
@@ -137,7 +137,7 @@ export const productsData = [
   },
   {
     _id: 3,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_3.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "Charity store",
     title: "Denim midi skirt with pockets",
@@ -150,7 +150,7 @@ export const productsData = [
   },
   {
     _id: 4,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_6.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "Ambassador",
     title: "Denim midi skirt with pockets",
@@ -163,7 +163,7 @@ export const productsData = [
   },
   {
     _id: 5,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_5.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "Eco-friendly store",
     title: "Denim midi skirt with pockets",
@@ -176,7 +176,7 @@ export const productsData = [
   },
   {
     _id: 6,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_6.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "INFLUENCER",
     title: "Denim midi skirt with pockets",
@@ -189,7 +189,7 @@ export const productsData = [
   },
   {
     _id: 7,
-    image: "/product_image_1.jpeg",
+    image: "/product_image-4.webp",
     userImage: "/user_image_1.jpeg",
     userType: "Charity store",
     title: "Denim midi skirt with pockets",
@@ -202,7 +202,7 @@ export const productsData = [
   },
   {
     _id: 8,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_2.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "INFLUENCER",
     title: "Denim midi skirt with pockets",
@@ -228,7 +228,7 @@ export const productsData = [
   },
   {
     _id: 10,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_3.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "INFLUENCER",
     title: "Denim midi skirt with pockets",
@@ -241,7 +241,7 @@ export const productsData = [
   },
   {
     _id: 11,
-    image: "/product_image_1.jpeg",
+    image: "/product_image_5.jpg",
     userImage: "/user_image_1.jpeg",
     userType: "Charity store",
     title: "Denim midi skirt with pockets",
@@ -254,7 +254,7 @@ export const productsData = [
   },
   {
     _id: 12,
-    image: "/product_image_1.jpeg",
+    image: "/product_image-4.webp",
     userImage: "/user_image_1.jpeg",
     userType: "Eco-friendly store",
     title: "Denim midi skirt with pockets",
