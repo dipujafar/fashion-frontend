@@ -260,3 +260,33 @@ export const productsData = [
     size: "UK 10/XL",
   },
 ];
+
+export const productDetails = {
+  _id: 1,
+  image: [
+    { _id: 1, url: "/product_details_image1.jpeg" },
+    { _id: 2, url: "/product_details_image2.jpeg" },
+    { _id: 3, url: "/product_details_image3.jpeg" },
+    { _id: 4, url: "/product_details_image4.jpeg" },
+    { _id: 5, url: "/product_details_image5.jpeg" },
+    { _id: 6, url: "/product_details_image6.jpeg" },
+  ],
+  userImage: "/user1.png",
+  userType: "Professional Seller",
+  title: "Teen Girl Denim shirts",
+  price: "268.00",
+  originalPrice: "395.00",
+  discount: "15%",
+  location: "Dublin, Ireland",
+  tags: ["Sweatshirt", "Women's Clothing", "Casual Wear", "Heart Design"],
+  size: "UK 10/ US 6/M",
+  tag: "Trending Now",
+  charity: "20%",
+  item_Number: "158420",
+  category: "Women",
+  condition: "2 months used",
+  fabric: "Cotton Blend",
+  brands: "Gucci",
+  color: "#A9A9A9",
+  care_Instruction: "Machine wash cold, tumble dry low, do not bleach",
+};

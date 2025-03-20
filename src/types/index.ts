@@ -29,3 +29,31 @@ export type TProduct = {
   size: string;
   offers?: string;
 };
+
+export type TProductImage = {
+  _id: number;
+  url: string;
+};
+
+export type TProductDetails = {
+  _id: number;
+  image: TProductImage[];
+  userImage: string;
+  userType: string;
+  title: string;
+  price: string;
+  originalPrice: string;
+  discount: string;
+  location: string;
+  tags: string[];
+  size: string;
+  tag: string;
+  charity: string;
+  item_Number: string;
+  category: string;
+  condition: string;
+  fabric: string;
+  brands: string;
+  color: string;
+  care_Instruction: string;
+};
