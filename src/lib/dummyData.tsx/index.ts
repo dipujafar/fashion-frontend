@@ -131,9 +131,8 @@ export const productsData = [
     price: 23.0,
     rating: 3.6,
     location: "United States",
-    tag: "Top seller",
+    tag: "Trending now",
     size: "UK 10/XL",
-    offers: "open to offers",
   },
   {
     _id: 3,
@@ -144,7 +143,7 @@ export const productsData = [
     price: 23.0,
     rating: 4.5,
     location: "United States",
-    tag: "Top seller",
+    tag: "Trending now",
     size: "UK 10/XL",
     offers: "open to offers",
   },
@@ -157,9 +156,8 @@ export const productsData = [
     price: 23.0,
     rating: 4.5,
     location: "United States",
-    tag: "Top seller",
+
     size: "UK 10/XL",
-    offers: "open to offers",
   },
   {
     _id: 5,
@@ -185,7 +183,6 @@ export const productsData = [
     location: "United States",
     tag: "Top seller",
     size: "UK 10/XL",
-    offers: "open to offers",
   },
   {
     _id: 7,
@@ -198,7 +195,6 @@ export const productsData = [
     location: "United States",
     tag: "Top seller",
     size: "UK 10/XL",
-    offers: "open to offers",
   },
   {
     _id: 8,
@@ -209,7 +205,7 @@ export const productsData = [
     price: 23.0,
     rating: 4.5,
     location: "United States",
-    tag: "Top seller",
+
     size: "UK 10/XL",
     offers: "open to offers",
   },
@@ -237,7 +233,6 @@ export const productsData = [
     location: "United States",
     tag: "Top seller",
     size: "UK 10/XL",
-    offers: "open to offers",
   },
   {
     _id: 11,
@@ -248,7 +243,7 @@ export const productsData = [
     price: 23.0,
     rating: 4.5,
     location: "United States",
-    tag: "Top seller",
+
     size: "UK 10/XL",
     offers: "open to offers",
   },
@@ -263,6 +258,5 @@ export const productsData = [
     location: "United States",
     tag: "Top seller",
     size: "UK 10/XL",
-    offers: "open to offers",
   },
 ];

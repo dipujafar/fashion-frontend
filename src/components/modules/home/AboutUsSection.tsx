@@ -142,7 +142,7 @@ const AboutUsSection = () => {
           <div
             key={data?._id}
             style={{ boxShadow: "0px 4px 7px 0px rgba(0, 0, 0, 0.09)" }}
-            className="flex items-center gap-x-2 p-2.5"
+            className="flex items-center gap-x-2 p-2.5 hover:scale-105 duration-500"
           >
             {data?.icon}
             <p>{data?.title}</p>

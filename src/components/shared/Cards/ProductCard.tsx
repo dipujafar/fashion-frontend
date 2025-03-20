@@ -36,18 +36,22 @@ const ProductCard = ({ data }: { data: TProduct }) => {
           </div>
 
           {/* ===================== product offers ================ */}
-          <div className="bg-primary-light-pink absolute top-2 left-2 p-1 rounded">
-            <h3 className="uppercase text-[12px] font-bold text-[#E1272880]">
-              {data?.offers}
-            </h3>
-          </div>
+          {data?.offers && (
+            <div className="bg-primary-light-pink absolute top-2 left-2 p-1 rounded">
+              <h3 className="uppercase text-[12px] font-bold text-[#E1272880]">
+                {data?.offers}
+              </h3>
+            </div>
+          )}
 
           {/* ===================== product tag ================ */}
-          <div className="bg-[#87CEEB] absolute bottom-2 left-2 p-1 rounded">
-            <h3 className="uppercase text-[12px] font-bold text-primary-white">
-              {data?.tag}
-            </h3>
-          </div>
+          {data?.tag && (
+            <div className="bg-[#87CEEB] absolute bottom-2 left-2 p-1 rounded">
+              <h3 className="uppercase text-[12px] font-bold text-primary-white">
+                {data?.tag}
+              </h3>
+            </div>
+          )}
 
           {/* ===================== favorite button ================ */}
           <div className="bg-primary-white absolute bottom-2 right-2 size-7 flex justify-center items-center rounded-full cursor-pointer group duration-500">
