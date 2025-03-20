@@ -4,6 +4,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
@@ -72,7 +73,11 @@ const PreviewClothes = () => {
                   height={1200}
                   className="h-[300px] w-auto mx-auto"
                 ></Image>
-                <div className="absolute bottom-[5%] right-[5%] size-9 rounded-full bg-primary-white shadow-2xl flex justify-center items-center hover:bg-primary-gray/20 duration-500 cursor-pointer ">
+                <div
+                  className={cn(
+                    "absolute bottom-[5%] right-[5%] size-9 rounded-full bg-primary-white shadow-2xl flex justify-center items-center hover:bg-primary-gray/20 duration-500 cursor-pointer"
+                  )}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="31"

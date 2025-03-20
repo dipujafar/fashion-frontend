@@ -22,7 +22,7 @@ const UserData = [
   },
   {
     _id: 5,
-    image: "/userAvatar5.png",
+    image: "/userAvatar2.png",
   },
 ];
 const UserAvatar = () => {
@@ -42,6 +42,7 @@ const UserAvatar = () => {
                   delay: 0.08 * data?._id,
                 },
               }}
+              viewport={{ once: true }}
               key={data._id}
             >
               <Image
@@ -61,6 +62,7 @@ const UserAvatar = () => {
             y: 0,
             transition: { duration: 0.5, delay: 0.25 },
           }}
+          viewport={{ once: true }}
           className="uppercase text-center text-primary-gray"
         >
           trusted by thousands of customers
@@ -72,7 +74,8 @@ const UserAvatar = () => {
             y: 0,
             transition: { duration: 0.5, delay: 0.5 },
           }}
-          className="text-3xl text-center max-w-5xl mx-auto"
+          viewport={{ once: true }}
+          className="lg:text-3xl text-lg text-center max-w-5xl mx-auto"
         >
           Trusted by thousands for quality and style. Discover why users love
           our secondhand marketplace and charitable impact.

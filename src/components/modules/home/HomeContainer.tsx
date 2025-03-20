@@ -3,6 +3,7 @@ import BlogsUpdate from "./BlogsUpdate";
 import ClothesSection from "./ClothesSection/ClothesSection";
 import FeatureProduct from "./FeatureProdut/FeatureProduct";
 import UserAvatar from "./UserAvatatTitle/UserAvatar";
+import Feedbacks from "./Feedbacks/Feedbacks";
 
 const HomeContainer = () => {
   return (
@@ -11,6 +12,7 @@ const HomeContainer = () => {
       <ClothesSection></ClothesSection>
       <FeatureProduct></FeatureProduct>
       <AboutUsSection></AboutUsSection>
+      <Feedbacks></Feedbacks>
       <BlogsUpdate></BlogsUpdate>
     </div>
   );
