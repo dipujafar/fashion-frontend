@@ -12,7 +12,6 @@ import {
   childrenVariants,
   parentVariants,
 } from "@/animations/FramerMotionValiants";
-import { Input } from "@/components/ui/input";
 import SearchAndNavIcon from "./SearchAndNavIcon";
 
 const SmallDeviceView = () => {

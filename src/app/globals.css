@@ -16,6 +16,8 @@
   --color-primary-red: #e12728;
   --color-primary-light-pink: #fff4f4;
   --color-primary-pink: #fce9ea;
+  --color-primary-light-blue: #1372c4;
+  --color-primary-green: #00b047;
 }
 
 @theme inline {
@@ -147,6 +149,9 @@
 
   .section-name {
     @apply lg:text-3xl text-xl font-medium uppercase;
+  }
+  .flex-center {
+    @apply flex justify-center items-center;
   }
 }
 

@@ -281,7 +281,7 @@ export const productDetails = {
   tags: ["Sweatshirt", "Women's Clothing", "Casual Wear", "Heart Design"],
   size: "UK 10/ US 6/M",
   tag: "Trending Now",
-  charity: "20%",
+  charity: "20",
   item_Number: "158420",
   category: "Women",
   condition: "2 months used",

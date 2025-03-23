@@ -25,14 +25,14 @@ const BlogsUpdate = () => {
               d="M15.75 7.67578L0.75 7.67578"
               stroke="black"
               stroke-width="1.5"
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
             />
             <path
               d="M9.69922 1.65217L15.7492 7.67617L9.69922 13.7012"
               stroke="black"
               stroke-width="1.5"
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
             />
           </svg>

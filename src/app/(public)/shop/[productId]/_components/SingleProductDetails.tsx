@@ -6,7 +6,7 @@ import ProductImages from "./ProductImages";
 const SingleProductDetails = () => {
   return (
     <Container>
-      <div className="flex xl:gap-x-8 gap-x-5 gap-y-5">
+      <div className="flex flex-col lg:flex-row xl:gap-x-8 gap-x-5 gap-y-5">
         <div className="flex-1">
           <ProductImages></ProductImages>
         </div>
