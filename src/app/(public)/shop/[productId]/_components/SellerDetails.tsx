@@ -74,7 +74,7 @@ const SellerDetails = () => {
                 viewBox="0 0 20 20"
                 fill="none"
               >
-                <g clip-path="url(#clip0_20155_29138)">
+                <g clipPath="url(#clip0_20155_29138)">
                   <path
                     d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20Z"
                     fill="#E12728"
