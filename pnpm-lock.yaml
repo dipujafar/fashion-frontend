@@ -38,6 +38,9 @@ importers:
       cmdk:
         specifier: 1.0.0
         version: 1.0.0(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      embla-carousel:
+        specifier: ^8.5.2
+        version: 8.5.2
       embla-carousel-autoplay:
         specifier: ^8.5.2
         version: 8.5.2(embla-carousel@8.5.2)

@@ -31,8 +31,9 @@ export type TProduct = {
 };
 
 export type TProductImage = {
-  _id: number;
+  key: string;
   url: string;
+  _id: string;
 };
 
 export type TProductDetails = {

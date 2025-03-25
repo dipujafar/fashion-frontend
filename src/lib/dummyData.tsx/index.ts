@@ -264,12 +264,12 @@ export const productsData = [
 export const productDetails = {
   _id: 1,
   image: [
-    { _id: 1, url: "/product_details_image1.jpeg" },
-    { _id: 2, url: "/product_details_image2.jpeg" },
-    { _id: 3, url: "/product_details_image3.jpeg" },
-    { _id: 4, url: "/product_details_image4.jpeg" },
-    { _id: 5, url: "/product_details_image5.jpeg" },
-    { _id: 6, url: "/product_details_image6.jpeg" },
+    { _id: "1", url: "/product_details_image1.jpeg", key: "1" },
+    { _id: "2", url: "/product_details_image2.jpeg", key: "2" },
+    { _id: "3", url: "/product_details_image3.jpeg", key: "3" },
+    { _id: "4", url: "/product_details_image4.jpeg", key: "4" },
+    { _id: "5", url: "/product_details_image5.jpeg", key: "5" },
+    { _id: "6", url: "/product_details_image6.jpeg", key: "6" },
   ],
   userImage: "/user1.png",
   userType: "Professional Seller",

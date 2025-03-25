@@ -1,7 +1,17 @@
+"use client";
 import { productDetails } from "@/lib/dummyData.tsx";
 import Link from "next/link";
 import React from "react";
 import ActionButtons from "./ActionButtons";
+import SellerDetails from "./SellerDetails";
+import { EnvConfig } from "@/config";
+
+const handleShare = () => {
+  navigator.share({
+    title: productDetails?.title,
+    url: `${EnvConfig?.client_url}/shop/${productDetails?._id}`,
+  });
+};
 
 const ProductDetails = () => {
   return (
@@ -35,6 +45,7 @@ const ProductDetails = () => {
             <button
               className="size-11 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
               style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
+              onClick={handleShare}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -155,6 +166,8 @@ const ProductDetails = () => {
 
       {/* ======================= all actions buttons ================ */}
       <ActionButtons></ActionButtons>
+      {/* ========================= seller details ========================= */}
+      <SellerDetails></SellerDetails>
     </div>
   );
 };
