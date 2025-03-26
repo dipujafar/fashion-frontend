@@ -15,7 +15,7 @@ const handleShare = () => {
 
 const ProductDetails = () => {
   return (
-    <div className="xl:space-y-8 space-x-5">
+    <div className=" space-y-8">
       {/* --------- product header ---------- */}
       <div className="xl:space-y-3 space-x-2">
         <h6 className="bg-[#87CEEB] w-fit px-3 rounded-xs text-primary-white italic">

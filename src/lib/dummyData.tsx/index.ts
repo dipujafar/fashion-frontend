@@ -269,7 +269,7 @@ export const productDetails = {
     { _id: "3", url: "/product_details_image3.jpeg", key: "3" },
     { _id: "4", url: "/product_details_image4.jpeg", key: "4" },
     { _id: "5", url: "/product_details_image5.jpeg", key: "5" },
-    { _id: "6", url: "/product_details_image6.jpeg", key: "6" },
+    { _id: "2", url: "/product_details_image3.jpeg", key: "6" },
   ],
   userImage: "/user1.png",
   userType: "Professional Seller",

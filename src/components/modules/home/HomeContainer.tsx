@@ -4,6 +4,8 @@ import ClothesSection from "./ClothesSection/ClothesSection";
 import FeatureProduct from "./FeatureProdut/FeatureProduct";
 import UserAvatar from "./UserAvatatTitle/UserAvatar";
 import Feedbacks from "./Feedbacks/Feedbacks";
+import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
+import Container from "@/components/shared/Container";
 
 const HomeContainer = () => {
   return (
@@ -13,6 +15,9 @@ const HomeContainer = () => {
       <FeatureProduct></FeatureProduct>
       <AboutUsSection></AboutUsSection>
       <Feedbacks></Feedbacks>
+      <Container>
+        <RecentlyViewed></RecentlyViewed>
+      </Container>
       <BlogsUpdate></BlogsUpdate>
     </div>
   );

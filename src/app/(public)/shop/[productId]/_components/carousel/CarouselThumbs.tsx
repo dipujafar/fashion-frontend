@@ -19,7 +19,7 @@ export const CarouselThumbs: React.FC<PropType> = (props) => {
         type="button"
         className={cn(
           "embla-thumbs__slide__number w-full !border p-1 rounded",
-          selected && "border-2= "
+          selected && "border-2 "
         )}
       >
         {/* {index + 1} */}
@@ -28,7 +28,7 @@ export const CarouselThumbs: React.FC<PropType> = (props) => {
           width={500}
           height={500}
           alt="thumbnail"
-          className={cn(" h-full w-full ")}
+          className={cn("h-full w-full")}
         ></Image>
       </button>
     </div>

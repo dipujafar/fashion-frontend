@@ -53,7 +53,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
                 height={500}
                 alt="product_image"
                 quality={100}
-                className="w-full h-full mx-auto"
+                className="w-full max-h-screen mx-auto"
               ></Image>
             </div>
           ))}

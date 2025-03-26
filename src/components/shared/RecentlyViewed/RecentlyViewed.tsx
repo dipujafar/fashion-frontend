@@ -1,15 +1,13 @@
-import BlogCard from "@/components/shared/Cards/BlogCard";
-import Container from "@/components/shared/Container";
-import { blogsData } from "@/lib/dummyData.tsx";
 import Link from "next/link";
+import PreviewProduct from "./PreviewProduct";
 
-const BlogsUpdate = () => {
+const RecentlyViewed = () => {
   return (
-    <Container>
+    <div>
       <div className="flex justify-between items-center gap-x-4 mb-2 ">
-        <h4 className="section-name">BLOG UPDATES</h4>
+        <h4 className="section-name uppercase">recently viewed</h4>
         <Link
-          href={"/blogs"}
+          href={"/shop"}
           className="flex gap-x-2 items-center font-bold group "
         >
           <p>VIEW ALL</p>
@@ -38,17 +36,10 @@ const BlogsUpdate = () => {
           </svg>
         </Link>
       </div>
-      <hr className=" border-primary-gray" />
-      {/* update blogs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-8 gap-4 xl:mt-8 mt-4">
-        {blogsData?.slice(0, 4)?.map((blog) => (
-          <Link key={blog?._id} href={`/blogs/${blog?._id}`}>
-            <BlogCard data={blog}></BlogCard>
-          </Link>
-        ))}
-      </div>
-    </Container>
+      <hr />
+      <PreviewProduct></PreviewProduct>
+    </div>
   );
 };
 
-export default BlogsUpdate;
+export default RecentlyViewed;
