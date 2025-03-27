@@ -6,6 +6,8 @@ import UserAvatar from "./UserAvatatTitle/UserAvatar";
 import Feedbacks from "./Feedbacks/Feedbacks";
 import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
 import Container from "@/components/shared/Container";
+import NewArrival from "./NewArrival/NewArrival";
+import EcoFriendlyCharityContainer from "./EcoFriendlyCharity/EcoFriendlyCharityContainer";
 
 const HomeContainer = () => {
   return (
@@ -13,6 +15,10 @@ const HomeContainer = () => {
       <UserAvatar></UserAvatar>
       <ClothesSection></ClothesSection>
       <FeatureProduct></FeatureProduct>
+      <Container>
+        <NewArrival></NewArrival>
+      </Container>
+      <EcoFriendlyCharityContainer></EcoFriendlyCharityContainer>
       <AboutUsSection></AboutUsSection>
       <Feedbacks></Feedbacks>
       <Container>

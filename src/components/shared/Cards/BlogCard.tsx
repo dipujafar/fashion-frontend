@@ -38,14 +38,14 @@ const BlogCard = ({ data }: { data: TBlogsData }) => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <p>{data?.date}</p>
+              <p className="truncate">{data?.date}</p>
             </div>
             {/* feedback */}
             <div className="flex justify-center items-center px-3 gap-x-1">
               <div className="border rounded-full p-1 border-primary-gray">
                 <MessageSquare size={18} color="#616161" />
               </div>
-              <p>{data?.totalFeedback} Feedbacks</p>
+              <p className="truncate">{data?.totalFeedback} Feedbacks</p>
             </div>
           </div>
           {/* =================================== description ============================ */}

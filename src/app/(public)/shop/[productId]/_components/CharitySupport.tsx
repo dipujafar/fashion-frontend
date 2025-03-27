@@ -93,9 +93,7 @@ const CharitySupport = () => {
               <p>{charitySupport?.present}%</p>
             </div>
             <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out h-[50px] group-hover:h-full group-hover:rounded-2xl md:group-hover:text-3xl group-hover:text-xl origin-bottom overflow-hidden">
-              <p className="transition-opacity duration-1000 ease-in-out  group-hover:opacity-100">
-                {charitySupport?.title}
-              </p>
+              <p>{charitySupport?.title}</p>
             </div>
           </div>
         ))}

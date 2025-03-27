@@ -12,17 +12,17 @@ const category = [
   {
     id: 1,
     label: "Womans",
-    href: "/#",
+    href: "/shop/#",
   },
   {
     id: 2,
     label: "Mens",
-    href: "/#",
+    href: "/shop/#",
   },
   {
     id: 3,
     label: "Kids",
-    href: "/#",
+    href: "/shop/#",
   },
 ];
 

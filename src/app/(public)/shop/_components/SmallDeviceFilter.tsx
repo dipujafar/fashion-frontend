@@ -1,5 +1,4 @@
 import Categories from "@/components/shared/Categories/Categories";
-import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import PriceCategory from "./PriceCategory";
 import ColorCategory from "./ColorCategory";

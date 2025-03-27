@@ -35,7 +35,7 @@ const FeedbackSection = () => {
       {/* =========================== All Feedbacks ========================*/}
       <div className="space-y-5">
         {blogsFeedbacks?.slice(0, showReview)?.map((feedback) => (
-          <div className="space-y-2">
+          <div key={feedback?._id} className="space-y-2">
             <div className="flex justify-between items-center gap-x-4">
               <div className="flex items-center gap-x-2">
                 <Image
