@@ -18,7 +18,7 @@ const EcoFriendlyCharityContainer = () => {
           <div className="flex justify-between items-center gap-x-4 mb-2  ">
             <h4 className="section-name">CHARITIES</h4>
             <Link
-              href={"/about-us"}
+              href={"/#"}
               className="flex gap-x-2 items-center font-bold group "
             >
               <CommonButton>view all</CommonButton>

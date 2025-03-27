@@ -1,14 +1,23 @@
+"use client";
 import charityImage1 from "@/assets/images/home/EcoFriendlyCharity/charityImage1.png";
 import charityImage2 from "@/assets/images/home/EcoFriendlyCharity/charityImage2.png";
 import charityImage3 from "@/assets/images/home/EcoFriendlyCharity/charityImage3.png";
 import charityImage4 from "@/assets/images/home/EcoFriendlyCharity/charityImage4.png";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const Charities = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="grid h-full w-full gap-4  grid-cols-4 grid-rows-4 ">
-        <div className="col-span-2 row-span-2 relative group">
+        <motion.div
+          initial={{ opacity: 0, x: "-10%" }}
+          whileInView={{ opacity: 1, x: "0" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          exit={{ opacity: 0, x: "-10%" }}
+          viewport={{ once: true }}
+          className="col-span-2 row-span-2 relative group"
+        >
           <Image
             src={charityImage1}
             alt="charity_image"
@@ -19,9 +28,16 @@ const Charities = () => {
               SAVE THE CHILDREN
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="col-span-2 row-span-2 relative group ">
+        <motion.div
+          initial={{ opacity: 0, x: "10%" }}
+          whileInView={{ opacity: 1, x: "0" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          exit={{ opacity: 0, x: "10%" }}
+          viewport={{ once: true }}
+          className="col-span-2 row-span-2 relative group "
+        >
           <Image
             src={charityImage2}
             alt="charity_image"
@@ -32,7 +48,7 @@ const Charities = () => {
               Plant More Trees
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <div className="col-span-2 row-span-2 relative group ">
           <Image
