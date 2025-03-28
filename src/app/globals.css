@@ -158,10 +158,6 @@
   }
 }
 
-.border-red {
-  @apply border border-red-500;
-}
-
 /* =========== react pagination styles =================== */
 .rpb-item {
   border: 1px solid lightgray !important;

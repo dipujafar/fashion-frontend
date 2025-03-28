@@ -50,7 +50,14 @@ const Charities = () => {
           </div>
         </motion.div>
 
-        <div className="col-span-2 row-span-2 relative group ">
+        <motion.div
+          initial={{ opacity: 0, x: "-10%" }}
+          whileInView={{ opacity: 1, x: "0" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          exit={{ opacity: 0, x: "-10%" }}
+          viewport={{ once: true }}
+          className="col-span-2 row-span-2 relative group "
+        >
           <Image
             src={charityImage3}
             alt="charity_image"
@@ -61,9 +68,16 @@ const Charities = () => {
               Women for Women International
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="col-span-2 row-span-2 relative group">
+        <motion.div
+          initial={{ opacity: 0, x: "10%" }}
+          whileInView={{ opacity: 1, x: "0" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          exit={{ opacity: 0, x: "10%" }}
+          viewport={{ once: true }}
+          className="col-span-2 row-span-2 relative group"
+        >
           <Image
             src={charityImage4}
             alt="charity_image"
@@ -74,7 +88,7 @@ const Charities = () => {
               The Red Cross
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
