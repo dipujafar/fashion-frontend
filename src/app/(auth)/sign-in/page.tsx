@@ -1,14 +1,10 @@
-import bgImage from "@/assets/images/auth/auth_pages_top_image.png";
+import PageTopSection from "@/components/shared/PageTopSection";
 import Image from "next/image";
 
 const SignInPage = () => {
   return (
-    <div className="max-h-[240px] relative">
-      <Image
-        src={bgImage}
-        alt="bg_image"
-        className="max-h-[240px] object-cover"
-      ></Image>
+    <div>
+      <PageTopSection title="Welcome Back! Log In to Continue"></PageTopSection>
     </div>
   );
 };
