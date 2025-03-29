@@ -58,3 +58,12 @@ export type TProductDetails = {
   color: string;
   care_Instruction: string;
 };
+
+export type TUserRoleData = {
+  _id: number;
+  image: string;
+  title: string;
+  description: string;
+  link: string;
+  role: string;
+};
