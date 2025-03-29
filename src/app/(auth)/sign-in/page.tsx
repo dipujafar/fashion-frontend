@@ -1,6 +1,10 @@
 import PageTopSection from "@/components/shared/PageTopSection";
-import Image from "next/image";
 import SIgnInForm from "./components/SIgnInForm";
+
+export const metadata = {
+  title: "Sign In",
+  description: "Sign In to your account and enjoy shopping",
+};
 
 const SignInPage = () => {
   return (

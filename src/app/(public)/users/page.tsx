@@ -1,6 +1,11 @@
 import Container from "@/components/shared/Container";
 import UsersPageContainer from "./_components/UsersPageContainer";
 
+export const metadata = {
+  title: "Users",
+  description: "All users will find here",
+};
+
 const UserPages = () => {
   return (
     <Container>
