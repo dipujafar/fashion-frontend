@@ -18,6 +18,7 @@
   --color-primary-pink: #fce9ea;
   --color-primary-light-blue: #1372c4;
   --color-primary-green: #00b047;
+  --color-secondary-gray: #545454;
 }
 
 @theme inline {
