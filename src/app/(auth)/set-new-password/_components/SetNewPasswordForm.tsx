@@ -113,7 +113,7 @@ const SetNewPasswordForm = () => {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm New Password</FormLabel>
@@ -128,14 +128,14 @@ const SetNewPasswordForm = () => {
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showConfirmPassword ? (
                           <div
-                            onClick={() => setShowPassword(false)}
+                            onClick={() => setShowConfirmPassword(false)}
                             className="cursor-pointer"
                           >
                             <Eye color="#A5A7A9" />
                           </div>
                         ) : (
                           <div
-                            onClick={() => setShowPassword(true)}
+                            onClick={() => setShowConfirmPassword(true)}
                             className="cursor-pointer"
                           >
                             <EyeOff color="#A5A7A9" />
