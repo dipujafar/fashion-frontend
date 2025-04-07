@@ -1,10 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import CommonButton from "@/components/ui/common-button";
 
@@ -62,6 +57,22 @@ const SetNewPasswordForm = () => {
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "confirmPassword" || name === "password") {
+        if (value.confirmPassword && value.password !== value.confirmPassword) {
+          form.setError("confirmPassword", {
+            type: "manual",
+            message: "Passwords do not match",
+          });
+        } else {
+          form.clearErrors("confirmPassword");
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   return (
     <Card

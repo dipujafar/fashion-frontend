@@ -2,10 +2,10 @@ export const userRoleData = [
   {
     _id: 1,
     image: "/userRoleImage1.png",
-    title: "Individual Seller",
+    title: "Individual User",
     description: "This is an account for individuals to BUY or SELL items",
-    link: "#",
-    role: "individual_seller",
+    link: "/individual-user/sign-up",
+    role: "individual_user",
   },
   {
     _id: 2,

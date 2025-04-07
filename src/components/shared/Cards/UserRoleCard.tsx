@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import CommonButton from "@/components/ui/common-button";
 import { TUserRoleData } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const UserRoleCard = ({ data }: { data: TUserRoleData }) => {
@@ -19,7 +20,9 @@ const UserRoleCard = ({ data }: { data: TUserRoleData }) => {
           <h1 className="text-lg font-medium">{data?.title}</h1>
           <p className="text-sm text-primary-gray">{data?.description}</p>
         </div>
-        <CommonButton className="w-full md:py-4">Join Now</CommonButton>
+        <Link href={data?.link}>
+          <CommonButton className="w-full md:py-4">Join Now</CommonButton>
+        </Link>
       </CardContent>
     </Card>
   );
