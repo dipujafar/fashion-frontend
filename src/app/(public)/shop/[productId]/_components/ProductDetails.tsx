@@ -123,7 +123,10 @@ const ProductDetails = () => {
             <h2 className="w-[120px]">Available Size: </h2>
             <p>{productDetails?.size}</p>
           </div>
-          <Link href="#" className="underline text-primary-light-blue">
+          <Link
+            href="/product-size"
+            className="underline text-primary-light-blue"
+          >
             View Size Guide
           </Link>
         </div>
