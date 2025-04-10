@@ -2,8 +2,6 @@ import Link from "next/link";
 import Container from "../Container";
 import logo from "@/assets/images/common-image/logo.png";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
