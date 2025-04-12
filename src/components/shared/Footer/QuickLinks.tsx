@@ -37,7 +37,7 @@ const quickLink = [
 const QuickLinks = () => {
   return (
     <div className="py-2 border-t border-t-black/30 w-full xl:mt-10 md:mt-6 mt-3 flex flex-col lg:flex-row justify-between text-primary-black/70 text-sm gap-y-1 items-center">
-      <p>Copyright © 2024 AnyJob. All rights reserved.</p>
+      <p>Copyright © 2024 Fashion. All rights reserved.</p>
       <div className="md:flex grid grid-cols-3 gap-x-4 gap-y-1">
         {quickLink.map((link) => (
           <div key={link.id} className="relative group">
