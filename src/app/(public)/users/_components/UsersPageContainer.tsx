@@ -11,9 +11,6 @@ const UsersPageContainer = () => {
         <div className="hidden lg:block">
           <Categories data={userTypes} title="USER TYPE"></Categories>
         </div>
-        <div className="lg:hidden  flex justify-end">
-          <SmallDeviceFilter></SmallDeviceFilter>
-        </div>
 
         <div className="2xl:col-span-4 xl:col-span-3 md:col-span-2 ">
           <AllUsers></AllUsers>
