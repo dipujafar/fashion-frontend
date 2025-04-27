@@ -174,7 +174,7 @@ const SignUpForm = () => {
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>User Name</FormLabel>
+                  <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <PhoneInput
                       // @ts-ignore
