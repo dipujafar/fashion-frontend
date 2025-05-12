@@ -1,5 +1,5 @@
 "use client";
-import { productDetails } from "@/lib/dummyData.tsx";
+import { productDetails } from "@/data/dummyData.tsx";
 import Link from "next/link";
 import React from "react";
 import ActionButtons from "./ActionButtons";

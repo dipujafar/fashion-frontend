@@ -11,7 +11,7 @@ import EcoFriendlyCharityContainer from "./EcoFriendlyCharity/EcoFriendlyCharity
 
 const HomeContainer = () => {
   return (
-    <div className="xl:space-y-24 md:space-y-16 space-y-10">
+    <div className="xl:space-y-24 lg:space-y-16 space-y-10">
       <UserAvatar></UserAvatar>
       <ClothesSection></ClothesSection>
       <FeatureProduct></FeatureProduct>

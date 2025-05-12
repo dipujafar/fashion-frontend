@@ -81,7 +81,7 @@ const FeedbacksCarousel = () => {
           >
             <Card className="border-none">
               <CardContent className="space-y-3 text-center">
-                <p>{data?.comment}</p>
+                <p className="xl:text-base md:text-sm">{data?.comment}</p>
                 <hr />
                 <div className="space-y-1 ">
                   <h5 className="text-xl">{data?.userName}</h5>

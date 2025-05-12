@@ -7,10 +7,10 @@ import Link from "next/link";
 const EcoFriendlyCharityContainer = () => {
   return (
     <Container>
-      <div className="grid md:grid-cols-2 gap-4 ">
+      <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <div className="mb-2 ">
-            <h4 className="section-name">Eco-Friendly Store</h4>
+          <div className="lg:mb-1.5 md:mb-3.5 ">
+            <h4 className="section-name ">Eco-Friendly Store</h4>
           </div>
           <hr className=" border-primary-gray" />
         </div>

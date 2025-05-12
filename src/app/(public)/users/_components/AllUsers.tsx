@@ -1,5 +1,5 @@
 import UserCard from "@/components/shared/Cards/UserCard";
-import { userData } from "@/lib/dummyData.tsx/userData";
+import { userData } from "@/data/dummyData.tsx/userData";
 
 const AllUsers = () => {
   return (

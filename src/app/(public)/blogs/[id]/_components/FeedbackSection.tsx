@@ -2,7 +2,7 @@
 import moment from "moment";
 import CommonButton from "@/components/ui/common-button";
 import { Textarea } from "@/components/ui/textarea";
-import { blogsFeedbacks } from "@/lib/dummyData.tsx";
+import { blogsFeedbacks } from "@/data/dummyData.tsx";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";

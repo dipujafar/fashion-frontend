@@ -56,13 +56,13 @@ const PreviewClothes = () => {
           stopOnMouseEnter: true,
         }),
       ]}
-      className="overflow-hidden xl:mt-8  md:mt-6 mt-4"
+      className="overflow-hidden xl:mt-8  md:mt-4 mt-3"
     >
       <CarouselContent>
         {clothesData?.slice(0, 8)?.map((data) => (
           <CarouselItem
             key={data?._id}
-            className="  md:basis-1/2  lg:basis-1/3 2xl:basis-1/4 "
+            className=" basis-1/2  md:basis-1/3  lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5 "
           >
             <Link href={`/shop/${1}`}>
               <div className="w-full bg-primary-gray/10 rounded 2xl:py-14 xl:py-10 py-6 px-8 relative group">
@@ -71,11 +71,11 @@ const PreviewClothes = () => {
                   alt="cloth_image"
                   width={1200}
                   height={1200}
-                  className="h-[300px] w-auto mx-auto"
+                  className="lg:h-[300px] md:h-[200px] h-[150px] w-auto mx-auto"
                 ></Image>
                 <div
                   className={cn(
-                    "absolute bottom-[5%] right-[5%] size-9 rounded-full bg-primary-white shadow-2xl flex justify-center items-center hover:bg-primary-gray/20 duration-500 cursor-pointer"
+                    "absolute bottom-[5%] right-[5%] lg:size-9 size-7 rounded-full bg-primary-white shadow-2xl flex justify-center items-center hover:bg-primary-gray/20 duration-500 cursor-pointer"
                   )}
                 >
                   <svg

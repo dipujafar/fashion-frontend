@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import ProductImagesCarousel from "./carousel/ProductImagesCarousel";
-import { productDetails } from "@/lib/dummyData.tsx";
+import { productDetails } from "@/data/dummyData.tsx";
 import { EmblaOptionsType } from "embla-carousel";
 
 const OPTIONS: EmblaOptionsType = {};

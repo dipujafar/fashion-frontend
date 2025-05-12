@@ -19,7 +19,7 @@ const ProductCard = ({ data }: { data: TProduct }) => {
               alt="product_image"
               width={1200}
               height={1200}
-              className="md:max-h-80 max-h-52 object-cover origin-center rounded cursor-pointer"
+              className="lg:max-h-80 md:max-h-64 max-h-52 object-cover origin-center rounded cursor-pointer"
             ></Image>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/40 flex justify-center items-center  transform scale-y-0 group-hover:scale-y-100 transition-all duration-700 origin-top">
               <div className="space-y-2">
@@ -27,7 +27,7 @@ const ProductCard = ({ data }: { data: TProduct }) => {
                   <CommonButton>VIEW DETAILS</CommonButton>
                 </Link>
                 <Link href={"#"} className="block">
-                  <CommonButton className="bg-primary-white text-primary-black">
+                  <CommonButton className="bg-primary-white text-primary-black hover:bg-white/90">
                     ADD TO CART
                   </CommonButton>
                 </Link>

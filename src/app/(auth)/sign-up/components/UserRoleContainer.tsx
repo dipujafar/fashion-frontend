@@ -1,5 +1,5 @@
 import UserRoleCard from "@/components/shared/Cards/UserRoleCard";
-import { userRoleData } from "@/lib/dummyData.tsx/userRoleData";
+import { userRoleData } from "@/data/dummyData.tsx/userRoleData";
 
 const UserRoleContainer = () => {
   return (

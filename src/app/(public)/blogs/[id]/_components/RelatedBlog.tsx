@@ -1,5 +1,5 @@
 import BlogCard from "@/components/shared/Cards/BlogCard";
-import { blogsData } from "@/lib/dummyData.tsx";
+import { blogsData } from "@/data/dummyData.tsx";
 import Link from "next/link";
 import React from "react";
 

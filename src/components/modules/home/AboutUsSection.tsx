@@ -1,5 +1,10 @@
+"use client";
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Container from "@/components/shared/Container";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { scaleUpVariant } from "@/animations/motionVariant";
+import { childrenVariants } from "@/animations/FramerMotionValiants";
 
 const aboutData = [
   {
@@ -110,45 +115,31 @@ const AboutUsSection = () => {
           className="flex gap-x-2 items-center font-bold group "
         >
           <p> LEARN MORE</p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="17"
-            height="15"
-            viewBox="0 0 17 15"
-            fill="none"
-            className="group-hover:translate-x-2 duration-500 "
-          >
-            <path
-              d="M15.75 7.67578L0.75 7.67578"
-              stroke="black"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.69922 1.65217L15.7492 7.67617L9.69922 13.7012"
-              stroke="black"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <AnimatedArrow></AnimatedArrow>
         </Link>
       </div>
       <hr className=" border-primary-gray" />
       {/* about us */}
-      <div className="xl:mt-8 mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-5 gap-y-2.5">
+      <motion.div
+        key={"about_us"}
+        variants={scaleUpVariant}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        className="xl:mt-8 mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-5 gap-y-2.5"
+      >
         {aboutData?.map((data) => (
-          <div
+          <motion.div
             key={data?._id}
+            variants={childrenVariants}
             style={{ boxShadow: "0px 4px 7px 0px rgba(0, 0, 0, 0.09)" }}
             className="flex items-center gap-x-2 p-2.5 hover:scale-105 duration-500"
           >
             {data?.icon}
             <p>{data?.title}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </Container>
   );
 };

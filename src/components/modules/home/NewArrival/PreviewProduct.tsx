@@ -62,7 +62,7 @@ const PreviewProduct = () => {
         {clothesData?.slice(0, 8)?.map((data) => (
           <CarouselItem
             key={data?._id}
-            className="  md:basis-1/2  lg:basis-1/3 2xl:basis-1/4 "
+            className="basis-1/2  md:basis-1/3 xl:basis-1/5 "
           >
             <Link href={`/shop/${1}`}>
               <div className="w-full  rounded   relative group">
@@ -71,11 +71,11 @@ const PreviewProduct = () => {
                   alt="cloth_image"
                   width={1200}
                   height={1200}
-                  className=" mx-auto"
+                  className="mx-auto"
                 ></Image>
                 <div
                   className={cn(
-                    "absolute bottom-[5%] right-[5%] size-9 rounded-full bg-primary-white shadow-2xl flex justify-center items-center hover:bg-primary-gray/20 duration-500 cursor-pointer"
+                    "absolute bottom-[5%] right-[5%] md:size-8 rounded-full bg-primary-white shadow-2xl flex justify-center items-center hover:bg-primary-gray/20 duration-500 cursor-pointer"
                   )}
                 >
                   <svg

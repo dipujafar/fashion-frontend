@@ -68,7 +68,7 @@ const FeatureProductCategory = () => {
             <div
               className={cn(
                 "p-2 rounded w-full  flex justify-center bg-primary-gray/10 cursor-pointer truncate ",
-                category?.value === "all" && "bg-primary-pink"
+                category?.value === "all" && "bg-primary-gray/90 text-primary-white"
               )}
             >
               {category?.label}

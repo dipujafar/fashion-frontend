@@ -5,14 +5,14 @@ import PreviewClothes from "./PreviewClothes";
 
 const ClothesSection = () => {
   return (
-    <Container>
+    <div>
       <Link href={"/shop"}>
         <CommonButton className="md:min-w-52 mx-auto flex">
           SHOP ALL PRODUCTS
         </CommonButton>
       </Link>
       <PreviewClothes></PreviewClothes>
-    </Container>
+    </div>
   );
 };
 

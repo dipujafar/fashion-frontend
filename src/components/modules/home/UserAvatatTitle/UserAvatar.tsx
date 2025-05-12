@@ -28,7 +28,7 @@ const UserData = [
 const UserAvatar = () => {
   return (
     <Container>
-      <div className="xl:space-y-4 space-y-3">
+      <div className="xl:space-y-4 space-y-2">
         <div className="flex justify-center flex-shrink-0 -space-x-1.5 md:-space-x-2">
           {UserData.map((data) => (
             <motion.div
@@ -75,7 +75,7 @@ const UserAvatar = () => {
             transition: { duration: 0.5, delay: 0.5 },
           }}
           viewport={{ once: true }}
-          className="lg:text-3xl text-lg text-center max-w-5xl mx-auto"
+          className="lg:text-3xl md:text-lg text-sm text-center max-w-5xl mx-auto"
         >
           Trusted by thousands for quality and style. Discover why users love
           our secondhand marketplace and charitable impact.

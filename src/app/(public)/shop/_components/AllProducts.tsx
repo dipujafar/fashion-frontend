@@ -1,5 +1,5 @@
 import ProductCard from "@/components/shared/Cards/ProductCard";
-import { productsData } from "@/lib/dummyData.tsx";
+import { productsData } from "@/data/dummyData.tsx";
 
 const AllProducts = () => {
   return (

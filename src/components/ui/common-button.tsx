@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
+import AnimatedArrow from "../animatedArrows/AnimatedArrow";
 
 const CommonButton = ({
   children,
@@ -15,11 +16,11 @@ const CommonButton = ({
     <Button
       disabled={disabled}
       className={cn(
-        "rounded border-r-3 border-b-3 border-primary-red uppercase md:min-w-40 md:py-5 cursor-pointer hover:bg-primary-light-pink hover:text-primary-black ",
+        "rounded  uppercase md:min-w-40 md:py-5 cursor-pointer bg-black hover:bg-black/90 group ",
         className
       )}
     >
-      {children}
+      {children} <AnimatedArrow></AnimatedArrow>
     </Button>
   );
 };
