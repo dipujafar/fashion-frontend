@@ -6,8 +6,14 @@ import UserAvatar from "./UserAvatatTitle/UserAvatar";
 import Feedbacks from "./Feedbacks/Feedbacks";
 import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
 import Container from "@/components/shared/Container";
-import NewArrival from "./NewArrival/NewArrival";
 import EcoFriendlyCharityContainer from "./EcoFriendlyCharity/EcoFriendlyCharityContainer";
+import TrendingItem from "./TrendingItem/TrendingItem";
+import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
+import {
+  newArrivalData,
+  recentlyViewedData,
+  trendingProductData,
+} from "@/data/dummyData.tsx";
 
 const HomeContainer = () => {
   return (
@@ -15,16 +21,30 @@ const HomeContainer = () => {
       <UserAvatar></UserAvatar>
       <ClothesSection></ClothesSection>
       <FeatureProduct></FeatureProduct>
-      <Container>
-        <NewArrival></NewArrival>
-      </Container>
+      <DisplayProductSection
+        title="New Arrival"
+        linkTitle="View All"
+        link="/shop"
+        data={newArrivalData}
+      ></DisplayProductSection>
       <EcoFriendlyCharityContainer></EcoFriendlyCharityContainer>
       <AboutUsSection></AboutUsSection>
+      <TrendingItem></TrendingItem>
       <Feedbacks></Feedbacks>
-      <Container>
-        <RecentlyViewed></RecentlyViewed>
-      </Container>
+      <DisplayProductSection
+        title="Recently Viewed"
+        linkTitle="View All"
+        link="/shop"
+        data={recentlyViewedData}
+      ></DisplayProductSection>
       <BlogsUpdate></BlogsUpdate>
+
+      <DisplayProductSection
+        title="You may also like"
+        linkTitle="VIEW ALL"
+        link="/shop"
+        data={trendingProductData}
+      ></DisplayProductSection>
     </div>
   );
 };

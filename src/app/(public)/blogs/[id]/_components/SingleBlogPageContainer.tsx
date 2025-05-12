@@ -75,11 +75,11 @@ const SingleBlogPageContainer = () => {
       <div className="xl:space-y-8 space-y-4">
         {/* =============== post description ==================== */}
         <div className="xl:space-y-4 space-y-2.5">
-          <h4 className="section-title ">
+          <h4 className="section-title  ">
             Sustainable Style: How Eco-Friendly Stores are Changing the Fashion
             Game
           </h4>
-          <p className="text-primary-gray">
+          <p className="text-primary-gray md:text-base text-sm">
             In a world where fast fashion is the norm, the concept of
             eco-friendly fashion is not just a trend—it’s a movement. At
             FASHI-ON, we believe that style should never come at the expense of
@@ -94,7 +94,7 @@ const SingleBlogPageContainer = () => {
           <h1 className="lg:text-3xl text-xl font-medium">
             Shop Smart, Shop Sustainable
           </h1>
-          <p className="text-primary-gray">
+          <p className="text-primary-gray md:text-base text-sm">
             Eco-friendly fashion refers to clothing that is designed, produced,
             and consumed in ways that minimize harm to the environment and
             promote sustainability. From using organic materials like organic
@@ -102,7 +102,7 @@ const SingleBlogPageContainer = () => {
             production practices, eco-friendly stores are transforming the
             fashion landscape.
           </p>
-          <p className="text-primary-gray">
+          <p className="text-primary-gray md:text-base text-sm">
             At FASHI-ON, Eco-Friendly Stores offer a curated collection of
             fashion that’s kind to the planet and stylish enough for your
             everyday life. These stores prioritize eco-consciousness without

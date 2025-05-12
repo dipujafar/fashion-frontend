@@ -27,7 +27,7 @@ const FeedbackSection = () => {
           </svg>
           <p>Write any feedback</p>
         </div>
-        <Textarea className="bg-primary-gray/10 border-none min-h-[200px] focus-visible:ring-0 focus-visible:ring-offset-0"></Textarea>
+        <Textarea className="bg-primary-gray/10 border-none lg:min-h-[200px] min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0"></Textarea>
         <div className="text-end">
           <CommonButton>submit</CommonButton>
         </div>
@@ -51,7 +51,7 @@ const FeedbackSection = () => {
                 {moment(feedback?.createAt).fromNow()}
               </p>
             </div>
-            <p className="text-primary-gray">{feedback?.comment}</p>
+            <p className="text-primary-gray md:text-base text-sm">{feedback?.comment}</p>
           </div>
         ))}
       </div>

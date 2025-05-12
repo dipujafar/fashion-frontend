@@ -14,7 +14,7 @@ const BlogsUpdate = () => {
           className="flex gap-x-2 items-center font-bold group "
         >
           <p>VIEW ALL</p>
-          <AnimatedArrow></AnimatedArrow>
+          <AnimatedArrow size={20}></AnimatedArrow>
         </Link>
       </div>
       <hr className=" border-primary-gray" />

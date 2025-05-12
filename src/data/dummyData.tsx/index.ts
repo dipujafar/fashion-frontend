@@ -92,7 +92,7 @@ export const blogsData = [
 export const blogsFeedbacks = [
   {
     _id: 1,
-    image: "/user.png",
+    image: "/user1.png",
     name: "Amanda P.",
     createAt: "2025-03-12T13:52:10.362Z",
     comment:
@@ -100,7 +100,7 @@ export const blogsFeedbacks = [
   },
   {
     _id: 2,
-    image: "/user.png",
+    image: "/user2.png",
     name: "Amanda P.",
     createAt: "2025-03-12T13:52:10.362Z",
     comment:
@@ -290,3 +290,113 @@ export const productDetails = {
   color: "#A9A9A9",
   care_Instruction: "Machine wash cold, tumble dry low, do not bleach",
 };
+
+
+
+
+export const trendingProductData = [
+  {
+    _id: 1,
+    image: "/trending_product_image1.png",
+  },
+  {
+    _id: 2,
+    image: "/trending_product_image2.png",
+  },
+  {
+    _id: 3,
+    image: "/trending_product_image3.png",
+  },
+  {
+    _id: 4,
+    image: "/trending_product_image4.png",
+  },
+  {
+    _id: 5,
+    image: "/trending_product_image5.png",
+  },
+  {
+    _id: 6,
+    image: "/trending_product_image6.png",
+  },
+  {
+    _id: 7,
+    image: "/trending_product_image7.png",
+  },
+  {
+    _id: 8,
+    image: "/trending_product_image8.png",
+  },
+   {
+    _id: 9,
+    image: "/trending_product_image2.png",
+  },
+   {
+    _id: 10,
+    image: "/trending_product_image6.png",
+  },
+];
+
+
+
+export const newArrivalData = [
+  {
+    _id: 1,
+    image: "/NewArrivalImage1.png",
+  },
+  {
+    _id: 2,
+    image: "/NewArrivalImage2.png",
+  },
+  {
+    _id: 3,
+    image: "/NewArrivalImage3.png",
+  },
+  {
+    _id: 4,
+    image: "/NewArrivalImage4.png",
+  },
+  {
+    _id: 5,
+    image: "/NewArrivalImage3.png",
+  },
+  {
+    _id: 6,
+    image: "/NewArrivalImage2.png",
+  },
+  {
+    _id: 7,
+    image: "/NewArrivalImage2.png",
+  },
+];
+
+export const recentlyViewedData = [
+  {
+    _id: 1,
+    image: "/recently_viewed_image1.png",
+  },
+  {
+    _id: 2,
+    image: "/recently_viewed_image2.png",
+  },
+  {
+    _id: 3,
+    image: "/recently_viewed_image3.png",
+  },
+  {
+    _id: 4,
+    image: "/recently_viewed_image4.png",
+  },
+  {
+    _id: 5,
+    image: "/recently_viewed_image2.png",
+  },
+  {
+    _id: 6,
+    image: "/recently_viewed_image4.png",
+  },
+  {
+    _id: 7,
+    image: "/recently_viewed_image1.png",
+  },
+];

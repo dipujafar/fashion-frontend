@@ -145,7 +145,7 @@
     @apply md:text-2xl text-xl text-primary-gray;
   }
   .section-title {
-    @apply text-center lg:text-4xl text-2xl font-bold;
+    @apply text-center lg:text-4xl md:text-xl text-lg font-bold;
   }
 
   .section-name {

@@ -115,7 +115,7 @@ const AboutUsSection = () => {
           className="flex gap-x-2 items-center font-bold group "
         >
           <p> LEARN MORE</p>
-          <AnimatedArrow></AnimatedArrow>
+          <AnimatedArrow size={20}></AnimatedArrow>
         </Link>
       </div>
       <hr className=" border-primary-gray" />
