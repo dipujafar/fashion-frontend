@@ -14,6 +14,7 @@ import {
   recentlyViewedData,
   trendingProductData,
 } from "@/data/dummyData.tsx";
+import GetInTouch from "./GetInTouch";
 
 const HomeContainer = () => {
   return (
@@ -45,6 +46,8 @@ const HomeContainer = () => {
         link="/shop"
         data={trendingProductData}
       ></DisplayProductSection>
+
+      <GetInTouch></GetInTouch>
     </div>
   );
 };
