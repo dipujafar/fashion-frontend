@@ -11,11 +11,11 @@ const AboutPageContainer = () => {
     <Container className="lg:space-y-16 space-y-8">
       <div className="lg:space-y-8 space-y-4">
         <h1 className="page-title text-center">Our Stroy</h1>
-        <div className="space-y-4">
+        <div className="md:space-y-4 space-y-2.5">
           <h4 className="section-title max-w-2xl mx-auto">
             Fashi-on Scope: Redefining Fashion with Purpose
           </h4>
-          <p className="md:text-center text-lg max-w-5xl mx-auto text-primary-gray">
+          <p className="md:text-center md:text-lg text-sm max-w-5xl mx-auto text-primary-gray">
             Fashi-on Scope was born from a simple yet powerful idea: to redefine
             fashion by making high-quality, stylish, and sustainable fashion
             more accessible. We saw the growing demand for ethical shopping and

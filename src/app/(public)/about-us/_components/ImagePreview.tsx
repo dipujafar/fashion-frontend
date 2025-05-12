@@ -22,7 +22,7 @@ const ImagePreview = () => {
             alt="frame1"
             width={1200}
             height={1200}
-            className="w-full"
+            className="w-full max-h-[766px] object-cover rounded-md"
           ></Image>
         </motion.div>
 
@@ -39,7 +39,7 @@ const ImagePreview = () => {
             alt="frame2"
             width={1200}
             height={1200}
-            className="w-full"
+            className="w-full max-h-[375px] object-cover rounded-md"
           ></Image>
         </motion.div>
 
@@ -56,7 +56,7 @@ const ImagePreview = () => {
             alt="frame3"
             width={1200}
             height={1200}
-            className="w-full"
+            className="w-full max-h-[375px] object-cover rounded-md"
           ></Image>
         </motion.div>
       </div>

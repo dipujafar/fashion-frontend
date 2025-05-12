@@ -7,7 +7,7 @@ import Image from "next/image";
 
 const UserCard = ({ data }: { data: TUser }) => {
   return (
-    <Card className="py-0 hover:-translate-y-1 transition-all duration-500 hover:border-primary-red/50">
+    <Card className="py-0 hover:-translate-y-1 transition-all duration-500 hover:border-primary-gray/40">
       <CardContent className="p-4">
         <Image
           src={data.coverImage}
@@ -55,9 +55,9 @@ const UserCard = ({ data }: { data: TUser }) => {
               )}
             </div>
           </div>
-          <p className="text-primary-gray">{data?.bio}</p>
+          <p className="text-primary-gray text-sm">{data?.bio}</p>
         </div>
-        <Button className="w-full border-r-2 border-b-2 border-primary-red bg-primary-white text-primary-black hover:bg-primary-light-pink cursor-pointer">
+        <Button className="w-full border-r-2 border-b-2 border-primary-black bg-primary-white text-primary-black hover:bg-primary-black/20 cursor-pointer">
           View Profile
         </Button>
       </CardContent>

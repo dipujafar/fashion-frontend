@@ -54,11 +54,12 @@ const ProductCard = ({ data }: { data: TProduct }) => {
           )}
 
           {/* ===================== favorite button ================ */}
-          <div className="bg-primary-white absolute bottom-2 right-2 size-7 flex justify-center items-center rounded-full cursor-pointer group duration-500">
+          <div className="bg-primary-white absolute bottom-2 right-2 h-7 w-16 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 ">
             <Heart
-              size={20}
-              className="group-hover:fill-primary-black duration-500"
+              size={18}
+              className="group-hover:fill-primary-red text-primary-red duration-500"
             ></Heart>
+            <p>12</p>
           </div>
         </div>
 

@@ -17,7 +17,7 @@ const StatisticSection = () => {
               />
               +
             </div>
-            <p className="xl:text-lg">Years of Experience</p>
+            <p className="xl:text-lg text-sm">Years of Experience</p>
           </div>
 
           <div className="mixin/common">
@@ -30,7 +30,7 @@ const StatisticSection = () => {
               />
               +
             </div>
-            <p className="xl:text-lg">Sellers on Our Platform</p>
+            <p className="xl:text-lg text-sm">Sellers on Our Platform</p>
           </div>
 
           <div className="mixin/common">
@@ -56,7 +56,7 @@ const StatisticSection = () => {
               />
               +
             </div>
-            <p className="xl:text-lg">Charitable Causes Supported</p>
+            <p className="xl:text-lg text-sm">Charitable Causes Supported</p>
           </div>
 
           <div className="col-span-1 row-span-4  flex flex-col  mx-auto   md:px-4 px-2  w-full border-r md ">
@@ -69,7 +69,7 @@ const StatisticSection = () => {
               />
               +
             </div>
-            <p className="xl:text-lg">Customer Satisfaction Rate</p>
+            <p className="xl:text-lg text-sm">Customer Satisfaction Rate</p>
           </div>
         </div>
       </div>
