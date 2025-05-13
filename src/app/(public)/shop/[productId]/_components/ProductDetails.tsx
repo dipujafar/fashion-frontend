@@ -5,6 +5,7 @@ import React from "react";
 import ActionButtons from "./ActionButtons";
 import SellerDetails from "./SellerDetails";
 import { EnvConfig } from "@/config";
+import { HeartIcon2, OfferIcon2 } from "@/app/icons";
 
 const handleShare = () => {
   navigator.share({
@@ -21,14 +22,24 @@ const ProductDetails = () => {
         <h6 className="bg-[#87CEEB] w-fit px-3 rounded-xs text-primary-white italic">
           {productDetails?.tag}
         </h6>
-        <h4 className="md:text-3xl text-xl">{productDetails?.title}</h4>
+        <div className="flex gap-x-3">
+          <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
+            <OfferIcon2 className="size-4"></OfferIcon2> 12 Offer sent
+          </h6>
+          <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
+            <HeartIcon2 className="size-4"></HeartIcon2> 24
+          </h6>
+        </div>
+        <h4 className="md:text-3xl text-xl text-[#262626]">
+          {productDetails?.title}
+        </h4>
         {productDetails?.discount && (
           <div className="flex gap-x-6 items-center">
             <p className="line-through text-primary-gray text-lg">
               {productDetails?.originalPrice}
             </p>
-            <div className="bg-primary-red text-primary-white px-4 py-1 rounded">
-              {productDetails?.discount}
+            <div className="text-primary-red   rounded">
+              -{productDetails?.discount}
             </div>
           </div>
         )}

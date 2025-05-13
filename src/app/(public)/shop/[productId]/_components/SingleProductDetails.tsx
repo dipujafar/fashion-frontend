@@ -5,6 +5,7 @@ import ProductImages from "./ProductImages";
 import ProductDescription from "./ProductDescription";
 import CharitySupport from "./CharitySupport";
 import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
+import ReviewContainer from "./review/ReviewContainer";
 
 const SingleProductDetails = () => {
   return (
@@ -17,6 +18,7 @@ const SingleProductDetails = () => {
           <ProductDetails></ProductDetails>
         </div>
       </div>
+      <ReviewContainer></ReviewContainer>
       <CharitySupport></CharitySupport>
 
       <ProductDescription></ProductDescription>

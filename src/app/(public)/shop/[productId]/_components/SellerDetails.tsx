@@ -36,7 +36,7 @@ const SellerDetails = () => {
 
       <div
         style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.15)" }}
-        className="bg-primary-light-pink/50 lg:p-4 p-3 rounded-lg "
+        className="bg-primary-gray/10 lg:p-4 p-3 rounded-lg "
       >
         <div className="space-y-2">
           <div className="flex-between gap-x-2 ">
@@ -99,7 +99,7 @@ const SellerDetails = () => {
 
         <div className="lg:mt-4 mt-3 flex gap-x-2">
           <CommonButton className="flex-1">message seller</CommonButton>
-          <CommonButton className="flex-1 bg-primary-light-pink text-black hover:bg-primary-black/10">
+          <CommonButton className="flex-1 bg-primary-white text-black hover:bg-primary-black/10 border-r-2 border-b-2 border-black">
             follow seller
           </CommonButton>
         </div>
