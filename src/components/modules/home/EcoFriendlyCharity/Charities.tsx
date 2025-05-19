@@ -24,7 +24,7 @@ const Charities = () => {
             className="h-full w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
-            <p className="uppercase text-xs lg:text-base md:group-hover:text-3xl group-hover:text-xl duration-1000">
+            <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
               SAVE THE CHILDREN
             </p>
           </div>
@@ -44,7 +44,7 @@ const Charities = () => {
             className="h-full w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
-            <p className="uppercase text-xs lg:text-base md:group-hover:text-3xl group-hover:text-xl duration-1000">
+            <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
               Plant More Trees
             </p>
           </div>
@@ -64,7 +64,7 @@ const Charities = () => {
             className="h-full w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
-            <p className="uppercase text-xs lg:text-base md:group-hover:text-3xl group-hover:text-xl duration-1000">
+            <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
               Women for Women International
             </p>
           </div>
@@ -84,7 +84,7 @@ const Charities = () => {
             className="h-full w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
-            <p className="uppercase text-xs lg:text-base md:group-hover:text-3xl group-hover:text-xl duration-1000">
+            <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
               The Red Cross
             </p>
           </div>

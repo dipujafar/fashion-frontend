@@ -4,8 +4,6 @@ import ClothesSection from "./ClothesSection/ClothesSection";
 import FeatureProduct from "./FeatureProdut/FeatureProduct";
 import UserAvatar from "./UserAvatatTitle/UserAvatar";
 import Feedbacks from "./Feedbacks/Feedbacks";
-import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
-import Container from "@/components/shared/Container";
 import EcoFriendlyCharityContainer from "./EcoFriendlyCharity/EcoFriendlyCharityContainer";
 import TrendingItem from "./TrendingItem/TrendingItem";
 import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
@@ -15,11 +13,15 @@ import {
   trendingProductData,
 } from "@/data/dummyData.tsx";
 import GetInTouch from "./GetInTouch";
+import HeroSection from "./hero/HeroSection";
 
 const HomeContainer = () => {
   return (
     <div className="xl:space-y-24 lg:space-y-16 space-y-10">
-      <UserAvatar></UserAvatar>
+      <div className="lg:space-y-8 space-y-4">
+        <HeroSection></HeroSection>
+        <UserAvatar></UserAvatar>
+      </div>
       <ClothesSection></ClothesSection>
       <FeatureProduct></FeatureProduct>
       <DisplayProductSection
