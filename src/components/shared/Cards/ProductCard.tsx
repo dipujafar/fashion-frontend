@@ -24,10 +24,10 @@ const ProductCard = ({ data }: { data: TProduct }) => {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/40 flex justify-center items-center  transform scale-y-0 group-hover:scale-y-100 transition-all duration-700 origin-top">
               <div className="space-y-2">
                 <Link href={`/shop/${data?._id}`} className="block">
-                  <CommonButton>VIEW DETAILS</CommonButton>
+                  <CommonButton className="hover:bg-black/80">VIEW DETAILS</CommonButton>
                 </Link>
                 <Link href={"#"} className="block">
-                  <CommonButton className="bg-primary-white text-primary-black hover:bg-white/90">
+                  <CommonButton className="bg-primary-white text-primary-black hover:bg-white/85">
                     ADD TO CART
                   </CommonButton>
                 </Link>

@@ -61,7 +61,7 @@ const SocialMedia = () => {
               <Image
                 src={XIcon}
                 alt="X"
-                className="xl:max-h-12 xl:max-w-12 lg:max-h-10 lg:max-w-10 md:max-h-8 md:max-w-8 max-h-12 max-w-12"
+                className="xl:max-h-11 xl:max-w-11 lg:max-h-10 lg:max-w-10 md:max-h-8 md:max-w-8 max-h-12 max-w-12"
               ></Image>
             </Link>
           </motion.li>

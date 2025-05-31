@@ -1,6 +1,6 @@
 "use client";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,6 +18,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/PhoneInput";
+import facebook from "@/assets/icons/facebook.png";
+import instagram from "@/assets/icons/instagram.png";
+import linkedin from "@/assets/icons/linkedin.png";
+import XIcon from "@/assets/icons/x-icon.png";
+import Image from "next/image";
 
 const formSchema = z.object({
   firstName: z
@@ -51,6 +56,14 @@ const formSchema = z.object({
   confirmPassword: z
     .string({ required_error: "Confirm Password is required" })
     .min(1, { message: "Confirm Password is required" }),
+  socialMedia: z.array(
+    z.object({
+      instagram: z.string().optional(),
+      facebook: z.string().optional(),
+      x: z.string().optional(),
+      tiktok: z.string().optional(),
+    })
+  ),
 });
 
 const SignUpForm = () => {
@@ -64,6 +77,11 @@ const SignUpForm = () => {
       email: "",
       password: "",
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "socialMedia",
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
@@ -169,6 +187,25 @@ const SignUpForm = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter Your Email"
+                      {...field}
+                      className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="phoneNumber"
@@ -189,23 +226,54 @@ const SignUpForm = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter Your Email"
-                      {...field}
-                      className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div>
+              <label className="text-sm font-medium mb-2">
+                Social Media Link (Optional)
+              </label>
+              <div className="grid grid-cols-2  gap-4">
+                <div className="flex items-center gap-x-2">
+                  <Image
+                    src={instagram}
+                    alt="logo"
+                    className="w-[40px] h-[40px]"
+                  />
+                  <Input
+                    {...form.register(`socialMedia.${0}.instagram`)}
+                    type="text"
+                    placeholder="Enter Your Instagram Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Image src={facebook} alt="logo" className="w-[40px] h-[40px]" />
+                  <Input
+                    {...form.register(`socialMedia.${0}.facebook`)}
+                    type="text"
+                    placeholder="Enter Your Facebook Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Image src={XIcon} alt="logo" className="w-[40px] h-[40px]" />
+                  <Input
+                    {...form.register(`socialMedia.${0}.x`)}
+                    type="text"
+                    placeholder="Enter Your X Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Image src={linkedin} alt="logo" className="w-[40px] h-[40px]" />
+                  <Input
+                    {...form.register(`socialMedia.${0}.tiktok`)}
+                    type="text"
+                    placeholder="Enter Your Tiktok Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+              </div>
+            </div>
+
             <FormField
               control={form.control}
               name="password"

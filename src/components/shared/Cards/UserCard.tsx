@@ -31,12 +31,12 @@ const UserCard = ({ data }: { data: TUser }) => {
             <Check size={16} color="#fff"></Check>
           </div>
         </div>
-        <div className="xl:space-y-4 space-y-3 flex flex-col items-center justify-center w-full -translate-y-5">
+        <div className="xl:space-y-4 space-y-3 flex flex-col items-center justify-center w-full -translate-y-5 italic">
           <div className="space-y-[2px]">
             <h5 className="font-medium text-center text-lg">{data?.name}</h5>
             <div className="flex items-center gap-x-1">
               <div
-                className={`px-1  text-primary-white rounded text-sm w-fit mx-auto h-fit `}
+                className={`  text-primary-white rounded text-xs w-fit mx-auto h-fit truncate px-2`}
                 style={{ backgroundColor: userTagColor(data?.type) }}
               >
                 <span className="uppercase text-center">{data?.type}</span>
@@ -45,7 +45,7 @@ const UserCard = ({ data }: { data: TUser }) => {
                 <div className="flex items-center gap-x-1">
                   ||
                   <div
-                    className={`px-1 bg-[#87CEEB]  text-primary-white rounded text-sm w-fit mx-auto h-fit `}
+                    className={` bg-[#87CEEB]  text-primary-white rounded text-xs w-fit mx-auto h-fit truncate px-2 italic`}
                   >
                     <span className="uppercase text-center">
                       {data?.bestOn}
