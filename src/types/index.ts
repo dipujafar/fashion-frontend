@@ -67,3 +67,13 @@ export type TUserRoleData = {
   link: string;
   role: string;
 };
+
+export interface TOfferProduct {
+  id: string;
+  itemNumber: string;
+  productPrice: number;
+  offerPrice: number;
+  status: "Pending" | "Offer Accepted" | "Expired";
+  timeRemaining?: string;
+  images: string[];
+}

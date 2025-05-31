@@ -1,5 +1,5 @@
 "use client";
-import { HeartIcon, OfferIcon } from "@/app/icons";
+import { HeartIcon, OfferIcon } from "@/icons";
 import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";

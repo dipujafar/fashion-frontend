@@ -16,7 +16,7 @@ const CommonButton = ({
     <Button
       disabled={disabled}
       className={cn(
-        "rounded  uppercase md:min-w-40 md:py-5 cursor-pointer bg-black hover:bg-black/90 group ",
+        "rounded  uppercase md:min-w-40 md:py-5 cursor-pointer bg-black hover:bg-black/90 group",
         className
       )}
     >

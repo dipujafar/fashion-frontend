@@ -22,7 +22,7 @@ const BlogCard = ({ data }: { data: TBlogsData }) => {
           <div className="flex text-sm text-primary-gray">
             {/* date */}
             <div className="flex justify-center items-center pr-2 gap-x-1 border-r border-r-black">
-              <CalenderIcon />
+              <CalenderIcon className="size-[24px]" />
               <p className="truncate">{data?.date}</p>
             </div>
             {/* feedback */}

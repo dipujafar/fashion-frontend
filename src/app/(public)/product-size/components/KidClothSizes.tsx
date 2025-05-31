@@ -167,12 +167,12 @@ const KidClothSizes = () => {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse xl:text-xl text-base">
           <tbody>
-            <tr className="bg-primary-pink">
+            <tr className="bg-[#F7F7F7]">
               <td className="px-2 py-3 font-medium">International Size</td>
               {sizeChartData.sizes.map((size, index) => (
                 <td
                   key={index}
-                  className="border-r border-white px-2 py-3 text-center text-primary-red"
+                  className="border-r border-white px-2 py-3 text-center text-black"
                 >
                   {size.international}
                 </td>
@@ -198,7 +198,7 @@ const KidClothSizes = () => {
                         } ${
                           isSelectable(header.id) &&
                           isSelected(header.id, value.toString())
-                            ? "bg-primary-pink"
+                            ? "bg-[#efebeb]"
                             : "bg-white hover:bg-gray-50"
                         }`}
                       >
