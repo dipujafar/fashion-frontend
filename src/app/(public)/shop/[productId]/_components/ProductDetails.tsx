@@ -5,8 +5,7 @@ import React from "react";
 import ActionButtons from "./ActionButtons";
 import SellerDetails from "./SellerDetails";
 import { EnvConfig } from "@/config";
-import { HeartIcon2, OfferIcon2 } from "@/icons";
-import { ReportIcon, ShareIcon } from "@/icons";
+import { HeartIcon2, OfferIcon2, ReportIcon, ShareIcon } from "@/icons";
 
 const handleShare = () => {
   navigator.share({
@@ -59,13 +58,13 @@ const ProductDetails = () => {
               style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
               onClick={handleShare}
             >
-              <ShareIcon className="size-5"/>
+              <ShareIcon className="size-5" />
             </button>
             <button
               className="size-10 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
               style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
             >
-              <ReportIcon className="size-5"/>
+              <ReportIcon className="size-5" />
             </button>
           </div>
         </div>

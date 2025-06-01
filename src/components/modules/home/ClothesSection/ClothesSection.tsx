@@ -5,7 +5,7 @@ import PreviewClothes from "./PreviewClothes";
 
 const ClothesSection = () => {
   return (
-    <div>
+    <div className="md:-translate-y-3 -translate-y-2">
       <Link href={"/shop"}>
         <CommonButton className="md:min-w-52 mx-auto flex">
           SHOP ALL PRODUCTS

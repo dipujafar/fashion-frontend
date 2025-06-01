@@ -48,12 +48,12 @@ const FeatureProduct = () => {
           Timeless Fashion, Sustainable Impact
         </motion.h2>
       </motion.div>
-      <div className="flex gap-x-4 justify-between items-center">
-        <div className=" md:w-[calc(100%-150px)] w-[calc(100%-110px)]">
+      <div className="flex flex-col md:flex-row md:gap-x-4 gap-y-2 justify-between items-center">
+        <div className=" md:w-[calc(100%-150px)] w-full">
           <FeatureProductCategory></FeatureProductCategory>
         </div>
         <Link href={"/shop"}>
-          <CommonButton className="py-2">View All</CommonButton>
+          <CommonButton className="md:py-2 py-0">View All</CommonButton>
         </Link>
       </div>
 

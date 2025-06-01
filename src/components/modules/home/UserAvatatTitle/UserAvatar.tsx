@@ -27,7 +27,7 @@ const UserData = [
 ];
 const UserAvatar = () => {
   return (
-    <Container>
+    <Container className="md:-translate-y-5 -translate-y-4">
       <div className="space-y-2">
         <motion.h6
           initial={{ opacity: 0, y: "10%" }}

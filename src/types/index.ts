@@ -77,3 +77,19 @@ export interface TOfferProduct {
   timeRemaining?: string;
   images: string[];
 }
+
+
+export type TUserDetails = {
+  _id: number;
+  id: string;
+  name: string;
+  image: string;
+  title: string;
+  features: TUserDetailsFeature[];
+};
+
+export type TUserDetailsFeature = {
+  _id: number;
+  title: string;
+  description: string[];
+};

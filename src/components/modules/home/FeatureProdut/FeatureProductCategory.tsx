@@ -63,11 +63,11 @@ const FeatureProductCategory = () => {
         {categories?.slice(0, 8)?.map((category) => (
           <CarouselItem
             key={category?._id}
-            className=" basis-1/2 md:basis-1/4  lg:basis-1/6 xl:basis-1/8"
+            className="basis-1/2 md:basis-1/4  lg:basis-1/6 xl:basis-1/8"
           >
             <div
               className={cn(
-                "p-2 rounded w-full  flex justify-center bg-primary-gray/10 cursor-pointer truncate ",
+                "p-2  rounded w-full  flex justify-center bg-primary-gray/10 cursor-pointer truncate text-sm md:text-base",
                 category?.value === "all" && "bg-primary-gray/90 text-primary-white"
               )}
             >
