@@ -25,6 +25,12 @@ import Image from "next/image";
 import CustomAvatar from "@/components/shared/CustomeAvater";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
+import facebook from "@/assets/icons/facebook.png";
+import instagram from "@/assets/icons/instagram.png";
+import linkedin from "@/assets/icons/linkedin.png";
+import XIcon from "@/assets/icons/x-icon.png";
+
+
 
 const formSchema = z.object({
   firstName: z
@@ -62,6 +68,14 @@ const formSchema = z.object({
   zipCode: z.string().min(5, {
     message: "Zip code must be at least 5 characters.",
   }),
+    socialMedia: z.array(
+    z.object({
+      instagram: z.string().optional(),
+      facebook: z.string().optional(),
+      x: z.string().optional(),
+      tiktok: z.string().optional(),
+    })
+  ),
 });
 
 const ProfileContainerForm = () => {
@@ -245,7 +259,7 @@ const ProfileContainerForm = () => {
                             <Input
                               placeholder="Enter Your First Name"
                               {...field}
-                              className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                              className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 bg-[#F5F5F5]"
                             />
                           </FormControl>
                           <FormMessage />
@@ -264,7 +278,7 @@ const ProfileContainerForm = () => {
                             <Input
                               placeholder="Enter Your Last Name"
                               {...field}
-                              className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                              className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 bg-[#F5F5F5] "
                             />
                           </FormControl>
                           <FormMessage />
@@ -284,7 +298,7 @@ const ProfileContainerForm = () => {
                         <Input
                           placeholder="Enter Your User Name"
                           {...field}
-                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
+                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 bg-[#F5F5F5] "
                         />
                       </FormControl>
                       <FormMessage />
@@ -302,7 +316,7 @@ const ProfileContainerForm = () => {
                         <Input
                           placeholder="Enter Your Email"
                           {...field}
-                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5"
+                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 bg-[#F5F5F5]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -315,7 +329,7 @@ const ProfileContainerForm = () => {
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Contact Number</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <PhoneInput
                           // @ts-ignore
@@ -329,25 +343,54 @@ const ProfileContainerForm = () => {
                     </FormItem>
                   )}
                 />
-
-                <FormField
-                  control={form.control}
-                  name="storeName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Store Name (Optional)</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your store name"
-                          {...field}
-                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  md:py-5 "
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+               <div>
+              <label className="text-sm font-medium mb-2">
+                Social Media Link (Optional)
+              </label>
+              <div className="grid grid-cols-2  gap-4">
+                <div className="flex items-center gap-x-2">
+                  <Image
+                    src={instagram}
+                    alt="logo"
+                    className="w-[40px] h-[40px]"
+                  />
+                  <Input
+                    {...form.register(`socialMedia.${0}.instagram`)}
+                    type="text"
+                    placeholder="Enter Your Instagram Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Image src={facebook} alt="logo" className="w-[40px] h-[40px]" />
+                  <Input
+                    {...form.register(`socialMedia.${0}.facebook`)}
+                    type="text"
+                    placeholder="Enter Your Facebook Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Image src={XIcon} alt="logo" className="w-[40px] h-[40px]" />
+                  <Input
+                    {...form.register(`socialMedia.${0}.x`)}
+                    type="text"
+                    placeholder="Enter Your X Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2">
+                  <Image src={linkedin} alt="logo" className="w-[40px] h-[40px]" />
+                  <Input
+                    {...form.register(`socialMedia.${0}.tiktok`)}
+                    type="text"
+                    placeholder="Enter Your Tiktok Link"
+                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
+              </div>
+            </div>
+               
                 {/* Country, State, City Selector */}
                 <div className="grid w-full items-center gap-1.5">
                   <Label>Location</Label>
@@ -368,12 +411,12 @@ const ProfileContainerForm = () => {
                   name="about"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>About</FormLabel>
+                      <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Enter some description..."
                           {...field}
-                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  min-h-[90px]"
+                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  min-h-[90px] bg-[#F5F5F5]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -383,7 +426,7 @@ const ProfileContainerForm = () => {
               </div>
 
               <CommonButton className="w-full -translate-y-28">
-                Update
+                Save
               </CommonButton>
             </form>
           </Form>

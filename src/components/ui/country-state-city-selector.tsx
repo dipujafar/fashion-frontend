@@ -89,7 +89,7 @@ export default function CountryStateCitySelector({
                 }}
                 value={selectedCountry || ""}
               >
-                <SelectTrigger className="  py-5 bg-primary-light-gray w-full">
+                <SelectTrigger className="  py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
@@ -120,7 +120,7 @@ export default function CountryStateCitySelector({
                       }}
                       value={selectedState || ""}
                     >
-                      <SelectTrigger className="py-5 bg-primary-light-gray w-full">
+                      <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -135,7 +135,7 @@ export default function CountryStateCitySelector({
                 />
               ) : (
                 <Select>
-                  <SelectTrigger className="py-5 bg-primary-light-gray w-full">
+                  <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                     <SelectValue placeholder="Select State" />
                   </SelectTrigger>
                   <SelectContent>
@@ -148,7 +148,7 @@ export default function CountryStateCitySelector({
             </>
           ) : (
             <Select>
-              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
+              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                 <SelectValue placeholder="Select a country first" />
               </SelectTrigger>
               <SelectContent></SelectContent>
@@ -173,7 +173,7 @@ export default function CountryStateCitySelector({
                         }}
                         value={selectedCity || ""}
                       >
-                        <SelectTrigger className="py-5 bg-primary-light-gray w-full">
+                        <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                           <SelectValue placeholder="Select city" />
                         </SelectTrigger>
                         <SelectContent>
@@ -186,7 +186,7 @@ export default function CountryStateCitySelector({
                       </Select>
                     ) : (
                       <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="py-5 bg-primary-light-gray w-full">
+                        <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                           <SelectValue placeholder="Select City" />
                         </SelectTrigger>
                         <SelectContent>
@@ -202,7 +202,7 @@ export default function CountryStateCitySelector({
             </>
           ) : (
             <Select>
-              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full">
+              <SelectTrigger disabled className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
                 <SelectValue placeholder="Select a state first" />
               </SelectTrigger>
               <SelectContent></SelectContent>
@@ -239,7 +239,7 @@ export default function CountryStateCitySelector({
             type="text"
             id="streetAddress"
             placeholder="Street Address"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray bg-transparent"
+            className="outline-none focus:outline-none py-5 bg-primary-light-gray  bg-[#F5F5F5]"
             {...register("streetAddress")}
           />
         </div>
@@ -250,7 +250,7 @@ export default function CountryStateCitySelector({
             type="number"
             id="zipCode"
             placeholder="Type Zip Code"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray bg-transparent"
+            className="outline-none focus:outline-none py-5 bg-primary-light-gray  bg-[#F5F5F5]"
             {...register("zipCode")}
           />
         </div>
