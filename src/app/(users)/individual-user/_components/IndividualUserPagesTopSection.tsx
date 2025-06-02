@@ -13,7 +13,7 @@ const navLinks = [
   {
     _id: 1,
     title: "Profile Details",
-    href: "#",
+    href: "/individual-user/profile",
   },
   {
     _id: 2,
