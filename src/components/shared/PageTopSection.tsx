@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import React from "react";
 import bgImage from "@/assets/images/auth/auth_pages_top_image.png";

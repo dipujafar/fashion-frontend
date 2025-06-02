@@ -65,7 +65,7 @@ const HeroSection = () => {
         <Image src={image2} alt="hero image" className="w-full"></Image>
         <Image src={image3} alt="hero image" className="w-full"></Image>
       </div>
-      <Marquee className="bg-black">
+      <Marquee className="bg-black" gradientColor={"#000"} gradient gradientWidth={150} speed={40}	>
         <div className="flex gap-x-3">
           {userRoles.map((user, index) => (
             <div

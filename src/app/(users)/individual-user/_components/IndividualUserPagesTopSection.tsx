@@ -28,7 +28,7 @@ const navLinks = [
   {
     _id: 4,
     title: "Message",
-    href: "#",
+    href: "/individual-user/message",
   },
   {
     _id: 5,
