@@ -4,7 +4,8 @@ import Container from "../Container";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { activeNavLink } from "@/utils/activeNavLink";
-import { navLinks } from "@/lib/navLinks";
+import { navLinks } from "@/lib/NavLinks";
+
 
 const NavLinksSection = ({ className }: { className?: string }) => {
   const currentPath = usePathname();

@@ -3,7 +3,7 @@ export const activeNavLink = (
   navLink: string,
   currentPath: string
 ) => {
-  const link = navLink.slice(1, navLink.length);
+  const link = navLink.slice(1, navLink?.length);
 
   if (navLink !== "/") {
     return arr.includes(link);

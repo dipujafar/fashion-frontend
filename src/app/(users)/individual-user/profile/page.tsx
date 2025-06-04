@@ -7,11 +7,11 @@ const ProfilePage = () => {
   return (
     <Container>
       <ProfileDetailsCard
-        orderId="#STG123456789"
-        trackingCode="01JKLHGBNJIO"
-        name="Aria Pal"
-        address="153/2,Florida, UK"
-        phoneNumber="0123456789"
+        orderId="120 items sold"
+        trackingCode="
+        $5,000 earned"
+        name="12"
+        address="$2,00"
       />
       <ProfileContainerForm />
     </Container>

@@ -67,7 +67,7 @@ const HeroSection = () => {
       </div>
       <Marquee className="bg-black" gradientColor={"#000"} gradient gradientWidth={150} speed={40}	>
         <div className="flex gap-x-3">
-          {userRoles.map((user, index) => (
+          {userRoles?.map((user, index) => (
             <div
               key={index}
               className="text-primary-white md:text-2xl text-base font-bold uppercase bg-black flex items-center"

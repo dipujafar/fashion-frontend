@@ -104,7 +104,7 @@ const ProfileContainerForm = () => {
   const { register, setValue, control } = form;
 
   const handleImageChange = (files: any) => {
-    if (files && files.length > 0) {
+    if (files && files?.length > 0) {
       const file = files[0];
       const url = URL.createObjectURL(file);
       setImagePreview(url);
@@ -114,7 +114,7 @@ const ProfileContainerForm = () => {
   };
 
   const handleCoverImageChange = (files: any) => {
-    if (files && files.length > 0) {
+    if (files && files?.length > 0) {
       const file = files[0];
       const url = URL.createObjectURL(file);
       setCoverImagePreview(url);
@@ -324,25 +324,7 @@ const ProfileContainerForm = () => {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <PhoneInput
-                          // @ts-ignore
-                          value={field.value}
-                          onChange={field.onChange}
-                          international
-                          defaultCountry="US"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+             
                <div>
               <label className="text-sm font-medium mb-2">
                 Social Media Link (Optional)

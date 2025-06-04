@@ -31,7 +31,7 @@ export function TextAnimation({
               reverse
                 ? {
                     duration,
-                    delay: initialDelay + (length - 1 - i) * delayMultiple, // reversed delay here
+                    delay: initialDelay + (text?.length - 1 - i) * delayMultiple, // reversed delay here
                   }
                 : { duration, delay: initialDelay + i * delayMultiple }
             }

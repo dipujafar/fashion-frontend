@@ -1,6 +1,6 @@
 "use client";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { navLinks } from "@/lib/navLinks";
+
 import { TableOfContents } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import {
   parentVariants,
 } from "@/animations/FramerMotionValiants";
 import SearchAndNavIcon from "./SearchAndNavIcon";
+import { navLinks } from "@/lib/NavLinks";
 
 const SmallDeviceView = () => {
   const currentPath = usePathname();
