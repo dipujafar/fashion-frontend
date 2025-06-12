@@ -37,7 +37,7 @@ export function TextAnimation({
             }
             className={cn("tracking-tight", className)}
           >
-            {char === " " ? <span>&nbsp;</span> : char}
+            {char === " " ? <span>&nbsp;</span> : char} 
           </motion.h1>
         ))}
       </AnimatePresence>

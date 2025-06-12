@@ -5,13 +5,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { InfoIcon } from "@/icons";
+import { InfoIcon2 } from "@/icons";
+
+
 
 export default function CharityInfo() {
   return (
     <Dialog>
       <DialogTrigger asChild className="mt-1">
-        <InfoIcon />
+       <InfoIcon2/>
       </DialogTrigger>
       <DialogContent className="max-w-4xl md:max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
