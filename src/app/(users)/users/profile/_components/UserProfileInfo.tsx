@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CustomAvatar from "@/components/shared/CustomeAvater";
+import CustomAvatar from "@/components/shared/CustomAvatar";
 
 export default function UserProfileInfo() {
   return (

@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-import CustomAvatar from "@/components/shared/CustomeAvater";
+import CustomAvatar from "@/components/shared/CustomAvatar";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 import facebook from "@/assets/icons/facebook.png";

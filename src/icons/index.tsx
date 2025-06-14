@@ -286,7 +286,7 @@ export function FacebookIcon({ className }: { className?: string }) {
       fill="none"
       className={className}
     >
-      <g clip-path="url(#clip0_20315_25446)">
+      <g clipPath="url(#clip0_20315_25446)">
         <path
           d="M14.9999 0.75C-2.66771 1.2675 -4.46951 26.0589 12.7619 29.25H17.2379C34.4732 26.0559 32.6636 1.2657 14.9999 0.75Z"
           fill="#1877F2"
@@ -315,7 +315,7 @@ export function InstagramIcon({ className }: { className?: string }) {
       fill="none"
       className={className}
     >
-      <g clip-path="url(#clip0_20315_25450)">
+      <g clipPath="url(#clip0_20315_25450)">
         <path
           d="M15 30C6.717 30 0 23.283 0 15C0 6.717 6.717 0 15 0C23.283 0 30 6.717 30 15C30 23.283 23.283 30 15 30Z"
           fill="url(#paint0_linear_20315_25450)"
@@ -342,21 +342,21 @@ export function InstagramIcon({ className }: { className?: string }) {
           y2="4.39341"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFD521" />
-          <stop offset="0.055" stop-color="#FFD020" />
-          <stop offset="0.124" stop-color="#FEC01E" />
-          <stop offset="0.2" stop-color="#FCA71B" />
-          <stop offset="0.282" stop-color="#FA8316" />
-          <stop offset="0.368" stop-color="#F85510" />
-          <stop offset="0.456" stop-color="#F51E09" />
-          <stop offset="0.5" stop-color="#F30005" />
-          <stop offset="0.503" stop-color="#F20007" />
-          <stop offset="0.597" stop-color="#E1003B" />
-          <stop offset="0.688" stop-color="#D30067" />
-          <stop offset="0.776" stop-color="#C70088" />
-          <stop offset="0.859" stop-color="#BF00A0" />
-          <stop offset="0.936" stop-color="#BB00AF" />
-          <stop offset="1" stop-color="#B900B4" />
+          <stop stopColor="#FFD521" />
+          <stop offset="0.055" stopColor="#FFD020" />
+          <stop offset="0.124" stopColor="#FEC01E" />
+          <stop offset="0.2" stopColor="#FCA71B" />
+          <stop offset="0.282" stopColor="#FA8316" />
+          <stop offset="0.368" stopColor="#F85510" />
+          <stop offset="0.456" stopColor="#F51E09" />
+          <stop offset="0.5" stopColor="#F30005" />
+          <stop offset="0.503" stopColor="#F20007" />
+          <stop offset="0.597" stopColor="#E1003B" />
+          <stop offset="0.688" stopColor="#D30067" />
+          <stop offset="0.776" stopColor="#C70088" />
+          <stop offset="0.859" stopColor="#BF00A0" />
+          <stop offset="0.936" stopColor="#BB00AF" />
+          <stop offset="1" stopColor="#B900B4" />
         </linearGradient>
         <clipPath id="clip0_20315_25450">
           <rect width="30" height="30" fill="white" />
@@ -376,7 +376,7 @@ export function TwitterIcon({ className }: { className?: string }) {
       fill="none"
       className={className}
     >
-      <g clip-path="url(#clip0_20315_25459)">
+      <g clipPath="url(#clip0_20315_25459)">
         <path
           d="M15 30C23.2843 30 30 23.2843 30 15C30 6.71573 23.2843 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30Z"
           fill="#03A9F4"
@@ -405,7 +405,7 @@ export function TikTokIcon({ className }: { className?: string }) {
       fill="none"
       className={className}
     >
-      <g clip-path="url(#clip0_20315_25465)">
+      <g clipPath="url(#clip0_20315_25465)">
         <path
           d="M30.0007 15C30.0007 23.284 23.2847 30 15 30H14.9719C6.70051 29.9845 0 23.2729 0 15C0 6.72712 6.70051 0.0147849 14.9719 0H15C23.2847 0 30.0007 6.71381 30.0007 15Z"
           fill="black"
@@ -429,7 +429,7 @@ export function TikTokIcon({ className }: { className?: string }) {
         <path
           d="M23.1618 10.8478L23.1433 13.9208C22.5444 13.9135 21.9487 13.8336 21.3691 13.6828C20.4749 13.4492 19.6316 13.0525 18.8815 12.5126C18.8815 12.8267 18.886 13.2954 18.886 13.8654C18.886 14.6238 18.886 15.0548 18.8815 15.5124C18.8682 18.3393 18.9385 18.8863 18.6901 20.0041C18.6384 20.2736 18.5678 20.5392 18.4787 20.7988C18.0011 22.1294 16.9602 23.1954 15.8994 23.7624C15.6034 23.9198 15.2927 24.0478 14.9717 24.1446V5.79802L17.9893 5.78027C17.9871 6.01565 18.0197 6.25006 18.0861 6.4759C18.0935 6.5003 18.1009 6.52321 18.109 6.54983L18.3922 6.54465C18.6009 7.29598 18.9548 7.99917 19.4338 8.61453C19.5847 8.80701 19.7476 8.98972 19.9217 9.16158C20.726 9.81063 21.65 9.99396 22.2296 10.0487C22.2333 10.2305 22.2377 10.4124 22.2414 10.5942C22.5418 10.7005 22.8493 10.7852 23.1618 10.8478Z"
           fill="black"
-          fill-opacity="0.0901961"
+          fillOpacity="0.0901961"
         />
       </g>
       <defs>

@@ -1,4 +1,4 @@
-import CustomAvatar from "@/components/shared/CustomeAvater";
+import CustomAvatar from "@/components/shared/CustomAvatar";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 

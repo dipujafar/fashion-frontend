@@ -19,7 +19,7 @@ import OwnerMsgCard from "./OwnerMsgCard";
 import ReceiverMsgCard from "./ReceiverMsgCard";
 import UserCard from "./UserCard";
 import { BellIcon } from "@/icons";
-import CustomAvatar from "@/components/shared/CustomeAvater";
+import CustomAvatar from "@/components/shared/CustomAvatar";
 
 const MessageContainer = () => {
   return (
