@@ -127,7 +127,7 @@ const ProfileContainerForm = () => {
 
   return (
     <div className="lg:space-y-12 space-y-7 ">
-      <Card className="  shadow-none border-none">
+      <Card className="  shadow-none border-none py-0">
         <CardContent className="px-0">
           <Form {...form}>
             <form
@@ -142,18 +142,12 @@ const ProfileContainerForm = () => {
                   render={({ field }) => (
                     <FormItem>
                       <div className="relative w-full h-40 md:h-60 xl:h-64 rounded-lg overflow-hidden mb-6">
-                        {coverImagePreview ? (
-                          <Image
-                            src={coverImagePreview}
-                            alt="Cover Preview"
-                            fill
-                            className="object-contain w-full h-full bg-gray-300"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center w-full h-full bg-gray-400 text-gray-200">
-                            <p>Upload Cover Image</p>
-                          </div>
-                        )}
+                        <Image
+                          src={coverImagePreview || "/user_cover_image.png"}
+                          alt="Cover Preview"
+                          fill
+                          className="object-contain w-full h-full "
+                        />
 
                         <Input
                           id="coverImageInput"

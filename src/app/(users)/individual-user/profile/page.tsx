@@ -1,11 +1,10 @@
 import Container from "@/components/shared/Container";
-import React from "react";
-import ProfileContainerForm from "./_components/ProfileContainerForm";
 import ProfileDetailsCard from "./_components/ProfileDetailsCard";
+import ProfileFeatures from "./_components/ProfileFeatures";
 
 const ProfilePage = () => {
   return (
-    <Container>
+    <Container className="space-y-5">
       <ProfileDetailsCard
         orderId="120 items sold"
         trackingCode="
@@ -13,7 +12,7 @@ const ProfilePage = () => {
         name="12"
         address="$2,00"
       />
-      <ProfileContainerForm />
+      <ProfileFeatures />
     </Container>
   );
 };
