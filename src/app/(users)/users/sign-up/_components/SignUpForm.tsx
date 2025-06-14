@@ -230,7 +230,7 @@ const SignUpForm = () => {
               <label className="text-sm font-medium mb-2">
                 Social Media Link (Optional)
               </label>
-              <div className="grid grid-cols-2  gap-4">
+              <div className="grid sm:grid-cols-2  gap-4">
                 <div className="flex items-center gap-x-2">
                   <Image
                     src={instagram}

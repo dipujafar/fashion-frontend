@@ -17,11 +17,11 @@ export default function UserProfileInfo() {
         </div>
 
         {/* Profile Picture */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-16">
+        <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-16 -bottom-14">
           <CustomAvatar
             img="/placeholder.svg?height=300&width=800"
             name="Sarah_Style"
-            className="md:size-32 size-20"
+            className="md:size-36 size-24"
           />
         </div>
       </div>
