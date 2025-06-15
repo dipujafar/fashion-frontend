@@ -33,9 +33,10 @@ const navLinks = [
   {
     _id: 5,
     title: "Settings",
-    href: "#",
+    href: "/individual-user/settings",
   },
 ];
+
 
 const IndividualUserPagesTopSection = () => {
   const pathName = usePathname();

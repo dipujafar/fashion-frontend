@@ -301,16 +301,19 @@ export default function PurchaseProductTable() {
                     </TableCell>
                     {item?.status === "Delivered" && (
                       <TableCell>
-                        <Button
-                          variant="outline"
-                          className="cursor-pointer border-black/60"
-                          size={"sm"}
+                        <Link
+                          href={`/individual-user/uploaded-products-list/resell`}
                         >
-                          Resell
-                        </Button>
+                          <Button
+                            variant="outline"
+                            className="cursor-pointer border-black/60"
+                            size={"sm"}
+                          >
+                            Resell
+                          </Button>
+                        </Link>
                       </TableCell>
                     )}
-
                   </TableRow>
                 ))}
               </TableBody>

@@ -220,7 +220,7 @@ export function ReturnRequestModal({
                               <div className="w-12 h-12  flex items-center justify-center">
                                 <UploadIcon />
                               </div>
-                              <span className="text-sm text-blue-500 font-medium">
+                              <span className="text-sm text-[#1372C4] font-medium">
                                 Upload Image
                               </span>
                             </div>
@@ -266,7 +266,7 @@ export function ReturnRequestModal({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-black text-white hover:bg-black/95 h-12 text-sm font-medium group cursor-pointer"
+              className="w-full bg-black text-white hover:bg-black/95 h-10 text-sm font-medium group cursor-pointer"
             >
               {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
               {!isSubmitting && <AnimatedArrow />}
