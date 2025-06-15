@@ -1,12 +1,13 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Pagination } from "react-pagination-bar";
 
-const PaginationSection = () => {
+const PaginationSection = ({className}: {className?: string}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pagePostsLimit = 9;
   return (
-    <div className="mt-10 text-end ">
+    <div className={cn("mt-10 text-end", className)}>
       <Pagination
         currentPage={currentPage}
         itemsPerPage={pagePostsLimit}

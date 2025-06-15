@@ -18,7 +18,7 @@ const navLinks = [
   {
     _id: 2,
     title: "Products Listing",
-    href: "#",
+    href: "/individual-user/uploaded-products-list",
   },
   {
     _id: 3,

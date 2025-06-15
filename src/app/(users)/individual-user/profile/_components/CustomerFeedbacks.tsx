@@ -149,7 +149,7 @@ const feedbacksData = [
 ];
 
 const CustomerFeedbacks = () => {
-  const [showReview, setShowReview] = useState(2);
+  const [showReview, setShowReview] = useState(4);
   return (
     <div>
       <div className="p-5 border rounded-lg flex gap-x-5 mb-10">
@@ -225,11 +225,11 @@ const CustomerFeedbacks = () => {
         </div>
       ))}
 
-      {feedbacksData?.length > 2 && (
+      {feedbacksData?.length > 4 && (
         <div className="flex justify-end mt-5">
           {feedbacksData?.length <= showReview ? (
             <Button
-              onClick={() => setShowReview(2)}
+              onClick={() => setShowReview(4)}
               variant="outline"
               className=" border-primary-blue rounded-full text-black duration-500"
             >

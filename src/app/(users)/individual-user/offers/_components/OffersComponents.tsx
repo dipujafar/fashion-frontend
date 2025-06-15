@@ -1,8 +1,6 @@
-"use client";
-
+"use client";;
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -10,21 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import CommonButton from "@/components/ui/common-button";
 import { TOfferProduct } from "@/types";
 import { OfferProductCard } from "@/components/shared/Cards/OfferProductCard";
-
-interface OfferProduct {
-  id: string;
-  itemNumber: string;
-  productPrice: number;
-  offerPrice: number;
-  status: "Pending" | "Offer Accepted" | "Expired";
-  timeRemaining?: string;
-  images: string[];
-}
 
 export default function OffersComponents() {
   const [products, setProducts] = useState<TOfferProduct[]>([
