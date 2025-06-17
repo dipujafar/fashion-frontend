@@ -7,6 +7,7 @@ import {
   childrenVariants,
   parentVariants,
 } from "@/animations/FramerMotionValiantsFadeUp";
+import { NotificationBellIcon } from "@/icons";
 
 const SearchAndNavIcon = () => {
   return (
@@ -23,7 +24,7 @@ const SearchAndNavIcon = () => {
         whileInView="animate"
         exit="exit"
         viewport={{ once: true }}
-        className="flex lg:gap-x-4 gap-x-2 items-center justify-center  "
+        className="flex lg:gap-x-3 gap-x-2 items-center justify-center"
       >
         <motion.div
           variants={childrenVariants}
@@ -41,8 +42,8 @@ const SearchAndNavIcon = () => {
           <Link href={"/#"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width={28}
-              height={28}
+              width={25}
+              height={25}
               viewBox="0 0 24 24"
             >
               <path
@@ -54,10 +55,15 @@ const SearchAndNavIcon = () => {
         </motion.li>
         <motion.li variants={childrenVariants}>
           <Link href={"/#"}>
+           <NotificationBellIcon/>
+          </Link>
+        </motion.li>
+        <motion.li variants={childrenVariants}>
+          <Link href={"/shopping-cart/shopping"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width={28}
-              height={28}
+              width={25}
+              height={25}
               viewBox="0 0 24 24"
             >
               <g
@@ -77,8 +83,8 @@ const SearchAndNavIcon = () => {
           <Link href={"/sign-in"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width={28}
-              height={28}
+              width={25}
+              height={25}
               viewBox="0 0 24 24"
             >
               <g fill="none" stroke="currentColor" strokeWidth={1.5}>

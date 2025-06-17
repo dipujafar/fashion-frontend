@@ -17,28 +17,37 @@ import { useState } from "react";
 
 const productData = [
   {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage3.png",
+    name: "Teens Top & Pant",
+    image: "/offer_page_product3.png",
     price: 25,
     quantity: 2,
     seller_info: "AquaPet Seller",
-    style: "Single",
+    color: "Brown",
+    size: "XLL",
+    donation: "10%",
+    shipping_fees: "30.00",
   },
   {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage2.png",
+    name: "Teens Top & Pant",
+    image: "/offer_page_product3.png",
     price: 24,
     quantity: 3,
     seller_info: "AquaPet Seller",
-    style: "Single",
+    color: "Brown",
+    size: "XLL",
+    donation: "10%",
+    shipping_fees: "30.00",
   },
   {
-    name: "Pink Polka Dot Hillstream Loach",
-    image: "/productImage4.png",
+    name: "Teens Top & Pant",
+    image: "/offer_page_product3.png",
     price: 24,
     quantity: 3,
     seller_info: "AquaPet Seller",
-    style: "Single",
+    color: "Brown",
+    size: "XLL",
+    donation: "10%",
+    shipping_fees: "30.00",
   },
 ];
 
@@ -59,13 +68,12 @@ const ShoppingCartTable = () => {
   return (
     <div className="col-span-2  rounded-md ">
       <Table className="lg:text-lg w-full overflow-x-auto">
-        <TableHeader
-      
-          className="py-10 text-white bg-black"
-        >
+        <TableHeader className="py-10 text-white bg-black">
           <TableRow className="border-none !text-white hover:bg-transparent">
             <TableHead className="text-white py-5">Fishes</TableHead>
             <TableHead className="text-white py-5 ">Price</TableHead>
+            <TableHead className="text-white py-5 ">Donation</TableHead>
+            <TableHead className="text-white py-5 ">Shipping Fees</TableHead>
             <TableHead className="text-white py-5  text-center">
               Quantity
             </TableHead>
@@ -91,23 +99,31 @@ const ShoppingCartTable = () => {
                       height={700}
                       className="md:size-28 size-20 rounded object-cover origin-center"
                     />
-                    <div className="flex flex-col lg:gap-y-2">
+                    <div className="flex flex-col lg:gap-y-1">
                       <p className="truncate font-medium lg:text-lg text-sm">
                         {data?.name}
                       </p>
-                      <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-300">
+                      <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-500">
                         <p>Seller info:</p>
                         <p>{data?.seller_info}</p>
                       </div>
-                      <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-300">
-                        <p>Style:</p>
-                        <p>{data?.style}</p>
+                      <div className="flex gap-x-2">
+                        <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-500 border-r-2 pr-2">
+                          <p>Color:</p>
+                          <p>{data?.color}</p>
+                        </div>
+                        <div className="truncate text-sm font-light flex items-center gap-x-2 text-gray-500 ">
+                          <p>Size:</p>
+                          <p>{data?.size}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </TableCell>
               <TableCell>${data?.price}</TableCell>
+              <TableCell className="text-center">${data?.donation}</TableCell>
+              <TableCell className="text-center">${data?.shipping_fees}</TableCell>
               <TableCell className=" ">
                 {/* quantity */}
                 <div className="border-2  rounded-full flex items-center gap-x-3 max-w-fit mx-auto  ">
@@ -137,24 +153,12 @@ const ShoppingCartTable = () => {
       <hr />
       <div className="flex flex-wrap gap-2 md:justify-between items-center justify-center px-4 mt-5">
         <Link href="/shop">
-          <Button
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(77, 168, 218, 0.50) 0%, rgba(120, 192, 168, 0.50) 85.08%)",
-            }}
-            className=" text-primary-black hover:text-primary-white  ease-in  group overflow-hidden cursor-pointer group"
-          >
+          <Button className=" text-primary-black hover:text-primary-white  ease-in  group overflow-hidden cursor-pointer group bg-white border">
             <AnimatedArrowReverse />
             Return to shop
           </Button>
         </Link>
-        <Button
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(77, 168, 218, 0.50) 0%, rgba(120, 192, 168, 0.50) 85.08%)",
-          }}
-          className="bg-primary-gray text-primary-black  hover:text-primary-white hover:bg-gray-500  cursor-pointer"
-        >
+        <Button className=" text-primary-black  hover:text-primary-white hover:bg-gray-500  cursor-pointer bg-white border">
           Clear Cart
         </Button>
       </div>

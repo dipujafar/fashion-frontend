@@ -299,8 +299,8 @@ export default function PurchaseProductTable() {
                     <TableCell className=" text-center -translate-x-6">
                       {item.status}
                     </TableCell>
-                    {item?.status === "Delivered" && (
-                      <TableCell>
+                    <TableCell>
+                      {item?.status === "Delivered" && (
                         <Link
                           href={`/individual-user/uploaded-products-list/resell`}
                         >
@@ -312,8 +312,8 @@ export default function PurchaseProductTable() {
                             Resell
                           </Button>
                         </Link>
-                      </TableCell>
-                    )}
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
