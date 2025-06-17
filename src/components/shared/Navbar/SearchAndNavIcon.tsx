@@ -54,7 +54,7 @@ const SearchAndNavIcon = () => {
           </Link>
         </motion.li>
         <motion.li variants={childrenVariants}>
-          <Link href={"/#"}>
+          <Link href={"/notifications"}>
            <NotificationBellIcon/>
           </Link>
         </motion.li>

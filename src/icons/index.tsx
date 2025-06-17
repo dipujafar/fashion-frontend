@@ -625,3 +625,28 @@ export function NotificationBellIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function NotificationBellIconWhite({
+  className,
+}: {
+  className?: string;
+}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="34"
+      height="34"
+      viewBox="0 0 34 34"
+      fill="none"
+      className={className}
+    >
+      <path
+        d="M21.1877 24.0894H28.1853L26.2191 22.1232C25.6858 21.5899 25.3863 20.8667 25.3863 20.1126V15.6923C25.3863 12.0361 23.0496 8.9257 19.7882 7.77295V7.29514C19.7882 5.74927 18.535 4.49609 16.9891 4.49609C15.4433 4.49609 14.1901 5.74927 14.1901 7.29514V7.77295C10.9287 8.9257 8.59201 12.0361 8.59201 15.6923V20.1126C8.59201 20.8667 8.29244 21.5899 7.7592 22.1232L5.79297 24.0894H12.7906M21.1877 24.0894V25.4889C21.1877 27.8077 19.3079 29.6875 16.9891 29.6875C14.6703 29.6875 12.7906 27.8077 12.7906 25.4889V24.0894M21.1877 24.0894H12.7906"
+        stroke="#FDFDFD"
+        stroke-width="2.79904"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}

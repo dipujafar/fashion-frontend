@@ -141,12 +141,12 @@ const ProfileContainerForm = () => {
                   name="coverImage"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="relative w-full h-40 md:h-60 xl:h-64 rounded-lg overflow-hidden mb-6">
+                      <div className="relative w-full h-40 md:h-60 xl:h-64 rounded-lg mb-6">
                         <Image
                           src={coverImagePreview || "/user_cover_image.png"}
                           alt="Cover Preview"
                           fill
-                          className="object-contain w-full h-full "
+                          className="object-cover w-full h-full "
                         />
 
                         <Input
