@@ -24,10 +24,15 @@ export default function UserInfo({
   location = "Los Angeles, CA",
 }: ProfileCardProps) {
   return (
-    <Card style={{boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)"}} className="w-full border-none ">
+    <Card
+      style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
+      className="w-full border-none "
+    >
       <CardContent className="lg:px-6 px-3">
         {/* Edit Profile Button */}
-        <CommonButton className="w-full">Edit Profile</CommonButton>
+        <Link href={"/individual-user/profile"}>
+          <CommonButton className="w-full">Edit Profile</CommonButton>
+        </Link>
 
         <div className="space-y-6 mt-4">
           {/* Name and Location */}

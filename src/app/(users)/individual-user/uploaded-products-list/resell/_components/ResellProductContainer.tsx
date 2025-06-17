@@ -2,6 +2,9 @@ import React from "react";
 import ResellProductImages from "./ResellProductImages";
 import ResellProductDetails from "./ResellProductDetails";
 import ResellProductDescription from "./ResellProductDescription";
+import { Button } from "@/components/ui/button";
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
+import Link from "next/link";
 
 const product = {
   id: "1",
@@ -31,6 +34,21 @@ const ResellProductContainer = () => {
         <ResellProductDetails productDetails={product} />
         <div className="lg:col-span-2">
           <ResellProductDescription />
+        </div>
+      </div>
+      <div className="flex gap-x-4 flex-col md:flex-row">
+        <div className="flex-1 group cursor-pointer">
+          <Link href={"/individual-user/uploaded-products-list/add-product"}>
+            <Button className="w-full bg-transparent text-black hover:bg-black/10 border-b-2 border-r-2 border-black rounded-none">
+              Edit <AnimatedArrow />
+            </Button>
+          </Link>
+        </div>
+
+        <div className="flex-1 group cursor-pointer">
+          <Button className="w-full rounded-none">
+            Submit <AnimatedArrow />
+          </Button>
         </div>
       </div>
     </div>

@@ -116,10 +116,8 @@ export default function ResellProductDescription() {
                 European countries starting at $15.
               </p>
               <p>
-                <span className=" text-foreground">
-                  Free Shipping:
-                </span>{" "}
-                More than one orders over $50 within the US.
+                <span className=" text-foreground">Free Shipping:</span> More
+                than one orders over $50 within the US.
               </p>
               <p>
                 <span className=" text-foreground">
@@ -129,11 +127,9 @@ export default function ResellProductDescription() {
                 Shipping fees will be calculated at checkout.
               </p>
               <p>
-                <span className=" text-foreground">
-                  Track Your Order:
-                </span>{" "}
-                Once shipped, a tracking number will be emailed to you for
-                tracking your order.
+                <span className=" text-foreground">Track Your Order:</span> Once
+                shipped, a tracking number will be emailed to you for tracking
+                your order.
               </p>
             </div>
           </div>
@@ -155,9 +151,8 @@ export default function ResellProductDescription() {
                 original payment method.
               </p>
               <p>
-                <span className=" text-foreground">Exchange:</span>{" "}
-                You can exchange items for a different size or color if
-                available.
+                <span className=" text-foreground">Exchange:</span> You can
+                exchange items for a different size or color if available.
               </p>
             </div>
           </div>
@@ -184,7 +179,7 @@ export default function ResellProductDescription() {
       <div>
         <div style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}>
           <CardTitle className="text-lg text-center font-medium mb-2">
-           Delivery Policy
+            Delivery Policy
           </CardTitle>
         </div>
         <div className="space-y-2 text-sm md:text-base text-muted-foreground">
@@ -193,9 +188,7 @@ export default function ResellProductDescription() {
             5-7 business days via shipping.
           </p>
           <p>
-            <span className=" text-foreground">
-              Delivery Address:
-            </span>
+            <span className=" text-foreground">Delivery Address:</span>
           </p>
           <p>
             Please ensure that your delivery address is correct and complete at

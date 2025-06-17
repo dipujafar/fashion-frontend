@@ -6,7 +6,7 @@ const AddNewProduct = () => {
   return (
     <div className="p-4 rounded-lg border border-[#DEDEDE] space-y-3">
       <h4 className="md:text-xl text-center">Enter New Product Details for Sale</h4>
-      <Link href={"/individual-user/uploaded-products-list/add-new-product"}>
+      <Link href={"/individual-user/uploaded-products-list/add-product"}>
         <CommonButton className="w-full">ADD NEW PRODUCT</CommonButton>
       </Link>
     </div>
