@@ -75,7 +75,7 @@ const ValuesData = () => {
                     stroke="#009045"
                     strokeWidth="2"
                     strokeLinecap="round"
-                    strokeLinecap="round"
+
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
