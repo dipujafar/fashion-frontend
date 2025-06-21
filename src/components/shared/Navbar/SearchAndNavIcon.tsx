@@ -42,8 +42,9 @@ const SearchAndNavIcon = () => {
           <Link href={"/#"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width={25}
-              height={25}
+            className="lg:size-6 md:size-5 "
+            width={25}
+            height={25}
               viewBox="0 0 24 24"
             >
               <path
@@ -55,7 +56,7 @@ const SearchAndNavIcon = () => {
         </motion.li>
         <motion.li variants={childrenVariants}>
           <Link href={"/notifications"}>
-           <NotificationBellIcon/>
+            <NotificationBellIcon   className="lg:size-6 md:size-5 " />
           </Link>
         </motion.li>
         <motion.li variants={childrenVariants}>
@@ -63,14 +64,14 @@ const SearchAndNavIcon = () => {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={25}
-              height={25}
+              height={25} 
+                className="lg:size-6 md:size-5 "
               viewBox="0 0 24 24"
             >
               <g
                 fill="none"
                 stroke="currentColor"
                 strokeLinecap="round"
-                strokeLinejoin="round"
                 strokeWidth={2}
               >
                 <path d="M12.5 21H8.574a3 3 0 0 1-2.965-2.544l-1.255-8.152A2 2 0 0 1 6.331 8H17.67a2 2 0 0 1 1.977 2.304l-.73 4.744"></path>
@@ -85,11 +86,12 @@ const SearchAndNavIcon = () => {
               xmlns="http://www.w3.org/2000/svg"
               width={25}
               height={25}
+                className="lg:size-6 md:size-5 "
               viewBox="0 0 24 24"
             >
               <g fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <path
-                  strokeLinejoin="round"
+                  strokeLinecap="round"
                   d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"
                 ></path>
                 <circle cx={12} cy={7} r={3}></circle>

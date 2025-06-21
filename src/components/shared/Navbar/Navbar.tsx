@@ -1,5 +1,4 @@
 import React from "react";
-import TopInfo from "./TopInfo";
 import NavLinksSection from "./NavLinksSection";
 import NavLogoCategory from "./NavLogoCategory";
 

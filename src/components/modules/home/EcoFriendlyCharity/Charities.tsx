@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 const Charities = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="grid h-full w-full gap-4  grid-cols-4 grid-rows-4 ">
+      <div className="grid h-full w-full lg:gap-4 gap-2.5  grid-cols-4 grid-rows-4 ">
         <motion.div
           initial={{ opacity: 0, x: "-10%" }}
           whileInView={{ opacity: 1, x: "0" }}

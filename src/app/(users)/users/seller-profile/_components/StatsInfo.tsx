@@ -4,6 +4,14 @@ import { Card } from "@/components/ui/card"
 export default function StatsInfo() {
   return (
     <Card style={{boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)"}} className="w-full  p-6">
+      <div className="flex gap-x-3">
+        <div className="flex-1 bg-[#1372C4] text-white p-1.5 text-center">
+          <h5>CELEBRITY</h5>
+        </div>
+        <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">
+          <h5>TOP SELLER</h5>
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-6">
         {/* First Row */}
         <div className="space-y-1">

@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import {
+  AwardIcon,
   FacebookIcon,
   InstagramIcon,
   TikTokIcon,
@@ -100,6 +101,11 @@ export default function UserInfo({
               </Link>
             </div>
           </div>
+        </div>
+
+        <div className="bg-[#FFFBE6] mt-5 p-2 rounded-lg flex justify-center items-center">
+          <AwardIcon/>
+          <p className="text-[#8C7600]">Fashion Activist</p>
         </div>
       </CardContent>
     </Card>

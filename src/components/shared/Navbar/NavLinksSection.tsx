@@ -7,7 +7,7 @@ import { activeNavLink } from "@/utils/activeNavLink";
 import { navLinks } from "@/lib/NavLinks";
 
 
-const NavLinksSection = ({ className }: { className?: string }) => {
+const NavLinksSection = () => {
   const currentPath = usePathname();
   const paths = currentPath.split("/");
 
@@ -32,7 +32,7 @@ const NavLinksSection = ({ className }: { className?: string }) => {
             <Link
               href={link.href}
               className={cn(
-                "relative uppercase py-2 px-6 font-medium z-10 transition-colors duration-300"
+                "relative uppercase py-2 px-6  font-medium z-10 transition-colors duration-300 truncate lg:text-base md:text-sm"
               )}
             >
               {link.label}

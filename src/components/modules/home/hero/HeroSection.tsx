@@ -70,7 +70,7 @@ const HeroSection = () => {
           {userRoles?.map((user, index) => (
             <div
               key={index}
-              className="text-primary-white md:text-2xl text-base font-bold uppercase bg-black flex items-center"
+              className="text-primary-white lg:text-2xl text-base font-bold uppercase bg-black flex items-center"
             >
               <Link href={`/user-details#${user?.id}`}>
                 <span className="underline"> {user?.title} </span>{" "}
