@@ -8,10 +8,10 @@ import { useState } from "react";
 const ActionButtons = () => {
   const [quality, setQuality] = useState<number>(1);
   return (
-    <div className="lg:space-y-6 space-y-3">
+    <div className="lg:space-y-5 space-y-3">
       <h6 className="uppercase text-primary-gray underline">Quantity</h6>
       {/* =============== action buttons ================ */}
-      <div className="lg:space-y-4 space-y-3 max-w-lg">
+      <div className="lg:space-y-3 space-y-2 max-w-lg">
         {/* =============== quantity &  add to cart  button ================ */}
         <div className="flex items-center lg:gap-x-6 gap-x-4">
           <div className="border border-primary-gray/40 rounded-2xl flex   gap-x-2">

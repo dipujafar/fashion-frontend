@@ -76,6 +76,7 @@ const ProductCard = ({
           {/* ===== user image and user type ======== */}
           {!ownProduct && (
             <div className="flex items-center gap-x-1 gap-y-1 justify-between">
+              <Link href={`/users/seller-profile`}>
               <div className="relative">
                 <Image
                   src={data?.userImage}
@@ -91,6 +92,7 @@ const ProductCard = ({
                   <Check size={14} color="#fff"></Check>
                 </div>
               </div>
+              </Link>
               <div
                 className="px-2 rounded text-primary-white md:text-sm text-[11px] md:font-bold uppercase"
                 style={{ backgroundColor: userTagColor(data?.userType) }}

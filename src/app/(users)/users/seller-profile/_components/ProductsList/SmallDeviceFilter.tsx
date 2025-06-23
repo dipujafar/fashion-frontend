@@ -15,7 +15,7 @@ export function SmallDeviceFilter() {
         <SlidersHorizontal />
       </SheetTrigger>
       <SheetContent side={"left"} className="h-screen overflow-scroll ">
-        <div className="2xl:space-y-10 space-y-6 mt-10 px-2 mb-10 ">
+        <div className="2xl:space-y-5 space-y-4 mt-10 px-2 mb-10 ">
           <Categories title="Category" data={categoryData}></Categories>
           <Categories title="COLLECTION" data={collectionTypes}></Categories>
           <Categories title="BRANDS" data={brandsData}></Categories>

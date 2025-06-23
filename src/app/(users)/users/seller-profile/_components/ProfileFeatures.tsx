@@ -2,7 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 import CharitySupport from "./CharitySupport";
 import ProductsListContainer from "./ProductsList/ProductsListContainer";
-import CustomerFeedbacks from "./CustomerFeedbacks";
+import CustomerFeedbacks from "./CustomerFeedbacks/CustomerFeedbacks";
+import CustomerFeedbacksContainer from "./CustomerFeedbacks/CustomerFeedbacksContainer";
 
 const ProfileFeatures = () => {
   return (
@@ -38,7 +39,7 @@ const ProfileFeatures = () => {
           <ProductsListContainer />
         </TabsContent>
         <TabsContent value="rating_review">
-          <CustomerFeedbacks />
+          <CustomerFeedbacksContainer />
         </TabsContent>
       </Tabs>
     </div>
