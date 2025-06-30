@@ -25,6 +25,7 @@ import CommonButton from "@/components/ui/common-button";
 import appleIcon from "@/assets/icons/apple.png";
 import googleIcon from "@/assets/icons/google.png";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z
@@ -47,6 +48,7 @@ const formSchema = z.object({
 
 const SIgnInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,7 +58,9 @@ const SIgnInForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    if (data.email === "user@gmail.com" && data.password === "123456A@a") {
+      router.push("/users/profile");
+    }
   };
 
   return (

@@ -35,14 +35,14 @@ export default function UserInfo({
         {/* message and follow button */}
         <div className="flex gap-x-2">
           <div className="flex-1">
-            <Link href={"/individual-user/profile"}>
-              <Button className=" w-full bg-transparent hover:text-white text-black border-b-2 border-r-2 border-black rounded-none duration-500 cursor-pointer group">
-                Message  <AnimatedArrow/>
-              </Button>
-            </Link>
+            <Button className=" w-full bg-transparent hover:text-white text-black border-b-2 border-r-2 border-black rounded-none duration-500 cursor-pointer group">
+              Message <AnimatedArrow />
+            </Button>
           </div>
           <div className="flex-1 group">
-            <Button className="rounded-none w-full">Follow <AnimatedArrow/></Button>
+            <Button className="rounded-none w-full">
+              Follow <AnimatedArrow />
+            </Button>
           </div>
         </div>
 
@@ -104,7 +104,7 @@ export default function UserInfo({
         </div>
 
         <div className="bg-[#FFFBE6] mt-5 p-2 rounded-lg flex justify-center items-center">
-          <AwardIcon/>
+          <AwardIcon />
           <p className="text-[#8C7600]">Fashion Activist</p>
         </div>
       </CardContent>
