@@ -19,6 +19,9 @@ const ProductDetails = () => {
     <div className=" space-y-8">
       {/* --------- product header ---------- */}
       <div className="xl:space-y-3 space-x-2">
+        <h4 className="md:text-3xl text-xl text-[#262626]">
+          {productDetails?.title}
+        </h4>
         <h6 className="bg-[#87CEEB] w-fit px-3 rounded-xs text-primary-white italic">
           {productDetails?.tag}
         </h6>
@@ -30,9 +33,7 @@ const ProductDetails = () => {
             <HeartIcon2 className="size-4"></HeartIcon2> 24
           </h6>
         </div>
-        <h4 className="md:text-3xl text-xl text-[#262626]">
-          {productDetails?.title}
-        </h4>
+
         {productDetails?.discount && (
           <div className="flex gap-x-6 items-center">
             <p className="line-through text-primary-gray text-lg">
@@ -70,7 +71,7 @@ const ProductDetails = () => {
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Total Amount of charity:</h2>
-          <p>{productDetails?.charity}%</p>
+          <p className="text-green-600">{productDetails?.charity}%</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Item Number:</h2>

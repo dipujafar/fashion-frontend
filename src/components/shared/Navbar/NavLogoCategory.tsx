@@ -2,27 +2,26 @@ import Link from "next/link";
 import Container from "../Container";
 import logo from "@/assets/images/common-image/logo.png";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
 
-const category = [
-  {
-    id: 1,
-    label: "Womans",
-    href: "/shop/#",
-  },
-  {
-    id: 2,
-    label: "Mens",
-    href: "/shop/#",
-  },
-  {
-    id: 3,
-    label: "Kids",
-    href: "/shop/#",
-  },
-];
+// const category = [
+//   {
+//     id: 1,
+//     label: "Womans",
+//     href: "/shop/#",
+//   },
+//   {
+//     id: 2,
+//     label: "Mens",
+//     href: "/shop/#",
+//   },
+//   {
+//     id: 3,
+//     label: "Kids",
+//     href: "/shop/#",
+//   },
+// ];
 
 const NavLogoCategory = () => {
   return (
@@ -31,7 +30,7 @@ const NavLogoCategory = () => {
         {/* ======= Small Screen view ========== */}
         <SmallDeviceView></SmallDeviceView>
         {/* ======= category ========== */}
-        <div className="md:flex lg:gap-x-6 gap-x-1.5 hidden ">
+        {/* <div className="md:flex lg:gap-x-6 gap-x-1.5 hidden ">
           {category.map((item) => (
             <div key={item.id} className="relative group">
               <Link
@@ -47,9 +46,9 @@ const NavLogoCategory = () => {
               ></span>
             </div>
           ))}
-        </div>
+        </div> */}
         {/* ======= logo ========== */}
-        <div className="flex justify-center items-center flex-1 ">
+        <div className="flex justify-center items-center ">
           <Link href={"/"}>
             <Image src={logo} alt="logo"></Image>
           </Link>

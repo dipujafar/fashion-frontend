@@ -1,6 +1,7 @@
 import React from "react";
 import NavLinksSection from "./NavLinksSection";
 import NavLogoCategory from "./NavLogoCategory";
+import NavbarCategories from "./NavbarCategories";
 
 const Navbar = () => {
   return (
@@ -9,6 +10,7 @@ const Navbar = () => {
       <div className="hidden md:block">
         <NavLinksSection></NavLinksSection>
       </div>
+      <NavbarCategories></NavbarCategories>
     </div>
   );
 };

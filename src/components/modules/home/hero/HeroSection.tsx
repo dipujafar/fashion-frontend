@@ -6,6 +6,7 @@ import { Dot } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
+import PhilanthropistBox from "./PhilanthropistBox";
 
 const userRoles = [
   {
@@ -45,10 +46,10 @@ const userRoles = [
 const HeroSection = () => {
   return (
     <div className="md:-translate-y-5 -translate-y-4 overflow-x-hidden">
-      <div className="grid grid-cols-5">
-        <div className="col-span-3 relative">
-          <Image src={image1} alt="hero image" className="w-full "></Image>
-          <div
+      <div className="grid xl:grid-cols-4 grid-cols-5">
+        <div className="xl:col-span-2 col-span-3 relative">
+          <Image src={image1} alt="hero image" className="w-full xl:h-[50vh] "></Image>
+          {/* <div
             className=" max-w-3xl absolute top-1/2 xl:-left-60 lg:-left-52 md:-left-40 sm:-left-36 -left-16 -translate-y-1/2  lg:px-28 lg:py-12 px-10 py-5 text-primary-white lg:text-5xl md:text-6xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rotate-[270deg] rounded-lg flex justify-center items-center"
             style={{
               background: "rgba(217, 217, 217, 0.09)",
@@ -60,17 +61,20 @@ const HeroSection = () => {
               initialDelay={0.5}
               className="2xl:text-7xl xl:text-6xl lg:text-5xl md:text-4xl  font-bold"
             />
+          </div> */}
+          <div className="absolute lg:top-1/3 lg:left-1/3 top-[40%] left-[40%] -translate-x-1/2 -translate-y-1/2  hidden md:block">
+            <PhilanthropistBox/>
           </div>
         </div>
-        <Image src={image2} alt="hero image" className="w-full"></Image>
-        <Image src={image3} alt="hero image" className="w-full"></Image>
+        <Image src={image2} alt="hero image" className="lg;w-full xl:h-[50vh]"></Image>
+        <Image src={image3} alt="hero image" className="lg;w-full xl:h-[50vh]"></Image>
       </div>
       <Marquee className="bg-black" gradientColor={"#000"} gradient gradientWidth={150} speed={40}	>
         <div className="flex gap-x-3">
           {userRoles?.map((user, index) => (
             <div
               key={index}
-              className="text-primary-white lg:text-2xl text-base font-bold uppercase bg-black flex items-center"
+              className="text-primary-white lg:text-xl text-base font-bold uppercase bg-black flex items-center"
             >
               <Link href={`/user-details#${user?.id}`}>
                 <span className="underline"> {user?.title} </span>{" "}

@@ -44,13 +44,13 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
     <div className={cn(" rounded-sm  space-y-4", className)}>
       <h3 className="md:text-3xl text-xl font-medium">Comments (0)</h3>
       <div>
-        <h3>Submit Your Review</h3>
-        <div>
+        <h3>Have a question that others might want to know? Add a public Comment.</h3>
+        {/* <div>
           <InputRating
             onRatingChange={handleRatingChange}
             className="w-36"
           ></InputRating>
-        </div>
+        </div> */}
 
         <div>
           <Form {...form}>
@@ -65,9 +65,9 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Write your review"
+                        placeholder="Add a comment"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded h-[100px] "
+                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded h-[100px] bg-slate-50 mt-2 "
                       />
                     </FormControl>
                     <FormMessage />

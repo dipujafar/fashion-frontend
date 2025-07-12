@@ -37,8 +37,7 @@ const TopInfo = () => {
               href={link.href}
               className={cn(
                 "uppercase",
-                link.label === "Donate now" && "text-primary-yellow",
-                link.label === "Sell Now" && "text-primary-red"
+                link.label === "Donate now" && "text-green-600"
               )}
             >
               {link.label}

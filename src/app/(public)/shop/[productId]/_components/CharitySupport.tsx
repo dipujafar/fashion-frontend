@@ -53,7 +53,7 @@ const CharitySupport = () => {
                 height={1200}
                 className="object-cover origin-center"
               ></Image>
-              <div className="absolute top-0 right-0 bg-primary-red text-primary-white w-20 h-8 flex-center rounded">
+              <div className="absolute top-0 right-0 bg-green-600 text-primary-white w-20 h-8 flex-center rounded">
                 <p>{charitySupport?.present}%</p>
               </div>
               <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out h-[50px] group-hover:h-full group-hover:rounded-2xl md:group-hover:text-[25px] group-hover:text-xl origin-bottom overflow-hidden">

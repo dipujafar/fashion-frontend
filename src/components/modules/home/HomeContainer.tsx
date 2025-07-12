@@ -21,8 +21,9 @@ const HomeContainer = () => {
       <div className="lg:space-y-8 space-y-4">
         <HeroSection></HeroSection>
         <UserAvatar></UserAvatar>
+        <ClothesSection></ClothesSection>
       </div>
-      <ClothesSection></ClothesSection>
+
       <FeatureProduct></FeatureProduct>
       <DisplayProductSection
         title="New Arrival"

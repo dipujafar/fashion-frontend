@@ -31,10 +31,10 @@ const SearchAndNavIcon = () => {
           className="relative hidden md:block "
         >
           <Input
-            className="border-0 border-b border-b-black focus:outline-0 shadow-none rounded-none focus-visible:ring-0 "
-            placeholder="Search here....."
+            className="border-0 bg-slate-200 focus:outline-0 shadow-none rounded-none focus-visible:ring-0 w-[400px] px-2"
+            placeholder="Search here for items or members"
           ></Input>
-          <div className="absolute  right-0 top-2">
+          <div className="absolute   top-2 right-1.5">
             <Search size={20} color="#9E9E9E" />
           </div>
         </motion.div>

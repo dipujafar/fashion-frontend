@@ -21,7 +21,7 @@ const Charities = () => {
           <Image
             src={charityImage1}
             alt="charity_image"
-            className="h-full w-full object-cover origin-center rounded-lg"
+            className="lg:h-[290px]  h-[450px]  w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
             <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
@@ -41,7 +41,7 @@ const Charities = () => {
           <Image
             src={charityImage2}
             alt="charity_image"
-            className="h-full w-full object-cover origin-center rounded-lg"
+            className="lg:h-[290px]  h-[450px]  w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
             <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
@@ -61,7 +61,7 @@ const Charities = () => {
           <Image
             src={charityImage3}
             alt="charity_image"
-            className="h-full w-full object-cover origin-center rounded-lg"
+            className="lg:h-[290px]  h-[450px]  w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
             <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">
@@ -81,7 +81,7 @@ const Charities = () => {
           <Image
             src={charityImage4}
             alt="charity_image"
-            className="h-full w-full object-cover origin-center rounded-lg"
+            className="lg:h-[290px]  h-[450px]  w-full object-cover origin-center rounded-lg"
           ></Image>
           <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out lg:h-[65px] h-[50px] group-hover:h-full group-hover:rounded-2xl  origin-bottom overflow-hidden">
             <p className="uppercase text-xs lg:text-base md:group-hover:text-2xl group-hover:text-xl duration-1000">

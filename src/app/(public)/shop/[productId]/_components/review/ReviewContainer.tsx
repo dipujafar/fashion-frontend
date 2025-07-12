@@ -6,7 +6,7 @@ const ReviewContainer = () => {
     return (
         <div className='lg:space-y-8 space-y-5'>
             <SubmitYourReview></SubmitYourReview>
-            <CustomerFeedbacks></CustomerFeedbacks>
+            {/* <CustomerFeedbacks></CustomerFeedbacks> */}
         </div>
     );
 };
