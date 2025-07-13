@@ -19,9 +19,9 @@
   --color-primary-light-blue: #1372c4;
   --color-primary-green: #00b047;
   --color-secondary-gray: #545454;
-  --breakpoint-lg: 800px; 
+  /* --breakpoint-lg: 800px; 
    --breakpoint-md: 660px;
-   --breakpoint-sm: 380px;
+   --breakpoint-sm: 380px; */
 }
 
 @theme inline {

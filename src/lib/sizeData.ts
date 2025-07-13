@@ -1,0 +1,17 @@
+export const sizeData =  [
+  { _id: 1, label: "XXXS", value: "XXXS" },
+  { _id: 2, label: "XXS", value: "XXS" },
+  { _id: 3, label: "XS", value: "XS" },
+  { _id: 4, label: "S", value: "S" },
+  { _id: 5, label: "M", value: "M" },
+  { _id: 6, label: "L", value: "L" },
+  { _id: 7, label: "XL", value: "XL" },
+  { _id: 8, label: "XXL", value: "XXL" },
+  { _id: 9, label: "XXXL", value: "XXXL" },
+  { _id: 10, label: "4XL", value: "4XL" },
+  { _id: 11, label: "5XL", value: "5XL" },
+  { _id: 12, label: "6XL", value: "6XL" },
+  { _id: 13, label: "7XL", value: "7XL" },
+  { _id: 14, label: "8XL", value: "8XL" },
+  { _id: 15, label: "9XL", value: "9XL" },
+];

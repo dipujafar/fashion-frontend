@@ -14,6 +14,7 @@ import {
 } from "@/data/dummyData.tsx";
 import GetInTouch from "./GetInTouch";
 import HeroSection from "./hero/HeroSection";
+import Container from "@/components/shared/Container";
 
 const HomeContainer = () => {
   return (
@@ -25,30 +26,35 @@ const HomeContainer = () => {
       </div>
 
       <FeatureProduct></FeatureProduct>
-      <DisplayProductSection
-        title="New Arrival"
-        linkTitle="View All"
-        link="/shop"
-        data={newArrivalData}
-      ></DisplayProductSection>
+      <Container>
+        <DisplayProductSection
+          title="New Arrival"
+          linkTitle="View All"
+          link="/shop"
+          data={newArrivalData}
+        ></DisplayProductSection>
+      </Container>
       <EcoFriendlyCharityContainer></EcoFriendlyCharityContainer>
       <AboutUsSection></AboutUsSection>
       <TrendingItem></TrendingItem>
       <Feedbacks></Feedbacks>
-      <DisplayProductSection
-        title="Recently Viewed"
-        linkTitle="View All"
-        link="/shop"
-        data={recentlyViewedData}
-      ></DisplayProductSection>
+      <Container>
+        <DisplayProductSection
+          title="Recently Viewed"
+          linkTitle="View All"
+          link="/shop"
+          data={recentlyViewedData}
+        ></DisplayProductSection>
+      </Container>
       <BlogsUpdate></BlogsUpdate>
-
-      <DisplayProductSection
-        title="You may also like"
-        linkTitle="VIEW ALL"
-        link="/shop"
-        data={trendingProductData}
-      ></DisplayProductSection>
+      <Container>
+        <DisplayProductSection
+          title="You may also like"
+          linkTitle="VIEW ALL"
+          link="/shop"
+          data={trendingProductData}
+        ></DisplayProductSection>
+      </Container>
 
       <GetInTouch></GetInTouch>
     </div>

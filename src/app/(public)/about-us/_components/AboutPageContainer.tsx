@@ -10,7 +10,7 @@ const AboutPageContainer = () => {
   return (
     <Container className="lg:space-y-16 space-y-8">
       <div className="lg:space-y-8 space-y-4">
-        <h1 className="page-title text-center">Our Stroy</h1>
+        <h1 className="page-title text-center" id="story">Our Stroy</h1>
         <div className="md:space-y-4 space-y-2.5">
           <h4 className="section-title max-w-2xl mx-auto">
             Fashi-on Scope: Redefining Fashion with Purpose

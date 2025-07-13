@@ -26,7 +26,7 @@ const SearchAndNavIcon = () => {
         viewport={{ once: true }}
         className="flex lg:gap-x-3 gap-x-2 items-center justify-center"
       >
-        <motion.div
+        {/* <motion.div
           variants={childrenVariants}
           className="relative hidden md:block "
         >
@@ -37,7 +37,7 @@ const SearchAndNavIcon = () => {
           <div className="absolute   top-2 right-1.5">
             <Search size={20} color="#9E9E9E" />
           </div>
-        </motion.div>
+        </motion.div> */}
         <motion.li variants={childrenVariants}>
           <Link href={"/#"}>
             <svg

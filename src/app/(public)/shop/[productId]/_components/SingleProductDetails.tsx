@@ -6,6 +6,8 @@ import ProductDescription from "./ProductDescription";
 import CharitySupport from "./CharitySupport";
 import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
 import ReviewContainer from "./review/ReviewContainer";
+import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
+import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 
 const SingleProductDetails = () => {
   return (
@@ -22,7 +24,15 @@ const SingleProductDetails = () => {
       <CharitySupport></CharitySupport>
 
       <ProductDescription></ProductDescription>
-      <RecentlyViewed></RecentlyViewed>
+      <DisplayProductSection
+        title="Recently Viewed"
+        data={recentlyViewedData}
+      ></DisplayProductSection>
+
+      <DisplayProductSection
+        title="You may also like"
+        data={trendingProductData}
+      ></DisplayProductSection>
     </Container>
   );
 };

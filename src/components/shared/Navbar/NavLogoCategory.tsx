@@ -4,6 +4,8 @@ import logo from "@/assets/images/common-image/logo.png";
 import Image from "next/image";
 import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 // const category = [
 //   {
@@ -52,6 +54,16 @@ const NavLogoCategory = () => {
           <Link href={"/"}>
             <Image src={logo} alt="logo"></Image>
           </Link>
+        </div>
+
+        <div className="relative hidden md:block">
+          <Input
+            className="border-0 bg-slate-200 focus:outline-0 shadow-none focus-visible:ring-0 2xl:w-[600px] xl:w-[500px] lg:w-[450px] sm:w-[300px] px-2 rounded-sm"
+            placeholder="Search here for items or members"
+          ></Input>
+          <div className="absolute   top-2 right-1.5">
+            <Search size={20} color="#9E9E9E" />
+          </div>
         </div>
         {/* ======= search and nav icon  ========== */}
         <div className="md:block hidden ">

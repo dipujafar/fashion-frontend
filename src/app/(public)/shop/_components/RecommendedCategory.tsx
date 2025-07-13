@@ -42,7 +42,7 @@ export function RecommendedCategory() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="md:w-[200px] justify-between border-none bg-primary-light-pink"
+          className="md:w-[200px] justify-between border-none bg-[#f0f0f0]"
           style={{ boxShadow: "0px 4px 10px 0px rgba(0, 0, 0, 0.09)" }}
         >
           {value
@@ -52,7 +52,7 @@ export function RecommendedCategory() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="md:w-[200px] p-0 mt-2">
-        <Command className="bg-primary-light-pink">
+        <Command className="bg-[#f0f0f0]">
           <CommandList>
             <CommandGroup>
               {frameworks.map((framework) => (

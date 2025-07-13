@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="hidden md:block">
         <NavLinksSection></NavLinksSection>
       </div>
-      <NavbarCategories></NavbarCategories>
+      <NavbarCategories />
     </div>
   );
 };
