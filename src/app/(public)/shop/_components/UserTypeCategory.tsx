@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const frameworks = [
+const userTypes = [
   {
     value: "charity",
     label: "Charity",
@@ -65,7 +65,7 @@ export function UserTypeCategory() {
           style={{ boxShadow: "0px 4px 10px 0px rgba(0, 0, 0, 0.09)" }}
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
+            ? userTypes.find((userType) => userType.value === value)?.label
             : "User Type"}
           <ChevronsUpDown className="opacity-50" />
         </Button>
@@ -74,20 +74,20 @@ export function UserTypeCategory() {
         <Command className="bg-[#f0f0f0]">
           <CommandList>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {userTypes.map((userType) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={userType.value}
+                  value={userType.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
                 >
-                  {framework.label}
+                  {userType.label}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === userType.value ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

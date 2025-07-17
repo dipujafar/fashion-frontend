@@ -28,7 +28,7 @@ import { Search } from "lucide-react";
 const NavLogoCategory = () => {
   return (
     <div>
-      <Container className="flex justify-between items-center gap-x-5 bg-primary-white py-4">
+      <Container className="flex justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16 bg-primary-white py-4">
         {/* ======= Small Screen view ========== */}
         <SmallDeviceView></SmallDeviceView>
         {/* ======= category ========== */}
@@ -56,9 +56,9 @@ const NavLogoCategory = () => {
           </Link>
         </div>
 
-        <div className="relative hidden md:block">
+        <div className="relative hidden md:block flex-1">
           <Input
-            className="border-0 bg-slate-200 focus:outline-0 shadow-none focus-visible:ring-0 2xl:w-[600px] xl:w-[500px] lg:w-[450px] sm:w-[300px] px-2 rounded-sm"
+            className="border-0 bg-slate-200 focus:outline-0 shadow-none focus-visible:ring-0 w-full px-2 rounded-sm"
             placeholder="Search here for items or members"
           ></Input>
           <div className="absolute   top-2 right-1.5">

@@ -1,5 +1,6 @@
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import CommonButton from "@/components/ui/common-button";
+import { Rating } from "@/components/ui/rating";
 import { LocationIcon } from "@/icons";
 import { userTagColor } from "@/utils/userTagColor";
 import { Check } from "lucide-react";
@@ -60,12 +61,20 @@ const SellerDetails = () => {
           </div>
 
           <div className="flex-between gap-x-2">
-            <Link
-              href="/users/seller-profile"
-              className="flex items-center gap-x-2 group cursor-pointer"
-            >
-              <h5 className="font-medium">Anita_Rahman</h5>
-            </Link>
+            <div>
+              <Link
+                href="/users/seller-profile"
+                className="flex items-center gap-x-2 group cursor-pointer"
+              >
+                <h5 className="font-medium">Anita_Rahman</h5>
+              </Link>
+              <div className="flex items-center gap-x-1">
+                <Rating rating={5} size={16}></Rating>
+                <p className="text-primary-gray md:text-base text-sm">
+                  (5)
+                </p>
+              </div>
+            </div>
             <div className="flex gap-x-2 items-center">
               <LocationIcon />
 

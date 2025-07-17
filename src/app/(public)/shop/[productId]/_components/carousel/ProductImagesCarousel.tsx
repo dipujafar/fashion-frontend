@@ -55,7 +55,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
                   height={500}
                   alt="product_image"
                   quality={100}
-                  className=" h-[750px] object-cover w-full max-h-screen mx-auto"
+                  className=" h-[750px] object-contain w-full max-h-screen mx-auto"
                 ></Image>
               </Zoom>
             </div>
