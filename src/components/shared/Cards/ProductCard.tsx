@@ -6,13 +6,16 @@ import { userTagColor } from "@/utils/userTagColor";
 import { Check, Heart, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 const ProductCard = ({
   data,
   ownProduct,
+  children
 }: {
   data: TProduct;
   ownProduct?: boolean;
+  children?: ReactNode;
 }) => {
   return (
     <Card className="border-none shadow-none p-0">
@@ -123,6 +126,7 @@ const ProductCard = ({
             <p>{data?.location}</p>
           </div>}
         </div>
+        {children}
       </CardContent>
     </Card>
   );
