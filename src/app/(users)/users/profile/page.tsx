@@ -6,6 +6,7 @@ import Link from "next/link";
 import UserInfo from "./_components/UserInfo";
 import StatsInfo from "./_components/StatsInfo";
 import ProfileFeatures from "./_components/ProfileFeatures";
+import EnableBundleCreation from "./_components/EnableBundleCreation";
 
 const UserProfilePage = () => {
   return (
@@ -21,6 +22,7 @@ const UserProfilePage = () => {
           <UserInfo />
           <StatsInfo />
         </div>
+        <EnableBundleCreation />
         <ProfileFeatures />
       </Container>
     </div>

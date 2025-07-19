@@ -769,3 +769,41 @@ export function LocationIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function InfoIcon3({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="21"
+      viewBox="0 0 20 21"
+      fill="none"
+      className={className}
+    >
+      <g clip-path="url(#clip0_20621_33947)">
+        <path
+          d="M13.1083 2.7041H6.89167L2.5 7.09577V13.3124L6.89167 17.7041H13.1083L17.5 13.3124V7.09577L13.1083 2.7041ZM15.8333 12.6208L12.4167 16.0374H7.58333L4.16667 12.6208V7.78744L7.58333 4.37077H12.4167L15.8333 7.78744V12.6208Z"
+          fill="#E12728"
+        />
+        <path
+          d="M10.8346 6.0376H9.16797V11.0376H10.8346V6.0376Z"
+          fill="#E12728"
+        />
+        <path
+          d="M10.8346 12.7041H9.16797V14.3708H10.8346V12.7041Z"
+          fill="#E12728"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_20621_33947">
+          <rect
+            width="20"
+            height="20"
+            fill="white"
+            transform="translate(0 0.204102)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}

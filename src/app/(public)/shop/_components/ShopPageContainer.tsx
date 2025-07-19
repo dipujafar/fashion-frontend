@@ -1,23 +1,11 @@
-import Categories from "@/components/shared/Categories/Categories";
-import { brandsData } from "@/lib/brandsData";
-import { collectionTypes } from "@/lib/collectionType";
-import { discountData } from "@/lib/discountData";
-import ColorCategory from "./ColorCategory";
-import PriceCategory from "./PriceCategory";
 import ProductCategory from "./ProductCategory";
 import AllProducts from "./AllProducts";
-import { RecommendedCategory } from "./RecommendedCategory";
-import { UserTypeCategory } from "./UserTypeCategory";
 import { SmallDeviceFilter } from "./SmallDeviceFilter";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import AllCategory from "./AllCategories";
 import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { sizeData } from "@/lib/sizeData";
-import { materialData } from "@/lib/materialData";
-import { conditionData } from "@/lib/conditionData";
 import CategoryFilter from "./CategoriesFilter";
 
 const ShopPageContainer = () => {
@@ -49,16 +37,7 @@ const ShopPageContainer = () => {
                 </div> */}
 
                 {/* ===================================search for item ================================= */}
-                <div/>
-                <div className="relative hidden md:block">
-                  <Input
-                    className="border-0 bg-slate-200 focus:outline-0 shadow-none focus-visible:ring-0 2xl:w-[450px]  lg:w-[350px] sm:w-[250px] px-2 rounded-sm"
-                    placeholder="Search here for items...."
-                  ></Input>
-                  <div className="absolute   top-2 right-1.5">
-                    <Search size={20} color="#9E9E9E" />
-                  </div>
-                </div>
+                <div />
 
                 <div className="lg:hidden block">
                   <SmallDeviceFilter></SmallDeviceFilter>
@@ -66,16 +45,6 @@ const ShopPageContainer = () => {
               </div>
             </div>
 
-            {/* ===================================search in small screen for item ================================= */}
-            <div className="relative md:hidden block mb-4">
-              <Input
-                className="border-0 bg-slate-200 focus:outline-0 shadow-none focus-visible:ring-0 2xl:w-[450px]  lg:w-[350px] sm:w-[250px] px-2 rounded-sm"
-                placeholder="Search here for items...."
-              ></Input>
-              <div className="absolute   top-2 right-1.5">
-                <Search size={20} color="#9E9E9E" />
-              </div>
-            </div>
             {/* ========================= all products ========================== */}
             <AllProducts></AllProducts>
           </div>

@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
@@ -32,8 +31,7 @@ const bundleData = [
 ];
 
 export default function ChoiceBundleModal() {
-    const { updateSearchParams } = useUpdateSearchParams();
-    const [selectItem, setSelectItem] = useState(0)
+  const [selectItem, setSelectItem] = useState(0);
   return (
     <Dialog>
       <DialogTrigger>
@@ -56,14 +54,31 @@ export default function ChoiceBundleModal() {
             <div
               onClick={() => setSelectItem(bundle?.item)}
               key={bundle?.id}
-              className={cn("flex justify-between items-center border border-black rounded-xl bg-gray-50 py-3 px-5 cursor-pointer", selectItem === bundle?.item && "bg-[#000] border-primary-gray/40 text-white duration-500")}
+              className={cn(
+                "flex justify-between items-center border border-black rounded-xl bg-gray-50 py-3 px-5 cursor-pointer",
+                selectItem === bundle?.item &&
+                  "bg-[#000] border-primary-gray/40 text-white duration-500"
+              )}
             >
               <span className="text-lg">{bundle.item} Items</span>
               <span className="text-lg">{bundle.discount}%</span>
             </div>
           ))}
         </div>
-       <Link href={`/build-bundle`} className="w-full"> <Button variant={"outline"} className="border-black mt-3 uppercase py-5 cursor-pointer w-full">Choose a bundle</Button></Link>
+        <Link
+          href={`/build-bundle?item=${selectItem}&discount=${
+            bundleData?.find((bundle) => bundle?.item === selectItem)?.discount
+          }`}
+          className="w-full"
+        >
+          {" "}
+          <Button
+            variant={"outline"}
+            className="border-black mt-3 uppercase py-5 cursor-pointer w-full"
+          >
+            Choose a bundle
+          </Button>
+        </Link>
       </DialogContent>
     </Dialog>
   );
