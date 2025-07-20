@@ -14,10 +14,9 @@ export function TextAnimation({
     visible: { opacity: 1, x: 0 },
   },
   className = "",
-  reverse = false,
 }) {
   return (
-    <div className="flex  space-x-1">
+    <div className="flex  ">
       <AnimatePresence>
         {text.split("").map((char, i) => (
           <motion.h1
@@ -27,17 +26,10 @@ export function TextAnimation({
             viewport={{ once: true }}
             exit="hidden"
             variants={framerProps}
-            transition={
-              reverse
-                ? {
-                    duration,
-                    delay: initialDelay + (text?.length - 1 - i) * delayMultiple, // reversed delay here
-                  }
-                : { duration, delay: initialDelay + i * delayMultiple }
-            }
+            transition={{ duration, delay: initialDelay + i * delayMultiple }}
             className={cn("tracking-tight", className)}
           >
-            {char === " " ? <span>&nbsp;</span> : char} 
+            {char === " " ? <span>&nbsp;</span> : char}
           </motion.h1>
         ))}
       </AnimatePresence>
