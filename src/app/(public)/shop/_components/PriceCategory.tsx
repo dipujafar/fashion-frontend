@@ -60,10 +60,10 @@ const PriceCategory = () => {
         initial={show ? "visible" : "hidden"}
         animate={show ? "visible" : "hidden"}
         exit="hidden"
-        variants={containerVariants}
+        variants={containerVariants as any}
       >
         <motion.div
-          variants={parentVariants}
+          variants={parentVariants as any}
           initial="initial"
           whileInView="animate"
           exit="exit"

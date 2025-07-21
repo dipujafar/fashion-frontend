@@ -27,7 +27,7 @@ const ValuesData = () => {
         className="md:space-y-8 space-y-5"
       >
         <motion.div
-          variants={parentVariants}
+          variants={parentVariants as any}
           initial="initial"
           whileInView="animate"
           exit="exit"

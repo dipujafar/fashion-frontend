@@ -1,7 +1,6 @@
 import image1 from "@/assets/images/home/hero/hero_image_4.png";
 import image2 from "@/assets/images/home/hero/hero_image2.png";
 import image3 from "@/assets/images/home/hero/hero_image3.png"
-import image4 from "@/assets/images/home/hero/hero_image6.jpg"
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

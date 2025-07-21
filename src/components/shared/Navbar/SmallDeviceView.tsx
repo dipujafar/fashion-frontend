@@ -34,7 +34,7 @@ const SmallDeviceView = () => {
             viewport={{ once: true }}
           >
             <motion.ul
-              variants={parentVariants}
+              variants={parentVariants as any}
               initial="initial"
               whileInView="animate"
               exit="exit"

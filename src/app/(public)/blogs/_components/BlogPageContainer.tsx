@@ -31,12 +31,12 @@ const BlogPageContainer = () => {
       <motion.div
         initial="initial"
         whileInView="animate"
-        variants={fadeUpVariants}
+        variants={fadeUpVariants as any}
         viewport={{ once: true }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-8 gap-4 xl:mt-8 mt-4"
       >
         {blogsData?.map((blog) => (
-          <motion.div variants={fadeUpVariants} key={blog?._id}>
+          <motion.div variants={fadeUpVariants as any} key={blog?._id}>
             <Link href={`/blogs/${blog?._id}`}>
               <BlogCard data={blog}></BlogCard>
             </Link>

@@ -29,7 +29,7 @@ const ShopPageContainer = () => {
           <div className="2xl:col-span-5 xl:col-span-4 md:col-span-3 ">
             {/* =============================== categories ========================== */}
             <div>
-              <CategoryFilter />
+              {/* <CategoryFilter /> */}
               <div className="flex justify-between items-center xl:mb-8 mb-4 ">
                 {/* <div className="flex gap-x-2 items-center justify-center">
                   <RecommendedCategory></RecommendedCategory>

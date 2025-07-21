@@ -41,12 +41,12 @@ const TrendingItem = () => {
       <motion.div
         initial="initial"
         whileInView="animate"
-        variants={fadeUpVariants}
+        variants={fadeUpVariants as any}
         viewport={{ once: true }}
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-4 gap-3 xl:mt-8  md:mt-6 mt-4"
       >
         {trendingProductData?.map((data) => (
-          <motion.div key={data?._id} variants={fadeUpVariants}  >
+          <motion.div key={data?._id} variants={fadeUpVariants as any}>
             <Link href={`/shop/${data?._id}`}>
               <ProductImageCard data={data}></ProductImageCard>
             </Link>

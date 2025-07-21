@@ -91,7 +91,7 @@ const ProductDescription = () => {
           initial={showDescription ? "visible" : "hidden"}
           animate={showDescription ? "visible" : "hidden"}
           exit="hidden"
-          variants={containerVariants}
+          variants={containerVariants as any}
           className={cn(
             "text-primary-gray overflow-hidden"
             // showDescription ? "h-max" : "h-0"
@@ -145,7 +145,7 @@ const ProductDescription = () => {
           initial={showShipping ? "visible" : "hidden"}
           animate={showShipping ? "visible" : "hidden"}
           exit="hidden"
-          variants={containerVariants}
+          variants={containerVariants as any}
           className="text-primary-gray overflow-hidden"
         >
           <p>
@@ -221,7 +221,7 @@ const ProductDescription = () => {
           initial={showDeliveryPolicy ? "visible" : "hidden"}
           animate={showDeliveryPolicy ? "visible" : "hidden"}
           exit="hidden"
-          variants={containerVariants}
+          variants={containerVariants as any}
           className="text-primary-gray overflow-hidden"
         >
           <p>

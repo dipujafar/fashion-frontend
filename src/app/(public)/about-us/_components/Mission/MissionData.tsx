@@ -20,7 +20,7 @@ const MissionData = () => {
       viewport={{ once: true }}
     >
       <motion.div
-        variants={parentVariants}
+        variants={parentVariants as any}
         initial="initial"
         whileInView="animate"
         exit="exit"
@@ -29,7 +29,7 @@ const MissionData = () => {
       >
         {missions.map((mission, index) => (
           <motion.div
-            variants={childrenVariants}
+            variants={childrenVariants as any}
             key={index}
             className="flex gap-x-3 items-center"
           >

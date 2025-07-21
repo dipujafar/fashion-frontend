@@ -60,12 +60,12 @@ const FeatureProduct = () => {
       <motion.div
         initial="initial"
         whileInView="animate"
-        variants={fadeUpVariants}
+        variants={fadeUpVariants as any}
         viewport={{ once: true }}
         className="grid grid-cols-2 md:grid-cols-3     2xl:grid-cols-4  md:gap-4 gap-x-2 gap-y-4 xl:gap-6 "
       >
         {productsData?.slice(0, 8).map((user) => (
-          <motion.div variants={fadeUpVariants} key={user._id}>
+          <motion.div variants={fadeUpVariants as any} key={user._id}>
             <ProductCard data={user}></ProductCard>
           </motion.div>
         ))}

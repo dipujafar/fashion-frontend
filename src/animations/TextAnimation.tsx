@@ -25,7 +25,7 @@ export function TextAnimation({
             whileInView="visible"
             viewport={{ once: true }}
             exit="hidden"
-            variants={framerProps}
+            variants={framerProps as any}
             transition={{ duration, delay: initialDelay + i * delayMultiple }}
             className={cn("tracking-tight", className)}
           >

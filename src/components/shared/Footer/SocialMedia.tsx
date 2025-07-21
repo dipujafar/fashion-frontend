@@ -34,13 +34,13 @@ const SocialMedia = () => {
         whileInView={{
           opacity: 1,
           y: "0%",
-          transition: { duration: 0.5, easing: "easeIn" },
+          transition: { duration: 0.5, ease: "easeInOut" },
         }}
         viewport={{ once: true }}
         exit={{ opacity: 0, y: "10%" }}
       >
         <motion.ul
-          variants={parentVariants}
+          variants={parentVariants as any}
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}

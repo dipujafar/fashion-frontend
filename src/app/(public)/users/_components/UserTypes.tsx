@@ -57,11 +57,11 @@ const UserTypes = () => {
         initial={show ? "visible" : "hidden"}
         animate={show ? "visible" : "hidden"}
         exit="hidden"
-        variants={containerVariants}
+        variants={containerVariants as any}
         className="overflow-hidden"
       >
         <motion.div
-          variants={parentVariants}
+          variants={parentVariants as any}
           initial="initial"
           whileInView="animate"
           exit="exit"
