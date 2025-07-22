@@ -1,19 +1,38 @@
+"use client";
 import ProductCategory from "./ProductCategory";
 import AllProducts from "./AllProducts";
 import { SmallDeviceFilter } from "./SmallDeviceFilter";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import CategoryFilter from "./CategoriesFilter";
+// import AllCategory from "./AllCategories";
 
 const ShopPageContainer = () => {
+  const filterOptions = useSearchParams().get("category");
+  const subCategory = useSearchParams().get("subCategory");
+  const finalCategory = useSearchParams().get("finalCategory");
+
+
+
   return (
     <>
       <div>
         <ProductCategory></ProductCategory>
         {/* <AllCategory /> */}
+        
+
+        {/* ----------------------------------------- show filter option ------------------------------------- */}
+        <div className="mt-5 space-x-2 text-black/70 mb-5">
+          <span>{filterOptions}</span> {subCategory && <span>/</span>}{" "}
+          <span>{subCategory}</span> {finalCategory && <span>/</span>}{" "}
+          <span>{finalCategory}</span>
+        </div>
+        {/* ------------------------------------------------------------------------------------------------ */}
+        <CategoryFilter/>
+
+
         <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
           {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
             <Categories title="Category" data={collectionTypes}></Categories>
