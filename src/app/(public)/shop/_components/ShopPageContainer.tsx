@@ -7,6 +7,7 @@ import DisplayProductSection from "@/components/shared/DisplayProductSection/Dis
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import { useSearchParams } from "next/navigation";
 import CategoryFilter from "./CategoriesFilter";
+import { formatLabel } from "@/utils/formatText";
 // import AllCategory from "./AllCategories";
 
 const ShopPageContainer = () => {
@@ -14,24 +15,22 @@ const ShopPageContainer = () => {
   const subCategory = useSearchParams().get("subCategory");
   const finalCategory = useSearchParams().get("finalCategory");
 
-
-
   return (
     <>
       <div>
         <ProductCategory></ProductCategory>
         {/* <AllCategory /> */}
-        
 
         {/* ----------------------------------------- show filter option ------------------------------------- */}
         <div className="mt-5 space-x-2 text-black/70 mb-5">
-          <span>{filterOptions}</span> {subCategory && <span>/</span>}{" "}
-          <span>{subCategory}</span> {finalCategory && <span>/</span>}{" "}
-          <span>{finalCategory}</span>
+          {filterOptions &&<span>{formatLabel(filterOptions as string)}</span>}{" "}
+          {subCategory && <span>/</span>}{" "}
+         { subCategory && <span>{formatLabel(subCategory as string)}</span>}{" "}
+          {finalCategory && <span>/</span>}{" "}
+          { finalCategory && <span>{formatLabel(finalCategory as string)}</span>}
         </div>
         {/* ------------------------------------------------------------------------------------------------ */}
-        <CategoryFilter/>
-
+        <CategoryFilter />
 
         <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
           {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
