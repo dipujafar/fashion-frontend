@@ -744,25 +744,6 @@ export default function AddProductForm() {
                   )}
                 />
 
-                {/* Duration Time */}
-                <FormField
-                  control={form.control}
-                  name="durationTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Duration Time</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="e.g. Working time"
-                          {...field}
-                          className="bg-[#f2f2f2] md:py-5"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
                 {/* Returns Policy */}
                 <FormField
                   control={form.control}
@@ -789,6 +770,25 @@ export default function AddProductForm() {
                             </label>
                           </div>
                         </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Duration Time */}
+                <FormField
+                  control={form.control}
+                  name="durationTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Duration Time</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g. Working time"
+                          {...field}
+                          className="bg-[#f2f2f2] md:py-5"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
