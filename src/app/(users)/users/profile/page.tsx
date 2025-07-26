@@ -1,5 +1,4 @@
 import React from "react";
-import UserProfileInfo from "./_components/UserProfileInfo";
 import CommonButton from "@/components/ui/common-button";
 import Container from "@/components/shared/Container";
 import Link from "next/link";
@@ -7,6 +6,7 @@ import UserInfo from "./_components/UserInfo";
 import StatsInfo from "./_components/StatsInfo";
 import ProfileFeatures from "./_components/ProfileFeatures";
 import EnableBundleCreation from "./_components/EnableBundleCreation";
+import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 
 const UserProfilePage = () => {
   return (
