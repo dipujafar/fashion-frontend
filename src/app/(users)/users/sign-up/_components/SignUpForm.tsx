@@ -20,7 +20,7 @@ import CommonButton from "@/components/ui/common-button";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import facebook from "@/assets/icons/facebook.png";
 import instagram from "@/assets/icons/instagram.png";
-import linkedin from "@/assets/icons/linkedin.png";
+import tiktok from "@/assets/icons/tiktokIcon.png";
 import XIcon from "@/assets/icons/x-icon.png";
 import Image from "next/image";
 
@@ -44,8 +44,8 @@ const formSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
-    .min(8, { message: " passwords must be at least 8 characters long" })
-    .max(64, { message: " passwords must be at most 64 characters long" })
+    .min(8, { message: "passwords must be at least 8 characters long" })
+    .max(64, { message: "passwords must be at most 64 characters long" })
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       {
@@ -263,7 +263,7 @@ const SignUpForm = () => {
                   />
                 </div>
                 <div className="flex items-center gap-x-2">
-                  <Image src={linkedin} alt="logo" className="w-[40px] h-[40px]" />
+                  <Image src={tiktok} alt="logo" className="w-[40px] h-[40px]" />
                   <Input
                     {...form.register(`socialMedia.${0}.tiktok`)}
                     type="text"

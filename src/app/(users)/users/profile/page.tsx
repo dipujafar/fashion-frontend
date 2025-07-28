@@ -2,11 +2,11 @@ import React from "react";
 import CommonButton from "@/components/ui/common-button";
 import Container from "@/components/shared/Container";
 import Link from "next/link";
-import UserInfo from "./_components/UserInfo";
-import StatsInfo from "./_components/StatsInfo";
-import ProfileFeatures from "./_components/ProfileFeatures";
 import EnableBundleCreation from "./_components/EnableBundleCreation";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
+import UserInfo from "@/components/shared/UserProfile/UserInfo";
+import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
+import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
 
 const UserProfilePage = () => {
   return (
@@ -19,11 +19,11 @@ const UserProfilePage = () => {
           </CommonButton>
         </Link>
         <div className="flex lg:flex-row flex-col gap-5">
-          <UserInfo />
-          <StatsInfo />
+          <UserInfo userRole="user" />
+          <StatsInfo userRole="user" />
         </div>
         <EnableBundleCreation />
-        <ProfileFeatures />
+        <ProfileFeatures userRole="user" />
       </Container>
     </div>
   );

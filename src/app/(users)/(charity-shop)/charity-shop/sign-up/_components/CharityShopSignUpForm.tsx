@@ -28,7 +28,13 @@ import tiktok from "@/assets/icons/tiktokIcon.png";
 import DonationTypeDialog from "./DonationTypeDialog";
 
 const formSchema = z.object({
-  name: z
+  firstName: z
+    .string({ required_error: "First Name is required" })
+    .min(1, { message: "First Name is required" }),
+  lastName: z
+    .string({ required_error: "Last Name is required" })
+    .min(1, { message: "Last Name is required" }),
+  userName: z
     .string({ required_error: "Name is required" })
     .min(1, { message: "Name is required" }),
   businessEmail: z
@@ -85,7 +91,9 @@ const BusinessSignUpForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
+      userName: "",
       businessEmail: "",
       phoneNumber: "",
       businessTags: [],
@@ -173,15 +181,56 @@ const BusinessSignUpForm = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="md:space-y-6 space-y-4"
             >
+              <div className="flex flex-col md:flex-row md:items-center gap-4">
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your first name"
+                            {...field}
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your last name"
+                            {...field}
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
               <FormField
                 control={form.control}
-                name="name"
+                name="userName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>User Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your business name"
+                        placeholder="Enter your user name"
                         {...field}
                         className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
                       />

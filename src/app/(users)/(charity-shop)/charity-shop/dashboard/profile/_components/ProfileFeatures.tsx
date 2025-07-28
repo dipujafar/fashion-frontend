@@ -1,9 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 import ProfileContainerForm from "./ProfileContainerForm";
-import CharityTable from "./CharitySupport";
 import CustomerFeedbacks from "@/components/shared/UserProfile/ProfileDashboard/CustomerFeedbacks";
-
 
 const ProfileFeatures = () => {
   return (
@@ -20,12 +18,6 @@ const ProfileFeatures = () => {
             Profile Details
           </TabsTrigger>
           <TabsTrigger
-            value="charity_support"
-            className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
-          >
-            Charity Support
-          </TabsTrigger>
-          <TabsTrigger
             value="reviews_ratings"
             className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
           >
@@ -34,9 +26,6 @@ const ProfileFeatures = () => {
         </TabsList>
         <TabsContent value="profile_details">
           <ProfileContainerForm />
-        </TabsContent>
-        <TabsContent value="charity_support">
-          <CharityTable />
         </TabsContent>
         <TabsContent value="reviews_ratings">
           <CustomerFeedbacks />

@@ -34,13 +34,13 @@ export default function UserProfileInfo(
           <CustomAvatar
             img={profileImage}
             name="Sarah_Style"
-            className="md:size-40 size-24"
+            className="md:size-36 size-24"
           />
         </div>
       </div>
 
       {/* Profile Info */}
-      <div className="mt-20 text-center px-4 max-w-3xl mx-auto">
+      <div className="mt-20 text-center px-4 max-w-5xl mx-auto">
         <h2 className="md:text-xl font-bold">{name}</h2>
         <p className="mt-2 md:text-xl text-black/60 ">
           {bio}
