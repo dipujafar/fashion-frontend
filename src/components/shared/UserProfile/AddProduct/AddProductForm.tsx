@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent} from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
@@ -198,7 +197,7 @@ export default function AddProductForm() {
               <div className="space-y-4">
                 <label className="text-base font-medium">Product Images</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {imagePreviews.map((preview, index) => (
+                  {imagePreviews?.map((preview, index) => (
                     <div key={index} className="relative group">
                       <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
                         <img
@@ -217,7 +216,7 @@ export default function AddProductForm() {
                     </div>
                   ))}
 
-                  {images.length < 8 && (
+                  {images?.length < 8 && (
                     <div
                       onDrop={handleDrop}
                       onDragOver={handleDragOver}
@@ -497,28 +496,16 @@ export default function AddProductForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Color</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                            <SelectValue placeholder="Select colors" />
-                          </SelectTrigger>
+                       <FormControl>
+                          <div className="relative">
+                            <Input
+                              type="color"
+                              placeholder="Enter Amount (%)"
+                              {...field}
+                              className="bg-[#f2f2f2] "
+                            />
+                          </div>
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="red-black">Red, Black</SelectItem>
-                          <SelectItem value="blue-white">
-                            Blue, White
-                          </SelectItem>
-                          <SelectItem value="black">Black</SelectItem>
-                          <SelectItem value="white">White</SelectItem>
-                          <SelectItem value="red">Red</SelectItem>
-                          <SelectItem value="blue">Blue</SelectItem>
-                          <SelectItem value="green">Green</SelectItem>
-                          <SelectItem value="multicolor">Multicolor</SelectItem>
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

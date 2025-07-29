@@ -1,17 +1,39 @@
 import Container from "@/components/shared/Container";
-import ProfileDetailsCard from "./_components/ProfileDetailsCard";
+import ProfileDetailsCard from "../../../../components/shared/UserProfile/ProfileDetailsCard";
 import ProfileFeatures from "./_components/ProfileFeatures";
+import { DownArrowIcon, UpArrowIcon } from "@/icons";
+
+const cardDetailsData = [
+  {
+    id: 1,
+    title: "Total Sales",
+    value: "120 items sold",
+    icon: <UpArrowIcon/>,
+  },
+  {
+    id: 2,
+    title: "Total Earnings",
+    value: "$5,000 earned",
+    icon: <DownArrowIcon/>,
+  },
+  {
+    id: 3,
+    title: "Total Followers",
+    value: "12",
+    icon: <DownArrowIcon/>,
+  },
+  {
+    id: 4,
+    title: "Total Funds Raised",
+    value: "$2,00",
+    icon: <UpArrowIcon/>,
+  },
+];
 
 const ProfilePage = () => {
   return (
     <Container className="space-y-5">
-      <ProfileDetailsCard
-        orderId="120 items sold"
-        trackingCode="
-        $5,000 earned"
-        name="12"
-        address="$2,00"
-      />
+      <ProfileDetailsCard data={cardDetailsData} />
       <ProfileFeatures />
     </Container>
   );

@@ -93,6 +93,7 @@ const ProfileContainerForm = () => {
     null
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [document, setDocument] = useState<string[] | null>(["Document.pdf"]);
 
   const handleTagKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && currentTag.trim()) {
@@ -544,16 +545,25 @@ const ProfileContainerForm = () => {
                       </label>
                     </div>
                   </div>
-                  <div
-                    className="bg-[#FFF9F9] mt-3 flex items-center justify-between gap-x-2 px-3 py-2 rounded-xl"
-                    style={{ boxShadow: "0 4px 10px 0 rgba(0, 0, 0, 0.11)" }}
-                  >
-                    <div className="flex items-center gap-x-2">
-                      <DocumentIcon className="w-10 h-10" />
-                      <h4 className="text-[#E12728]">Document.pdf</h4>
+
+                  {document?.map((doc, index) => (
+                    <div
+                      key={index}
+                      className="bg-[#FFF9F9] mt-3 flex items-center justify-between gap-x-2 px-3 py-2 rounded-xl"
+                      style={{ boxShadow: "0 4px 10px 0 rgba(0, 0, 0, 0.11)" }}
+                    >
+                      <div className="flex items-center gap-x-2">
+                        <DocumentIcon className="w-10 h-10" />
+                        <h4 className="text-[#E12728]">{doc}</h4>
+                      </div>
+                      <Trash2
+                        onClick={() => setDocument(null)}
+                        color="red"
+                        size={20}
+                        className="cursor-pointer"
+                      />
                     </div>
-                    <Trash2 color="red" size={20} className="cursor-pointer" />
-                  </div>
+                  ))}
                 </div>
 
                 {/* Country, State, City Selector */}

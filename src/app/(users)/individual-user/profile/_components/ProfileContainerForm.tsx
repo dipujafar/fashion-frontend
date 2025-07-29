@@ -26,7 +26,7 @@ import CustomAvatar from "@/components/shared/CustomAvatar";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 import facebook from "@/assets/icons/facebook.png";
 import instagram from "@/assets/icons/instagram.png";
-import linkedin from "@/assets/icons/linkedin.png";
+import tiktok from "@/assets/icons/tiktokIcon.png";
 import XIcon from "@/assets/icons/x-icon.png";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 
@@ -389,7 +389,7 @@ const ProfileContainerForm = () => {
                     </div>
                     <div className="flex items-center gap-x-2">
                       <Image
-                        src={linkedin}
+                        src={tiktok}
                         alt="logo"
                         className="w-[40px] h-[40px]"
                       />

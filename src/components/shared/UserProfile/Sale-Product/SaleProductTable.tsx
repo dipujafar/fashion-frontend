@@ -1,5 +1,4 @@
-"use client";
-
+"use client";;
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,26 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ArrowDownWideNarrow, CalendarDays, Search } from "lucide-react";
+import { ArrowDownWideNarrow } from "lucide-react";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 import { EaringIcon, TotalSaleIcon } from "@/icons";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import Link from "next/link";
-import { ReturnProductModal } from "./ReturnProductModal";
+import { ReturnProductModal } from "../../../../app/(users)/individual-user/uploaded-products-list/sale/_components/ReturnProductModal";
 
 interface SaleItem {
   id: string;
@@ -109,9 +94,8 @@ const salesData: SaleItem[] = [
   },
 ];
 
-export default function SaleProductTable() {
+export default function SaleProductTable({userRole}: {userRole?: string}) {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [date, setDate] = useState<Date | undefined>(new Date());
   const [salesItems, setSalesItems] = useState<SaleItem[]>(salesData);
   const [openRequestModal, setOpenRequestModal] = useState<boolean>(false);
   const [statusFilter, setStatusFilter] = useState<
@@ -161,46 +145,6 @@ export default function SaleProductTable() {
 
   return (
     <div>
-      {/* ------------------- filter and navigate section ------------------ */}
-      <div className="mb-5 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="relative ">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search here...."
-            className="pl-10 bg-black/5 py-5"
-          />
-        </div>
-        <div>
-          <Popover>
-            <PopoverTrigger className="w-full text-start">
-              <div className="p-2 bg-black/5 rounded-lg border flex  justify-between ">
-                <p className="text-[#8A8A8A]">Filter by date</p>
-                <CalendarDays size={20} color="#8A8A8A" />
-              </div>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className=""
-                captionLayout="dropdown"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-        <Link href={"/individual-user/uploaded-products-list/sale"}>
-          <div className="p-2 bg-black text-white rounded-lg  ">
-            <p>Sale</p>
-          </div>
-        </Link>
-        <Link href={"/individual-user/uploaded-products-list/purchase-product"}>
-          <div className="p-2 bg-black/5 rounded-lg  ">
-            <p className="text-[#8A8A8A]">Purchase</p>
-          </div>
-        </Link>
-      </div>
-
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2  gap-4 mb-4">
         <Card>
@@ -224,7 +168,7 @@ export default function SaleProductTable() {
                 <EaringIcon />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Earnings</p>
+                <p className="text-sm text-muted-foreground">{userRole !== "charity store" ?"Total Earnings": "Total Fund Rised"}</p>
                 <p className="text-2xl font-bold">
                   ${totalEarnings.toLocaleString()}
                 </p>
@@ -234,11 +178,11 @@ export default function SaleProductTable() {
         </Card>
       </div>
 
-      <div className="flex justify-end mb-3">
+      {/* <div className="flex justify-end mb-3">
         <Button variant="outline" className="cursor-pointer border-black/60">
           Cancel Product
         </Button>
-      </div>
+      </div> */}
       {/* Table Section */}
       <Card className="py-0">
         <CardContent className="p-0">
@@ -327,7 +271,11 @@ export default function SaleProductTable() {
                     </TableCell>
                     <TableCell className=" text-center -translate-x-4">
                       {item?.status === "Return Request" ? (
-                        <Badge className="cursor-pointer" onClick={()=> setOpenRequestModal(true)} variant={getStatusBadgeVariant(item.status)}>
+                        <Badge
+                          className="cursor-pointer"
+                          onClick={() => setOpenRequestModal(true)}
+                          variant={getStatusBadgeVariant(item.status)}
+                        >
                           {item.status}
                         </Badge>
                       ) : (
@@ -344,7 +292,10 @@ export default function SaleProductTable() {
         </CardContent>
       </Card>
       <PaginationSection className="mt-5" />
-      <ReturnProductModal open={openRequestModal} setOpen={setOpenRequestModal} />
+      <ReturnProductModal
+        open={openRequestModal}
+        setOpen={setOpenRequestModal}
+      />
     </div>
   );
 }

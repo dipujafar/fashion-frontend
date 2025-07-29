@@ -1,8 +1,7 @@
-"use client";
-
+"use client";;
 import { useState } from "react";
 import Image from "next/image";
-import { Eye, ChevronDown, Search, CalendarDays } from "lucide-react";
+import { Eye, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -20,14 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import Link from "next/link";
 
 interface Product {
   id: string;
@@ -107,7 +98,6 @@ const products: Product[] = [
 
 export default function UploadedProductListTable() {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [date, setDate] = useState<Date | undefined>(new Date());
   const [statusFilters, setStatusFilters] = useState<string[]>([
     "Pending",
     "Approved",
@@ -157,45 +147,7 @@ export default function UploadedProductListTable() {
 
   return (
     <div>
-      {/* ------------------- filter and navigate section ------------------ */}
-      <div className="mb-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="relative ">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search here...."
-            className="pl-10 bg-black/5 py-5"
-          />
-        </div>
-        <div>
-          <Popover>
-            <PopoverTrigger className="w-full text-start">
-              <div className="p-2 bg-black/5 rounded-lg border flex  justify-between ">
-                <p className="text-[#8A8A8A]">Filter by date</p>
-                <CalendarDays size={20} color="#8A8A8A" />
-              </div>
-            </PopoverTrigger>
-            <PopoverContent className="">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className=""
-                captionLayout="dropdown"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-        <Link href={"/individual-user/uploaded-products-list/sale"}>
-          <div className="p-2 bg-black/5 rounded-lg  ">
-            <p className="text-[#8A8A8A]">Sale</p>
-          </div>
-        </Link>
-        <Link href={"/individual-user/uploaded-products-list/purchase-product"}>
-          <div className="p-2 bg-black/5 rounded-lg  ">
-            <p className="text-[#8A8A8A]">Purchase</p>
-          </div>
-        </Link>
-      </div>
+     
 
       <div className="flex justify-end mb-4">
         <Button

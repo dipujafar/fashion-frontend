@@ -139,48 +139,7 @@ export default function PurchaseProductTable() {
 
   return (
     <div>
-      {/* ------------------- filter and navigate section ------------------ */}
-      <div className="mb-5 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="relative ">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search here...."
-            className="pl-10 bg-black/5 py-5"
-          />
-        </div>
-        <div>
-          <Popover>
-            <PopoverTrigger className="w-full text-start">
-              <div className="p-2 bg-black/5 rounded-lg border flex  justify-between ">
-                <p className="text-[#8A8A8A]">Filter by date</p>
-                <CalendarDays size={20} color="#8A8A8A" />
-              </div>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className=""
-                captionLayout="dropdown"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-        <Link href={"/individual-user/uploaded-products-list/sale"}>
-          <div className="p-2 bg-black/5 rounded-lg  ">
-            <p className="text-[#8A8A8A]">Sale</p>
-          </div>
-        </Link>
-        <Link href={"/individual-user/uploaded-products-list/purchase-product"}>
-          <div className="p-2 bg-black text-white rounded-lg  ">
-            <p>Purchase</p>
-          </div>
-        </Link>
-      </div>
-
       {/* Summary Cards */}
-
       <Card className="mb-5">
         <CardContent className="flex items-center ">
           <div className="flex items-center space-x-4">
