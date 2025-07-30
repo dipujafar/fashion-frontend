@@ -25,60 +25,71 @@ import XIcon from "@/assets/icons/x-icon.png";
 import Image from "next/image";
 import instagram from "@/assets/icons/instagram.png";
 import tiktok from "@/assets/icons/tiktokIcon.png";
-import DonationTypeDialog from "./DonationTypeDialog";
+import webLogo from "@/assets/icons/web-logo.png";
+import { Label } from "@/components/ui/label";
+import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 
-const formSchema = z.object({
-  firstName: z
-    .string({ required_error: "First Name is required" })
-    .min(1, { message: "First Name is required" }),
-  lastName: z
-    .string({ required_error: "Last Name is required" })
-    .min(1, { message: "Last Name is required" }),
-  userName: z
-    .string({ required_error: "Name is required" })
-    .min(1, { message: "Name is required" }),
-  businessEmail: z
-    .string({ required_error: "Business Email is required" })
-    .min(1, { message: "Business Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-  phoneNumber: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
-  businessTags: z
-    .array(z.string())
-    .min(1, { message: "At least one business tag is required" }),
-  socialMedia: z.object({
-    facebook: z.string().optional(),
-    x: z.string().optional(),
-    tiktok: z.string().optional(),
-    instagram: z.string().optional(),
-  }),
+const formSchema = z
+  .object({
+    firstName: z
+      .string({ required_error: "First Name is required" })
+      .min(1, { message: "First Name is required" }),
+    lastName: z
+      .string({ required_error: "Last Name is required" })
+      .min(1, { message: "Last Name is required" }),
+    userName: z
+      .string({ required_error: "Name is required" })
+      .min(1, { message: "Name is required" }),
+    businessEmail: z
+      .string({ required_error: "Business Email is required" })
+      .min(1, { message: "Business Email is required" })
+      .email({ message: "Please enter a valid email address" }),
+    phoneNumber: z
+      .string({ required_error: "Phone Number is required" })
+      .min(1, { message: "Phone Number is required" }),
+    businessTags: z
+      .array(z.string())
+      .min(1, { message: "At least one business tag is required" }),
+    country: z.string().min(1, "Please select a country"),
+    streetAddress: z.string().min(5, "Street address is required"),
+    city: z.string().min(1, "Please select a city"),
+    state: z.string().min(1, "Please select a state"),
+    zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
 
-  mission: z
-    .string({ required_error: "Mission is required" })
-    .min(1, { message: "Mission is required" }),
-  uploadDocument: z.any().optional(),
-  location: z
-    .string({ required_error: "Location is required" })
-    .min(1, { message: "Location is required" }),
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: "Passwords must be at least 8 characters long" })
-    .max(64, { message: "Passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
-  confirmPassword: z
-    .string({ required_error: "Confirm Password is required" })
-    .min(1, { message: "Confirm Password is required" }),
-});
+    socialMedia: z.object({
+      website: z.string().optional(),
+      facebook: z.string().optional(),
+      x: z.string().optional(),
+      tiktok: z.string().optional(),
+      instagram: z.string().optional(),
+    }),
 
-const CharityShopSignUpForm = () => {
+    mission: z
+      .string({ required_error: "Mission is required" })
+      .min(1, { message: "Mission is required" }),
+    uploadDocument: z.any().optional(),
+    password: z
+      .string({ required_error: "Password is required" })
+      .min(1, { message: "Password is required" })
+      .min(8, { message: "Passwords must be at least 8 characters long" })
+      .max(64, { message: "Passwords must be at most 64 characters long" })
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        {
+          message:
+            "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
+        }
+      ),
+    confirmPassword: z
+      .string({ required_error: "Confirm Password is required" })
+      .min(1, { message: "Confirm Password is required" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+const CharitySignForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -100,13 +111,22 @@ const CharityShopSignUpForm = () => {
       socialMedia: {
         facebook: "",
         x: "",
+        tiktok: "",
+        instagram: "",
+        website: "",
       },
       mission: "",
-      location: "",
+      country: "",
+      streetAddress: "",
+      city: "",
+      state: "",
+      zipCode: "",
       password: "",
       confirmPassword: "",
     },
   });
+
+  const { register, setValue, control } = form;
 
   const handleTagKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && currentTag.trim()) {
@@ -136,26 +156,10 @@ const CharityShopSignUpForm = () => {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     // open select donation type modal
-    setOpenSelectDonationTypeModal(true);
     console.log(data);
   };
 
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "confirmPassword" || name === "password") {
-        if (value.confirmPassword && value.password !== value.confirmPassword) {
-          form.setError("confirmPassword", {
-            type: "manual",
-            message: "Passwords do not match",
-          });
-        } else {
-          form.clearErrors("confirmPassword");
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
+  
   return (
     <>
       <Card
@@ -322,6 +326,19 @@ const CharityShopSignUpForm = () => {
                 <label className="text-sm font-medium mb-2">
                   Social Media Link (Optional)
                 </label>
+                <div className="flex items-center gap-x-2 my-3">
+                  <Image
+                    src={webLogo || "/placeholder.svg"}
+                    alt="Facebook"
+                    className="w-[40px] h-[40px]"
+                  />
+                  <Input
+                    {...form.register("socialMedia.website")}
+                    type="text"
+                    placeholder="Enter Your Website Link"
+                    className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
+                  />
+                </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="flex items-center gap-x-2">
                     <Image
@@ -430,23 +447,15 @@ const CharityShopSignUpForm = () => {
                 </div>
               </div>
 
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your location"
-                        {...field}
-                        className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* Country, State, City Selector */}
+              <div className="grid w-full  items-center gap-1.5">
+                <Label>Location</Label>
+                <CountryStateCitySelector
+                  control={control}
+                  setValue={setValue}
+                  register={register}
+                />
+              </div>
 
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
@@ -570,12 +579,8 @@ const CharityShopSignUpForm = () => {
           </Form>
         </CardContent>
       </Card>
-      <DonationTypeDialog
-        open={openSelectDonationTypeModal}
-        setOpen={setOpenSelectDonationTypeModal}
-      />
     </>
   );
 };
 
-export default CharityShopSignUpForm;
+export default CharitySignForm;

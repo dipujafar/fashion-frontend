@@ -2,11 +2,11 @@ import React from "react";
 import CommonButton from "@/components/ui/common-button";
 import Container from "@/components/shared/Container";
 import Link from "next/link";
-import EnableBundleCreation from "./_components/EnableBundleCreation";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
+import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/EnableBundleCreation";
 
 const UserProfilePage = () => {
   return (

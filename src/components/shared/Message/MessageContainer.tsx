@@ -20,6 +20,7 @@ import ReceiverMsgCard from "./ReceiverMsgCard";
 import UserCard from "./UserCard";
 import { BellIcon } from "@/icons";
 import CustomAvatar from "@/components/shared/CustomAvatar";
+import { ReportDialog } from "./ReportDialog";
 
 const MessageContainer = () => {
   return (
@@ -80,8 +81,8 @@ const MessageContainer = () => {
                 </div>
               </div>
             </div>
-            <div className="cursor-pointer">
-              <Info />
+            <div>
+              <ReportDialog />
             </div>
           </div>
 
@@ -101,7 +102,7 @@ const MessageContainer = () => {
                 <h3 className=" font-medium text-gray-900 mb-1 leading-tight">
                   Brown fringe shawl / bohemian - whimsical vibes.
                 </h3>
-                <p className="text-lg font-semibold text-black/60  ">$300.00</p>
+                <p className="text-lg font-semibold text-black/60">$300.00</p>
                 <p className="text-sm text-red-500 mb-3">22 hrs left</p>
 
                 <div className="flex gap-2">

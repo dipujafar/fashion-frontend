@@ -1,5 +1,5 @@
 import TeamMemberData from "./TeamMemberData";
-import SlotCounter from "react-slot-counter";
+
 
 const Team = () => {
   return (

@@ -1,6 +1,6 @@
 import Container from '@/components/shared/Container';
-import React from 'react';
-import MessageContainer from './_components/MessageContainer';
+import MessageContainer from '@/components/shared/Message/MessageContainer';
+
 
 const MessagePage = () => {
     return (

@@ -1,4 +1,5 @@
 import Container from "@/components/shared/Container";
+import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/EnableBundleCreation";
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
@@ -30,7 +31,7 @@ export default function ProfilePage() {
           <UserInfo userRole="charity store" />
           <StatsInfo userRole="charity store" />
         </div>
-        {/* <EnableBundleCreation /> */}
+        <EnableBundleCreation />
         <ProfileFeatures userRole="charity store" />
       </Container>
     </div>

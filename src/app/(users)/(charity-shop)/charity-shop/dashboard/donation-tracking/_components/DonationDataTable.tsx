@@ -18,13 +18,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ArrowDownWideNarrow, CalendarDays } from "lucide-react";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import { EaringIcon, TotalSaleIcon } from "@/icons";
+import { EaringIcon, EyeIcon, MessageIcon, TotalSaleIcon } from "@/icons";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import Link from "next/link";
 
 interface SaleItem {
   id: string;
@@ -119,9 +120,9 @@ const donationData: SaleItem[] = [
 ];
 
 export default function DonationDataTable() {
-  const [statusFilter, setStatusFilter] = useState<
-    "Clothes" | "Custom Amount" 
-  >("Clothes");
+  const [statusFilter, setStatusFilter] = useState<"Clothes" | "Custom Amount">(
+    "Clothes"
+  );
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const getStatusBadgeVariant = (status: string) => {
@@ -223,7 +224,12 @@ export default function DonationDataTable() {
                   <TableHead className="text-white font-medium text-center">
                     Amount
                   </TableHead>
-                  <TableHead className="text-white font-medium text-center">Payment Method</TableHead>
+                  <TableHead className="text-white font-medium text-center">
+                    Payment Method
+                  </TableHead>
+                  <TableHead className="text-white font-medium text-center">
+                    Action
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -240,10 +246,20 @@ export default function DonationDataTable() {
                       {item.donation}
                     </TableCell>
                     <TableCell className="font-medium text-center">
-                      ${item.amount}
+                      {item.amount}
                     </TableCell>
                     <TableCell className="font-medium text-center">
                       {item.payment_method}
+                    </TableCell>
+                    <TableCell className="font-medium text-center">
+                      <div className="flex items-center justify-center gap-x-2">
+                        <Link  href={'/users/seller-profile'}>
+                          <EyeIcon className="cursor-pointer" />
+                        </Link>
+                        <div>
+                          <MessageIcon className="cursor-pointer" />
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
