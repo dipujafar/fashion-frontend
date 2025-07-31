@@ -139,23 +139,6 @@ export default function PurchaseProductTable() {
 
   return (
     <div>
-      {/* Summary Cards */}
-      <Card className="mb-5">
-        <CardContent className="flex items-center ">
-          <div className="flex items-center space-x-4">
-            <div className="size-15 bg-black rounded-full flex items-center justify-center">
-              <TotalSaleIcon />
-            </div>
-            <div>
-              <p className="text-lg text-muted-foreground">
-                Total Purchase Item
-              </p>
-              <p className="text-2xl font-bold">{totalSales}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="flex justify-end mb-3">
         <Button
           onClick={() => setIsOpen(true)}

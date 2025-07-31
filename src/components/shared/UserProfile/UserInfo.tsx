@@ -20,6 +20,7 @@ interface ProfileCardProps {
   progressValue?: number;
   phone?: string;
   userRole?: string;
+  link?: string;
 }
 
 export const findUserRole = (type: string) => {
@@ -49,6 +50,7 @@ export default function UserInfo({
   email = "example@gmail.com",
   phone = "+123456789",
   userRole,
+  link ="/individual-user/profile"
 }: ProfileCardProps) {
   return (
     <Card
@@ -57,7 +59,7 @@ export default function UserInfo({
     >
       <CardContent className="lg:px-6 px-3">
         {/* Edit Profile Button */}
-        <Link href={"/individual-user/profile"}>
+        <Link href={link}>
           <CommonButton className="w-full">Edit Profile</CommonButton>
         </Link>
 
@@ -92,7 +94,7 @@ export default function UserInfo({
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground">
                 {userRole === "user" && "Email"}{" "}
-                {userRole === "charity store" && "Business Email"}
+                {userRole === "charity store" || userRole === "charity" && "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
                 <span className=" font-medium md:text-xl text-lg">{email}</span>

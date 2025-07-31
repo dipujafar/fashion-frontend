@@ -54,6 +54,7 @@ const FeatureProductCategory = () => {
         Autoplay({
           delay: 4000,
           stopOnInteraction: false,
+          
           stopOnMouseEnter: true,
         }),
       ]}

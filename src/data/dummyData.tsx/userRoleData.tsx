@@ -13,7 +13,7 @@ export const userRoleData = [
     title: "Charitable Organization",
     description:
       "A space for nonprofits to raise funds through clothing sales.",
-    link: "#",
+    link: "/charity/sign-up",
     role: "charitable_organization",
   },
   {

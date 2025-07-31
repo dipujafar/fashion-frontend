@@ -17,11 +17,14 @@ export default function CharityProfileContainer() {
 
       <Container className="lg:space-y-8 space-y-4">
         <div className="flex lg:flex-row flex-col gap-5">
-          <UserInfo userRole="charity store" />
-          <StatsInfo userRole="charity store" />
+          <UserInfo userRole="charity" link="/charity/dashboard/profile"/>
+          <StatsInfo userRole="charity" />
         </div>
-        <div style={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.06)" }} className="flex justify-center items-center py-2">
-            <p className="font-medium text-xl">About</p>
+        <div
+          style={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.06)" }}
+          className="flex justify-center items-center py-2"
+        >
+          <p className="font-medium text-xl">About</p>
         </div>
         <AboutCharity />
       </Container>

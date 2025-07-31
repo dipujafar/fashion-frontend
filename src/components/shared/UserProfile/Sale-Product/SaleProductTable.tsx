@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDownWideNarrow } from "lucide-react";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 import { EaringIcon, TotalSaleIcon } from "@/icons";
-import { ReturnProductModal } from "../../../../app/(users)/individual-user/uploaded-products-list/sale/_components/ReturnProductModal";
+import { ReturnProductModal } from "@/app/(users)/individual-user/uploaded-products-list/sale/_components/ReturnProductModal";
 
 interface SaleItem {
   id: string;
@@ -94,7 +99,7 @@ const salesData: SaleItem[] = [
   },
 ];
 
-export default function SaleProductTable({userRole}: {userRole?: string}) {
+export default function SaleProductTable({ userRole }: { userRole?: string }) {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [salesItems, setSalesItems] = useState<SaleItem[]>(salesData);
   const [openRequestModal, setOpenRequestModal] = useState<boolean>(false);
@@ -145,39 +150,6 @@ export default function SaleProductTable({userRole}: {userRole?: string}) {
 
   return (
     <div>
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2  gap-4 mb-4">
-        <Card>
-          <CardContent className="flex items-center ">
-            <div className="flex items-center space-x-4">
-              <div className="size-15 bg-black rounded-full flex items-center justify-center">
-                <TotalSaleIcon />
-              </div>
-              <div>
-                <p className="text-lg text-muted-foreground">Total Sales</p>
-                <p className="text-2xl font-bold">{totalSales}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="flex items-center ">
-            <div className="flex items-center space-x-4">
-              <div className="size-15 bg-black rounded-full flex items-center justify-center">
-                <EaringIcon />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">{userRole !== "charity store" ?"Total Earnings": "Total Fund Rised"}</p>
-                <p className="text-2xl font-bold">
-                  ${totalEarnings.toLocaleString()}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* <div className="flex justify-end mb-3">
         <Button variant="outline" className="cursor-pointer border-black/60">
           Cancel Product

@@ -125,20 +125,14 @@ export default function DonationDataTable() {
   );
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case "Sold":
-        return "default";
-      case "Returned":
-        return "destructive";
-      case "Ongoing":
-        return "secondary";
-      case "Return Request":
-        return "destructive";
-      default:
-        return "default";
-    }
-  };
+
+  const stateData = [
+    {
+      icon: <EaringIcon />,
+      title: "Total Money donation",
+      value: "$2,000",
+    },
+  ];
 
   return (
     <div className="space-y-5">

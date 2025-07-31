@@ -1,20 +1,6 @@
 "use client";
 import * as React from "react";
-import {
-  ChevronRight,
-  Grid3X3,
-  Shirt,
-  ShoppingBag,
-  Sparkles,
-  Footprints,
-  Gem,
-  Menu,
-  X,
-  PartyPopper,
-  Watch,
-  LandPlot,
-  Telescope,
-} from "lucide-react";
+import { ChevronRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatLabel } from "@/utils/formatText";
 import { useUpdateSearchParamsWithRedirect } from "@/hooks/useUpdateSearchParamsWithRedirct";
@@ -30,9 +16,7 @@ const mainNavItems = [
   "Vintage",
   "Bags",
   "Watches&Jewellery",
-  "Children",
-  "ExpressDelivery",
-  "DirectShipping",
+  "Children"
 ];
 
 export default function MegaNavigation() {
