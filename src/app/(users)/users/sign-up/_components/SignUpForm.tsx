@@ -23,6 +23,8 @@ import instagram from "@/assets/icons/instagram.png";
 import tiktok from "@/assets/icons/tiktokIcon.png";
 import XIcon from "@/assets/icons/x-icon.png";
 import Image from "next/image";
+import { Label } from "@/components/ui/label";
+import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 
 const formSchema = z.object({
   firstName: z
@@ -56,6 +58,12 @@ const formSchema = z.object({
   confirmPassword: z
     .string({ required_error: "Confirm Password is required" })
     .min(1, { message: "Confirm Password is required" }),
+  country: z.string().min(1, "Please select a country"),
+  streetAddress: z.string().min(5, "Street address is required"),
+  city: z.string().min(1, "Please select a city"),
+  state: z.string().min(1, "Please select a state"),
+  zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
+
   socialMedia: z.array(
     z.object({
       instagram: z.string().optional(),
@@ -76,8 +84,15 @@ const SignUpForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      country: "",
+      streetAddress: "",
+      city: "",
+      state: "",
+      zipCode: "",
     },
   });
+
+  const { register, setValue, control } = form;
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -245,7 +260,11 @@ const SignUpForm = () => {
                   />
                 </div>
                 <div className="flex items-center gap-x-2">
-                  <Image src={facebook} alt="logo" className="w-[40px] h-[40px]" />
+                  <Image
+                    src={facebook}
+                    alt="logo"
+                    className="w-[40px] h-[40px]"
+                  />
                   <Input
                     {...form.register(`socialMedia.${0}.facebook`)}
                     type="text"
@@ -263,7 +282,11 @@ const SignUpForm = () => {
                   />
                 </div>
                 <div className="flex items-center gap-x-2">
-                  <Image src={tiktok} alt="logo" className="w-[40px] h-[40px]" />
+                  <Image
+                    src={tiktok}
+                    alt="logo"
+                    className="w-[40px] h-[40px]"
+                  />
                   <Input
                     {...form.register(`socialMedia.${0}.tiktok`)}
                     type="text"
@@ -272,6 +295,17 @@ const SignUpForm = () => {
                   />
                 </div>
               </div>
+            </div>
+
+            {/* ________________ location ________________________ */}
+            {/* Country, State, City Selector */}
+            <div className="grid w-full  items-center gap-1.5">
+              <Label>Location</Label>
+              <CountryStateCitySelector
+                control={control}
+                setValue={setValue}
+                register={register}
+              />
             </div>
 
             <FormField

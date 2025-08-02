@@ -26,6 +26,8 @@ import Image from "next/image";
 import instagram from "@/assets/icons/instagram.png";
 import tiktok from "@/assets/icons/tiktokIcon.png";
 import DonationTypeDialog from "./DonationTypeDialog";
+import { Label } from "@/components/ui/label";
+import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 
 const formSchema = z.object({
   firstName: z
@@ -58,9 +60,11 @@ const formSchema = z.object({
     .string({ required_error: "Mission is required" })
     .min(1, { message: "Mission is required" }),
   uploadDocument: z.any().optional(),
-  location: z
-    .string({ required_error: "Location is required" })
-    .min(1, { message: "Location is required" }),
+  country: z.string().min(1, "Please select a country"),
+  streetAddress: z.string().min(5, "Street address is required"),
+  city: z.string().min(1, "Please select a city"),
+  state: z.string().min(1, "Please select a state"),
+  zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
   password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
@@ -102,11 +106,17 @@ const CharityShopSignUpForm = () => {
         x: "",
       },
       mission: "",
-      location: "",
+      country: "",
+      streetAddress: "",
+      city: "",
+      state: "",
+      zipCode: "",
       password: "",
       confirmPassword: "",
     },
   });
+
+  const { register, setValue, control } = form;
 
   const handleTagKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && currentTag.trim()) {
@@ -430,23 +440,15 @@ const CharityShopSignUpForm = () => {
                 </div>
               </div>
 
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your location"
-                        {...field}
-                        className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* Country, State, City Selector */}
+              <div className="grid w-full  items-center gap-1.5">
+                <Label>Location</Label>
+                <CountryStateCitySelector
+                  control={control}
+                  setValue={setValue}
+                  register={register}
+                />
+              </div>
 
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
