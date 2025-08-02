@@ -1,7 +1,12 @@
+"use client";
 import Container from "@/components/shared/Container";
 import SaleStatsCard from "@/components/shared/UserProfile/Sale-Product/SaleStatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EaringIcon } from "@/icons";
+import DirectDonationTable from "./DirectDonationTable";
+import { useState } from "react";
+import DateSelector from "@/components/ui/date-selector";
+import SalesContributionsTable from "./SalesContributionsTable";
 
 const statData = [
   {
@@ -22,9 +27,15 @@ const statData = [
 ];
 
 export default function DonationTrackingContainer() {
+  const [date, setDate] = useState<Date | undefined>(new Date());
   return (
-    <Container>
+    <Container className="space-y-8">
       <SaleStatsCard data={statData} />
+
+      {/*  ----------------------- filter by date -------------------- */}
+      <div>
+        <DateSelector date={date} setDate={setDate} />
+      </div>
 
       <div>
         <Tabs defaultValue={"direct_donation"} className="w-full">
@@ -46,11 +57,11 @@ export default function DonationTrackingContainer() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="product_listing">
-            {/* <ProductsListContainer /> */}
+          <TabsContent value="direct_donation">
+            <DirectDonationTable />
           </TabsContent>
-          <TabsContent value="rating_review">
-            {/* <CustomerFeedbacks /> */}
+          <TabsContent value="sales_contributions">
+            <SalesContributionsTable />
           </TabsContent>
         </Tabs>
       </div>

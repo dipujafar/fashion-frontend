@@ -22,8 +22,6 @@ export default function UploadProductDataFilterOptionAndNav({
   const [date, setDate] = useState<Date | undefined>(new Date());
   const pathLocation = usePathname();
   const currentPath = pathLocation?.split("/");
-
-  console.log(currentPath?.includes("sale"));
   return (
     <div>
       {/* ------------------- filter and navigate section ------------------ */}

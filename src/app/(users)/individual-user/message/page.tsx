@@ -1,11 +1,11 @@
 import Container from '@/components/shared/Container';
-import MessageContainer from '@/components/shared/Message/MessageContainer';
+import MessageContainerWithOffer from '@/components/shared/Message/MessageContainerWithOffer';
 
 
 const MessagePage = () => {
     return (
         <Container>
-            <MessageContainer/>
+            <MessageContainerWithOffer/>
         </Container>
     );
 };
