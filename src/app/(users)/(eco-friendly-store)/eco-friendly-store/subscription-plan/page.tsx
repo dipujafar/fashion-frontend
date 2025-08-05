@@ -1,5 +1,6 @@
 import PageTopSection from "@/components/shared/PageTopSection"
-import SubscriptionPlanContainer from "./_components/SubscriptionPlanContainer"
+import SubscriptionPlanContainer from "@/components/shared/UserProfile/Subscription/SubscriptionPlanContainer"
+
 
 export const metadata = {
     title: 'Subscription Plan',

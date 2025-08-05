@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Search, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -86,7 +85,7 @@ const mockData: CharityData[] = [
   },
 ];
 
-export default function CharityTable() {
+export default function CharitySupportTable() {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -96,7 +95,7 @@ export default function CharityTable() {
       <div className="relative flex-1 max-w-sm">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
-          placeholder="Search any charity"
+          placeholder="Search charity"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="pl-10 bg-black/5"
@@ -115,11 +114,9 @@ export default function CharityTable() {
               <TableHead className="text-white font-medium text-center">
                 Date
               </TableHead>
+
               <TableHead className="text-white font-medium text-center">
-                Amount
-              </TableHead>
-              <TableHead className="text-white font-medium text-center">
-                Percentage
+                Amount Percentage
               </TableHead>
               <TableHead className="text-white font-medium text-center">
                 Action
@@ -141,7 +138,7 @@ export default function CharityTable() {
                   {item.charityName}
                 </TableCell>
                 <TableCell>{item.date}</TableCell>
-                <TableCell>{item.amount}</TableCell>
+
                 <TableCell>{item.percentage}</TableCell>
                 <TableCell className="text-center">
                   <Popover>
@@ -155,7 +152,9 @@ export default function CharityTable() {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                      <p className="text-sm">Are you sure you want to delete this charity?</p>
+                      <p className="text-sm">
+                        Are you sure you want to delete this charity?
+                      </p>
                       <div className="flex justify-end mt-1">
                         <Button size={"sm"}>Delete</Button>
                       </div>

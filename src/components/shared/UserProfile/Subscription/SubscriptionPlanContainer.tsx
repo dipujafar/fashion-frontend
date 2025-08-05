@@ -3,7 +3,6 @@ import Container from "@/components/shared/Container";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, CheckCircle } from "lucide-react";
 import { CircleRightArrow } from "@/icons";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 
@@ -42,7 +41,7 @@ export default function SubscriptionPlanContainer() {
   const [activeTab, setActiveTab] = useState("Free Trial");
   return (
     <Container className=" mt-8 font-bold text-center">
-      <h4 className="section-name">
+      <h4 className="section-name font-bold">
         Choose Your Plan & Start Making an Impact!
       </h4>
 

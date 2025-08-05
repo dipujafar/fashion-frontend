@@ -26,7 +26,7 @@ export default function ProfileContainer() {
           </Link>
           <div className="flex lg:flex-row flex-col gap-5">
             <UserInfo
-              link="/charity-shop/dashboard/profile"
+              link="/eco-friendly-store/dashboard/profile"
               userRole="eco-friendly-store"
             />
             <StatsInfo userRole="eco-friendly-store" />

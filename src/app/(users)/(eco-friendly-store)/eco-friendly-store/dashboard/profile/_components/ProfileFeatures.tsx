@@ -1,8 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
-import ProfileContainerForm from "./ProfileContainerForm";
-import CustomerFeedbacks from "@/components/shared/UserProfile/ProfileDashboard/CustomerFeedbacks";
+import EcoFriendlyUserProfileForm from "./EcoFriendlyUserProfileForm";
 import CharitySupportTable from "@/components/shared/UserProfile/Tables/CharitySupportTable";
+import CustomerFeedbacks from "@/components/shared/UserProfile/ProfileDashboard/CustomerFeedbacks";
+
 
 
 const ProfileFeatures = () => {
@@ -33,7 +34,7 @@ const ProfileFeatures = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="profile_details">
-          <ProfileContainerForm />
+          <EcoFriendlyUserProfileForm />
         </TabsContent>
         <TabsContent value="charity_support">
           <CharitySupportTable />

@@ -20,7 +20,7 @@ import { EaringIcon, TotalSaleIcon } from '@/icons'
 export default function SaleProductPage() {
   return (
      <Container className="md:space-y-8 space-y-5">
-      <AddNewProduct link="/charity-shop/dashboard/products-list/add-product" />
+      <AddNewProduct link="/individual-user/uploaded-products-list/add-product" />
       <UploadProductDataFilterOptionAndNav
         baseLink="/charity-shop/dashboard/products-list"
         user="charity store"
