@@ -77,7 +77,7 @@ export default function UserInfo({
           </div>
 
           {/* ---------------------- show business tag for charity store --------------------------------- */}
-          {userRole === "charity store" && (
+          {userRole === "charity store" || userRole === "eco-friendly-store" && (
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground ">Business Tag</p>
               <div className="flex gap-x-2">
@@ -94,7 +94,7 @@ export default function UserInfo({
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground">
                 {userRole === "user" && "Email"}{" "}
-                {userRole === "charity store" || userRole === "charity" && "Business Email"}
+                {userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" && "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
                 <span className=" font-medium md:text-xl text-lg">{email}</span>

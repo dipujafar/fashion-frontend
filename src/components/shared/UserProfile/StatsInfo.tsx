@@ -9,6 +9,7 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
       style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
       className="w-full  p-6"
     >
+      {/* ---------------------------- display tag for charity store role --------------------------- */}
       {userRole === "charity store" && (
         <div className="flex flex-wrap gap-x-3">
           <div className="flex-1 bg-[#B59900] text-white p-1.5 text-center">
@@ -19,6 +20,19 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
           </div>
         </div>
       )}
+
+      {/* --------------------------- display tag for eco-friendly store role --------------------------- */}
+      {userRole === "eco-friendly-store" && (
+        <div className="flex flex-wrap gap-x-3">
+          <div className="flex-1 bg-[#00B047] text-white p-1.5 text-center">
+            <h5>ECO-FRIENDLY STORE</h5>
+          </div>
+          <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">
+            <h5>TOP SELLER</h5>
+          </div>
+        </div>
+      )}
+      {/* --------------------------- display tag for charity role ---------------------------   */}
       {userRole === "charity" && (
         <div className=" bg-[#4B105F] text-white p-1.5 text-center ">
           <h5>CHARITABLE ORGANIZATION</h5>
