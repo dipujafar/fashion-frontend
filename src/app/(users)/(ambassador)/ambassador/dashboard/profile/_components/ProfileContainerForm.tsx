@@ -12,11 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import CommonButton from "@/components/ui/common-button";
+
 import { Label } from "@/components/ui/label";
-import { ImageUp, Trash2, Upload, X } from "lucide-react";
+
+import { ImageUp, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import CustomAvatar from "@/components/shared/CustomAvatar";
@@ -26,8 +29,6 @@ import instagram from "@/assets/icons/instagram.png";
 import tiktok from "@/assets/icons/tiktokIcon.png";
 import XIcon from "@/assets/icons/x-icon.png";
 import { PhoneInput } from "@/components/ui/PhoneInput";
-import { DocumentIcon } from "@/icons";
-import TextEditor from "@/components/ui/text-editor";
 
 const formSchema = z.object({
   firstName: z
@@ -65,16 +66,6 @@ const formSchema = z.object({
   zipCode: z.string().min(5, {
     message: "Zip code must be at least 5 characters.",
   }),
-  mission: z
-    .string({ required_error: "Mission is required" })
-    .min(1, { message: "Mission is required" }),
-  uploadDocument: z.any().optional(),
-  businessTags: z
-    .array(z.string())
-    .min(1, { message: "At least one business tag is required" }),
-  aboutOrganization: z
-    .string()
-    .min(10, { message: "Details must be at least 10 characters." }),
   socialMedia: z.array(
     z.object({
       instagram: z.string().optional(),
@@ -85,39 +76,11 @@ const formSchema = z.object({
   ),
 });
 
-const CharityProfileContainerForm = () => {
+const ProfileContainerForm = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [currentTag, setCurrentTag] = useState("");
-  const [businessTags, setBusinessTags] = useState<string[]>([
-    "T-shirt",
-    "Shoes",
-    "Jeans",
-  ]);
   const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
     null
   );
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [document, setDocument] = useState<string[] | null>(["Document.pdf"]);
-  const [images, setImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-
-  const handleTagKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && currentTag.trim()) {
-      e.preventDefault();
-      if (!businessTags.includes(currentTag.trim())) {
-        const newTags = [...businessTags, currentTag.trim()];
-        setBusinessTags(newTags);
-        form.setValue("businessTags", newTags);
-        setCurrentTag("");
-      }
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    const newTags = businessTags.filter((tag) => tag !== tagToRemove);
-    setBusinessTags(newTags);
-    form.setValue("businessTags", newTags);
-  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -134,15 +97,6 @@ const CharityProfileContainerForm = () => {
       state: "Dhaka Division",
       storeName: "Fish Store",
       about: "I am a fish seller",
-      businessTags: ["T-shirt", "Shoes", "Jeans"],
-      socialMedia: [
-        {
-          instagram: "https://www.instagram.com",
-          facebook: "https://www.facebook.com",
-          x: "https://www.x.com",
-          tiktok: "https://www.tiktok.com",
-        },
-      ],
     },
   });
   const { register, setValue, control } = form;
@@ -167,62 +121,8 @@ const CharityProfileContainerForm = () => {
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUploadedFile(file);
-      form.setValue("uploadDocument", file);
-    }
-  };
-
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
-  };
-
-  const handleImageFileUpload = useCallback(
-    (files: FileList | null) => {
-      if (!files) return;
-
-      const newFiles = Array.from(files).slice(0, 8 - images.length);
-      const newPreviews: string[] = [];
-
-      newFiles.forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const result = e.target?.result as string;
-            newPreviews.push(result);
-            if (newPreviews.length === newFiles.length) {
-              setImages((prev) => [...prev, ...newFiles]);
-              setImagePreviews((prev) => [...prev, ...newPreviews]);
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-    },
-    [images.length]
-  );
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      handleImageFileUpload(e.dataTransfer.files);
-    },
-    [handleImageFileUpload]
-  );
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-  }, []);
-
-  const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
-    // Clean up object URL to prevent memory leaks
-    if (imagePreviews[index].startsWith("blob:")) {
-      URL.revokeObjectURL(imagePreviews[index]);
-    }
   };
 
   return (
@@ -243,10 +143,7 @@ const CharityProfileContainerForm = () => {
                     <FormItem>
                       <div className="relative w-full h-40 md:h-60 xl:h-64 rounded-lg mb-6">
                         <Image
-                          src={
-                            coverImagePreview ||
-                            "/dummyImages/charity-cover-images.jpg"
-                          }
+                          src={coverImagePreview || "/user_cover_image.png"}
                           alt="Cover Preview"
                           fill
                           className="object-cover w-full h-full "
@@ -299,10 +196,7 @@ const CharityProfileContainerForm = () => {
                         <div className="relative size-44 mx-auto">
                           <CustomAvatar
                             className="md:size-40 size-28 object-cover mx-auto"
-                            img={
-                              imagePreview ||
-                              "/dummyImages/charity-profile-image.png"
-                            }
+                            img={imagePreview || "/dummyImages/ambassador-profile-image.jpg"}
                             name="Ali Asraf"
                             fallbackClass="lg:text-4xl"
                           />
@@ -413,7 +307,7 @@ const CharityProfileContainerForm = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Business Email Address</FormLabel>
+                          <FormLabel>Email Address</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Enter Your Email"
@@ -446,117 +340,6 @@ const CharityProfileContainerForm = () => {
                         </FormItem>
                       )}
                     />
-                  </div>
-                </div>
-
-                {/* -------------------------------- business tag ------------------------------------ */}
-                <div>
-                  <FormLabel>Business Tag</FormLabel>
-                  <div className="space-y-2">
-                    <Input
-                      placeholder="Write business tag and press enter"
-                      value={currentTag}
-                      onChange={(e) => setCurrentTag(e.target.value)}
-                      onKeyPress={handleTagKeyPress}
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
-                    />
-                    {businessTags.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {businessTags.map((tag, index) => (
-                          <div
-                            key={index}
-                            className="bg-primary-black text-white px-3 py-1 rounded-full text-sm flex items-center gap-2"
-                          >
-                            {tag}
-                            <X
-                              size={14}
-                              className="cursor-pointer"
-                              onClick={() => removeTag(tag)}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  {form.formState.errors.businessTags && (
-                    <p className="text-sm text-red-500 mt-1">
-                      {form.formState.errors.businessTags.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <h4 className="text-2xl font-medium my-3">
-                    About Organization
-                  </h4>
-                  <FormField
-                    control={form.control}
-                    name="aboutOrganization"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Write about your organization</FormLabel>
-                        <FormControl>
-                          <TextEditor
-                            value={field.value}
-                            onChange={field.onChange}
-                            placeholder="Write about your organization"
-                            className="bg-[#F8FAFC] min-h-[100px] border-[#707071] rounded-none"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Product Images */}
-                  <div className="space-y-4 mt-2">
-                    <label className="text-base font-medium">
-                      Upload Images
-                    </label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {imagePreviews?.map((preview, index) => (
-                        <div key={index} className="relative group">
-                          <div className="aspect-video border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
-                            <img
-                              src={preview || "/placeholder.svg"}
-                              alt={`Product ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => removeImage(index)}
-                              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-
-                      {images?.length < 8 && (
-                        <div
-                          onDrop={handleDrop}
-                          onDragOver={handleDragOver}
-                          className="aspect-video border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative"
-                        >
-                          <input
-                            type="file"
-                            multiple
-                            accept="image/*"
-                            onChange={(e) =>
-                              handleImageFileUpload(e.target.files)
-                            }
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          />
-                          <Upload className="h-6 w-6 text-gray-400 mb-2" />
-                          <span className="text-xs text-gray-500 text-center px-2">
-                            Drop images or click to upload
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                
                   </div>
                 </div>
 
@@ -620,79 +403,6 @@ const CharityProfileContainerForm = () => {
                   </div>
                 </div>
 
-                {/* ------------------------------------- mission --------------------------------- */}
-                <FormField
-                  control={form.control}
-                  name="mission"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mission</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Tell us about your business mission"
-                          {...field}
-                          className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] min-h-[100px]"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* ------------------------------------- upload document --------------------------------- */}
-                <div>
-                  <FormLabel>Upload Document</FormLabel>
-                  <div className="mt-2">
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-[#F5F5F5]">
-                      <input
-                        type="file"
-                        id="file-upload"
-                        className="hidden"
-                        onChange={handleFileUpload}
-                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                      />
-                      <label htmlFor="file-upload" className="cursor-pointer">
-                        <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                        <div className="flex justify-center items-center gap-x-1.5 group">
-                          <p className="mt-2 text-sm text-gray-600">
-                            {uploadedFile ? uploadedFile.name : "Select a file"}
-                          </p>
-
-                          {uploadedFile && (
-                            <div className="">
-                              <Trash2
-                                color="red"
-                                size={20}
-                                className="cursor-pointer"
-                                onClick={() => setUploadedFile(null)}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  {document?.map((doc, index) => (
-                    <div
-                      key={index}
-                      className="bg-[#FFF9F9] mt-3 flex items-center justify-between gap-x-2 px-3 py-2 rounded-xl"
-                      style={{ boxShadow: "0 4px 10px 0 rgba(0, 0, 0, 0.11)" }}
-                    >
-                      <div className="flex items-center gap-x-2">
-                        <DocumentIcon className="w-10 h-10" />
-                        <h4 className="text-[#E12728]">{doc}</h4>
-                      </div>
-                      <Trash2
-                        onClick={() => setDocument(null)}
-                        color="red"
-                        size={20}
-                        className="cursor-pointer"
-                      />
-                    </div>
-                  ))}
-                </div>
-
                 {/* Country, State, City Selector */}
                 <div className="grid w-full items-center gap-1.5">
                   <Label>Location</Label>
@@ -707,6 +417,24 @@ const CharityProfileContainerForm = () => {
                     }}
                   />
                 </div>
+
+                <FormField
+                  control={form.control}
+                  name="about"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Enter some description..."
+                          {...field}
+                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded  min-h-[90px] bg-[#F5F5F5]"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <CommonButton className="w-full">Save</CommonButton>
@@ -718,4 +446,4 @@ const CharityProfileContainerForm = () => {
   );
 };
 
-export default CharityProfileContainerForm;
+export default ProfileContainerForm;

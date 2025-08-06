@@ -93,7 +93,7 @@ export default function UserInfo({
           <div className="flex  flex-wrap gap-4">
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground">
-                {userRole === "user" && "Email"}{" "}
+                {(userRole === "user" || userRole === "ambassador") && "Email"}{" "}
                 {userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" && "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">

@@ -4,7 +4,6 @@ import React from "react";
 import topSectionBg from "@/assets/images/users/users_page_top_section_image.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
@@ -13,27 +12,32 @@ const navLinks = [
   {
     _id: 1,
     title: "Profile Details",
-    href: "/charity/dashboard/profile",
+    href: "/ambassador/dashboard/profile",
   },
   {
     _id: 2,
-    title: "Donation Tracking",
-    href: "/charity/dashboard/donation-tracking",
+    title: "Products Listing",
+    href: "/ambassador/dashboard/products-list",
   },
   {
     _id: 3,
+    title: "Your Offer",
+    href: "/ambassador/dashboard/offers",
+  },
+  {
+    _id: 4,
     title: "Message",
-    href: "/charity/dashboard/message",
+    href: "/ambassador/dashboard/message",
   },
   {
     _id: 5,
     title: "Settings",
-    href: "/charity-shop/dashboard/settings",
+    href: "/ambassador/dashboard/settings",
   },
 ];
 
 
-const CharityShopDashboardTopSelector = () => {
+const AmbassadorUserTopBarSection = () => {
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[3];
   const router = useRouter();
@@ -85,4 +89,4 @@ const CharityShopDashboardTopSelector = () => {
   );
 };
 
-export default CharityShopDashboardTopSelector;
+export default AmbassadorUserTopBarSection;

@@ -41,7 +41,6 @@ const navLinks = [
 const CharityShopDashboardPageTopSection = () => {
   const pathName = usePathname();
   const currentPath = pathName?.split("/")[3];
-  console.log(currentPath);
   const router = useRouter();
 
   return (

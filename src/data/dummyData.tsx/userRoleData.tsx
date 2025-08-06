@@ -31,7 +31,7 @@ export const userRoleData = [
     title: "Eco-Friendly Store",
     description:
       "Promote sustainable fashion with pre-loved or upcycled clothing.",
-    link: "#",
+    link: "/eco-friendly-store/sign-up",
     role: "eco_friendly_store",
   },
   {
@@ -49,7 +49,7 @@ export const userRoleData = [
     title: "Ambassador",
     description:
       "Represent a brand, promote products, and grow your fashion influence.",
-    link: "#",
+    link: "/ambassador/sign-up",
     role: "ambassador",
   },
   {
@@ -67,7 +67,7 @@ export const userRoleData = [
     title: "Assisted Seller",
     description:
       "Get support in managing your store while selling your fashion items.",
-    link: "#",
+    link: "/assisted-seller/sign-up",
     role: "assisted_seller",
   },
 ];

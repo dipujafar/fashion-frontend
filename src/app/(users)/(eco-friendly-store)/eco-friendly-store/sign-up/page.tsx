@@ -4,7 +4,7 @@ import EcoFriendlyStoreSignUpForm from './_components/EcoFriendlyStoreSignUpForm
 
 export default function EcoFriendLyStoreSignUpPage() {
   return (
-    <div>
+    <div className='space-y-5'>
       <PageTopSection title="Join us as a Eco-Friendly Store Account"></PageTopSection>
       <EcoFriendlyStoreSignUpForm />
     </div>

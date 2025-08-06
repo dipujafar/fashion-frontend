@@ -9,6 +9,18 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
       style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
       className="w-full  p-6"
     >
+
+      {/* --------------------------- display tag for ambassador user role --------------------------- */}
+      {userRole === "ambassador" && (
+        <div className="flex flex-wrap gap-x-3">
+          <div className="flex-1 bg-[#123CA6] text-white p-1.5 text-center">
+            <h5>AMBASSADOR</h5>
+          </div>
+          <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">
+            <h5>TOP SELLER</h5>
+          </div>
+        </div>
+      )}
       {/* ---------------------------- display tag for charity store role --------------------------- */}
       {userRole === "charity store" && (
         <div className="flex flex-wrap gap-x-3">
