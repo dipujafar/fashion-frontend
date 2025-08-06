@@ -51,6 +51,14 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
         </div>
       )}
 
+
+      {/* --------------------------- display tag for charity role ---------------------------   */}
+      {userRole === "assisted-seller" && (
+        <div className=" bg-[#123CA6] text-white p-1.5 text-center uppercase ">
+          <h5>Assisted seller</h5>
+        </div>
+      )}
+
       <div className="grid xs:grid-cols-2 gap-6">
         {/* First Row */}
         {userRole !== "charity" && (
