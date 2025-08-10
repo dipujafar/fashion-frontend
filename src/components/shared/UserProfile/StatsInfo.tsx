@@ -33,6 +33,18 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
         </div>
       )}
 
+      {/* --------------------------- display tag for professional seller role --------------------------- */}
+      {userRole === "professional-seller" && (
+        <div className="flex flex-wrap gap-x-3">
+          <div className="flex-1 bg-[#123CA6] text-white p-1.5 text-center">
+            <h5>PROFESSIONAL SELLER</h5>
+          </div>
+          <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">
+            <h5>TOP SELLER</h5>
+          </div>
+        </div>
+      )}
+
       {/* --------------------------- display tag for eco-friendly store role --------------------------- */}
       {userRole === "eco-friendly-store" && (
         <div className="flex flex-wrap gap-x-3">

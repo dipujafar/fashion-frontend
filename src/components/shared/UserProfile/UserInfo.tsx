@@ -94,7 +94,7 @@ export default function UserInfo({
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground">
                 {(userRole === "user" || userRole === "ambassador" || userRole === "assisted-seller") && "Email"}{" "}
-                {userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" && "Business Email"}
+                {userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" || userRole === "professional-seller" && "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
                 <span className=" font-medium md:text-xl text-lg">{email}</span>

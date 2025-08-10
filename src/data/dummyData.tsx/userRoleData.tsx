@@ -40,7 +40,7 @@ export const userRoleData = [
     title: "Celebrity",
     description:
       "Share your unique fashion finds and inspire others with your style.",
-    link: "#",
+    link: "/celebrity/sign-up",
     role: "celebrity",
   },
   {
@@ -58,7 +58,7 @@ export const userRoleData = [
     title: "Professional Seller",
     description:
       "A business-oriented account for scaling your online fashion store.",
-    link: "#",
+    link: "/professional-seller/sign-up",
     role: "professional_seller",
   },
   {

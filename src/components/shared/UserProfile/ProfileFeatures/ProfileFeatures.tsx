@@ -10,7 +10,7 @@ const ProfileFeatures = ({ userRole }: { userRole: string }) => {
     <div>
       <Tabs
         defaultValue={
-          userRole === "user" || userRole === "eco-friendly-store"
+          userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller"
             ? "charity_support"
             : "product_listing"
         }
@@ -20,7 +20,7 @@ const ProfileFeatures = ({ userRole }: { userRole: string }) => {
           style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
           className="w-full bg-white lg:mb-4 mb-2"
         >
-          {(userRole === "user" || userRole === "eco-friendly-store") && (
+          {(userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller") && (
             <TabsTrigger
               value="charity_support"
               className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
@@ -41,7 +41,7 @@ const ProfileFeatures = ({ userRole }: { userRole: string }) => {
             Rating & Review
           </TabsTrigger>
         </TabsList>
-        {(userRole === "user" || userRole === "eco-friendly-store") && (
+        {(userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller") && (
           <TabsContent value="charity_support">
             {/* ---------------------------------- option to show charity support or not ---------------------------------- */}
             {userRole === "eco-friendly-store" && (
