@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 import { Eye, ChevronDown } from "lucide-react";
@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -147,8 +148,6 @@ export default function UploadedProductListTable() {
 
   return (
     <div>
-     
-
       <div className="flex justify-end mb-4">
         <Button
           variant="outline"
@@ -261,9 +260,11 @@ export default function UploadedProductListTable() {
                   </span>
                 </TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Eye className="h-4 w-4 text-gray-600" />
-                  </Button>
+                  <Link href={`/shop/${product.id}`}>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Eye className="h-4 w-4 text-gray-600" />
+                    </Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

@@ -1,7 +1,6 @@
-"use client";
+"use client";;
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
@@ -20,8 +19,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ArrowDownWideNarrow } from "lucide-react";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import { EaringIcon, TotalSaleIcon } from "@/icons";
-import { ReturnProductModal } from "@/app/(users)/individual-user/uploaded-products-list/sale/_components/ReturnProductModal";
+import { ReturnProductModal } from "../Modals/ReturnProductModal";
 
 interface SaleItem {
   id: string;

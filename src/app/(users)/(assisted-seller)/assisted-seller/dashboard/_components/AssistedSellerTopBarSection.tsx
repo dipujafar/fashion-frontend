@@ -22,7 +22,7 @@ const navLinks = [
   {
     _id: 5,
     title: "Settings",
-    href: "/ambassador/dashboard/settings",
+    href: "/assisted-seller/dashboard/settings",
   },
 ];
 
