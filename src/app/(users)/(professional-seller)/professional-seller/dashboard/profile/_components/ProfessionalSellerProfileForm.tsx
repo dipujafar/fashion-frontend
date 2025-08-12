@@ -193,7 +193,7 @@ const ProfessionalSellerProfileForm = () => {
                         <Image
                           src={
                             coverImagePreview ||
-                            "/dummyImages/eco-friendly-store-cover-image.jpg"
+                            "/dummyImages/professional-seller-cover-image.png"
                           }
                           alt="Cover Preview"
                           fill
@@ -249,7 +249,7 @@ const ProfessionalSellerProfileForm = () => {
                             className="md:size-40 size-28 object-cover mx-auto"
                             img={
                               imagePreview ||
-                              "/dummyImages/eco-friendly-store-profile-image.jpg"
+                              "/dummyImages/professional-seller-profile-image.png"
                             }
                             name="Ali Asraf"
                             fallbackClass="lg:text-4xl"
