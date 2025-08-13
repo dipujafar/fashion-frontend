@@ -25,6 +25,7 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-switch": "^1.2.5",
     "@radix-ui/react-tabs": "^1.1.12",
+    "@react-google-maps/api": "^2.20.7",
     "@tiptap/extension-color": "^3.0.7",
     "@tiptap/extension-heading": "^3.0.7",
     "@tiptap/extension-highlight": "^3.0.7",

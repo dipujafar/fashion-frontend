@@ -39,13 +39,14 @@ const SearchAndNavIcon = () => {
           </div>
         </motion.div> */}
         <motion.li variants={childrenVariants}>
-          <Link href={"/#"}>
+          <Link href={"/wishlist"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
             className="lg:size-6 md:size-5 "
             width={25}
             height={25}
               viewBox="0 0 24 24"
+              fill="red"
             >
               <path
                 fill="currentColor"

@@ -1,4 +1,3 @@
-import React from "react";
 import NavLinksSection from "./NavLinksSection";
 import NavLogoCategory from "./NavLogoCategory";
 import NavbarCategories from "./NavbarCategories";

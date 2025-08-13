@@ -17,7 +17,7 @@ const quickLink = [
   },
   {
     label: "Sell Now",
-    href: "#",
+    href: "/sell-products",
   },
 ];
 

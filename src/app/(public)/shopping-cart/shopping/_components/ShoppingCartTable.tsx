@@ -68,7 +68,7 @@ const ShoppingCartTable = () => {
       <Table className="lg:text-lg w-full overflow-x-auto">
         <TableHeader className="py-10 text-white bg-black">
           <TableRow className="border-none !text-white hover:bg-transparent">
-            <TableHead className="text-white py-5">Fishes</TableHead>
+            <TableHead className="text-white py-5">Product</TableHead>
             <TableHead className="text-white py-5 ">Price</TableHead>
             <TableHead className="text-white py-5 ">Donation</TableHead>
             <TableHead className="text-white py-5 ">Shipping Fees</TableHead>
