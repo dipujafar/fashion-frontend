@@ -2,10 +2,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 import CustomerFeedbacks from "@/components/shared/UserProfile/ProfileDashboard/CustomerFeedbacks";
 import CharitySupportTable from "@/components/shared/UserProfile/Tables/CharitySupportTable";
-import ProfileContainerForm from "./ProfileContainerForm";
+import CelebrityProfileForm from "./CelebrityProfileForm";
 
 
-const AmbassadorProfileFeatures = () => {
+
+const CelebrityProfileFeature = () => {
   return (
     <div>
       <Tabs defaultValue="profile_details" className="w-full">
@@ -33,7 +34,7 @@ const AmbassadorProfileFeatures = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="profile_details">
-          <ProfileContainerForm />
+          <CelebrityProfileForm />
         </TabsContent>
         <TabsContent value="charity_support">
           <CharitySupportTable />
@@ -46,4 +47,4 @@ const AmbassadorProfileFeatures = () => {
   );
 };
 
-export default AmbassadorProfileFeatures;
+export default CelebrityProfileFeature;

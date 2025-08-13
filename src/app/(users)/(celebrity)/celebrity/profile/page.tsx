@@ -1,5 +1,6 @@
 import Container from '@/components/shared/Container'
 import EnableBundleCreation from '@/components/shared/UserProfile/CreateBundle/EnableBundleCreation'
+import ProfileFeatures from '@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures'
 import StatsInfo from '@/components/shared/UserProfile/StatsInfo'
 import UserInfo from '@/components/shared/UserProfile/UserInfo'
 import UserProfileInfo from '@/components/shared/UserProfile/UserProfileInfo'
@@ -19,10 +20,10 @@ export default function ProfilePage() {
         </Link>
         <div className="flex lg:flex-row flex-col gap-5">
           <UserInfo userRole="celebrity"  link='/celebrity/dashboard/profile' />
-          <StatsInfo userRole="user" />
+          <StatsInfo userRole="celebrity" />
         </div>
         <EnableBundleCreation />
-        {/* <ProfileFeatures userRole="user" /> */}
+        <ProfileFeatures userRole="celebrity" />
       </Container>
       </div>
   )

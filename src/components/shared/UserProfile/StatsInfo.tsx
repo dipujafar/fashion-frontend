@@ -56,6 +56,17 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
           </div>
         </div>
       )}
+      {/* --------------------------- display tag for celebrity store role --------------------------- */}
+      {userRole === "celebrity" && (
+        <div className="flex flex-wrap gap-x-3">
+          <div className="flex-1 bg-[#1372C4] text-white p-1.5 text-center">
+            <h5>CELEBRITY</h5>
+          </div>
+          <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">
+            <h5>TOP SELLER</h5>
+          </div>
+        </div>
+      )}
       {/* --------------------------- display tag for charity role ---------------------------   */}
       {userRole === "charity" && (
         <div className=" bg-[#4B105F] text-white p-1.5 text-center ">

@@ -4,8 +4,8 @@ import { Figtree } from "next/font/google";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
 import TopInfo from "@/components/shared/Navbar/TopInfo";
-
 import "react-pagination-bar/dist/index.css";
+import NextTopLoader from "nextjs-toploader";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -41,6 +41,20 @@ export default function RootLayout({
         <div className="bg-[#F6F6F6] lg:py-14 py-8">
           <Footer></Footer>
         </div>
+
+          <NextTopLoader
+          color="#fff"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={true}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #232323,0 0 5px #EA5326"
+          zIndex={1600}
+          showAtBottom={false}
+        />
 
         {/* <ScrollLoader></ScrollLoader> */}
       </body>

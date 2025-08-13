@@ -73,7 +73,7 @@ const formSchema = z.object({
   ),
 });
 
-const ProfileContainerForm = () => {
+const CelebrityProfileForm = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
     null
@@ -443,4 +443,4 @@ const ProfileContainerForm = () => {
   );
 };
 
-export default ProfileContainerForm;
+export default CelebrityProfileForm;
