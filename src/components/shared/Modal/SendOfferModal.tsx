@@ -4,26 +4,18 @@ import { Input } from "@/components/ui/input";
 import { InfoIcon3 } from "@/icons";
 import { cn } from "@/lib/utils";
 import { TProduct } from "@/types";
-import { discountAmount } from "@/utils/discont-amount";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function SendOfferModal({
   open,
-  setOpen,
-  selectedProducts,
+  setOpen
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedProducts: TProduct[];
 }) {
-  const discount = useSearchParams().get("discount");
   const router = useRouter();
-  const totalPrice = selectedProducts?.reduce(
-    (acc, curr) => acc + curr?.price,
-    0
-  );
   const [selectedOffer, setSelectedOffer] = useState<number>(0);
 
   const handleSendOffer = () => {
@@ -34,45 +26,41 @@ export default function SendOfferModal({
     {
       id: 1,
       discount: 5,
-      price: totalPrice - discountAmount(totalPrice, 5),
+      price: 152.00,
     },
     {
       id: 2,
       discount: 10,
-      price: totalPrice - discountAmount(totalPrice, 10),
+      price: 144.00,
     },
     {
       id: 3,
       discount: 15,
-      price: totalPrice - discountAmount(totalPrice, 15),
+      price: 142.00,
     },
   ];
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="w-[700px]">
         <div className="space-y-4">
-          <div className="flex flex-wrap  gap-x-4">
+          <div className="flex md:flex-row flex-col  gap-x-4">
             <div className="relative">
               <Image
-                src={selectedProducts[0]?.image}
+                src={"/productDetailsImage3.jpeg"}
                 alt="hero image"
                 width={500}
                 height={500}
-                className="h-32 w-36 rounded-2xl "
+                className="h-32 w-36 rounded-2xl object-cover "
               />
-              <div className="absolute inset-0 flex-center bg-black/30 rounded-2xl">
-                <div className="bg-white/40 text-white size-18 flex items-center justify-center rounded-full">
-                  <p className="text-2xl">+{selectedProducts?.length}</p>
-                </div>
-              </div>
+           
             </div>
 
-            <div className="text-xl">
-              <h1 className="font-medium">
-                Bundle {selectedProducts?.length} items
+            <div className="text-base">
+              <h1 className="text-base">
+               Brown fringe shawl / bohemian - whimsical vibes.
               </h1>
-              <p className="text-[#8A8A8A]">Subtotal ${totalPrice}</p>
-              <p className="text-[#059669]">Bundle discount ({discount}%)</p>
+              <p className="text-[#8A8A8A]">Product Price: $300.00</p>
+             
               <p className="text-[#E12728]">Offer Expire in 24 hrs</p>
             </div>
           </div>

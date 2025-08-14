@@ -4,10 +4,13 @@ import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import SendOfferModal from "@/components/shared/Modal/SendOfferModal";
 
 const ActionButtons = () => {
   const [quality, setQuality] = useState<number>(1);
+  const [showOpenModal, setShowOpenModal] = useState<boolean>(false);
   return (
+    <>
     <div className="lg:space-y-5 space-y-3">
       <h6 className="uppercase text-primary-gray underline">Quantity</h6>
       {/* =============== action buttons ================ */}
@@ -42,12 +45,14 @@ const ActionButtons = () => {
           add to favourite <HeartIcon className="ml-2 size-5"></HeartIcon>
         </Button>
 
-        <Button className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 border-b-4 border-r-4 border-black group">
+        <Button onClick={()=> setShowOpenModal(true)} className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 border-b-4 border-r-4 border-black group">
          make an offer <OfferIcon className="ml-2 size-5"></OfferIcon>
         </Button>
      
       </div>
     </div>
+    <SendOfferModal open={showOpenModal} setOpen={setShowOpenModal}/>
+    </>
   );
 };
 

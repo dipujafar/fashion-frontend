@@ -1,10 +1,10 @@
 "use client";
 import type React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState, useCallback } from "react";
-import { X, Upload } from "lucide-react";
+import { X, Upload, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,110 +22,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
+import { productFormDefaultValues, productFormSchema, ProductFormValues } from "./schema";
+import SelectDonationOption from "./SelectDonationOption";
 
-const productFormSchema = z.object({
-  title: z.string().min(2, {
-    message: "Product title must be at least 2 characters.",
-  }),
-  price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "Price must be a valid positive number.",
-  }),
-  discountedPrice: z.string().refine(
-    (val) => {
-      const num = Number(val);
-      return !isNaN(num) && num >= 0 && num <= 100;
-    },
-    {
-      message: "Discount must be between 0 and 100.",
-    }
-  ),
-  itemNumber: z.string().min(1, {
-    message: "Item number is required.",
-  }),
-  category: z.string().min(1, {
-    message: "Please select a category.",
-  }),
-  tags: z.string().min(1, {
-    message: "Please add at least one tag.",
-  }),
-  condition: z.string().min(1, {
-    message: "Please select a condition.",
-  }),
-  fabric: z.string().min(1, {
-    message: "Fabric information is required.",
-  }),
-  brand: z.string().min(1, {
-    message: "Please select a brand.",
-  }),
-  availableSizes: z.string().min(1, {
-    message: "Please specify available sizes.",
-  }),
-  color: z.string().min(1, {
-    message: "Please select colors.",
-  }),
-  careInstructions: z.string().min(10, {
-    message: "Care instructions must be at least 10 characters.",
-  }),
-  donateToCharity: z.string().optional(),
-  donationAmount: z.string().optional(),
-  donationPrivacy: z.enum(["anonymous", "show-name"], {
-    required_error: "Please select donation privacy preference.",
-  }),
-  donateToCharity2: z.string().optional(),
-  donationAmount2: z.string().optional(),
-  productDescription: z.string().min(20, {
-    message: "Product description must be at least 20 characters.",
-  }),
-  deliveryPolicy: z.string().min(10, {
-    message: "Delivery policy must be at least 10 characters.",
-  }),
-  shippingReturns: z.string().min(10, {
-    message: "Shipping & returns information must be at least 10 characters.",
-  }),
-  durationTime: z.string().min(1, {
-    message: "Duration time is required.",
-  }),
-  returnsPolicy: z.enum(["yes", "no"], {
-    required_error: "Please select returns policy.",
-  }),
-  returnDescription: z.string().optional(),
-  allowOffers: z.boolean().default(false),
-});
 
-type ProductFormValues = z.infer<typeof productFormSchema>;
-
-const defaultValues: Partial<ProductFormValues> = {
-  title: "",
-  price: "",
-  discountedPrice: "0",
-  itemNumber: "",
-  category: "",
-  tags: "",
-  condition: "",
-  fabric: "",
-  brand: "",
-  availableSizes: "",
-  color: "",
-  careInstructions: "",
-  donateToCharity: "",
-  donationAmount: "",
-  donationPrivacy: undefined,
-  donateToCharity2: "",
-  donationAmount2: "",
-  productDescription: "",
-  deliveryPolicy: "",
-  shippingReturns: "",
-  durationTime: "",
-  returnsPolicy: undefined,
-  returnDescription: "",
-  allowOffers: false,
-};
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
@@ -133,7 +39,12 @@ export default function AddProductForm() {
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
-    defaultValues,
+    defaultValues: productFormDefaultValues(),
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "donations",
   });
 
   function onSubmit(data: ProductFormValues) {
@@ -189,6 +100,7 @@ export default function AddProductForm() {
 
   return (
     <div className="space-y-6">
+       
       <Card className="py-0 border-none shadow-none">
         <CardContent className="px-0">
           <Form {...form}>
@@ -496,16 +408,16 @@ export default function AddProductForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Color</FormLabel>
-                       <FormControl>
-                          <div className="relative">
-                            <Input
-                              type="color"
-                              placeholder="Enter Amount (%)"
-                              {...field}
-                              className="bg-[#f2f2f2] "
-                            />
-                          </div>
-                        </FormControl>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type="color"
+                            placeholder="Enter Amount (%)"
+                            {...field}
+                            className="bg-[#f2f2f2] "
+                          />
+                        </div>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -528,61 +440,94 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
+              
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="donateToCharity"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Donate to charity</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
+                {fields.map((field, index) => (
+                  <div
+                    key={field.id}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  >
+                    {/* Charity Select */}
+                    <FormField
+                      control={form.control}
+                      name={`donations.${index}.donateToCharity`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Donate to charity <SelectDonationOption/> </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                                <SelectValue placeholder="Select charity" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="save_the_children">
+                                Save the Children
+                              </SelectItem>
+                              <SelectItem value="plant_more_trees">
+                                Plant More Trees
+                              </SelectItem>
+                              <SelectItem value="women_for_women_international">
+                                Women for Women International
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Donation Amount */}
+                    <div className="flex gap-2">
+                      <FormField
+                        control={form.control}
+                        name={`donations.${index}.donationAmount`}
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormLabel>Amount (%)</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Enter Amount (%)"
+                                {...field}
+                                className="bg-[#f2f2f2] md:py-5"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Remove button */}
+                      {index > 0 && (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="self-end -translate-y-1"
+                          onClick={() => remove(index)}
                         >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select charity" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="save_the_children">
-                              Save the Children
-                            </SelectItem>
-                            <SelectItem value="plant_more_trees">
-                              Plant More Trees
-                            </SelectItem>
-                            <SelectItem value="women_for_women_international">
-                              Women for Women International
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          ✕
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
 
-                  <FormField
-                    control={form.control}
-                    name="donationAmount"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Amount (%)</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type="number"
-                              placeholder="Enter Amount (%)"
-                              {...field}
-                              className="bg-[#f2f2f2] md:py-5"
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                {/* Add More Button */}
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() =>
+                    append({ donateToCharity: "", donationAmount: 0 })
+                  }
+                  className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer"
+                >
+                  <PlusCircle/> Add More
+                </Button>
 
                 {/* Donation Privacy */}
                 <FormField
@@ -618,61 +563,8 @@ export default function AddProductForm() {
                   )}
                 />
 
-                {/* Additional Charity Donations */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="donateToCharity2"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Donate to Charity</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Save The Ocean"
-                            {...field}
-                            className="bg-[#f2f2f2] md:py-5"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
-                  <FormField
-                    control={form.control}
-                    name="donationAmount2"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Amount (%)</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              placeholder="0"
-                              {...field}
-                              className="bg-[#f2f2f2] md:py-5"
-                            />
-                            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                              %
-                            </span>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Mark as Dealer Button */}
-                <div className="flex justify-end">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="bg-[#FAFAFA]"
-                  >
-                    Mark as Dealer
-                  </Button>
-                </div>
+               
 
                 {/* Product Description */}
                 <FormField
