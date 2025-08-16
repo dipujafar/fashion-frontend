@@ -56,6 +56,24 @@ const defaultCharitySupportData = [
     image: "/charityImage2.png",
     title: "Women for Women International",
     present: 15,
+  }, 
+  {
+    _id: 7,
+    image: "/charityImage3.png",
+    title: "Women for Women International",
+    present: 15,
+  },
+  {
+    _id: 8,
+    image: "/charityImage1.png",
+    title: "Women for Women International",
+    present: 15,
+  },
+  {
+    _id: 9,
+    image: "/charityImage2.png",
+    title: "Women for Women International",
+    present: 15,
   }
 ];
 
