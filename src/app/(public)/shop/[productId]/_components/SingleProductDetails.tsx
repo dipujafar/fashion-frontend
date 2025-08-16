@@ -3,11 +3,12 @@ import React from "react";
 import ProductDetails from "./ProductDetails";
 import ProductImages from "./ProductImages";
 import ProductDescription from "./ProductDescription";
-import CharitySupport from "./CharitySupport";
-import RecentlyViewed from "@/components/shared/RecentlyViewed/RecentlyViewed";
 import ReviewContainer from "./review/ReviewContainer";
 import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
+import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
+import CharityInfo from "./dialog/CharityInfo";
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 
 const SingleProductDetails = () => {
   return (
@@ -21,7 +22,26 @@ const SingleProductDetails = () => {
         </div>
       </div>
       <ReviewContainer></ReviewContainer>
-      <CharitySupport></CharitySupport>
+      <div>
+        <div>
+          {/* ======================================= section header ========================================== */}
+          <div className="flex-between lg:mb-2 mb-1 ">
+            <div className="flex items-center gap-x-1.5">
+              <h4 className="lg:text-2xl text-lg font-medium">
+                Charity Support
+              </h4>
+              <CharityInfo />
+            </div>
+            <div className="flex gap-x-3 items-center group cursor-pointer">
+              <h4 className=" font-bold   ">ADD DONATE</h4>
+              <AnimatedArrow size={20} />
+            </div>
+          </div>
+
+          <hr className="border lg:mb-6 mb-4" />
+        </div>
+        <CharitySupportCards></CharitySupportCards>
+      </div>
 
       <ProductDescription></ProductDescription>
       <DisplayProductSection

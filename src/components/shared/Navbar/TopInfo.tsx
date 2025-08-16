@@ -2,11 +2,8 @@ import React from "react";
 import Container from "../Container";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { CharityDonationFormDialog } from "../Modal/CharityDonationFormDialog";
 const quickLink = [
-  {
-    label: "Donate now",
-    href: "#",
-  },
   {
     label: "Sing In",
     href: "#",
@@ -31,6 +28,7 @@ const TopInfo = () => {
         </div>
 
         <div className="xl:space-x-4 space-x-1 hidden md:block lg:text-base md:text-xs">
+          <CharityDonationFormDialog />
           {quickLink.map((link, index) => (
             <Link
               key={index}

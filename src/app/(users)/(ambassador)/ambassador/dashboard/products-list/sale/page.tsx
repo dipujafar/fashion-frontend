@@ -2,7 +2,6 @@ import Container from "@/components/shared/Container";
 import SaleProductTable from "@/components/shared/UserProfile/Sale-Product/SaleProductTable";
 import SaleStatsCard from "@/components/shared/UserProfile/Sale-Product/SaleStatsCard";
 import AddNewProduct from "@/components/shared/UserProfile/UploadProduct/AddNewProduct";
-
 import UploadProductDataFilterOptionAndNav from "@/components/shared/UserProfile/UploadProduct/UploadedProductListDataTable/UploadProductDataFilterOptionAndNav";
 import { EaringIcon, TotalSaleIcon } from "@/icons";
 

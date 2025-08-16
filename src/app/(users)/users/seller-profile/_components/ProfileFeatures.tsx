@@ -1,9 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
-import CharitySupport from "./CharitySupport";
 import ProductsListContainer from "./ProductsList/ProductsListContainer";
-import CustomerFeedbacks from "./CustomerFeedbacks/CustomerFeedbacks";
 import CustomerFeedbacksContainer from "./CustomerFeedbacks/CustomerFeedbacksContainer";
+import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
 
 const ProfileFeatures = () => {
   return (
@@ -33,7 +32,7 @@ const ProfileFeatures = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="charity_support">
-          <CharitySupport />
+        <CharitySupportCards />
         </TabsContent>
         <TabsContent value="product_listing">
           <ProductsListContainer />

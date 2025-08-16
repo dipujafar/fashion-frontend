@@ -205,7 +205,7 @@ export default function SendFeedbacksForm() {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                className="bg-black hover:bg-gray-800 text-white px-8 py-2  font-medium group border-b-2 border-r-2 border-red-600 rounded-none "
+                className="bg-black hover:bg-gray-800 text-white px-8 py-2  font-medium group   rounded-none "
               >
                 SUBMIT
                 <AnimatedArrow/>

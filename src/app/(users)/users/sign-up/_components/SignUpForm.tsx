@@ -94,11 +94,6 @@ const SignUpForm = () => {
 
   const { register, setValue, control } = form;
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "socialMedia",
-  });
-
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
   };

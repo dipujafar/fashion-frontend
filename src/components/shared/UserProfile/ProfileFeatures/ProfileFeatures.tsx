@@ -1,9 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
-import CharitySupport from "../../../../app/(users)/users/profile/_components/CharitySupport";
 import ProductsListContainer from "../ProductsList/ProductsListContainer";
 import CustomerFeedbacks from "../CustomerFeedbacks";
 import { Switch } from "@/components/ui/switch";
+import CharitySupportCards from "../../Cards/CharitySupportCards";
 
 const ProfileFeatures = ({ userRole }: { userRole: string }) => {
   return (
@@ -52,7 +52,7 @@ const ProfileFeatures = ({ userRole }: { userRole: string }) => {
                 <Switch className="data-[state=checked]:bg-[#3DB39E] cursor-pointer" />
               </div>
             )}
-            <CharitySupport />
+            <CharitySupportCards />
           </TabsContent>
         )}
         <TabsContent value="product_listing">

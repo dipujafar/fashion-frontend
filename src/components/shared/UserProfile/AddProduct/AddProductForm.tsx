@@ -2,7 +2,6 @@
 import type React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
 import { useState, useCallback } from "react";
 import { X, Upload, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,6 @@ import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { productFormDefaultValues, productFormSchema, ProductFormValues } from "./schema";
 import SelectDonationOption from "./SelectDonationOption";
-
 
 
 export default function AddProductForm() {

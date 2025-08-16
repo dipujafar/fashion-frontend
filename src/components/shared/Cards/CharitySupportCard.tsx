@@ -1,9 +1,15 @@
+import CharityInfo from "@/app/(public)/shop/[productId]/_components/dialog/CharityInfo";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Image from "next/image";
 
-import CharityInfo from "./dialog/CharityInfo";
+type TCharitySupport = {
+  _id: number;
+  image: string;
+  title: string;
+  present: number;
+};
 
-const charitySupportData = [
+const defaultCharitySupportData = [
   {
     _id: 1,
     image: "/charityImage1.png",
@@ -24,7 +30,13 @@ const charitySupportData = [
   },
 ];
 
-const CharitySupport = () => {
+const CharitySupport = ({
+  charitySupportsData,
+}: {
+  charitySupportsData?: TCharitySupport[];
+}) => {
+
+    const data = charitySupportsData || defaultCharitySupportData;
   return (
     <>
       <div>
@@ -44,7 +56,7 @@ const CharitySupport = () => {
 
         {/* ========================================= preview images and data ==================================== */}
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5">
-          {charitySupportData?.map((charitySupport) => (
+          {data?.map((charitySupport) => (
             <div key={charitySupport?._id} className="relative group">
               <Image
                 src={charitySupport?.image}
