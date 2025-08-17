@@ -1,4 +1,5 @@
 import Container from "@/components/shared/Container";
+import { IndividualCharityDonationFormDialog } from "@/components/shared/Modal/IndividualCharityDonationFormDialog";
 import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/EnableBundleCreation";
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
@@ -11,7 +12,7 @@ export const metadata = {
   title: "Charity Shop Profile",
   description: "Here find charity shop profile",
 };
-export default function ProfilePage() {
+export default function ProfilePreviewPage() {
   return (
     <div>
       <UserProfileInfo
@@ -19,19 +20,22 @@ export default function ProfilePage() {
         profileImage="/dummyImages/charity-shop-profile-image.png"
         bio="By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the fight against ocean pollution and supporting initiatives."
         coverImage="/dummyImages/charity-shop-cover-image.png"
-        user={"charity store"}
+        user="charity store"
       />
 
-      <Container className="lg:space-y-8 space-y-4 my-8">
-        {/* <Link href="/#" className="flex justify-center ">
+      <Container className="lg:space-y-8 space-y-4">
+        <div className="flex justify-center my-5 gap-x-5 items-center">
           <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
-            Register as a Charity
+            Donate Clothes
           </CommonButton>
-        </Link> */}
+          <IndividualCharityDonationFormDialog />
+        </div>
+
         <div className="flex lg:flex-row flex-col gap-5">
           <UserInfo
             link="/charity-shop/dashboard/profile"
             userRole="charity store"
+            preview="preview"
           />
           <StatsInfo userRole="charity store" />
         </div>

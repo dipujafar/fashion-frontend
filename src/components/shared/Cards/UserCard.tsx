@@ -1,11 +1,57 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TUser } from "@/types";
 import { userTagColor } from "@/utils/userTagColor";
 import { Check } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+
+export const userTagColor2 = (type: string) => {
+  switch (type.toLowerCase()) {
+    case "influencer":
+      return "#123CA6";
+    case "eco-friendly store":
+      return "#00B047";
+    case "charity":
+      return "#4B105F";
+    case "charity store":
+      return "#B59900";
+    case "professional seller":
+      return "#b91a4f";
+    case "ambassador":
+      return "#81b91a";
+    case "individual seller":
+      return "#b96f1a";
+    default:
+      return "#000";
+  }
+};
 
 const UserCard = ({ data }: { data: TUser }) => {
+  const router = useRouter();
+  const handleRedirect = (user: string) =>{
+    switch (user?.toLowerCase()) {
+    case "influencer":
+      return "/celebrity/profile-preview";
+    case "eco-friendly store":
+      return "/eco-friendly-store/profile-preview";
+    case "charity":
+      return "/charity/profile-preview";
+    case "charity store":
+      return "/charity-shop/profile-preview";
+    case "professional seller":
+      return "/professional-seller/profile-preview";
+    case "ambassador":
+      return "/ambassador/profile-preview";
+    case "individual seller":
+      return "/individual-seller/profile-preview";
+    default:
+      return "/";
+  }
+
+  }
   return (
     <Card className="py-0 hover:-translate-y-1 transition-all duration-500 hover:border-primary-gray/40">
       <CardContent className="p-4">
@@ -57,7 +103,8 @@ const UserCard = ({ data }: { data: TUser }) => {
           </div>
           <p className="text-primary-gray text-sm">{data?.bio}</p>
         </div>
-        <Button className="w-full border-r-2 border-b-2 border-primary-black bg-primary-white text-primary-black hover:bg-primary-black/20 cursor-pointer">
+        
+        <Button onClick={() => router.push(handleRedirect(data?.type))} className="w-full border-r-2 border-b-2 border-primary-black bg-primary-white text-primary-black hover:bg-primary-black/20 cursor-pointer">
           View Profile
         </Button>
       </CardContent>

@@ -1,18 +1,22 @@
 import Image from "next/image";
 import CustomAvatar from "@/components/shared/CustomAvatar";
+import { userTagColor } from "@/utils/userTagColor";
+import { Check } from "lucide-react";
 
 export default function UserProfileInfo(
   {
     coverImage = "/user_profile_cover_image.png",
-    profileImage= "/dummyImages/profile-image.jpg",
     name= "@Sarah_Style",
-    bio = "Fashion lover 👗 | Curating the best of chic and street style ✨ | 10% of my sales go to supporting youth education 📚 | Join me on this stylish journey!"
+    bio = "Fashion lover 👗 | Curating the best of chic and street style ✨ | 10% of my sales go to supporting youth education 📚 | Join me on this stylish journey!",
+    profileImage = "/seller_profile.png",
+    user,
     
   }: {
     coverImage?: string;
-    profileImage?: string;
     name?: string;
     bio?: string;
+    profileImage?: string;
+    user? : string
   }
 ) {
   return (
@@ -32,10 +36,16 @@ export default function UserProfileInfo(
         {/* Profile Picture */}
         <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-16 -bottom-14">
           <CustomAvatar
-            img={profileImage}
+            img={profileImage || "/seller_profile.png"}
             name="Sarah_Style"
             className="md:size-36 size-24"
           />
+          <div
+            className="rounded-full size-5 flex justify-center items-center absolute md:top-3 top-1 right-0 md:right-2"
+            style={{ backgroundColor: userTagColor(user || "") }}
+          >
+            <Check size={16} color="#fff"></Check>
+          </div>
         </div>
       </div>
 

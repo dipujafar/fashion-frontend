@@ -6,10 +6,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { CharityHistoryDialog } from "../Modal/CharityHistoryDialog";
 import { FollowersDialog } from "../Modal/FollowersDialog";
+import { GotDonationHistoryDialog } from "../Modal/GotDonationHistoryDialog";
 
-export default function StatsInfo({ userRole }: { userRole: string }) {
+export default function StatsInfo({ userRole, preview }: { userRole: string, preview?: string }) {
   const [openCharityHistory, setOpenCharityHistory] = useState(false);
   const [openFollowers, setOpenFollowers] = useState(false);
+  const [openDonationHistory, setOpenDonationHistory] = useState(false);
   const [type, setType] = useState("");
   return (
     <>
@@ -98,7 +100,7 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
           )}
 
           <div className="space-y-1">
-            <p onClick={() => setOpenCharityHistory(true)} className="md:text-lg text-muted-foreground underline cursor-pointer">
+            <p onClick={ preview ? () => setOpenDonationHistory(true) : () => setOpenCharityHistory(true)} className="md:text-lg text-muted-foreground underline cursor-pointer">
               Total Donations Raised
             </p>
             <p className="md:text-2xl text-xl font-medium">$5.00</p>
@@ -150,6 +152,7 @@ export default function StatsInfo({ userRole }: { userRole: string }) {
         open={openCharityHistory}
         setOpen={setOpenCharityHistory}
       />
+      <GotDonationHistoryDialog open={openDonationHistory} setOpen={setOpenDonationHistory} />
       <FollowersDialog open={openFollowers} setOpen={setOpenFollowers} type={type} />
     </>
   );

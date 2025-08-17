@@ -8,6 +8,8 @@ import {
   VerifiedIcon,
 } from "@/icons";
 import CommonButton from "@/components/ui/common-button";
+import { Button } from "@/components/ui/button";
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 
 interface ProfileCardProps {
   name?: string;
@@ -21,6 +23,7 @@ interface ProfileCardProps {
   phone?: string;
   userRole?: string;
   link?: string;
+  preview?: string;
 }
 
 export const findUserRole = (type: string) => {
@@ -45,12 +48,13 @@ export const findUserRole = (type: string) => {
 };
 
 export default function UserInfo({
+  preview="",
   name = "Sarah Rahman",
   location = "Los Angeles, CA",
   email = "example@gmail.com",
   phone = "+123456789",
   userRole,
-  link ="/individual-user/profile"
+  link ="/individual-user/profile",
 }: ProfileCardProps) {
   return (
     <Card
@@ -59,9 +63,24 @@ export default function UserInfo({
     >
       <CardContent className="lg:px-6 px-3">
         {/* Edit Profile Button */}
-        <Link href={link}>
+       {!preview && <Link href={link}>
           <CommonButton className="w-full">Edit Profile</CommonButton>
-        </Link>
+        </Link>}
+
+        {
+          preview &&  <div className="flex gap-x-2">
+          <div className="flex-1">
+            <Button className=" w-full bg-transparent hover:text-white text-black border-b-2 border-r-2 border-black rounded-none duration-500 cursor-pointer group">
+              Message <AnimatedArrow />
+            </Button>
+          </div>
+          <div className="flex-1 group">
+            <Button className="rounded-none w-full">
+              Follow <AnimatedArrow />
+            </Button>
+          </div>
+        </div>
+        }
 
         <div className="space-y-6 mt-4">
           {/* Name and Location */}
@@ -77,7 +96,7 @@ export default function UserInfo({
           </div>
 
           {/* ---------------------- show business tag for charity store --------------------------------- */}
-          {userRole === "charity store" || userRole === "eco-friendly-store" && (
+          {userRole === "charity store" || userRole === "eco-friendly-store" || userRole === "charity" && (
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground ">Business Tag</p>
               <div className="flex gap-x-2">
@@ -94,7 +113,7 @@ export default function UserInfo({
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground">
                 {(userRole === "user" || userRole === "ambassador" || userRole === "assisted-seller" || userRole === "celebrity") && "Email"}{" "}
-                {userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" || userRole === "professional-seller" && "Business Email"}
+                {(userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" || userRole === "professional-seller") && "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
                 <span className=" font-medium md:text-xl text-lg">{email}</span>
