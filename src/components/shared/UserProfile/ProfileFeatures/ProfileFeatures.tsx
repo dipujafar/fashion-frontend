@@ -5,7 +5,7 @@ import CustomerFeedbacks from "../CustomerFeedbacks";
 import { Switch } from "@/components/ui/switch";
 import CharitySupportCards from "../../Cards/CharitySupportCards";
 
-const ProfileFeatures = ({ userRole }: { userRole: string }) => {
+const ProfileFeatures = ({ userRole, preview }: { userRole: string, preview?: string }) => {
   return (
     <div>
       <Tabs
@@ -44,7 +44,7 @@ const ProfileFeatures = ({ userRole }: { userRole: string }) => {
         {(userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller" || userRole === "celebrity") && (
           <TabsContent value="charity_support">
             {/* ---------------------------------- option to show charity support or not ---------------------------------- */}
-            {userRole === "eco-friendly-store" && (
+            {(userRole === "eco-friendly-store" && !preview) && (
               <div className="flex justify-between items-center  shadow-md py-4 px-5 rounded-xl mb-5">
                 <span className="text-lg">
                   Show Charitable donation on your profile

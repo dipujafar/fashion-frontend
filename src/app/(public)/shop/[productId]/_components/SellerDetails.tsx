@@ -15,7 +15,7 @@ const SellerDetails = () => {
           seller information
         </h4>
         <Link
-          href="/users/seller-profile"
+          href="/celebrity/profile-preview"
           className="flex items-center gap-x-2 group cursor-pointer"
         >
           <p className="font-medium">VIEW DETAILS</p>
@@ -30,7 +30,7 @@ const SellerDetails = () => {
         <div className="space-y-2">
           <div className="flex-between gap-x-2 ">
             <Link
-              href="/users/seller-profile"
+              href="/celebrity/profile-preview"
               className="flex items-center gap-x-2 group cursor-pointer"
             >
               <div className="relative size-12 rounded-full">
@@ -63,7 +63,7 @@ const SellerDetails = () => {
           <div className="flex-between gap-x-2">
             <div>
               <Link
-                href="/users/seller-profile"
+                href="/celebrity/profile-preview"
                 className="flex items-center gap-x-2 group cursor-pointer"
               >
                 <h5 className="font-medium">Anita_Rahman</h5>

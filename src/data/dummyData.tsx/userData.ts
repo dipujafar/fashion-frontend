@@ -60,7 +60,7 @@ export const userData = [
     coverImage: "/coverImage7.png",
   },
   {
-    _id: "1",
+    _id: "8",
     name: "Arafaaat Yummy",
     bio: "Fashion lover 💫 | Curating the best of chic and street style ✨ | 10% of m",
     type: "INFLUENCER",
@@ -68,7 +68,7 @@ export const userData = [
     coverImage: "/coverImage1.png",
   },
   {
-    _id: "2",
+    _id: "9",
     name: "Roman Stone",
     bio: "Fashion lover 💫 | Curating the best of chic and street style ✨ | 10% of m",
     type: "Eco-friendly store",
@@ -76,7 +76,7 @@ export const userData = [
     coverImage: "/coverImage2.png",
   },
   {
-    _id: "3",
+    _id: "10",
     name: "Alphabetical",
     bio: "Fashion lover 💫 | Curating the best of chic and street style ✨ | 10% of m",
     type: "Charity",
@@ -84,7 +84,7 @@ export const userData = [
     coverImage: "/coverImage3.png",
   },
   {
-    _id: "4",
+    _id: "11",
     name: "Arafaaat Yummy",
     bio: "Fashion lover 💫 | Curating the best of chic and street style ✨ | 10% of m",
     type: "Ambassador",
@@ -92,7 +92,7 @@ export const userData = [
     coverImage: "/coverImage5.png",
   },
   {
-    _id: "5",
+    _id: "12",
     name: "Roman Stone",
     bio: "Fashion lover 💫 | Curating the best of chic and street style ✨ | 10% of m",
     type: "Charity Store",

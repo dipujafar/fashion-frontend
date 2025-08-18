@@ -14,6 +14,8 @@ export const userTagColor = (type: string) => {
       return "#81b91a";
     case "individual seller":
       return "#b96f1a";
+    case "assisted-seller":
+      return "#123CA6";
     default:
       return "#000";
   }

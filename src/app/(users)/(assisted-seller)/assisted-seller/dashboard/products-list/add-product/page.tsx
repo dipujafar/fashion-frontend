@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
+import Container from "@/components/shared/Container";
+import AddProductForm from "@/components/shared/UserProfile/AddProduct/AddProductForm";
 
 export default function AddProductPage() {
   return (
-    <div>AddProductPage</div>
-  )
+    <Container>
+      <AddProductForm />
+    </Container>
+  );
 }

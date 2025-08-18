@@ -13,34 +13,34 @@ const navLinks = [
   {
     _id: 1,
     title: "Profile Details",
-    href: "/individual-user/profile",
+    href: "/individual-user/dashboard/profile",
   },
   {
     _id: 2,
     title: "Products Listing",
-    href: "/individual-user/uploaded-products-list",
+    href: "/individual-user/dashboard/uploaded-products-list",
   },
   {
     _id: 3,
     title: "Your Offers",
-    href: "/individual-user/offers",
+    href: "/individual-user/dashboard/offers",
   },
   {
     _id: 4,
     title: "Message",
-    href: "/individual-user/message",
+    href: "/individual-user/dashboard/message",
   },
   {
     _id: 5,
     title: "Settings",
-    href: "/individual-user/settings",
+    href: "/individual-user/dashboard/settings",
   },
 ];
 
 
 const IndividualUserPagesTopSection = () => {
-  const pathName = usePathname();
-  const currentPath = pathName?.split("/")[2];
+   const pathName = usePathname();
+  const currentPath = pathName?.split("/")[3];
   const router = useRouter();
 
   return (
@@ -64,7 +64,7 @@ const IndividualUserPagesTopSection = () => {
                 className={cn(
                   "rounded border-r-3 border-b-3  capitalize md:min-w-40 md:py-5 cursor-pointer group bg-white hover:bg-white/30  text-black  sm:m-2 m-1 text-[10px] md:text-sm px-2 md:px-3 py-0 md:h-9 h-7 hover:text-white",
                   "border-black",
-                  currentPath === navLink?.href?.split("/")[2] &&
+                   currentPath === navLink?.href?.split("/")[3] &&
                     " text-white bg-black"
                 )}
               >

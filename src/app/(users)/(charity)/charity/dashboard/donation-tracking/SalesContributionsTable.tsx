@@ -157,7 +157,7 @@ export default function SalesContributionsTable() {
 
                     <TableCell className="font-medium text-center">
                       <div className="flex items-center justify-center gap-x-2">
-                        <Link href={"/users/seller-profile"}>
+                        <Link href={"/celebrity/profile-preview"}>
                           <EyeIcon className="cursor-pointer" />
                         </Link>
                         <div>

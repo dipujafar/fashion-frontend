@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import {
+  AwardIcon,
   FacebookIcon,
   InstagramIcon,
   TikTokIcon,
@@ -48,13 +49,13 @@ export const findUserRole = (type: string) => {
 };
 
 export default function UserInfo({
-  preview="",
+  preview = "",
   name = "Sarah Rahman",
   location = "Los Angeles, CA",
   email = "example@gmail.com",
   phone = "+123456789",
   userRole,
-  link ="/individual-user/profile",
+  link = "/individual-user/dashboard/profile",
 }: ProfileCardProps) {
   return (
     <Card
@@ -63,24 +64,26 @@ export default function UserInfo({
     >
       <CardContent className="lg:px-6 px-3">
         {/* Edit Profile Button */}
-       {!preview && <Link href={link}>
-          <CommonButton className="w-full">Edit Profile</CommonButton>
-        </Link>}
+        {!preview && (
+          <Link href={link}>
+            <CommonButton className="w-full">Edit Profile</CommonButton>
+          </Link>
+        )}
 
-        {
-          preview &&  <div className="flex gap-x-2">
-          <div className="flex-1">
-            <Button className=" w-full bg-transparent hover:text-white text-black border-b-2 border-r-2 border-black rounded-none duration-500 cursor-pointer group">
-              Message <AnimatedArrow />
-            </Button>
+        {preview && (
+          <div className="flex gap-x-2">
+            <div className="flex-1">
+              <Button className=" w-full bg-transparent hover:text-white text-black border-b-2 border-r-2 border-black rounded-none duration-500 cursor-pointer group">
+                Message <AnimatedArrow />
+              </Button>
+            </div>
+            <div className="flex-1 group">
+              <Button className="rounded-none w-full">
+                Follow <AnimatedArrow />
+              </Button>
+            </div>
           </div>
-          <div className="flex-1 group">
-            <Button className="rounded-none w-full">
-              Follow <AnimatedArrow />
-            </Button>
-          </div>
-        </div>
-        }
+        )}
 
         <div className="space-y-6 mt-4">
           {/* Name and Location */}
@@ -96,24 +99,36 @@ export default function UserInfo({
           </div>
 
           {/* ---------------------- show business tag for charity store --------------------------------- */}
-          {userRole === "charity store" || userRole === "eco-friendly-store" || userRole === "charity" && (
-            <div className="space-y-1">
-              <p className="md:text-lg text-muted-foreground ">Business Tag</p>
-              <div className="flex gap-x-2">
-                <span className=" font-medium md:text-xl text-lg">
-                  Donating for Flood Relief Efforts
-                </span>
+          {userRole === "charity store" ||
+            userRole === "eco-friendly-store" ||
+            (userRole === "charity" && (
+              <div className="space-y-1">
+                <p className="md:text-lg text-muted-foreground ">
+                  Business Tag
+                </p>
+                <div className="flex gap-x-2">
+                  <span className=" font-medium md:text-xl text-lg">
+                    Donating for Flood Relief Efforts
+                  </span>
+                </div>
               </div>
-            </div>
-          )}
+            ))}
 
           {/* Email and Phone Verification */}
 
           <div className="flex  flex-wrap gap-4">
             <div className="space-y-1">
               <p className="md:text-lg text-muted-foreground">
-                {(userRole === "user" || userRole === "ambassador" || userRole === "assisted-seller" || userRole === "celebrity") && "Email"}{" "}
-                {(userRole === "charity store" || userRole === "charity" || userRole === "eco-friendly-store" || userRole === "professional-seller") && "Business Email"}
+                {(userRole === "user" ||
+                  userRole === "ambassador" ||
+                  userRole === "assisted-seller" ||
+                  userRole === "celebrity") &&
+                  "Email"}{" "}
+                {(userRole === "charity store" ||
+                  userRole === "charity" ||
+                  userRole === "eco-friendly-store" ||
+                  userRole === "professional-seller") &&
+                  "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
                 <span className=" font-medium md:text-xl text-lg">{email}</span>
@@ -153,6 +168,13 @@ export default function UserInfo({
               </Link>
             </div>
           </div>
+
+          {(preview && userRole === "celebrity") && (
+            <div className="bg-[#FFFBE6] mt-5 p-2 rounded-lg flex justify-center items-center">
+              <AwardIcon />
+              <p className="text-[#8C7600]">Fashion Activist</p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

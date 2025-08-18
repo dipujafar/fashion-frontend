@@ -79,7 +79,7 @@ const ProductCard = ({
           {/* ===== user image and user type ======== */}
           {!ownProduct && (
             <div className="flex items-center gap-x-1 gap-y-1 justify-between">
-              <Link href={`/users/seller-profile`}>
+              <Link href={`/celebrity/profile-preview`}>
               <div className="relative">
                 <Image
                   src={data?.userImage}

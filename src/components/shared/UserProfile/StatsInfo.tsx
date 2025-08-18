@@ -22,7 +22,7 @@ export default function StatsInfo({ userRole, preview }: { userRole: string, pre
         {/* --------------------------- display tag for ambassador user role --------------------------- */}
         {userRole === "ambassador" && (
           <div className="flex flex-wrap gap-x-3">
-            <div className="flex-1 bg-[#123CA6] text-white p-1.5 text-center">
+            <div className="flex-1 bg-[#81B91A] text-white p-1.5 text-center">
               <h5>AMBASSADOR</h5>
             </div>
             <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">
@@ -45,7 +45,7 @@ export default function StatsInfo({ userRole, preview }: { userRole: string, pre
         {/* --------------------------- display tag for professional seller role --------------------------- */}
         {userRole === "professional-seller" && (
           <div className="flex flex-wrap gap-x-3">
-            <div className="flex-1 bg-[#123CA6] text-white p-1.5 text-center">
+            <div className="flex-1 bg-[#B91A4F] text-white p-1.5 text-center">
               <h5>PROFESSIONAL SELLER</h5>
             </div>
             <div className="flex-1 bg-[#87CEEB] text-white p-1.5 text-center">

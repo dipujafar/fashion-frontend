@@ -1,42 +1,30 @@
 import Container from "@/components/shared/Container";
-import ProfileDetailsCard from "../../../../components/shared/UserProfile/ProfileDetailsCard";
-import ProfileFeatures from "./_components/ProfileFeatures";
-import { DownArrowIcon, UpArrowIcon } from "@/icons";
+import Link from "next/link";
+import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
+import UserInfo from "@/components/shared/UserProfile/UserInfo";
+import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
+import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
+import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/EnableBundleCreation";
 
-const cardDetailsData = [
-  {
-    id: 1,
-    title: "Total Sales",
-    value: "120 items sold",
-    icon: <UpArrowIcon/>,
-  },
-  {
-    id: 2,
-    title: "Total Earnings",
-    value: "$5,000 earned",
-    icon: <DownArrowIcon/>,
-  },
-  {
-    id: 3,
-    title: "Total Followers",
-    value: "12",
-    icon: <DownArrowIcon/>,
-  },
-  {
-    id: 4,
-    title: "Total Funds Raised",
-    value: "$2,00",
-    icon: <UpArrowIcon/>,
-  },
-];
-
-const ProfilePage = () => {
+const UserProfilePage = () => {
   return (
-    <Container className="space-y-5">
-      <ProfileDetailsCard data={cardDetailsData} />
-      <ProfileFeatures />
-    </Container>
+    <div className="lg:space-y-8 space-y-4">
+      <UserProfileInfo user="individual seller" />
+      <Container className="lg:space-y-8 space-y-4">
+        <Link href="/sign-up" className="flex justify-center ">
+          {/* <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
+            Register to another user
+          </CommonButton> */}
+        </Link>
+        <div className="flex lg:flex-row flex-col gap-5">
+          <UserInfo userRole="user" />
+          <StatsInfo userRole="user" />
+        </div>
+        <EnableBundleCreation />
+        <ProfileFeatures userRole="user" />
+      </Container>
+    </div>
   );
 };
 
-export default ProfilePage;
+export default UserProfilePage;

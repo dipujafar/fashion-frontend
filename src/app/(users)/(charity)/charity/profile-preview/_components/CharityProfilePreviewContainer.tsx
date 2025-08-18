@@ -12,6 +12,7 @@ export default function CharityProfilePreviewContainer() {
         profileImage="/dummyImages/charity-profile-image.png"
         bio="By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the fight against ocean pollution and supporting initiatives.."
         coverImage="/dummyImages/charity-cover-images.jpg"
+        user="charity"
       />
       <Container className="w-fit mx-auto my-5">
         <IndividualCharityDonationFormDialog />

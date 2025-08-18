@@ -237,6 +237,8 @@ const CelebrityProfileForm = () => {
                 </div>
               </div>
 
+          
+
               <div className="md:space-y-6 space-y-4 md:mt-20 mt-14 ">
                 <div className="flex flex-col md:flex-row md:items-center gap-4">
                   <div className="flex-1">

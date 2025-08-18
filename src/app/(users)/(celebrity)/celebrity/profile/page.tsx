@@ -11,12 +11,12 @@ import React from 'react'
 export default function ProfilePage() {
   return (
     <div className="lg:space-y-8 space-y-4">
-    <UserProfileInfo />
+    <UserProfileInfo user='Influencer' />
       <Container className="lg:space-y-8 space-y-4">
         <Link href="/sign-up" className="flex justify-center ">
-          <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
+          {/* <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
             Register to another user
-          </CommonButton>
+          </CommonButton> */}
         </Link>
         <div className="flex lg:flex-row flex-col gap-5">
           <UserInfo userRole="celebrity"  link='/celebrity/dashboard/profile' />
