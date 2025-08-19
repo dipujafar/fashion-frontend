@@ -6,8 +6,8 @@ import PaginationSection from "@/components/shared/Pagination/PaginationSection"
 import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import { useSearchParams } from "next/navigation";
-import CategoryFilter from "./CategoriesFilter";
 import { formatLabel } from "@/utils/formatText";
+import ProductFilterContainer from "./filter/ProductFilterContainer";
 // import AllCategory from "./AllCategories";
 
 const ShopPageContainer = () => {
@@ -30,7 +30,7 @@ const ShopPageContainer = () => {
           { finalCategory && <span>{formatLabel(finalCategory as string)}</span>}
         </div>
         {/* ------------------------------------------------------------------------------------------------ */}
-        <CategoryFilter />
+        <ProductFilterContainer />
 
         <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
           {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">

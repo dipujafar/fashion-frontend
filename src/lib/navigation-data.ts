@@ -1,13 +1,10 @@
 import {
-  ChevronRight,
   Grid3X3,
   Shirt,
   ShoppingBag,
   Sparkles,
   Footprints,
   Gem,
-  Menu,
-  X,
   PartyPopper,
   Watch,
   LandPlot,
