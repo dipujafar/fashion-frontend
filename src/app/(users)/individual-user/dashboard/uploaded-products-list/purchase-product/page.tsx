@@ -16,8 +16,8 @@ const saleState = [
 const PurchaseProductPage = () => {
   return (
     <Container className="md:space-y-8 space-y-5">
-      <AddNewProduct link="/individual-user/uploaded-products-list/add-product" />
-      <UploadProductDataFilterOptionAndNav baseLink="/individual-user/uploaded-products-list" user="user" />
+      <AddNewProduct link="/individual-user/dashboard/uploaded-products-list/add-product" />
+      <UploadProductDataFilterOptionAndNav baseLink="/individual-user/dashboard/uploaded-products-list" user="user" />
       <SaleStatsCard data={saleState} />
       <PurchaseProductTable />
     </Container>

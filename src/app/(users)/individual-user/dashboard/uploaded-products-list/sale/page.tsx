@@ -22,9 +22,9 @@ const saleState = [
 const SalePage = () => {
   return (
     <Container className="md:space-y-8 space-y-5">
-      <AddNewProduct link="/individual-user/uploaded-products-list/add-product" />
+      <AddNewProduct link="/individual-user/dashboard/uploaded-products-list/add-product" />
       <UploadProductDataFilterOptionAndNav
-        baseLink="/individual-user/uploaded-products-list"
+        baseLink="/individual-user/dashboard/uploaded-products-list"
         user="user"
       />
       <SaleStatsCard data={saleState} />
