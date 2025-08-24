@@ -1,5 +1,5 @@
 import Container from "@/components/shared/Container";
-import React from "react";
+import React, { Suspense } from "react";
 import ShopPageContainer from "./_components/ShopPageContainer";
 
 export const metadata = {
@@ -9,9 +9,11 @@ export const metadata = {
 
 const ShopPage = () => {
   return (
-    <Container>
-      <ShopPageContainer></ShopPageContainer>
-    </Container>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Container>
+        <ShopPageContainer></ShopPageContainer>
+      </Container>
+    </Suspense>
   );
 };
 
