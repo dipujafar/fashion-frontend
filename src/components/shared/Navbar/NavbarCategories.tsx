@@ -129,7 +129,7 @@ export default function MegaNavigation() {
       onMouseLeave={handleNavigationLeave}
     >
       {/* Mobile Menu Button */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b">
+      {/* <div className="md:hidden flex items-center justify-between p-4 bg-white border-b">
         <div className="text-lg font-semibold"></div>
         <button
           onClick={toggleMobileMenu}
@@ -142,7 +142,7 @@ export default function MegaNavigation() {
             <Menu className="h-6 w-6" />
           )}
         </button>
-      </div>
+      </div> */}
 
       {/* Main Navigation - Desktop */}
       <nav className="hidden md:block border-b bg-white border ">
@@ -176,12 +176,11 @@ export default function MegaNavigation() {
       {/* Mobile Navigation */}
       <nav
         className={cn(
-          "md:hidden bg-white border-b transition-all duration-300",
-          isMobileMenuOpen ? "block" : "hidden"
+          "md:hidden bg-white border-b transition-all duration-300"
         )}
       >
-        <div className="px-4 py-2">
-          <div className="flex flex-wrap gap-2 overflow-x-auto pb-2">
+        <div className="px-4 ">
+          <div className="flex  gap-2 overflow-x-auto">
             {mainNavItems.map((item) => (
               <button
                 key={item}

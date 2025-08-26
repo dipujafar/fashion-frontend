@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TextAnimation } from "@/animations/TextAnimation";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function PhilanthropistBox() {
   return (
@@ -52,13 +53,15 @@ export default function PhilanthropistBox() {
             }}
             className="pt-2 flex justify-end"
           >
-            <Button
-              variant={"outline"}
-              size="sm"
-              className=" bg-transparent text-white border-white text-base  cursor-pointer"
-            >
-              Start selling
-            </Button>
+            <Link href="/sell-products">
+              <Button
+                variant={"outline"}
+                size="sm"
+                className=" bg-transparent text-white border-white text-base  cursor-pointer"
+              >
+                Start selling
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </div>
