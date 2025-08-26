@@ -51,8 +51,9 @@ const SIgnInForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    if (data.email === "user@gmail.com" && data.password === "123456A@a") {
-      router.push("/users/profile");
+    if (data.email === "individualuser@gmail.com" && data.password === "112233") {
+      router.push("/individual-user/profile");
+      return;
     }
 
     if(data?.email === "charityshop@gmail.com" && data?.password === "112233"){

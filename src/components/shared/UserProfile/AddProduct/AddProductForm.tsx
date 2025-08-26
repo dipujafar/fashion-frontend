@@ -422,6 +422,7 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
+                
 
                 <FormField
                   control={form.control}
