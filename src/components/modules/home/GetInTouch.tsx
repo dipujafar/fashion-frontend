@@ -17,8 +17,8 @@ const GetInTouch = () => {
             support, or want to share feedback, our team is here to help.
           </p>
         </div>
-        <Link href={"#"}>
-        <Button className="group bg-primary-white text-primary-black py-5 rounded-xs hover:bg-primary-white/90">CONTACT US <AnimatedArrow></AnimatedArrow></Button>
+        <Link href={"/contact-us"}>
+        <Button className="group bg-primary-white text-primary-black py-5 rounded-xs hover:bg-primary-white/90 cursor-pointer">CONTACT US <AnimatedArrow></AnimatedArrow></Button>
         </Link>
       </Container>
     </div>

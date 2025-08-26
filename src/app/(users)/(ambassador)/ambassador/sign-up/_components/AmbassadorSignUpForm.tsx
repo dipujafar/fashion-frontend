@@ -416,14 +416,14 @@ const AmbassadorSignUpForm = () => {
               <label htmlFor="terms" className="text-secondary-gray">
                 By hitting the "Register" button, you agree to the{" "}
                 <Link
-                  href={"/terms-conditions"}
+                  href={"/terms-use"}
                   className="text-primary-red font-medium"
                 >
                   Terms conditions
                 </Link>{" "}
                 &{" "}
                 <Link
-                  href={"/terms-conditions"}
+                  href={"/privacy-policy"}
                   className="text-primary-red font-medium"
                 >
                   Privacy Policy

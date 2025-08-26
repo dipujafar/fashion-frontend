@@ -7,11 +7,7 @@ const quickLink = [
     label: "home",
     href: "/",
   },
-  {
-    id: 2,
-    label: "services",
-    href: "#",
-  },
+ 
   {
     id: 3,
     label: "Contact us",
@@ -20,12 +16,12 @@ const quickLink = [
   {
     id: 4,
     label: "Privacy policy",
-    href: "#",
+    href: "/privacy-policy",
   },
   {
     id: 5,
     label: "Terms of use",
-    href: "#",
+    href: "/terms-use",
   },
   {
     id: 6,

@@ -27,9 +27,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
-import { productFormDefaultValues, productFormSchema, ProductFormValues } from "./schema";
+import {
+  productFormDefaultValues,
+  productFormSchema,
+  ProductFormValues,
+} from "./schema";
 import SelectDonationOption from "./SelectDonationOption";
-
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
@@ -98,7 +101,6 @@ export default function AddProductForm() {
 
   return (
     <div className="space-y-6">
-       
       <Card className="py-0 border-none shadow-none">
         <CardContent className="px-0">
           <Form {...form}>
@@ -438,7 +440,6 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
-              
 
                 {fields.map((field, index) => (
                   <div
@@ -450,8 +451,10 @@ export default function AddProductForm() {
                       control={form.control}
                       name={`donations.${index}.donateToCharity`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Donate to charity <SelectDonationOption/> </FormLabel>
+                        <FormItem className=" ">
+                          <FormLabel>
+                            Donate to charity <SelectDonationOption />{" "}
+                          </FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
@@ -484,7 +487,7 @@ export default function AddProductForm() {
                         control={form.control}
                         name={`donations.${index}.donationAmount`}
                         render={({ field }) => (
-                          <FormItem className="flex-1">
+                          <FormItem className="flex-1 mt-2">
                             <FormLabel>Amount (%)</FormLabel>
                             <FormControl>
                               <Input
@@ -524,7 +527,7 @@ export default function AddProductForm() {
                   }
                   className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer"
                 >
-                  <PlusCircle/> Add More
+                  <PlusCircle /> Add More
                 </Button>
 
                 {/* Donation Privacy */}
@@ -560,9 +563,6 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
-
-
-               
 
                 {/* Product Description */}
                 <FormField

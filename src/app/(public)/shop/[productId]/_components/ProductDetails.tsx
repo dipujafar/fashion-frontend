@@ -4,13 +4,12 @@ import Link from "next/link";
 import React from "react";
 import ActionButtons from "./ActionButtons";
 import SellerDetails from "./SellerDetails";
-import { EnvConfig } from "@/config";
 import { HeartIcon2, OfferIcon2, ReportIcon, ShareIcon } from "@/icons";
 
 const handleShare = () => {
   navigator.share({
     title: productDetails?.title,
-    url: `${EnvConfig?.client_url}/shop/${productDetails?._id}`,
+    url: `/shop/${productDetails?._id}`,
   });
 };
 

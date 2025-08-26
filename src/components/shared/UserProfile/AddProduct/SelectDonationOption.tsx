@@ -12,9 +12,9 @@ export default function SelectDonationOption() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="border-none shadow-none hover:bg-transparent cursor-pointer">
-          <InfoIcon2 className="w-8 h-8" />
-        </Button>
+        <button className="border-none shadow-none hover:bg-transparent cursor-pointer py-0">
+          <InfoIcon2 className="" />
+        </button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl md:max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>

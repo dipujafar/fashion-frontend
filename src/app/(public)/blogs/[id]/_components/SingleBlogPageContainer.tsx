@@ -1,10 +1,18 @@
+"use client";
 import Image from "next/image";
 import blogImage from "@/assets/images/blog/blogImage.png";
 import { MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import BlogImagePreview from "./BlogImagePreview";
 import FeedbackSection from "./FeedbackSection";
 import RelatedBlog from "./RelatedBlog";
+import { ShareIcon2 } from "@/icons";
+
+const handleShare = () => {
+  navigator.share({
+    title: "Blog Details",
+    url: `/2`,
+  });
+};
 
 const SingleBlogPageContainer = () => {
   return (
@@ -51,23 +59,14 @@ const SingleBlogPageContainer = () => {
           </div>
 
           {/* ================= share option ================*/}
-          <div
+          <button
+            onClick={handleShare}
             className="bg-primary-light-pink text-primary-gray hover:bg-pink-50 px-3 py-1 cursor-pointer flex items-center rounded-full gap-x-1.5"
             style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.15)" }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M19.59 12L15 7.41v2.46l-.86.13c-4.31.61-7.23 2.87-8.9 6.33c2.32-1.64 5.2-2.43 8.76-2.43h1v2.69m-2-1.69v.02c-4.47.21-7.67 1.82-10 5.08c1-5 4-10 11-11V5l7 7l-7 7v-4.1c-.33 0-.66.01-1 .02Z"
-              ></path>
-            </svg>
+            <ShareIcon2 className="size-6"></ShareIcon2>
             Share
-          </div>
+          </button>
         </div>
       </div>
 

@@ -1,10 +1,8 @@
 import React from "react";
 import ContactForm from "./ContactForm";
 import Container from "@/components/shared/Container";
-
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
-import { LocationMap } from "./LocationMap";
 
 const ContactPageContainer = () => {
   return (
@@ -36,7 +34,7 @@ const ContactPageContainer = () => {
         <ContactForm />
       </div>
       <div>
-        <LocationMap></LocationMap>
+        {/* <LocationMap></LocationMap> */}
       </div>
     </Container>
   );

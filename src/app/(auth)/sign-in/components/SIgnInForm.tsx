@@ -35,15 +35,8 @@ const formSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(1, { message: "Password is required" })
-    .min(8, { message: " passwords must be at least 8 characters long" })
-    .max(64, { message: " passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
+    .min(6, { message: " passwords must be at least 8 characters long" })
+    .max(64, { message: " passwords must be at most 64 characters long" }),
 });
 
 const SIgnInForm = () => {
@@ -60,6 +53,40 @@ const SIgnInForm = () => {
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     if (data.email === "user@gmail.com" && data.password === "123456A@a") {
       router.push("/users/profile");
+    }
+
+    if(data?.email === "charityshop@gmail.com" && data?.password === "112233"){
+      router.push("/charity-shop/profile");
+      return;
+
+    }
+    if(data?.email === "charity@gmail.com" && data?.password === "112233"){
+      router.push("/charity/profile");
+      return;
+
+    }
+    if(data?.email === "celebrity@gmail.com" && data?.password === "112233"){
+      router.push("/celebrity/profile");
+      return;
+
+    }
+    if(data?.email === "professionalseller@gmail.com" && data?.password === "112233"){
+      router.push("/professional-seller/profile");
+      return;
+
+    }
+    if(data?.email === "ambassador@gmail.com" && data?.password === "112233"){
+      router.push("/ambassador/profile");
+      return;
+    }
+    if(data?.email === "ecofriendlystore@gmail.com" && data?.password === "112233"){
+      router.push("/eco-friendly-store/profile");
+      return;
+    }
+
+    if(data?.email === "assistedseller@gmail.com" && data?.password === "112233"){
+      router.push("/assisted-seller/profile");
+      return;
     }
   };
 

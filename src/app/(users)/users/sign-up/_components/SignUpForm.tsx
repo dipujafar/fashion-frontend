@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -72,6 +72,9 @@ const formSchema = z.object({
       tiktok: z.string().optional(),
     })
   ),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 const SignUpForm = () => {
@@ -98,21 +101,7 @@ const SignUpForm = () => {
     console.log(data);
   };
 
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "confirmPassword" || name === "password") {
-        if (value.confirmPassword && value.password !== value.confirmPassword) {
-          form.setError("confirmPassword", {
-            type: "manual",
-            message: "Passwords do not match",
-          });
-        } else {
-          form.clearErrors("confirmPassword");
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
+ 
 
   return (
     <Card
@@ -388,14 +377,14 @@ const SignUpForm = () => {
               <label htmlFor="terms" className="text-secondary-gray">
                 By hitting the "Register" button, you agree to the{" "}
                 <Link
-                  href={"/terms-conditions"}
+                  href={"/terms-use"}
                   className="text-primary-red font-medium"
                 >
                   Terms conditions
                 </Link>{" "}
                 &{" "}
                 <Link
-                  href={"/terms-conditions"}
+                  href={"/privacy-policy"}
                   className="text-primary-red font-medium"
                 >
                   Privacy Policy
