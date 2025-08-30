@@ -32,7 +32,7 @@ const AboutPageContainer = () => {
       </div>
       <Mission></Mission>
       <Values></Values>
-      <Team></Team>
+      {/* <Team></Team> */}
     </Container>
   );
 };
