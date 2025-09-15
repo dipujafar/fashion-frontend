@@ -5,13 +5,22 @@ import CustomerFeedbacks from "../CustomerFeedbacks";
 import { Switch } from "@/components/ui/switch";
 import CharitySupportCards from "../../Cards/CharitySupportCards";
 
-const ProfileFeatures = ({ userRole, preview }: { userRole: string, preview?: string }) => {
+const ProfileFeatures = ({
+  userRole,
+  preview,
+}: {
+  userRole: string;
+  preview?: string;
+}) => {
   return (
     <div>
       <Tabs
         defaultValue={
-          userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller" || userRole === "celebrity"
-            ? "charity_support"
+          userRole === "user" ||
+          userRole === "eco-friendly-store" ||
+          userRole === "professional-seller" ||
+          userRole === "celebrity"
+            ? "product_listing"
             : "product_listing"
         }
         className="w-full"
@@ -20,7 +29,16 @@ const ProfileFeatures = ({ userRole, preview }: { userRole: string, preview?: st
           style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
           className="w-full bg-white lg:mb-4 mb-2"
         >
-          {(userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller" || userRole === "celebrity") && (
+          <TabsTrigger
+            value="product_listing"
+            className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
+          >
+            Product Listing
+          </TabsTrigger>
+          {(userRole === "user" ||
+            userRole === "eco-friendly-store" ||
+            userRole === "professional-seller" ||
+            userRole === "celebrity") && (
             <TabsTrigger
               value="charity_support"
               className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
@@ -28,12 +46,7 @@ const ProfileFeatures = ({ userRole, preview }: { userRole: string, preview?: st
               Charity Support
             </TabsTrigger>
           )}
-          <TabsTrigger
-            value="product_listing"
-            className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
-          >
-            Product Listing
-          </TabsTrigger>
+
           <TabsTrigger
             value="rating_review"
             className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
@@ -41,10 +54,13 @@ const ProfileFeatures = ({ userRole, preview }: { userRole: string, preview?: st
             Rating & Review
           </TabsTrigger>
         </TabsList>
-        {(userRole === "user" || userRole === "eco-friendly-store" || userRole === "professional-seller" || userRole === "celebrity") && (
+        {(userRole === "user" ||
+          userRole === "eco-friendly-store" ||
+          userRole === "professional-seller" ||
+          userRole === "celebrity") && (
           <TabsContent value="charity_support">
             {/* ---------------------------------- option to show charity support or not ---------------------------------- */}
-            {(userRole === "eco-friendly-store" && !preview) && (
+            {userRole === "eco-friendly-store" && !preview && (
               <div className="flex justify-between items-center  shadow-md py-4 px-5 rounded-xl mb-5">
                 <span className="text-lg">
                   Show Charitable donation on your profile

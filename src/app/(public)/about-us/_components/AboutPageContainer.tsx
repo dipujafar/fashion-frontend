@@ -3,7 +3,6 @@ import React from "react";
 import StatisticSection from "./StatisticSection";
 import Mission from "./Mission/Mission";
 import Values from "./Values/Values";
-import Team from "./Team/Team";
 import ImagePreview from "./ImagePreview";
 
 const AboutPageContainer = () => {
