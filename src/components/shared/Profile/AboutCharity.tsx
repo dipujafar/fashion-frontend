@@ -7,33 +7,33 @@ export default function AboutCharity() {
     <div>
       <div className="flex h-full w-full items-center justify-center">
         <div className="grid h-full w-full gap-x-4  grid-cols-2 grid-rows-2">
-          <div className="col-span-1 row-span-3  rounded-lg flex items-center justify-center max-h-[700px]">
+          <div className="col-span-1 row-span-3  rounded-lg flex items-center justify-center max-h-[600px]">
             <Image
               src="/dummyImages/charity-about-image1.png"
               alt="Placeholder"
               width={1200}
               height={1200}
-              className="w-full xl:h-[695px] object-cover"
+              className="w-full xl:h-[595px] object-cover"
             />
           </div>
 
-          <div className="col-span-1 row-span-1  rounded-lg flex items-center justify-center max-h-[340px]">
+          <div className="col-span-1 row-span-1  rounded-lg flex items-center justify-center max-h-[290px]">
             <Image
               src="/dummyImages/charity-about-image2.png"
               alt="Placeholder"
               width={1200}
               height={1200}
-              className="w-full xl:h-[340px] object-cover"
+              className="w-full xl:h-[290px] object-cover"
             />
           </div>
 
-          <div className="col-span-1 row-span-1  rounded-lg flex items-center justify-center max-h-[340px]  mt-2">
+          <div className="col-span-1 row-span-1  rounded-lg flex items-center justify-center max-h-[290px]  mt-2">
             <Image
               src="/dummyImages/charity-about-image3.png"
               alt="Placeholder"
               width={1200}
               height={1200}
-              className="w-full  xl:h-[340px] object-cover"
+              className="w-full  xl:h-[290px] object-cover"
             />
           </div>
         </div>

@@ -52,10 +52,10 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
       question: "",
     },
   });
-  const replyForm = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const replyForm = useForm<z.infer<typeof replyFormSchema>>({
+    resolver: zodResolver(replyFormSchema),
     defaultValues: {
-      question: "",
+      reply: "",
     },
   });
 
