@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ExternalLink } from "lucide-react";
 import { NotificationBellIconWhite } from "@/icons";
 
 interface Notification {

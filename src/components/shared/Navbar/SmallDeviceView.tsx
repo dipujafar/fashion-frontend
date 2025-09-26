@@ -12,7 +12,6 @@ import {
   childrenVariants,
   parentVariants,
 } from "@/animations/FramerMotionValiants";
-import SearchAndNavIcon from "./SearchAndNavIcon";
 import { navLinks } from "@/lib/NavLinks";
 
 const SmallDeviceView = () => {
@@ -21,7 +20,7 @@ const SmallDeviceView = () => {
     <div className="md:hidden block ">
       <Sheet>
         <SheetTrigger asChild>
-          <TableOfContents size={24} />
+          <TableOfContents size={25} />
         </SheetTrigger>
         <SheetContent className="pt-10">
           <Image src={logo} alt="logo" className="mx-auto"></Image>
@@ -69,9 +68,6 @@ const SmallDeviceView = () => {
               ))}
             </motion.ul>
           </motion.div>
-
-          {/* ============== icons links ===================  */}
-          <SearchAndNavIcon></SearchAndNavIcon>
         </SheetContent>
       </Sheet>
     </div>

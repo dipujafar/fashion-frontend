@@ -6,6 +6,7 @@ import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
 
 // const category = [
 //   {
@@ -28,9 +29,14 @@ import { Search } from "lucide-react";
 const NavLogoCategory = () => {
   return (
     <div>
-      <Container className="flex justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16 bg-primary-white py-4">
+      <Container className="flex flex-row-reverse md:flex-row  justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16 bg-primary-white py-4">
         {/* ======= Small Screen view ========== */}
-        <SmallDeviceView></SmallDeviceView>
+        <div className="flex items-center">
+          <div className="md:hidden ">
+            <SearchAndNavIcon></SearchAndNavIcon>
+          </div>
+          <SmallDeviceView></SmallDeviceView>
+        </div>
         {/* ======= category ========== */}
         {/* <div className="md:flex lg:gap-x-6 gap-x-1.5 hidden ">
           {category.map((item) => (
@@ -52,15 +58,12 @@ const NavLogoCategory = () => {
         {/* ======= logo ========== */}
         <div className="flex justify-center items-center ">
           <Link href={"/"}>
-            <Image src={logo} alt="logo"></Image>
+            <Image src={logo} alt="logo" className="w-32 md:w-auto"></Image>
           </Link>
         </div>
 
         <div className="relative hidden md:block flex-1">
-          <Input
-            className="border-0 bg-slate-200 focus:outline-0 shadow-none focus-visible:ring-0 w-full px-2 rounded-sm"
-            placeholder="Search here for items or members"
-          ></Input>
+          <GlobalItemAndMemberSearch/>
           <div className="absolute   top-2 right-1.5">
             <Search size={20} color="#9E9E9E" />
           </div>

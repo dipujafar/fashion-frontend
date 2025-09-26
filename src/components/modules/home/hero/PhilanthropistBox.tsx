@@ -4,10 +4,22 @@ import { Card } from "@/components/ui/card";
 import { TextAnimation } from "@/animations/TextAnimation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export default function PhilanthropistBox() {
+export default function PhilanthropistBox({
+  className,
+  btnClassName,
+}: {
+  className?: string;
+  btnClassName?: string;
+}) {
   return (
-    <Card className="relative overflow-hidden bg-gradient-warm shadow-strong max-w-md mx-auto py-0 bg-black/30 border-none  space-y-0 rounded-sm md:min-h-36 ">
+    <Card
+      className={cn(
+        "relative overflow-hidden bg-gradient-warm shadow-strong max-w-md mx-auto py-0 bg-black/30 border-none  space-y-0 rounded-sm md:min-h-36 text-white",
+        className
+      )}
+    >
       <div>
         {/* Image Section */}
         {/* <div className="relative xl:h-44 h-48 overflow-hidden ">
@@ -28,7 +40,7 @@ export default function PhilanthropistBox() {
 
           <TextAnimation
             text="Become a fashion philanthropist!"
-            className=" lg:text-2xl text-xl  font-medium  text-white"
+            className=" lg:text-2xl text-xl  font-medium"
             initialDelay={0.5}
           />
 
@@ -39,7 +51,7 @@ export default function PhilanthropistBox() {
               opacity: 1,
               transition: { duration: 0.5, delay: 2 },
             }}
-            className=" text-gray-50 leading-relaxed md:text-sm"
+            className="  leading-relaxed md:text-sm"
           >
             Earn more and help make a change with us
           </motion.p>
@@ -57,7 +69,10 @@ export default function PhilanthropistBox() {
               <Button
                 variant={"outline"}
                 size="sm"
-                className=" bg-transparent text-white border-white text-base  cursor-pointer"
+                className={cn(
+                  "bg-transparent border-white text-base  cursor-pointer",
+                  btnClassName
+                )}
               >
                 Start selling
               </Button>

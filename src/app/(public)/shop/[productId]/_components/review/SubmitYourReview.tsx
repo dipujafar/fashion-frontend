@@ -69,10 +69,10 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn(" rounded-sm  space-y-4", className)}>
-      <h3 className="md:text-3xl text-xl font-medium">Comments (0)</h3>
+      <h3 className="md:text-3xl text-xl font-medium">Questions (0)</h3>
       <div>
         <h3>
-          Have a question that others might want to know? Add a public Comment.
+          Have a question that others might want to know? Add a public question.
         </h3>
         {/* <div>
           <InputRating
@@ -91,7 +91,7 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Add a comment"
+                        placeholder="Add a  question"
                         {...field}
                         className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded h-[100px] bg-slate-50 mt-2 "
                       />

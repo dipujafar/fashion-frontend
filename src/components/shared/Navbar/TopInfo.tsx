@@ -20,7 +20,7 @@ const quickLink = [
 
 const TopInfo = () => {
   return (
-    <header className="bg-primary-black text-primary-white py-2">
+    <header className="bg-primary-black text-primary-white py-2  hidden md:block">
       <Container className="flex justify-between items-center text-sm gap-x-2 ">
         <div className="xl:space-x-8 space-x-4  text-center w-full md:w-fit lg:text-base md:text-xs ">
           <Link href={"tel:+ 123 (456) 789-987"} className="truncate">+ 123 (456) 789-987</Link>

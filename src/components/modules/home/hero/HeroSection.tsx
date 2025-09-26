@@ -1,6 +1,6 @@
 import image1 from "@/assets/images/home/hero/hero_image_4.png";
 import image2 from "@/assets/images/home/hero/hero_image2.png";
-import image3 from "@/assets/images/home/hero/hero_image3.png"
+import image3 from "@/assets/images/home/hero/hero_image3.png";
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,7 +48,11 @@ const HeroSection = () => {
       <div className="grid xl:grid-cols-4 grid-cols-5">
         <div className="flex xl:col-span-2 col-span-3 relative ">
           {/* <Image src={image4} alt="hero image" className="w-full md:h-[55vh] "></Image> */}
-          <Image src={image1} alt="hero image" className="w-full md:h-[55vh] h-[30vh] "></Image>
+          <Image
+            src={image1}
+            alt="hero image"
+            className="w-full md:h-[55vh] h-[30vh] "
+          ></Image>
           {/* <div
             className=" max-w-3xl absolute top-1/2 xl:-left-60 lg:-left-52 md:-left-40 sm:-left-36 -left-16 -translate-y-1/2  lg:px-28 lg:py-12 px-10 py-5 text-primary-white lg:text-5xl md:text-6xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rotate-[270deg] rounded-lg flex justify-center items-center"
             style={{
@@ -63,13 +67,27 @@ const HeroSection = () => {
             />
           </div> */}
           <div className="absolute lg:top-1/3 lg:left-1/3 top-[40%] left-[40%] -translate-x-1/2 -translate-y-1/2  hidden md:block">
-            <PhilanthropistBox/>
+            <PhilanthropistBox />
           </div>
         </div>
-        <Image src={image2} alt="hero image" className="w-full md:h-[55vh]  h-[30vh] object-cover "></Image>
-        <Image src={image3} alt="hero image" className="w-full md:h-[55vh]  h-[30vh] object-cover"></Image>
+        <Image
+          src={image2}
+          alt="hero image"
+          className="w-full md:h-[55vh]  h-[30vh] object-cover "
+        ></Image>
+        <Image
+          src={image3}
+          alt="hero image"
+          className="w-full md:h-[55vh]  h-[30vh] object-cover"
+        ></Image>
       </div>
-      <Marquee className="bg-black" gradientColor={"#000"} gradient gradientWidth={150} speed={40}	>
+      <Marquee
+        className="bg-black"
+        gradientColor={"#000"}
+        gradient
+        gradientWidth={150}
+        speed={40}
+      >
         <div className="flex gap-x-3">
           {userRoles?.map((user, index) => (
             <div
@@ -84,6 +102,9 @@ const HeroSection = () => {
           ))}
         </div>
       </Marquee>
+      <div className="md:hidden">
+        <PhilanthropistBox className="text-black bg-black/10" btnClassName="border-black" />
+      </div>
     </div>
   );
 };
