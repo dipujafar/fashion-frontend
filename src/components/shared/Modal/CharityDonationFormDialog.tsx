@@ -1,22 +1,44 @@
-"use client"
-
-import { useState } from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { DialogTrigger } from "@radix-ui/react-dialog"
-import Link from "next/link"
-import CommonButton from "@/components/ui/common-button"
-import { cn } from "@/lib/utils"
+"use client";
+import { useState } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import Link from "next/link";
+import CommonButton from "@/components/ui/common-button";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   charity: z.string().min(1, "Please select a charity type"),
@@ -24,25 +46,28 @@ const formSchema = z.object({
   privacy: z.enum(["anonymous", "public"], {
     required_error: "Please select a privacy option",
   }),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 const charities = [
-  { value: "women-for-women-international", label: "Women for Women International" },
+  {
+    value: "women-for-women-international",
+    label: "Women for Women International",
+  },
   { value: "plant-more-trees", label: "Plant More Trees" },
   { value: "save-the-children", label: "Save the Children" },
-]
+];
 
 interface CharityDonationDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function CharityDonationFormDialog() {
-  const [selectedAmount, setSelectedAmount] = useState<string>("")
-  const [open, setOpen] = useState(false)
-  const [charityOpen, setCharityOpen] = useState(false)
+  const [selectedAmount, setSelectedAmount] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const [charityOpen, setCharityOpen] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -51,28 +76,31 @@ export function CharityDonationFormDialog() {
       amount: "",
       privacy: "anonymous",
     },
-  })
+  });
 
-  const presetAmounts = ["$50", "$100", "$200"]
+  const presetAmounts = ["$50", "$100", "$200"];
 
   const handleAmountSelect = (amount: string) => {
-    setSelectedAmount(amount)
-    form.setValue("amount", amount)
-  }
+    setSelectedAmount(amount);
+    form.setValue("amount", amount);
+  };
 
   const handleCustomAmountChange = (value: string) => {
-    setSelectedAmount("")
-    form.setValue("amount", value)
-  }
+    setSelectedAmount("");
+    form.setValue("amount", value);
+  };
 
   const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
     // Handle form submission here
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild className="text-green-600 lg:text-base md:text-xs uppercase">
+      <DialogTrigger
+        asChild
+        className="text-green-600 lg:text-base md:text-xs uppercase"
+      >
         <span>Donate now</span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md p-0 gap-0">
@@ -96,13 +124,18 @@ export function CharityDonationFormDialog() {
                   </Button>
                 </Link>
               </div>
-              <p className="text-sm text-muted-foreground">Choose a charity and donate any amount for your support</p>
+              <p className="text-sm text-muted-foreground">
+                Choose a charity and donate any amount for your support
+              </p>
             </div>
           </div>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="px-6 pb-6 space-y-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="px-6 pb-6 space-y-6"
+          >
             {/* Charity Selection */}
             <FormField
               control={form.control}
@@ -119,7 +152,9 @@ export function CharityDonationFormDialog() {
                           className="w-full justify-between bg-transparent"
                         >
                           {field.value
-                            ? charities.find((charity) => charity.value === field.value)?.label
+                            ? charities.find(
+                                (charity) => charity.value === field.value
+                              )?.label
                             : "Select type of charity"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -135,14 +170,20 @@ export function CharityDonationFormDialog() {
                                   key={charity.value}
                                   value={charity.value}
                                   onSelect={(currentValue) => {
-                                    field.onChange(currentValue === field.value ? "" : currentValue)
-                                    setCharityOpen(false)
+                                    field.onChange(
+                                      currentValue === field.value
+                                        ? ""
+                                        : currentValue
+                                    );
+                                    setCharityOpen(false);
                                   }}
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      field.value === charity.value ? "opacity-100" : "opacity-0",
+                                      field.value === charity.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
                                     )}
                                   />
                                   {charity.label}
@@ -197,16 +238,26 @@ export function CharityDonationFormDialog() {
                     Donation Privacy: Would you like to remain anonymous?
                   </FormLabel>
                   <FormControl>
-                    <RadioGroup onValueChange={field.onChange} value={field.value} className="space-y-2">
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      className="space-y-2"
+                    >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="anonymous" id="anonymous" />
-                        <Label htmlFor="anonymous" className="text-sm font-normal cursor-pointer">
+                        <Label
+                          htmlFor="anonymous"
+                          className="text-sm font-normal cursor-pointer"
+                        >
                           Yes, keep my donation anonymous
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="public" id="public" />
-                        <Label htmlFor="public" className="text-sm font-normal cursor-pointer">
+                        <Label
+                          htmlFor="public"
+                          className="text-sm font-normal cursor-pointer"
+                        >
                           No, show my profile
                         </Label>
                       </div>
@@ -223,5 +274,5 @@ export function CharityDonationFormDialog() {
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

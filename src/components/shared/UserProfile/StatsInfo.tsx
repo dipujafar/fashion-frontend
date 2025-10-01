@@ -8,7 +8,13 @@ import { CharityHistoryDialog } from "../Modal/CharityHistoryDialog";
 import { FollowersDialog } from "../Modal/FollowersDialog";
 import { GotDonationHistoryDialog } from "../Modal/GotDonationHistoryDialog";
 
-export default function StatsInfo({ userRole, preview }: { userRole: string, preview?: string }) {
+export default function StatsInfo({
+  userRole,
+  preview,
+}: {
+  userRole: string;
+  preview?: string;
+}) {
   const [openCharityHistory, setOpenCharityHistory] = useState(false);
   const [openFollowers, setOpenFollowers] = useState(false);
   const [openDonationHistory, setOpenDonationHistory] = useState(false);
@@ -100,7 +106,14 @@ export default function StatsInfo({ userRole, preview }: { userRole: string, pre
           )}
 
           <div className="space-y-1">
-            <p onClick={ preview ? () => setOpenDonationHistory(true) : () => setOpenCharityHistory(true)} className="md:text-lg text-muted-foreground underline cursor-pointer">
+            <p
+              onClick={
+                preview
+                  ? () => setOpenDonationHistory(true)
+                  : () => setOpenCharityHistory(true)
+              }
+              className="md:text-lg text-muted-foreground underline cursor-pointer"
+            >
               Total Donations Raised
             </p>
             <p className="md:text-2xl text-xl font-medium">$5.00</p>
@@ -108,11 +121,24 @@ export default function StatsInfo({ userRole, preview }: { userRole: string, pre
 
           {/* Second Row */}
           <div className="space-y-1">
-            <p onClick={() => setOpenFollowers(true)} className="md:text-lg text-muted-foreground underline cursor-pointer">Followers</p>
+            <p
+              onClick={() => setOpenFollowers(true)}
+              className="md:text-lg text-muted-foreground underline cursor-pointer"
+            >
+              Followers
+            </p>
             <p className="md:text-2xl text-xl font-medium">12k+</p>
           </div>
           <div className="space-y-1">
-            <p onClick={() => {setOpenFollowers(true); setType("following")}} className="md:text-lg text-muted-foreground underline cursor-pointer">Following</p>
+            <p
+              onClick={() => {
+                setOpenFollowers(true);
+                setType("following");
+              }}
+              className="md:text-lg text-muted-foreground underline cursor-pointer"
+            >
+              Following
+            </p>
             <p className="md:text-2xl text-xl font-medium">24</p>
           </div>
 
@@ -152,8 +178,15 @@ export default function StatsInfo({ userRole, preview }: { userRole: string, pre
         open={openCharityHistory}
         setOpen={setOpenCharityHistory}
       />
-      <GotDonationHistoryDialog open={openDonationHistory} setOpen={setOpenDonationHistory} />
-      <FollowersDialog open={openFollowers} setOpen={setOpenFollowers} type={type} />
+      <GotDonationHistoryDialog
+        open={openDonationHistory}
+        setOpen={setOpenDonationHistory}
+      />
+      <FollowersDialog
+        open={openFollowers}
+        setOpen={setOpenFollowers}
+        type={type}
+      />
     </>
   );
 }

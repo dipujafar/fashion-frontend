@@ -1,11 +1,5 @@
-import Categories from "@/components/shared/Categories/Categories";
-import { collectionTypes } from "@/lib/collectionType";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 import AllUploadedProduct from "./AllUploadedProduct";
-import { SmallDeviceFilter } from "./SmallDeviceFilter";
-import { categoryData } from "@/lib/categoryData";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import UserProfileProductFilter from "./UserProfileProductFilter";
 
 const ProductsListContainer = () => {

@@ -32,7 +32,7 @@ export default function PhilanthropistBox({
         </div> */}
 
         {/* Content Section */}
-        <div className="px-4 pb-2 mt-2">
+        <div className="px-4 pb-2 mt-2 flex flex-col md:block   items-center">
           {/* Heading */}
           {/* <h2 className=" lg:text-2xl  font-medium  text-white line-clamp-1">
             Become a fashion philanthropist!
@@ -40,7 +40,7 @@ export default function PhilanthropistBox({
 
           <TextAnimation
             text="Become a fashion philanthropist!"
-            className=" lg:text-2xl text-xl  font-medium"
+            className=" lg:text-2xl text-xl  font-medium "
             initialDelay={0.5}
           />
 

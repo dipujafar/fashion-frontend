@@ -48,8 +48,8 @@ const ProductCard = ({
 
           {/* ===================== product offers ================ */}
           {data?.offers && (
-            <div className="bg-primary-light-pink absolute top-2 left-2 p-1 rounded">
-              <h3 className="uppercase text-[12px] font-bold text-[#E1272880]">
+            <div className="bg-primary-light-pink absolute top-2 left-2 p-0.5 md:p-1 rounded">
+              <h3 className="uppercase text-xs md:text-[12px] font-bold text-[#E1272880]">
                 {data?.offers}
               </h3>
             </div>
@@ -57,18 +57,18 @@ const ProductCard = ({
 
           {/* ===================== product tag ================ */}
           {!ownProduct && data?.tag && (
-            <div className="bg-[#87CEEB] absolute bottom-2 left-2 p-1 rounded">
-              <h3 className="uppercase text-[12px] font-bold text-primary-white">
+            <div className="bg-[#87CEEB] absolute bottom-2 left-2 p-0.5 md:p-1 rounded">
+              <h3 className="uppercase text-xs md:text-[12px] font-bold text-primary-white">
                 {data?.tag}
               </h3>
             </div>
           )}
 
           {/* ===================== favorite button ================ */}
-          <div className="bg-primary-white absolute bottom-2 right-2 h-7 w-16 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 ">
+          <div className="bg-primary-white absolute bottom-2 right-2 h-5 md:h-7 w-[50px] md:w-16 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm ">
             <Heart
-              size={18}
-              className="group-hover:fill-primary-red text-primary-red duration-500"
+              
+              className="group-hover:fill-primary-red text-primary-red duration-500 md:size-[18px] size-4"
             ></Heart>
             <p>12</p>
           </div>

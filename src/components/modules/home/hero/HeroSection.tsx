@@ -95,15 +95,18 @@ const HeroSection = () => {
               className="text-primary-white lg:text-xl text-base font-bold uppercase bg-black flex items-center"
             >
               <Link href={`/user-details#${user?.id}`}>
-                <span className="underline"> {user?.title} </span>{" "}
+                <span className=""> {user?.title} </span>{" "}
               </Link>
-              <Dot className="md:size-10 size-5 text-[#E12728]" />
+              <Dot className="md:size-10 size-5 text-white" />
             </div>
           ))}
         </div>
       </Marquee>
       <div className="md:hidden">
-        <PhilanthropistBox className="text-black bg-black/10" btnClassName="border-black" />
+        <PhilanthropistBox
+          className="text-black bg-black/10"
+          btnClassName="border-black"
+        />
       </div>
     </div>
   );

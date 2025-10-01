@@ -8,11 +8,17 @@ import NotificationIcon from "./NavIconsWithDropDown/NotificationIcon";
 const SearchAndNavIcon = () => {
   return (
     <Menubar className="border-none shadow-none">
+      {/* <div>
+        <Link href={"/messages"}>
+          <Mail />
+        </Link>
+      </div> */}
       <div>
         <Link href={"/wishlist"}>
           <WishListIcon />
         </Link>
       </div>
+
       <MenubarMenu>
         <NotificationIcon />
       </MenubarMenu>

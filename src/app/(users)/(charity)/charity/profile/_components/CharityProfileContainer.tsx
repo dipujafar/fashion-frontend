@@ -4,7 +4,6 @@ import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 
-
 export default function CharityProfileContainer() {
   return (
     <div>
@@ -17,8 +16,8 @@ export default function CharityProfileContainer() {
 
       <Container className="lg:space-y-8 space-y-4">
         <div className="flex lg:flex-row flex-col gap-5">
-          <UserInfo userRole="charity" link="/charity/dashboard/profile"/>
-          <StatsInfo userRole="charity" />
+          <UserInfo userRole="charity" link="/charity/dashboard/profile" />
+          <StatsInfo userRole="charity" preview="preview" />
         </div>
         <div
           style={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.06)" }}

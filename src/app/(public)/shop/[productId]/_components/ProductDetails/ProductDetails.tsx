@@ -1,10 +1,10 @@
-"use client";
+"use client";;
 import { productDetails } from "@/data/dummyData.tsx";
 import Link from "next/link";
-import React from "react";
-import ActionButtons from "./ActionButtons";
-import SellerDetails from "./SellerDetails";
-import { HeartIcon2, OfferIcon2, ReportIcon, ShareIcon } from "@/icons";
+import ActionButtons from "../ActionButtons";
+import SellerDetails from "../SellerDetails";
+import { ReportIcon, ShareIcon } from "@/icons";
+import ProductDetailsHeader from "./ProductDetailsHeader";
 
 const handleShare = () => {
   navigator.share({
@@ -17,34 +17,7 @@ const ProductDetails = () => {
   return (
     <div className=" space-y-8">
       {/* --------- product header ---------- */}
-      <div className="xl:space-y-3 space-x-2">
-        <h4 className="md:text-3xl text-xl text-[#262626]">
-          {productDetails?.title}
-        </h4>
-        <h6 className="bg-[#87CEEB] w-fit px-3 rounded-xs text-primary-white italic">
-          {productDetails?.tag}
-        </h6>
-        <div className="flex gap-x-3">
-          <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
-            <OfferIcon2 className="size-4"></OfferIcon2> 12 Offer sent
-          </h6>
-          <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
-            <HeartIcon2 className="size-4"></HeartIcon2> 24
-          </h6>
-        </div>
-
-        {productDetails?.discount && (
-          <div className="flex gap-x-6 items-center">
-            <p className="line-through text-primary-gray text-lg">
-              {productDetails?.originalPrice}
-            </p>
-            <div className="text-primary-red   rounded">
-              -{productDetails?.discount}
-            </div>
-          </div>
-        )}
-        <h4 className="md:text-3xl text-xl">${productDetails?.price}</h4>
-      </div>
+      <ProductDetailsHeader />
 
       {/* --------- product details data ---------- */}
       <div className="space-y-3 ">

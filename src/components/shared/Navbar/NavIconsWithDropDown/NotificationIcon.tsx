@@ -1,7 +1,11 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MenubarContent, MenubarItem, MenubarTrigger } from "@/components/ui/menubar";
+import {
+  MenubarContent,
+  MenubarItem,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 import { NotificationBellIcon, NotificationBellIconWhite } from "@/icons";
 import Link from "next/link";
 
@@ -39,12 +43,10 @@ const dummyNotifications = [
 ];
 
 export default function NotificationIcon() {
-
- 
   return (
     <>
       <MenubarTrigger>
-        <NotificationBellIcon className="size-6 md:size-5" />
+        <NotificationBellIcon className="size-7 md:size-5" />
       </MenubarTrigger>
       <MenubarContent>
         {dummyNotifications.map((notification) => (
