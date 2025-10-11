@@ -33,6 +33,8 @@ import {
   ProductFormValues,
 } from "./schema";
 import SelectDonationOption from "./SelectDonationOption";
+import { CaptureIcon } from "@/icons";
+import { ImageUploadGuide } from "./ImageUploadGuide";
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
@@ -106,7 +108,7 @@ export default function AddProductForm() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {/* Product Images */}
-              <div className="space-y-4">
+              <div className="space-y-2 ">
                 <label className="text-base font-medium">Product Images</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-4 border-2 rounded border-dashed">
                   {imagePreviews?.map((preview, index) => (
@@ -157,6 +159,8 @@ export default function AddProductForm() {
                     {images.length} of 8 images uploaded
                   </div>
                 )}
+
+                <ImageUploadGuide />
               </div>
 
               {/* Product Title */}

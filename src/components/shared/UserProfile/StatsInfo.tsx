@@ -186,10 +186,7 @@ export default function StatsInfo({
           )}
         </div>
       </Card>
-      {/* <CharityHistoryDialog
-        open={openCharityHistory}
-        setOpen={setOpenCharityHistory}
-      /> */}
+     
       <GotCharityDonationHistoryDialog
         open={openDonationHistory}
         setOpen={setOpenDonationHistory}
