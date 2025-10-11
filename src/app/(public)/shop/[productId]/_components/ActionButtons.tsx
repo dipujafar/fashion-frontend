@@ -5,7 +5,7 @@ import CommonButton from "@/components/ui/common-button";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import SendOfferModal from "@/components/shared/Modal/SendOfferModal";
-import { CharityDonationSelectDialog } from "@/components/shared/Modal/CharityDonationSelectDialog";
+import { CharityDonationSelectDialog } from "@/components/shared/Modal/Charity/CharityDonationSelectDialog";
 
 const ActionButtons = () => {
   const [quality, setQuality] = useState<number>(1);

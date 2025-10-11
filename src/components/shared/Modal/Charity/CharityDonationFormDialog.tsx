@@ -59,10 +59,6 @@ const charities = [
   { value: "save-the-children", label: "Save the Children" },
 ];
 
-interface CharityDonationDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
 
 export function CharityDonationFormDialog() {
   const [selectedAmount, setSelectedAmount] = useState<string>("");

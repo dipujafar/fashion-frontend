@@ -4,9 +4,10 @@ import { Card } from "@/components/ui/card";
 import webLogo from "@/assets/icons/web-logo.png";
 import Image from "next/image";
 import { useState } from "react";
-import { CharityHistoryDialog } from "../Modal/CharityHistoryDialog";
 import { FollowersDialog } from "../Modal/FollowersDialog";
-import { GotDonationHistoryDialog } from "../Modal/GotDonationHistoryDialog";
+import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
+import { GotCharityStoreDonation } from "../Modal/Charity/CharityStoreDonation/GotCharityStoreDonation";
+import { DonationHistory } from "../Modal/Charity/otherUserDonation/DonationHistory";
 
 export default function StatsInfo({
   userRole,
@@ -18,7 +19,22 @@ export default function StatsInfo({
   const [openCharityHistory, setOpenCharityHistory] = useState(false);
   const [openFollowers, setOpenFollowers] = useState(false);
   const [openDonationHistory, setOpenDonationHistory] = useState(false);
+  const [openCharityStoreDonationHistory, setOpenCharityStoreDonationHistory] =
+    useState(false);
   const [type, setType] = useState("");
+
+  console.log("User role:", userRole);
+
+  const handleOpenDonationHistoryModal = (type: string) => {
+    if (type === "charity") {
+      setOpenDonationHistory(true);
+    } else if (type === "charity store") {
+      setOpenCharityStoreDonationHistory(true);
+    } else {
+      setOpenCharityHistory(true);
+    }
+  };
+
   return (
     <>
       <Card
@@ -107,11 +123,7 @@ export default function StatsInfo({
 
           <div className="space-y-1">
             <p
-              onClick={
-                preview
-                  ? () => setOpenDonationHistory(true)
-                  : () => setOpenCharityHistory(true)
-              }
+              onClick={() => handleOpenDonationHistoryModal(userRole)}
               className="md:text-lg text-muted-foreground underline cursor-pointer"
             >
               Total Donations Raised
@@ -174,14 +186,24 @@ export default function StatsInfo({
           )}
         </div>
       </Card>
-      <CharityHistoryDialog
+      {/* <CharityHistoryDialog
         open={openCharityHistory}
         setOpen={setOpenCharityHistory}
-      />
-      <GotDonationHistoryDialog
+      /> */}
+      <GotCharityDonationHistoryDialog
         open={openDonationHistory}
         setOpen={setOpenDonationHistory}
       />
+      <GotCharityStoreDonation
+        open={openCharityStoreDonationHistory}
+        onOpenChange={setOpenCharityStoreDonationHistory}
+      />
+
+      <DonationHistory
+        open={openCharityHistory}
+        setOpen={setOpenCharityHistory}
+      />
+
       <FollowersDialog
         open={openFollowers}
         setOpen={setOpenFollowers}
