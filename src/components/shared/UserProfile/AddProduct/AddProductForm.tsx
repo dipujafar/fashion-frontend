@@ -108,7 +108,7 @@ export default function AddProductForm() {
               {/* Product Images */}
               <div className="space-y-4">
                 <label className="text-base font-medium">Product Images</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-4 border-2 rounded border-dashed">
                   {imagePreviews?.map((preview, index) => (
                     <div key={index} className="relative group">
                       <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
@@ -132,7 +132,7 @@ export default function AddProductForm() {
                     <div
                       onDrop={handleDrop}
                       onDragOver={handleDragOver}
-                      className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative"
+                      className="aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative"
                     >
                       <input
                         type="file"
@@ -141,7 +141,10 @@ export default function AddProductForm() {
                         onChange={(e) => handleFileUpload(e.target.files)}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       />
-                      <Upload className="h-6 w-6 text-gray-400 mb-2" />
+                      <Button>
+                        <Upload className="h-6 w-6" /> Upload
+                      </Button>
+
                       <span className="text-xs text-gray-500 text-center px-2">
                         Drop images or click to upload
                       </span>
@@ -221,7 +224,7 @@ export default function AddProductForm() {
                   Product Details
                 </h3>
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="itemNumber"
                   render={({ field }) => (
@@ -237,7 +240,7 @@ export default function AddProductForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
@@ -422,7 +425,6 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
-                
 
                 <FormField
                   control={form.control}

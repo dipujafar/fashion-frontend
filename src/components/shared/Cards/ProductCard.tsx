@@ -11,7 +11,7 @@ import { ReactNode } from "react";
 const ProductCard = ({
   data,
   ownProduct,
-  children
+  children,
 }: {
   data: TProduct;
   ownProduct?: boolean;
@@ -19,7 +19,7 @@ const ProductCard = ({
 }) => {
   return (
     <Card className="border-none shadow-none p-0">
-      <CardContent className="space-y-4 p-0">
+      <CardContent className="md:space-y-4 space-y-2 p-0">
         {/* ===================================== product image =============================== */}
         <div className="relative">
           <div className="relative group">
@@ -80,7 +80,7 @@ const ProductCard = ({
           {!ownProduct && (
             <div className="flex items-center gap-x-1 gap-y-1 justify-between">
               <Link href={`/celebrity/profile-preview`}>
-              <div className="relative">
+            <div className="relative">
                 <Image
                   src={data?.userImage}
                   alt="user_image"
@@ -126,6 +126,8 @@ const ProductCard = ({
             <p>{data?.location}</p>
           </div>}
         </div>
+
+        {/* ====================== if there provide any children then render it here ================  */}
         {children}
       </CardContent>
     </Card>

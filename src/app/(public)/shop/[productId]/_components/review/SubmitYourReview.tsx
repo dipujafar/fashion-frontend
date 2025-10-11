@@ -1,6 +1,5 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { z } from "zod";
 import {
   Form,
@@ -15,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Image from "next/image";
-import { Redo2, Reply } from "lucide-react";
+import { Redo2 } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -63,7 +62,7 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
     console.log(data);
   };
 
-  const onSubmitReply = (data: z.infer<typeof formSchema>) => {
+  const onSubmitReply = (data: z.infer<typeof replyFormSchema>) => {
     console.log(data);
   };
 
@@ -142,13 +141,10 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
                     </PopoverTrigger>
                     <PopoverContent>
                       <Form {...replyForm}>
-                        <form
-                          onSubmit={form.handleSubmit(onSubmitReply)}
-                          className=" "
-                        >
+                        <form onSubmit={replyForm.handleSubmit(onSubmitReply)}>
                           <FormField
-                            control={form.control}
-                            name="question"
+                            control={replyForm.control}
+                            name="reply"
                             render={({ field }) => (
                               <FormItem>
                                 <FormControl>
@@ -163,8 +159,11 @@ const SubmitYourReview = ({ className }: { className?: string }) => {
                             )}
                           />
                           <div className="flex justify-end">
-                            <Button size={"sm"} className="mt-4 group cursor-pointer">
-                              Reply 
+                            <Button
+                              size={"sm"}
+                              className="mt-4 group cursor-pointer"
+                            >
+                              Reply
                             </Button>
                           </div>
                         </form>

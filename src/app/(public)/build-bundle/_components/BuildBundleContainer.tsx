@@ -80,11 +80,11 @@ export default function () {
           </h5>
         </div>
         {/* --------------------------------------------- all uploaded products ------------------------------------ */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4   2xl:grid-cols-5  gap-4 xl:gap-6 ">
+        <div className="grid grid-cols-2 lg:grid-cols-3  xl:grid-cols-4   2xl:grid-cols-5  gap-4 xl:gap-6 ">
           {productsData?.map((user) => (
-            <ProductCard data={user} key={user?._id} ownProduct={true}>
+            <ProductCard data={user} key={user?._id}>
               {/* -------------------------------- add to bundle button and remove button ---------------------------- */}
-              <div className="-translate-y-2">
+              <div className="md:-translate-y-2 -translate-y-1">
                 {selectedProductIds?.includes(user?._id) ? (
                   <Button
                     onClick={() =>
@@ -94,7 +94,7 @@ export default function () {
                     }
                     variant={"outline"}
                     className={cn(
-                      "w-full cursor-pointer bg-transparent  border-[#E12728] text-[#E12728] hover:bg-[#E12728] hover:text-white duration-300"
+                      "w-full cursor-pointer bg-transparent  border-[#E12728] text-[#E12728] hover:bg-[#E12728] hover:text-white duration-300 h-[30px] md:h-auto "
                     )}
                   >
                     Remove
@@ -105,7 +105,9 @@ export default function () {
                       setSelectedProductIds([user?._id, ...selectedProductIds])
                     }
                     variant={"outline"}
-                    className={cn("w-full cursor-pointer border-[#232323]")}
+                    className={cn(
+                      "w-full cursor-pointer border-[#232323] h-[30px] md:h-auto"
+                    )}
                   >
                     Added to bundle
                   </Button>

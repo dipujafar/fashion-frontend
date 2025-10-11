@@ -106,8 +106,9 @@ export function CharityDonationSelectDialog({
 
           {/* Description */}
           <p className="text-sm text-muted-foreground">
-            Seller has donated {donationPercentage}% to charity. Choose a
-            charity and donate a percentage of your purchase.
+            Seller has pledged {donationPercentage}% of this purchase to
+            charity. Choose from the charity/charities they’ve selected to
+            decide where the donation goes.
           </p>
 
           {/* Charity Options */}

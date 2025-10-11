@@ -16,9 +16,9 @@ export const productFormSchema = z.object({
       message: "Discount must be between 0 and 100.",
     }
   ),
-  itemNumber: z.string().min(1, {
-    message: "Item number is required.",
-  }),
+  // itemNumber: z.string().min(1, {
+  //   message: "Item number is required.",
+  // }),
   category: z.string().min(1, {
     message: "Please select a category.",
   }),
@@ -85,7 +85,7 @@ export type ProductFormValues = z.infer<typeof productFormSchema>;
     title: "",
     price: "",
     discountedPrice: "0",
-    itemNumber: "",
+    // itemNumber: "",
     category: "",
     tags: "",
     condition: "",

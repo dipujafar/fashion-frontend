@@ -23,7 +23,7 @@ export default function UserProfileInfo(
     <div className="w-full ">
       <div className="relative">
         {/* Cover Photo */}
-        <div className="w-full h-[130px] md:h-[200px] lg:h-[250px] relative overflow-hidden ">
+        <div className="w-full h-[80px] md:h-[200px] lg:h-[250px] relative overflow-hidden ">
           <Image
             src={coverImage}
             alt="Cover photo"
@@ -50,9 +50,9 @@ export default function UserProfileInfo(
       </div>
 
       {/* Profile Info */}
-      <div className="mt-20 text-center px-4 max-w-5xl mx-auto">
+      <div className="md:mt-20 mt-16 text-center md:px-4 max-w-5xl mx-auto">
         <h2 className="md:text-xl font-bold">{name}</h2>
-        <p className="mt-2 md:text-xl text-black/60 ">
+        <p className="md:mt-2 md:text-xl text-black/60 text-sm  ">
           {bio}
         </p>
       </div>

@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { productDetails } from "@/data/dummyData.tsx";
 import Link from "next/link";
 import ActionButtons from "../ActionButtons";
@@ -17,7 +17,9 @@ const ProductDetails = () => {
   return (
     <div className=" space-y-8">
       {/* --------- product header ---------- */}
-      <ProductDetailsHeader />
+      <div className="hidden md:block">
+        <ProductDetailsHeader />
+      </div>
 
       {/* --------- product details data ---------- */}
       <div className="space-y-3 ">
@@ -54,7 +56,7 @@ const ProductDetails = () => {
           <p>{productDetails?.category}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 lg:items-center">
-          <h2 className="w-[120px] ">Tags:</h2>
+          <h2 className="w-[120px]  flex-shrink-0">Tags:</h2>
           <p>
             {productDetails?.tags?.map((tag, index) =>
               index == productDetails?.tags?.length - 1 ? tag : tag + ", "
@@ -87,13 +89,8 @@ const ProductDetails = () => {
           </Link>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Color: </h2>
-          <div className="p-0.5 rounded-full border-1 border-primary-gray">
-            <div
-              style={{ backgroundColor: productDetails?.color }}
-              className="size-6 rounded-full"
-            ></div>
-          </div>
+          <h2 className="w-[120px]">Colour: </h2>
+          <p>Gray</p>
         </div>
         <div className="flex  md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Care Instruction: </h2>
