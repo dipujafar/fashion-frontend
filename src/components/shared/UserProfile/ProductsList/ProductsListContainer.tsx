@@ -5,7 +5,7 @@ import UserProfileProductFilter from "./UserProfileProductFilter";
 const ProductsListContainer = () => {
   return (
     <div>
-      <div className="grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 ">
+      <div className="grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4">
         {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
             <div className="relative">
             <Search

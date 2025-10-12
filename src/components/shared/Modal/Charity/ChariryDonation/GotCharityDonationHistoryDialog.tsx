@@ -48,8 +48,8 @@ export function GotCharityDonationHistoryDialog({
               </div>
             </div>
 
-            <Tabs defaultValue="newest" className="flex flex-col flex-1 border border-red-500">
-              <TabsList className="grid w-full grid-cols-2  mt-4  mx-auto  border border-red-500">
+            <Tabs defaultValue="newest" className="flex flex-col flex-1 ">
+              <TabsList className="grid w-full grid-cols-2  mt-4  mx-auto  ">
                 <TabsTrigger
                   value="newest"
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
@@ -99,14 +99,6 @@ export function GotCharityDonationHistoryDialog({
     </>
   );
 }
-
-
-
-
-
-
-
-
 
 // Charity Donation Table
 export const CharityDonationTable = ({ data }: CharityDonationTableProps) => {

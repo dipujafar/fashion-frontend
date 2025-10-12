@@ -4,8 +4,6 @@ import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/Pro
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
-import CommonButton from "@/components/ui/common-button";
-import Link from "next/link";
 import React from "react";
 
 export default function ProfileContainer() {
@@ -18,13 +16,13 @@ export default function ProfileContainer() {
         coverImage="/dummyImages/professional-seller-cover-image.png"
       />
 
-      <Container className="lg:space-y-8 space-y-4">
-        <Link href="/#" className="flex justify-center mt-5 ">
+      <Container className="lg:space-y-8 md:space-y-4 space-y-2">
+        {/* <Link href="/#" className="flex justify-center md:mt-5 ">
           <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
             Register to Another User
           </CommonButton>
-        </Link>
-        <div className="flex lg:flex-row flex-col gap-5">
+        </Link> */}
+        <div className="flex lg:flex-row flex-col md:gap-5 gap-2">
           <UserInfo
             link="/professional-seller/dashboard/profile"
             userRole="professional-seller"

@@ -23,7 +23,9 @@ const SearchAndNavIcon = () => {
         <NotificationIcon />
       </MenubarMenu>
       <div>
-        <CartIcon />
+        <Link href={"/shopping-cart/shopping"}>
+          <CartIcon />
+        </Link>
       </div>
       <MenubarMenu>
         <ProfileIcon></ProfileIcon>

@@ -14,7 +14,7 @@ export default function UserProfileProductFilter({ totalItems }: TProps) {
 
 
   return (
-    <div className="flex flex-wrap justify-between my-5">
+    <div className="flex flex-wrap justify-between md:my-5">
       {/* --------------------- total items ----------------------------- */}
       <div>
         <span className="font-semibold">{totalItems} items</span>

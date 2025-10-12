@@ -32,9 +32,7 @@ const NavLogoCategory = () => {
       <Container className="flex flex-row-reverse md:flex-row  justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16 bg-primary-white py-4">
         {/* ======= Small Screen view ========== */}
         <div className="flex items-center">
-          <div className="md:hidden ">
-            <SearchAndNavIcon></SearchAndNavIcon>
-          </div>
+          
           <SmallDeviceView></SmallDeviceView>
         </div>
         {/* ======= category ========== */}

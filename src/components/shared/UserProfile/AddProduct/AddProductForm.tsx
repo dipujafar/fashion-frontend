@@ -28,17 +28,18 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import {
+  colors,
   productFormDefaultValues,
   productFormSchema,
   ProductFormValues,
 } from "./schema";
 import SelectDonationOption from "./SelectDonationOption";
-import { CaptureIcon } from "@/icons";
 import { ImageUploadGuide } from "./ImageUploadGuide";
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [showCustomPicker, setShowCustomPicker] = useState(false);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -415,16 +416,71 @@ export default function AddProductForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Color</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            type="color"
-                            placeholder="Enter Amount (%)"
-                            {...field}
-                            className="bg-[#f2f2f2] "
-                          />
+                      <Select
+                        onValueChange={(value) => {
+                          if (value === "custom") {
+                            setShowCustomPicker(true);
+                          } else {
+                            setShowCustomPicker(false);
+                            field.onChange(value);
+                          }
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                            <SelectValue placeholder="Select a color" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[400px]">
+                          {colors.map((color) => (
+                            <SelectItem key={color.name} value={color.name}>
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className="size-5 rounded-full border border-border "
+                                  style={{
+                                    background:
+                                      color.name === "Multi"
+                                        ? "linear-gradient(90deg, #FF0000, #00FF00, #0000FF)"
+                                        : color.hex,
+                                    border:
+                                      color.name === "White" ||
+                                      color.name === "Clear"
+                                        ? "1px solid #e5e5e5"
+                                        : "none",
+                                  }}
+                                />
+                                <span className="text-lg">{color.name}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                          <SelectItem value="custom">
+                            <div className="flex items-center gap-2">
+                              <div className="size-5 rounded-full border border-border bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" />
+                              <span className="text-lg">Select Custom Color</span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      {showCustomPicker && (
+                        <div className="mt-2 space-y-2">
+                          <FormControl>
+                            <Input
+                              type="color"
+                              {...field}
+                              className="bg-[#f2f2f2] h-12 cursor-pointer"
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                            />
+                          </FormControl>
+                          <p className="text-sm text-muted-foreground">
+                            Selected: {field.value || "None"}
+                          </p>
                         </div>
-                      </FormControl>
+                      )}
+
                       <FormMessage />
                     </FormItem>
                   )}

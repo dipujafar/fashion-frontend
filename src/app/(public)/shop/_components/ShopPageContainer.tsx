@@ -72,7 +72,7 @@ const ShopPageContainer = () => {
       </div>
       <div className="xl:mt-8 mt-5 space-y-10">
         <DisplayProductSection
-          title="Recently Viewed"
+        title="Recently Viewed"
           data={recentlyViewedData}
         ></DisplayProductSection>
 

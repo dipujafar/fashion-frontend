@@ -80,7 +80,7 @@ export const productFormSchema = z.object({
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 
- export const productFormDefaultValues = () => {
+export const productFormDefaultValues = () => {
   return {
     title: "",
     price: "",
@@ -107,3 +107,36 @@ export type ProductFormValues = z.infer<typeof productFormSchema>;
     allowOffers: false,
   };
 };
+
+// color data
+export const colors = [
+  { name: "Turquoise", hex: "#40E0D0" },
+  { name: "Cream", hex: "#FFFDD0" },
+  { name: "Apricot", hex: "#FBCEB1" },
+  { name: "Coral", hex: "#FF7F50" },
+  { name: "Burgundy", hex: "#800020" },
+  { name: "Rose", hex: "#FFB6C1" },
+  { name: "Red", hex: "#FF0000" },
+  { name: "Yellow", hex: "#FFFF00" },
+  { name: "Blue", hex: "#0000FF" },
+  { name: "Green", hex: "#008000" },
+  { name: "Orange", hex: "#FFA500" },
+  { name: "White", hex: "#FFFFFF" },
+  { name: "Lilac", hex: "#C8A2C8" },
+  { name: "Light blue", hex: "#ADD8E6" },
+  { name: "Navy", hex: "#000080" },
+  { name: "Dark green", hex: "#006400" },
+  { name: "Mustard", hex: "#FFDB58" },
+  { name: "Silver", hex: "#C0C0C0" },
+  { name: "Gold", hex: "#FFD700" },
+  { name: "Multi", hex: "linear-gradient(90deg, #FF0000, #00FF00, #0000FF)" },
+  { name: "Khaki", hex: "#C3B091" },
+  { name: "Mint", hex: "#98FF98" },
+  { name: "Clear", hex: "transparent" },
+  { name: "Black", hex: "#000000" },
+  { name: "Brown", hex: "#8B4513" },
+  { name: "Gray", hex: "#808080" },
+  { name: "Beige", hex: "#F5F5DC" },
+  { name: "Pink", hex: "#FFC0CB" },
+  { name: "Purple", hex: "#800080" },
+];

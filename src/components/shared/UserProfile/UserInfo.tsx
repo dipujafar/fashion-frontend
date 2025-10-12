@@ -60,7 +60,7 @@ export default function UserInfo({
   return (
     <Card
       style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
-      className="w-full border-none "
+      className="w-full border-none py-2 md:py-4"
     >
       <CardContent className="lg:px-6 px-3">
         {/* Edit Profile Button */}
@@ -85,16 +85,16 @@ export default function UserInfo({
           </div>
         )}
 
-        <div className="space-y-6 mt-4">
+        <div className="md:space-y-6 space-y-2 mt-4">
           {/* Name and Location */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:gap-4 gap-2">
+            <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Name</p>
-              <p className="font-medium md:text-xl text-lg">{name}</p>
+              <p className="font-medium md:text-xl ">{name}</p>
             </div>
-            <div className="space-y-1">
+            <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Location</p>
-              <p className="font-medium md:text-xl text-lg">{location}</p>
+              <p className="font-medium md:text-xl ">{location}</p>
             </div>
           </div>
 
@@ -117,7 +117,7 @@ export default function UserInfo({
           {/* Email and Phone Verification */}
 
           <div className="flex  flex-wrap gap-4">
-            <div className="space-y-1">
+            <div className="md:space-y-1 flex-1">
               <p className="md:text-lg text-muted-foreground">
                 {(userRole === "user" ||
                   userRole === "ambassador" ||
@@ -131,17 +131,25 @@ export default function UserInfo({
                   "Business Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
-                <span className=" font-medium md:text-xl text-lg">{email}</span>
+                {preview !== "preview" && (
+                  <span className=" font-medium md:text-xl text-lg">
+                    {email}
+                  </span>
+                )}
                 <div className="flex items-center text-green-500 ">
                   (<VerifiedIcon />
                   <span className="text-green-500 font-medium">Verified</span>)
                 </div>
               </div>
             </div>
-            <div className="space-y-1">
+            <div className="md:space-y-1 flex-1">
               <p className="md:text-lg text-muted-foreground">Phone</p>
               <div className="flex flex-wrap gap-x-2">
-                <span className=" font-medium md:text-xl text-lg">{phone}</span>
+                {preview !== "preview" && (
+                  <span className=" font-medium md:text-xl text-lg">
+                    {phone}
+                  </span>
+                )}
                 <div className="flex  flex-wrap items-center text-green-500 ">
                   (<VerifiedIcon />
                   <span className="text-green-500 font-medium">Verified</span>)
@@ -169,8 +177,8 @@ export default function UserInfo({
             </div>
           </div>
 
-          {(preview && userRole === "celebrity") && (
-            <div className="bg-[#FFFBE6] mt-5 p-2 rounded-lg flex justify-center items-center">
+          {preview && userRole === "celebrity" && (
+            <div className="bg-[#FFFBE6] md:mt-5 mt-2 md:p-2 p-1 rounded-lg flex justify-center items-center">
               <AwardIcon />
               <p className="text-[#8C7600]">Fashion Activist</p>
             </div>

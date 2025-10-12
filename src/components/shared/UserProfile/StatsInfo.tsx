@@ -1,6 +1,6 @@
 "use client";
 import { Star } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import webLogo from "@/assets/icons/web-logo.png";
 import Image from "next/image";
 import { useState } from "react";
@@ -39,8 +39,9 @@ export default function StatsInfo({
     <>
       <Card
         style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
-        className="w-full  p-6"
+        className="w-full    py-2 md:py-4 "
       >
+        <CardContent className="lg:px-6 px-3 space-y-2">
         {/* --------------------------- display tag for ambassador user role --------------------------- */}
         {userRole === "ambassador" && (
           <div className="flex flex-wrap gap-x-3">
@@ -112,16 +113,16 @@ export default function StatsInfo({
           </div>
         )}
 
-        <div className="grid xs:grid-cols-2 gap-6">
+        <div className="grid xs:grid-cols-2 md:gap-6 gap-1 ">
           {/* First Row */}
           {userRole !== "charity" && (
-            <div className="space-y-1">
+            <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Total Products</p>
               <p className="md:text-2xl text-xl font-medium">20+</p>
             </div>
           )}
 
-          <div className="space-y-1">
+          <div className="md:space-y-1">
             <p
               onClick={() => handleOpenDonationHistoryModal(userRole)}
               className="md:text-lg text-muted-foreground underline cursor-pointer"
@@ -132,7 +133,7 @@ export default function StatsInfo({
           </div>
 
           {/* Second Row */}
-          <div className="space-y-1">
+          <div className="md:space-y-1">
             <p
               onClick={() => setOpenFollowers(true)}
               className="md:text-lg text-muted-foreground underline cursor-pointer"
@@ -141,7 +142,7 @@ export default function StatsInfo({
             </p>
             <p className="md:text-2xl text-xl font-medium">12k+</p>
           </div>
-          <div className="space-y-1">
+          <div className="md:space-y-1">
             <p
               onClick={() => {
                 setOpenFollowers(true);
@@ -156,13 +157,13 @@ export default function StatsInfo({
 
           {/* Third Row */}
           {userRole !== "charity" && (
-            <div className="space-y-1">
+            <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Item Sold</p>
               <p className="md:text-2xl text-xl font-medium">100</p>
             </div>
           )}
           {userRole !== "charity" && (
-            <div className="space-y-1">
+            <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">
                 Rating & Review
               </p>
@@ -177,7 +178,7 @@ export default function StatsInfo({
           )}
 
           {userRole === "charity" && (
-            <div className="space-y-1">
+            <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Website</p>
               <p className="md:text-2xl text-xl font-medium">
                 <Image src={webLogo} alt="web-logo" width={30} height={30} />
@@ -185,6 +186,7 @@ export default function StatsInfo({
             </div>
           )}
         </div>
+        </CardContent>
       </Card>
      
       <GotCharityDonationHistoryDialog

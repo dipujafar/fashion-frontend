@@ -35,7 +35,7 @@ const slides = [
   },
   {
     title: "Show All Angles",
-    images: ["/uploadGuildImage2.png", "/uploadGuildImage3.png"],
+    images: ["/uploadGuildImage2.png"],
     correctGuide: [
       "Front view of the item",
       "Back view of the item ",
@@ -103,7 +103,7 @@ export function ImageUploadGuide() {
         </DialogHeader>
 
         <Carousel setApi={setApi} className="md:!max-w-2xl max-w-[350px]">
-          <CarouselContent className="h-fit">
+          <CarouselContent className="items-start !h-auto">
             {slides.map((slide, index) => (
               <CarouselItem key={index}>
                 <div className="px-6 space-y-1.5">
@@ -176,7 +176,7 @@ export function ImageUploadGuide() {
                 className={cn(
                   "size-2 rounded-full transition-all",
                   current === index
-                    ? "bg-cyan-500 w-6"
+                    ? "bg-green-500 w-6"
                     : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
                 )}
                 aria-label={`Go to slide ${index + 1}`}
@@ -187,7 +187,7 @@ export function ImageUploadGuide() {
           <Button
             onClick={() => api?.scrollNext()}
             disabled={!canScrollNext}
-            className="bg-cyan-500 hover:bg-cyan-600 text-white"
+            className="bg-green-500 hover:bg-green-600 text-white"
           >
             Next
           </Button>

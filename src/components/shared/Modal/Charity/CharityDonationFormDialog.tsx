@@ -59,8 +59,11 @@ const charities = [
   { value: "save-the-children", label: "Save the Children" },
 ];
 
-
-export function CharityDonationFormDialog() {
+export function CharityDonationFormDialog({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   const [selectedAmount, setSelectedAmount] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [charityOpen, setCharityOpen] = useState(false);
@@ -93,11 +96,14 @@ export function CharityDonationFormDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        asChild
-        className="text-green-600 lg:text-base md:text-xs uppercase"
-      >
-        <span>Donate now</span>
+      <DialogTrigger asChild>
+        {children ? (
+          <div>{children}</div>
+        ) : (
+          <span className="text-green-600 lg:text-base md:text-xs uppercase cursor-pointer">
+            Donate now
+          </span>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md p-0 gap-0">
         {/* Header */}
