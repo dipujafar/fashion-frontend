@@ -4,6 +4,7 @@ import ProductsListContainer from "../ProductsList/ProductsListContainer";
 import CustomerFeedbacks from "../CustomerFeedbacks";
 import { Switch } from "@/components/ui/switch";
 import CharitySupportCards from "../../Cards/CharitySupportCards";
+import AboutCharity from "../../Profile/AboutCharity";
 
 const ProfileFeatures = ({
   userRole,
@@ -35,6 +36,15 @@ const ProfileFeatures = ({
           >
             Product Listing
           </TabsTrigger>
+
+          {userRole === "charity store" && (
+            <TabsTrigger
+              value="about"
+              className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
+            >
+              About
+            </TabsTrigger>
+          )}
           {(userRole === "user" ||
             userRole === "eco-friendly-store" ||
             userRole === "professional-seller" ||
@@ -76,6 +86,9 @@ const ProfileFeatures = ({
         </TabsContent>
         <TabsContent value="rating_review">
           <CustomerFeedbacks />
+        </TabsContent>
+        <TabsContent value="about">
+          <AboutCharity />
         </TabsContent>
       </Tabs>
     </div>

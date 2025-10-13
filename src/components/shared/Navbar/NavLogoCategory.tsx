@@ -31,9 +31,11 @@ const NavLogoCategory = () => {
     <div>
       <Container className="flex flex-row-reverse md:flex-row  justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16 bg-primary-white py-4">
         {/* ======= Small Screen view ========== */}
-        <div className="flex items-center">
-          
-          <SmallDeviceView></SmallDeviceView>
+        <div className="flex items-center gap-x-2">
+          <div className="md:hidden ">
+            <SearchAndNavIcon />
+          </div>
+          <SmallDeviceView />
         </div>
         {/* ======= category ========== */}
         {/* <div className="md:flex lg:gap-x-6 gap-x-1.5 hidden ">
@@ -61,7 +63,7 @@ const NavLogoCategory = () => {
         </div>
 
         <div className="relative hidden md:block flex-1">
-          <GlobalItemAndMemberSearch/>
+          <GlobalItemAndMemberSearch />
           <div className="absolute   top-2 right-1.5">
             <Search size={20} color="#9E9E9E" />
           </div>

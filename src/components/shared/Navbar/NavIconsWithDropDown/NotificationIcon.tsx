@@ -46,7 +46,7 @@ export default function NotificationIcon() {
   return (
     <>
       <MenubarTrigger>
-        <NotificationBellIcon className="size-7 md:size-5" />
+        <NotificationBellIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
       <MenubarContent>
         {dummyNotifications.map((notification) => (

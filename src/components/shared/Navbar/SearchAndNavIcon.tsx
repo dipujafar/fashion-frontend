@@ -4,6 +4,7 @@ import { CartIcon, WishListIcon } from "@/icons";
 import ProfileIcon from "./NavIconsWithDropDown/ProfileIcon";
 import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import NotificationIcon from "./NavIconsWithDropDown/NotificationIcon";
+import { Mail } from "lucide-react";
 
 const SearchAndNavIcon = () => {
   return (
@@ -13,6 +14,11 @@ const SearchAndNavIcon = () => {
           <Mail />
         </Link>
       </div> */}
+      <div className="px-1">
+        <Link href={"/professional-seller/dashboard/message"}>
+          <Mail className="size-5 lg:size-6" color="#212121" />
+        </Link>
+      </div>
       <div>
         <Link href={"/wishlist"}>
           <WishListIcon />

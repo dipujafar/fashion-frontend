@@ -5,7 +5,9 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { Switch } from "@/components/ui/switch";
 import { ProfileNavIcon } from "@/icons";
+
 import { ArrowRight, ChevronRight, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,9 +29,30 @@ const navLinksFotProfileIcon = [
     name: "Settings",
     link: "/professional-seller/dashboard/settings",
   },
+
   {
-    name: "Logout",
-    link: "#",
+    name: "vacation mode",
+    label: (
+      <div>
+        <div className="flex justify-between items-center gap-2 px-1.5 text-sm py-1 ">
+          Vacation mode
+          <Switch />
+        </div>
+        <MenubarSeparator />
+      </div>
+    ),
+  },
+  {
+    name: "Balance",
+    label: (
+      <div>
+        <div className="flex justify-between items-center gap-2 px-1.5 text-sm py-1 ">
+          Balance
+          <span>$600</span>
+        </div>
+        <MenubarSeparator />
+      </div>
+    ),
   },
 ];
 
@@ -41,22 +64,15 @@ export default function ProfileIcon() {
   };
   return (
     <>
-      <MenubarTrigger>
+      <MenubarTrigger className="md:flex hidden">
         <ProfileNavIcon />
       </MenubarTrigger>
       <MenubarContent>
-        {navLinksFotProfileIcon.map((link, index) =>
-          link.name === "Logout" ? (
-            <MenubarItem onClick={handleLogout} className="cursor-pointer group">
-              {link.name}
-              <MenubarShortcut>
-                <LogOut   className="  group-hover:translate-x-2 transition-all duration-300" />
-              </MenubarShortcut>
-            </MenubarItem>
-          ) : (
-            <Link href={link?.link} key={link.name}>
+        {navLinksFotProfileIcon.map((item, index) =>
+          item?.link ? (
+            <Link href={item?.link} key={item.name}>
               <MenubarItem className="cursor-pointer group">
-                {link.name}
+                {item.name}
                 <MenubarShortcut>
                   <ChevronRight className="group-hover:translate-x-2 transition-all duration-300" />
                 </MenubarShortcut>
@@ -65,8 +81,17 @@ export default function ProfileIcon() {
                 <MenubarSeparator />
               )}
             </Link>
+          ) : (
+            item?.label
           )
         )}
+
+        <MenubarItem onClick={handleLogout} className="cursor-pointer group">
+          Logout
+          <MenubarShortcut>
+            <LogOut className="  group-hover:translate-x-2 transition-all duration-300" />
+          </MenubarShortcut>
+        </MenubarItem>
       </MenubarContent>
     </>
   );

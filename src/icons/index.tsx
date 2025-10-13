@@ -602,8 +602,7 @@ export function NotificationBellIcon({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="19"
-      height="22"
+     
       viewBox="0 0 19 22"
       fill="none"
       className={className}
@@ -962,7 +961,7 @@ export function CartIcon({ className }: { className?: string }) {
     >
       <g
         fill="none"
-        stroke="currentColor"
+        stroke="#212121"
         strokeLinecap="round"
         strokeWidth={2}
       >
