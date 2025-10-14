@@ -6,11 +6,11 @@ import { CharityDonationFormDialog } from "../Modal/Charity/CharityDonationFormD
 const quickLink = [
   {
     label: "Sing In",
-    href: "#",
+    href: "/sign-in",
   },
   {
     label: "Sing Up",
-    href: "#",
+    href: "/sign-up",
   },
   {
     label: "Sell Now",
