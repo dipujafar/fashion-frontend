@@ -102,7 +102,7 @@ export function ImageUploadGuide() {
           </DialogTitle>
         </DialogHeader>
 
-        <Carousel setApi={setApi} className="md:!max-w-2xl max-w-[350px]">
+        <Carousel setApi={setApi} className="md:!max-w-2xl max-w-[395px]">
           <CarouselContent className="items-start !h-auto">
             {slides.map((slide, index) => (
               <CarouselItem key={index}>
@@ -130,7 +130,7 @@ export function ImageUploadGuide() {
                               className=""
                             />
                           </div>
-                          <p>{guide}</p>
+                          <p className="text-sm md:text-base">{guide}</p>
                         </div>
                       ))}
                     </div>
@@ -147,7 +147,7 @@ export function ImageUploadGuide() {
                                 className=""
                               />
                             </div>
-                            <p>{guide}</p>
+                            <p className="text-sm md:text-base">{guide}</p>
                           </div>
                         ))}
                       </div>

@@ -35,6 +35,7 @@ import {
 } from "./schema";
 import SelectDonationOption from "./SelectDonationOption";
 import { ImageUploadGuide } from "./ImageUploadGuide";
+import { cn } from "@/lib/utils";
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
@@ -103,15 +104,15 @@ export default function AddProductForm() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="md:space-y-6 space-y-3">
       <Card className="py-0 border-none shadow-none">
         <CardContent className="px-0">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="md:space-y-6 space-y-3">
               {/* Product Images */}
               <div className="space-y-2 ">
                 <label className="text-base font-medium">Product Images</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-4 border-2 rounded border-dashed">
+                <div className={cn("grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 md:gap-4 gap-2 border-2 rounded border-dashed", images?.length === 0 && " justify-center")}>
                   {imagePreviews?.map((preview, index) => (
                     <div key={index} className="relative group">
                       <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
@@ -135,7 +136,7 @@ export default function AddProductForm() {
                     <div
                       onDrop={handleDrop}
                       onDragOver={handleDragOver}
-                      className="aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative"
+                      className={cn("aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border", images?.length === 0 && "col-span-2 md:col-span-1 2xl:col-span-1 aspect-video md:aspect-square")}
                     >
                       <input
                         type="file"
@@ -148,7 +149,7 @@ export default function AddProductForm() {
                         <Upload className="h-6 w-6" /> Upload
                       </Button>
 
-                      <span className="text-xs text-gray-500 text-center px-2">
+                      <span className="text-xs text-gray-500 text-center px-2 hidden md:block">
                         Drop images or click to upload
                       </span>
                     </div>
@@ -184,7 +185,7 @@ export default function AddProductForm() {
               />
 
               {/* Price and Discount */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
                 <FormField
                   control={form.control}
                   name="price"
@@ -247,7 +248,7 @@ export default function AddProductForm() {
                   )}
                 /> */}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid  grid-cols-2 md:gap-x-4 gap-x-2">
                   <FormField
                     control={form.control}
                     name="category"
@@ -310,7 +311,7 @@ export default function AddProductForm() {
                     )}
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
                   <FormField
                     control={form.control}
                     name="tags"
@@ -464,7 +465,7 @@ export default function AddProductForm() {
                       </Select>
 
                       {showCustomPicker && (
-                        <div className="mt-2 space-y-2">
+                        <div className="mt-2 md:space-y-2 space-y-1">
                           <FormControl>
                             <Input
                               type="color"
@@ -507,7 +508,7 @@ export default function AddProductForm() {
                 {fields.map((field, index) => (
                   <div
                     key={field.id}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                    className="grid grid-cols-2 md:gap-4 gap-x-2"
                   >
                     {/* Charity Select */}
                     <FormField
@@ -571,7 +572,7 @@ export default function AddProductForm() {
                           type="button"
                           variant="destructive"
                           size="icon"
-                          className="self-end -translate-y-1"
+                          className="self-end -translate-y-1 "
                           onClick={() => remove(index)}
                         >
                           ✕
@@ -598,7 +599,7 @@ export default function AddProductForm() {
                   control={form.control}
                   name="donationPrivacy"
                   render={({ field }) => (
-                    <FormItem className="space-y-3">
+                    <FormItem className="md:space-y-3 space-y-1">
                       <FormLabel>
                         Donation Privacy: Would you like to remain anonymous?
                       </FormLabel>
@@ -606,7 +607,7 @@ export default function AddProductForm() {
                         <RadioGroup
                           onValueChange={field.onChange}
                           defaultValue={field.value}
-                          className="flex flex-col space-y-1"
+                          className="flex flex-col md:space-y-1"
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="anonymous" id="anonymous" />

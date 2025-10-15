@@ -39,30 +39,32 @@ export function SheetContentContainer({
       <div className="border-b p-4">
         <div className="grid grid-cols-3 gap-3">
           <Card className="bg-muted/50">
-            <CardContent className="p-3 text-center">
+            <CardContent className="px-3 py-0.5 text-center">
               <div className="text-2xl font-bold">{stats.listed}</div>
               <div className="text-xs text-muted-foreground">Items Listed</div>
             </CardContent>
           </Card>
           <Card className="bg-muted/50">
-            <CardContent className="p-3 text-center">
+            <CardContent className="px-3 py-0.5 text-center">
               <div className="text-2xl font-bold">{stats.sold}</div>
               <div className="text-xs text-muted-foreground">Items Sold</div>
             </CardContent>
           </Card>
           <Card className="bg-muted/50">
-            <CardContent className="p-3 text-center">
+            <CardContent className="px-3 py-0.5 text-center">
               <div className="text-2xl font-bold">{stats.purchases}</div>
               <div className="text-xs text-muted-foreground">Purchased</div>
             </CardContent>
           </Card>
         </div>
-        <div className="mt-3 flex justify-between">
-          <p className="text-xs text-muted-foreground">
-            Total money donations: {stats.totalDonations}
+        <div className="mt-3 flex flex-col items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Total money donations:{" "}
+            <span className="text-green-600 font-medium">{stats.totalDonations}</span>
           </p>
-          <p className="text-xs text-muted-foreground">
-            Total clothing donations: {stats.totalClothes}
+          <p className="text-sm text-muted-foreground">
+            Total clothing donations:{" "}
+            <span className="text-green-600 font-medium">{stats.totalClothes}</span>
           </p>
         </div>
       </div>
@@ -102,6 +104,7 @@ export function SheetContentContainer({
             <div className="bg-black px-4 py-2 text-center">
               <Link
                 href={"/sell-products"}
+                onClick={() => setOpen(false)}
                 className="flex items-center justify-center gap-2 group"
               >
                 <span className="text-sm font-medium text-white">Sell Now</span>

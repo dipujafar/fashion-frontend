@@ -12,7 +12,7 @@ const SmallDeviceView = () => {
         <SheetTrigger asChild>
           <TableOfContents size={25} />
         </SheetTrigger>
-        <SheetContent className="pt-10 w-full">
+        <SheetContent className="pt-10 w-[82%] ">
           <SheetContentContainer open={open} setOpen={setOpen} />
         </SheetContent>
       </Sheet>

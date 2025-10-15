@@ -14,9 +14,9 @@ const SearchAndNavIcon = () => {
           <Mail />
         </Link>
       </div> */}
-      <div className="px-1">
+      <div className="px-1.5">
         <Link href={"/professional-seller/dashboard/message"}>
-          <Mail className="size-5 lg:size-6" color="#212121" />
+          <Mail className="size-[22px] lg:size-[26px]" color="#212121" />
         </Link>
       </div>
       <div>
