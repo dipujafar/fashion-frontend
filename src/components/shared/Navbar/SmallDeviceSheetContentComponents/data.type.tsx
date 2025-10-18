@@ -44,12 +44,16 @@ export interface User {
   name: string;
   handle: string;
   avatar: string;
+  location: string;
+  rating: number;
 }
 
 export const user: User = {
   name: "Abrahum",
   handle: "@abra.mail.com",
   avatar: "/userProfile8.png",
+  location: "Lagos, Nigeria",
+  rating: 4.5,
 };
 
 export const stats: Stats = {

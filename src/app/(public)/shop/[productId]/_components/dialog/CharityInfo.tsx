@@ -8,10 +8,11 @@ import {
 import { Card } from "@/components/ui/card";
 import { InfoIcon2 } from "@/icons";
 
+
 export default function CharityInfo() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger className="cursor-pointer" asChild>
         <InfoIcon2 />
       </DialogTrigger>
       <DialogContent className="max-w-4xl md:max-w-3xl max-h-[80vh] overflow-y-auto scroll-hide">

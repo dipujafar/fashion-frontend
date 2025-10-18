@@ -10,14 +10,15 @@ import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
 import CharityInfo from "./dialog/CharityInfo";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import ProductDetailsHeader from "./ProductDetails/ProductDetailsHeader";
+import { CharityDonationFormDialog } from "@/components/shared/Modal/Charity/CharityDonationFormDialog";
 
 const SingleProductDetails = () => {
   return (
-    <Container className="xl:space-y-8 lg:space-y-6 space-y-8">
+    <Container className="xl:space-y-8 lg:space-y-6 space-y-4">
       <div className="flex flex-col lg:flex-row xl:gap-x-8 gap-x-5 gap-y-5">
         <div className="flex-1">
           <div className="md:mb-0 mb-3 md:hidden">
-            <ProductDetailsHeader/>
+            <ProductDetailsHeader />
           </div>
           <ProductImages></ProductImages>
         </div>
@@ -36,10 +37,12 @@ const SingleProductDetails = () => {
               </h4>
               <CharityInfo />
             </div>
-            <div className="flex gap-x-3 items-center group cursor-pointer">
-              <h4 className=" font-bold   ">ADD DONATE</h4>
-              <AnimatedArrow size={20} />
-            </div>
+            <CharityDonationFormDialog>
+              <div className="flex gap-x-3 items-center group cursor-pointer">
+                <h4 className="font-bold">ADD DONATE</h4>
+                <AnimatedArrow size={20} />
+              </div>
+            </CharityDonationFormDialog>
           </div>
 
           <hr className="border lg:mb-6 mb-4" />
@@ -47,7 +50,7 @@ const SingleProductDetails = () => {
         <CharitySupportCards></CharitySupportCards>
       </div>
 
-      <ProductDescription></ProductDescription>
+      {/* <ProductDescription></ProductDescription> */}
       <DisplayProductSection
         title="Recently Viewed"
         data={recentlyViewedData}

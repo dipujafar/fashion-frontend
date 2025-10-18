@@ -3,7 +3,7 @@ import type React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useCallback } from "react";
-import { X, Upload, PlusCircle } from "lucide-react";
+import { X, Upload, PlusCircle, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,14 +28,25 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import {
+  careInstructionsOptions,
   colors,
   productFormDefaultValues,
   productFormSchema,
   ProductFormValues,
+  returnsPolicy,
+  shippingDelivery,
 } from "./schema";
 import SelectDonationOption from "./SelectDonationOption";
 import { ImageUploadGuide } from "./ImageUploadGuide";
 import { cn } from "@/lib/utils";
+import { TagInput } from "./FormComponent/TagInput";
+import { Badge } from "@/components/ui/badge";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
@@ -108,11 +119,19 @@ export default function AddProductForm() {
       <Card className="py-0 border-none shadow-none">
         <CardContent className="px-0">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="md:space-y-6 space-y-3">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="md:space-y-6 space-y-3"
+            >
               {/* Product Images */}
               <div className="space-y-2 ">
                 <label className="text-base font-medium">Product Images</label>
-                <div className={cn("grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 md:gap-4 gap-2 border-2 rounded border-dashed", images?.length === 0 && " justify-center")}>
+                <div
+                  className={cn(
+                    "grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 md:gap-4 gap-2 border-2 rounded border-dashed",
+                    images?.length === 0 && " justify-center"
+                  )}
+                >
                   {imagePreviews?.map((preview, index) => (
                     <div key={index} className="relative group">
                       <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
@@ -136,7 +155,11 @@ export default function AddProductForm() {
                     <div
                       onDrop={handleDrop}
                       onDragOver={handleDragOver}
-                      className={cn("aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border", images?.length === 0 && "col-span-2 md:col-span-1 2xl:col-span-1 aspect-video md:aspect-square")}
+                      className={cn(
+                        "aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border",
+                        images?.length === 0 &&
+                          "col-span-2 md:col-span-1 2xl:col-span-1 aspect-video md:aspect-square"
+                      )}
                     >
                       <input
                         type="file"
@@ -317,20 +340,18 @@ export default function AddProductForm() {
                     name="tags"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Tags (comma-separated)</FormLabel>
+                        <FormLabel>Tags</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Sweatshirt, Pant, Shirt"
-                            className="bg-[#f2f2f2] md:py-5"
-                            {...field}
+                          <TagInput
+                            value={field.value || []}
+                            onChange={field.onChange}
+                            placeholder="Type and press Enter..."
                           />
                         </FormControl>
-
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="fabric"
@@ -410,100 +431,99 @@ export default function AddProductForm() {
                     )}
                   />
                 </div>
-
-                <FormField
-                  control={form.control}
-                  name="color"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Color</FormLabel>
-                      <Select
-                        onValueChange={(value) => {
-                          if (value === "custom") {
-                            setShowCustomPicker(true);
-                          } else {
-                            setShowCustomPicker(false);
-                            field.onChange(value);
-                          }
-                        }}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                            <SelectValue placeholder="Select a color" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="max-h-[400px]">
-                          {colors.map((color) => (
-                            <SelectItem key={color.name} value={color.name}>
+                <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                  <FormField
+                    control={form.control}
+                    name="color"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Color</FormLabel>
+                        <Select
+                          onValueChange={(value) => {
+                            if (value === "custom") {
+                              setShowCustomPicker(true);
+                            } else {
+                              setShowCustomPicker(false);
+                              field.onChange(value);
+                            }
+                          }}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                              <SelectValue placeholder="Select a color" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="max-h-[400px]">
+                            {colors.map((color) => (
+                              <SelectItem key={color.name} value={color.name}>
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className="size-5 rounded-full border border-border "
+                                    style={{
+                                      background:
+                                        color.name === "Multi"
+                                          ? "linear-gradient(90deg, #FF0000, #00FF00, #0000FF)"
+                                          : color.hex,
+                                      border:
+                                        color.name === "White" ||
+                                        color.name === "Clear"
+                                          ? "1px solid #e5e5e5"
+                                          : "none",
+                                    }}
+                                  />
+                                  <span className="text-lg">{color.name}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="custom">
                               <div className="flex items-center gap-2">
-                                <div
-                                  className="size-5 rounded-full border border-border "
-                                  style={{
-                                    background:
-                                      color.name === "Multi"
-                                        ? "linear-gradient(90deg, #FF0000, #00FF00, #0000FF)"
-                                        : color.hex,
-                                    border:
-                                      color.name === "White" ||
-                                      color.name === "Clear"
-                                        ? "1px solid #e5e5e5"
-                                        : "none",
-                                  }}
-                                />
-                                <span className="text-lg">{color.name}</span>
+                                <div className="size-5 rounded-full border border-border bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" />
+                                <span className="text-lg">
+                                  Select Custom Color
+                                </span>
                               </div>
                             </SelectItem>
-                          ))}
-                          <SelectItem value="custom">
-                            <div className="flex items-center gap-2">
-                              <div className="size-5 rounded-full border border-border bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" />
-                              <span className="text-lg">Select Custom Color</span>
-                            </div>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                          </SelectContent>
+                        </Select>
 
-                      {showCustomPicker && (
-                        <div className="mt-2 md:space-y-2 space-y-1">
-                          <FormControl>
-                            <Input
-                              type="color"
-                              {...field}
-                              className="bg-[#f2f2f2] h-12 cursor-pointer"
-                              onChange={(e) => {
-                                field.onChange(e.target.value);
-                              }}
-                            />
-                          </FormControl>
-                          <p className="text-sm text-muted-foreground">
-                            Selected: {field.value || "None"}
-                          </p>
-                        </div>
-                      )}
+                        {showCustomPicker && (
+                          <div className="mt-2 md:space-y-2 space-y-1">
+                            <FormControl>
+                              <Input
+                                type="color"
+                                {...field}
+                                className="bg-[#f2f2f2] h-12 cursor-pointer"
+                                onChange={(e) => {
+                                  field.onChange(e.target.value);
+                                }}
+                              />
+                            </FormControl>
+                            <p className="text-sm text-muted-foreground">
+                              Selected: {field.value || "None"}
+                            </p>
+                          </div>
+                        )}
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="careInstructions"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Care Instructions</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="e.g. Machine wash cold, tumble dry low, do not bleach"
-                          className="flex min-h-[80px] bg-[#f2f2f2]  "
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="careInstructions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Care Instructions</FormLabel>
+                        <FormControl className="border border-blue-500 w-full">
+                          <CareInstructionsField field={field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 {fields.map((field, index) => (
                   <div
@@ -648,7 +668,7 @@ export default function AddProductForm() {
                 />
 
                 {/* Delivery Policy */}
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="deliveryPolicy"
                   render={({ field }) => (
@@ -664,21 +684,33 @@ export default function AddProductForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 {/* Shipping & Returns */}
                 <FormField
                   control={form.control}
-                  name="shippingReturns"
+                  name="shippingDelivery"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Shipping & Returns</FormLabel>
+                      <FormLabel>Shipping & Delivery</FormLabel>
                       <FormControl>
-                        <Textarea
-                          placeholder="e.g. All orders are protected 5-7 days"
-                          className="flex min-h-[100px] bg-[#f2f2f2]"
-                          {...field}
-                        />
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                              <SelectValue placeholder="Select Shipping & Delivery" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {shippingDelivery?.map((item, index) => (
+                              <SelectItem value={item} key={index}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -687,6 +719,37 @@ export default function AddProductForm() {
 
                 {/* Returns Policy */}
                 <FormField
+                  control={form.control}
+                  name="returnsPolicy"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Returns Policy</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                              <SelectValue placeholder="Select Returns Policy" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {returnsPolicy?.map((item, index) => (
+                              <SelectItem value={item} key={index}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Returns Policy */}
+                {/* <FormField
                   control={form.control}
                   name="returnsPolicy"
                   render={({ field }) => (
@@ -715,10 +778,10 @@ export default function AddProductForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 {/* Duration Time */}
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="durationTime"
                   render={({ field }) => (
@@ -734,10 +797,10 @@ export default function AddProductForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 {/* Return Description */}
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="returnDescription"
                   render={({ field }) => (
@@ -755,7 +818,7 @@ export default function AddProductForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 {/* Allow Offers */}
                 <FormField

@@ -1,10 +1,17 @@
+"use client";
 import { ReactNode } from "react";
 import CharityShopDashboardPageTopSection from "./_components/CharityShopDashboardPageTopSection";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const UserTemplate = ({ children }: { children: ReactNode }) => {
+  const pathName = usePathname();
+  const isMessagePage = pathName.includes("message");
   return (
     <div className="xl:space-y-16 space-y-8">
-      <CharityShopDashboardPageTopSection />
+      <div className={cn("hidden md:block", isMessagePage && "md:hidden")}>
+        <CharityShopDashboardPageTopSection />
+      </div>
       <div className="md:pb-16 pb-8">{children}</div>
     </div>
   );

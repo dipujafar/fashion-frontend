@@ -18,13 +18,13 @@ const ActionButtons = () => {
   };
   return (
     <>
-      <div className="lg:space-y-5 space-y-3">
-        <h6 className="uppercase text-primary-gray underline">Quantity</h6>
+      <div className="lg:space-y-8 space-y-4">
+        {/* <h6 className="uppercase text-primary-gray underline">Quantity</h6> */}
         {/* =============== action buttons ================ */}
-        <div className="lg:space-y-3 space-y-2 max-w-lg">
+        <div className="lg:space-y-3 space-y-2 max-w-lg grid grid-cols-2 md:gap-x-3 gap-x-2 ">
           {/* =============== quantity &  add to cart  button ================ */}
           <div className="flex items-center lg:gap-x-6 gap-x-4">
-            <div className="border border-primary-gray/40 rounded-2xl flex   gap-x-2">
+            {/* <div className="border border-primary-gray/40 rounded-2xl flex   gap-x-2">
               <button
                 className="size-10 text-xl cursor-pointer flex-center"
                 onClick={() => setQuality(quality + 1)}
@@ -39,7 +39,7 @@ const ActionButtons = () => {
               >
                 <Minus size={20} color="#B0B0B0" />
               </button>
-            </div>
+            </div> */}
             <CommonButton handlerFunction={handleCharitySelect} className="flex-1">ADD TO CART</CommonButton>
           </div>
           {/* =============== buy now  button ================ */}

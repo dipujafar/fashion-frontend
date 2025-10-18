@@ -2,13 +2,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navItems, stats, user } from "./data.type";
 import Image from "next/image";
 import Link from "next/link";
 import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFormDialog";
 import { useRouter } from "next/navigation";
+import { Rating } from "@/components/ui/rating";
 
 export function SheetContentContainer({
   open,
@@ -21,18 +22,31 @@ export function SheetContentContainer({
   return (
     <div className="flex h-full flex-col bg-background overflow-y-auto scroll-hide">
       {/* Header Section */}
-      <div className="flex items-center justify-between border-b p-4">
-        <Avatar className="h-12 w-12">
-          <AvatarImage
-            src={user.avatar || "/placeholder.svg"}
-            alt={user.name}
-          />
-          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col">
-          <span className="font-semibold text-foreground">{user.name}</span>
-          <span className="text-sm text-muted-foreground">{user.handle}</span>
+      <div className="border-b p-4">
+        <div className="flex items-center justify-between ">
+          <Avatar className="h-12 w-12">
+            <AvatarImage
+              src={user.avatar || "/placeholder.svg"}
+              alt={user.name}
+            />
+            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="font-semibold text-foreground">{user.name}</span>
+            <span className="text-sm text-muted-foreground">{user.handle}</span>
+          </div>
+          <div>
+            <div className="flex items-center gap-0.5 text-sm">
+              <MapPin size={14} /> {user?.location}
+            </div>
+            <Rating rating={Number(user.rating)} size={16}></Rating>
+          </div>
         </div>
+        <Link href={`/celebrity/profile-preview`}>
+          <Button size={"sm"} className="mt-2 w-full">
+            View Profile
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Section */}
@@ -60,11 +74,15 @@ export function SheetContentContainer({
         <div className="mt-3 flex flex-col items-center justify-between">
           <p className="text-sm text-muted-foreground">
             Total money donations:{" "}
-            <span className="text-green-600 font-medium">{stats.totalDonations}</span>
+            <span className="text-green-600 font-medium">
+              {stats.totalDonations}
+            </span>
           </p>
           <p className="text-sm text-muted-foreground">
             Total clothing donations:{" "}
-            <span className="text-green-600 font-medium">{stats.totalClothes}</span>
+            <span className="text-green-600 font-medium">
+              {stats.totalClothes}
+            </span>
           </p>
         </div>
       </div>

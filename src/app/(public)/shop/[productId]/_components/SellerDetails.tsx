@@ -10,7 +10,7 @@ import Link from "next/link";
 const SellerDetails = () => {
   return (
     <div className=" max-w-lg">
-      <div className=" flex justify-between gap-x-2 items-center md:mb-6 mb-4 ">
+      <div className=" flex justify-between gap-x-2 items-center md:mb-3 mb-2 ">
         <h4 className="uppercase underline text-primary-gray">
           seller information
         </h4>

@@ -87,17 +87,17 @@ export function ReportDialog({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
               control={form.control}
               name="reason"
               render={({ field }) => (
-                <FormItem className="space-y-3">
+                <FormItem className="space-y-1">
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
                       value={field.value}
-                      className="space-y-3"
+                      className="space-y-1"
                     >
                       <div className="flex items-center space-x-3">
                         <RadioGroupItem value="violent" id="violent" className="border-black" />
@@ -161,9 +161,9 @@ export function ReportDialog({
           </form>
         </Form>
 
-        <Separator className="my-4" />
+        <Separator className="my-2" />
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Button
             variant="outline"
             className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent cursor-pointer"

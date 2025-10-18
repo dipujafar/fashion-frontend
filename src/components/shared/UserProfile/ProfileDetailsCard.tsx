@@ -14,7 +14,7 @@ const ProfileDetailsCard = ({ data }: { data: TrackingCardProps[] }) => {
       <div className=" rounded-lg shadow-lg overflow-hidden bg-black">
         <div
           className={cn(
-            `grid grid-cols-1 md:grid-cols-${data?.length > 3 ? data?.length - 1: data?.length} lg:grid-cols-${
+            `grid grid-cols-2 md:grid-cols-${data?.length > 3 ? data?.length - 1: data?.length} lg:grid-cols-${
               data?.length
             } divide-y md:divide-y-0 md:divide-x divide-white/20`
           )}

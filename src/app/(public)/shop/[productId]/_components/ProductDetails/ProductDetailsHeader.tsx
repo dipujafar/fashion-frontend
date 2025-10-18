@@ -4,7 +4,7 @@ import React from "react";
 
 export default function ProductDetailsHeader() {
   return (
-    <div className="xl:space-y-3 space-y-0.5">
+    <div className="xl:space-y-2 space-y-0.5">
       {/* visible only for mobile devices */}
       <h6 className="bg-[#87CEEB] w-fit px-3 rounded-xs text-primary-white italic  md:hidden ">
         {productDetails?.tag}

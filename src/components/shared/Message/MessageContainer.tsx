@@ -1,16 +1,6 @@
 import { Input } from "@/components/ui/input";
-
 import Image from "next/image";
-import {
-  CircleOff,
-  Clock,
-  Info,
-  MapPin,
-  Paperclip,
-  Send,
-  Star,
-} from "lucide-react";
-
+import { Paperclip, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import userImg from "@/assets/images/message/user2.png";
 import user2Img from "@/assets/images/message/user1.png";
@@ -19,7 +9,6 @@ import OwnerMsgCard from "./OwnerMsgCard";
 import ReceiverMsgCard from "./ReceiverMsgCard";
 import UserCard from "./UserCard";
 import { BellIcon } from "@/icons";
-import CustomAvatar from "@/components/shared/CustomAvatar";
 import { ReportDialog } from "./ReportDialog";
 
 const MessageContainer = () => {
@@ -86,7 +75,7 @@ const MessageContainer = () => {
             </div>
           </div>
 
-          <div className="max-h-full space-y-8 overflow-hidden pt-8">
+          <div className="max-h-full space-y-8 overflow-hidden pt-2">
             <div className="flex items-start gap-x-4">
               <Image
                 src={userImg}
@@ -160,8 +149,7 @@ const MessageContainer = () => {
               </div>
             </div>
 
-
-              <div className="flex flex-row-reverse items-start gap-x-4">
+            <div className="flex flex-row-reverse items-start gap-x-4">
               <Image
                 src={user2Img}
                 alt="user's image"
