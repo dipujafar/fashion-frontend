@@ -1,6 +1,8 @@
+"use client";
 import CharityInfo from "@/app/(public)/shop/[productId]/_components/dialog/CharityInfo";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type TCharitySupport = {
   _id: number;
@@ -37,6 +39,7 @@ const CharitySupport = ({
 }) => {
 
     const data = charitySupportsData || defaultCharitySupportData;
+    const router = useRouter();
   return (
     <>
       <div>
@@ -47,7 +50,7 @@ const CharitySupport = ({
             <CharityInfo />
           </div>
           <div className="flex gap-x-3 items-center group cursor-pointer">
-            <h4 className=" font-bold   ">ADD DONATE</h4>
+            <h4 className=" font-bolda">ADD DONATE</h4>
             <AnimatedArrow size={20} />
           </div>
         </div>
@@ -57,7 +60,7 @@ const CharitySupport = ({
         {/* ========================================= preview images and data ==================================== */}
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5">
           {data?.map((charitySupport) => (
-            <div key={charitySupport?._id} className="relative group">
+            <div onClick={() => router.push(`/charity/profile-preview`)} key={charitySupport?._id} className="relative group">
               <Image
                 src={charitySupport?.image}
                 alt="charity_support_data"

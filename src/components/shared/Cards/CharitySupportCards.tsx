@@ -1,5 +1,7 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type TCharitySupport = {
   _id: number;
@@ -37,12 +39,13 @@ const CharitySupportCards = ({
   className?: string
 }) => {
   const data = charitySupportsData || defaultCharitySupportData;
+  const router = useRouter();
   return (
     <>
       {/* ========================================= preview images and data ==================================== */}
       <div className={cn("grid lg:grid-cols-3 md:grid-cols-2 gap-5", className)}>
         {data?.map((charitySupport) => (
-          <div key={charitySupport?._id} className="relative group">
+          <div onClick={()=> router.push(`/charity/profile-preview`)} key={charitySupport?._id} className="relative group cursor-pointer">
             <Image
               src={charitySupport?.image}
               alt="charity_support_data"

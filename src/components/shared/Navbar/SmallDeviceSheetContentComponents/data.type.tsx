@@ -19,6 +19,9 @@ import {
   LogOut,
   Bell,
   Mail,
+  TrainFrontTunnel,
+  UsersRound,
+  BrickWall,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { CartIcon } from "@/icons";
@@ -69,6 +72,26 @@ export const navItems: NavItem[] = [
     icon: <User className="h-5 w-5" />,
     label: "Edit your profile",
     link: "/professional-seller/dashboard/profile",
+  },
+  {
+    icon: <CartIcon className="h-5 w-5" />,
+    label: "Shop",
+    link: "/shop",
+  },
+  {
+    icon: <TrainFrontTunnel  className="h-5 w-5" />,
+    label: "Style Blog",
+    link: "/blogs",
+  },
+  {
+    icon: <UsersRound  className="h-5 w-5" />,
+    label: "Explore Users",
+    link: "/users",
+  },
+  {
+    icon: <BrickWall  className="h-5 w-5" />,
+    label: "About Us",
+    link: "/about-us",
   },
   {
     icon: <Package className="h-5 w-5" />,

@@ -5,8 +5,10 @@ import charityImage3 from "@/assets/images/home/EcoFriendlyCharity/charityImage3
 import charityImage4 from "@/assets/images/home/EcoFriendlyCharity/charityImage4.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Charities = () => {
+  const router = useRouter();
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="grid h-full w-full lg:gap-4 gap-2.5  grid-cols-4 grid-rows-4 ">
@@ -16,7 +18,8 @@ const Charities = () => {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           exit={{ opacity: 0, x: "-10%" }}
           viewport={{ once: true }}
-          className="col-span-2 row-span-2 relative group"
+          className="col-span-2 row-span-2 relative group cursor-pointer"
+          onClick={() => router.push(`/charity/profile-preview`)}
         >
           <Image
             src={charityImage1}
@@ -36,7 +39,8 @@ const Charities = () => {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           exit={{ opacity: 0, x: "10%" }}
           viewport={{ once: true }}
-          className="col-span-2 row-span-2 relative group "
+          className="col-span-2 row-span-2 relative group cursor-pointer "
+          onClick={() => router.push(`/charity/profile-preview`)}
         >
           <Image
             src={charityImage2}
@@ -56,7 +60,8 @@ const Charities = () => {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           exit={{ opacity: 0, x: "-10%" }}
           viewport={{ once: true }}
-          className="col-span-2 row-span-2 relative group "
+          className="col-span-2 row-span-2 relative group cursor-pointer "
+          onClick={() => router.push(`/charity/profile-preview`)}
         >
           <Image
             src={charityImage3}
@@ -76,7 +81,8 @@ const Charities = () => {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           exit={{ opacity: 0, x: "10%" }}
           viewport={{ once: true }}
-          className="col-span-2 row-span-2 relative group"
+          className="col-span-2 row-span-2 relative group cursor-pointer"
+          onClick={() => router.push(`/charity/profile-preview`)}
         >
           <Image
             src={charityImage4}
