@@ -1,5 +1,4 @@
 "use client";
-
 import AnimatedArrowReverse from "@/components/animatedArrows/AnimatedArrowReverse";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,39 +14,7 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
-const productData = [
-  {
-    name: "Teens Top & Pant",
-    image: "/offer_page_product3.png",
-    price: 25,
-    quantity: 2,
-    color: "Brown",
-    size: "XLL",
-    donation: "10%",
-    shipping_fees: "30.00",
-  },
-  {
-    name: "Teens Top & Pant",
-    image: "/offer_page_product3.png",
-    price: 24,
-    quantity: 3,
-    color: "Brown",
-    size: "XLL",
-    donation: "10%",
-    shipping_fees: "30.00",
-  },
-  {
-    name: "Teens Top & Pant",
-    image: "/offer_page_product3.png",
-    price: 24,
-    quantity: 3,
-    color: "Brown",
-    size: "XLL",
-    donation: "10%",
-    shipping_fees: "30.00",
-  },
-];
+import { productData } from "./data";
 
 const ShoppingCartTable = () => {
   // Initialize state with quantities from productData
@@ -95,34 +62,23 @@ const ShoppingCartTable = () => {
                       className="md:size-28 size-20 rounded object-cover origin-center"
                     />
                     <div className="flex flex-col lg:gap-y-1.5">
-                      <div className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1">
-                        <div className="flex items-center gap-x-0.5">
-                          <AuthenticateIcon className="size-2.5" />
-                          <h5 className="text-[10px] text-[#00B047]">
-                            Authentication of Goods
-                          </h5>
+                      {data?.features?.map((feature, idx) => (
+                        <div key={idx} className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1">
+                          <div className="flex items-center gap-x-0.5">
+                            <AuthenticateIcon className="size-2.5" />
+                            <h5 className="text-[10px] text-[#00B047]">
+                              {feature}
+                            </h5>
+                          </div>
+                          <div className="flex items-center gap-x-0.5">
+                            <p className="text-[10px] text-[#00B047]">$15.00</p>
+                            <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
+                              <X className="size-3" />
+                            </h5>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-x-0.5">
-                          <p className="text-[10px] text-[#00B047]">$15.00</p>
-                          <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
-                            <X className="size-3" />
-                          </h5>
-                        </div>
-                      </div>
-                      <div className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1">
-                        <div className="flex items-center gap-x-0.5">
-                          <AuthenticateIcon className="size-2.5" />
-                          <h5 className="text-[10px] text-[#00B047]">
-                            Buyer Protection
-                          </h5>
-                        </div>
-                        <div className="flex items-center gap-x-0.5">
-                          <p className="text-[10px] text-[#00B047]">$15.00</p>
-                          <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
-                            <X className="size-3" />
-                          </h5>
-                        </div>
-                      </div>
+                      ))}
+
                       <p className="truncate font-medium 2xl:text-lg text-sm">
                         {data?.name}
                       </p>

@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { CartIcon, WishListIcon } from "@/icons";
+import { CartIcon } from "@/icons";
 import ProfileIcon from "./NavIconsWithDropDown/ProfileIcon";
 import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import NotificationIcon from "./NavIconsWithDropDown/NotificationIcon";
 import { Mail } from "lucide-react";
+import WishListDropDown from "./NavIconsWithDropDown/WishListDropDown";
 
 const SearchAndNavIcon = () => {
   return (
@@ -16,25 +17,25 @@ const SearchAndNavIcon = () => {
       </div> */}
       <div className="px-1.5">
         <Link href={"/professional-seller/dashboard/message"}>
-          <Mail className="size-[22px] lg:size-[26px]" color="#212121" />
+          <Mail className="size-[20px] lg:size-[24px]" color="#212121" />
         </Link>
       </div>
       <div>
-        <Link href={"/wishlist"}>
-          <WishListIcon />
-        </Link>
+        <MenubarMenu>
+          <WishListDropDown />
+        </MenubarMenu>
       </div>
 
       <MenubarMenu>
         <NotificationIcon />
       </MenubarMenu>
       <div>
-        <Link href={"/shopping-cart/shopping"}>
-          <CartIcon />
-        </Link>
+        <MenubarMenu>
+          <WishListDropDown />
+        </MenubarMenu>
       </div>
       <MenubarMenu>
-        <ProfileIcon></ProfileIcon>
+        <ProfileIcon />
       </MenubarMenu>
     </Menubar>
   );

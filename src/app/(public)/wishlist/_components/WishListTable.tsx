@@ -11,33 +11,7 @@ import {
 import { AuthenticateIcon } from "@/icons";
 import { X } from "lucide-react";
 import Image from "next/image";
-
-const productData = [
-  {
-    name: "Teens Top & Pant",
-    image: "/offer_page_product3.png",
-    price: 25,
-    date: "24 Feb, 2024",
-    color: "Red",
-    size: "XLL",
-  },
-  {
-    name: "Teens Top & Pant",
-    image: "/offer_page_product3.png",
-    price: 24,
-    date: "24 Feb, 2024",
-    color: "Green",
-    size: "XLL",
-  },
-  {
-    name: "Teens Top & Pant",
-    image: "/offer_page_product3.png",
-    price: 24,
-    date: "24 Feb, 2024",
-    color: "Blue",
-    size: "XLL",
-  },
-];
+import { productData } from "./data";
 
 export default function WishListTable() {
   return (
@@ -69,34 +43,26 @@ export default function WishListTable() {
                     className="md:size-28 size-20 rounded object-cover origin-center"
                   />
                   <div className="flex flex-col lg:gap-y-1.5">
-                    <div className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1">
-                      <div className="flex items-center gap-x-0.5">
-                        <AuthenticateIcon className="size-2.5" />
-                        <h5 className="text-[10px] text-[#00B047]">
-                          Authentication of Goods
-                        </h5>
+                    {data?.features?.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1"
+                      >
+                        <div className="flex items-center gap-x-0.5">
+                          <AuthenticateIcon className="size-2.5" />
+                          <h5 className="text-[10px] text-[#00B047]">
+                            {feature}
+                          </h5>
+                        </div>
+                        <div className="flex items-center gap-x-0.5">
+                          <p className="text-[10px] text-[#00B047]">$15.00</p>
+                          <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
+                            <X className="size-3" />
+                          </h5>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-x-0.5">
-                        <p className="text-[10px] text-[#00B047]">$15.00</p>
-                        <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
-                          <X className="size-3" />
-                        </h5>
-                      </div>
-                    </div>
-                    <div className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1">
-                      <div className="flex items-center gap-x-0.5">
-                        <AuthenticateIcon className="size-2.5" />
-                        <h5 className="text-[10px] text-[#00B047]">
-                          Buyer Protection
-                        </h5>
-                      </div>
-                      <div className="flex items-center gap-x-0.5">
-                        <p className="text-[10px] text-[#00B047]">$15.00</p>
-                        <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
-                          <X className="size-3" />
-                        </h5>
-                      </div>
-                    </div>
+                    ))}
+
                     <p className="truncate font-medium 2xl:text-lg text-sm">
                       {data?.name}
                     </p>
@@ -117,7 +83,11 @@ export default function WishListTable() {
 
             <TableCell className="text-center">${data?.price}</TableCell>
             <TableCell className="text-center">{data?.date}</TableCell>
-            <TableCell className="text-center"><Button className="group group cursor-pointer">Add to Cart <AnimatedArrow /></Button></TableCell>
+            <TableCell className="text-center">
+              <Button className="group group cursor-pointer">
+                Add to Cart <AnimatedArrow />
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
