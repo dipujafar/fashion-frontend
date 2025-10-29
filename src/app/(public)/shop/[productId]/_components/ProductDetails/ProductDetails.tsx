@@ -5,7 +5,7 @@ import ActionButtons from "../ActionButtons";
 import SellerDetails from "../SellerDetails";
 import { CheckIcon, ReportIcon, ShareIcon } from "@/icons";
 import ProductDetailsHeader from "./ProductDetailsHeader";
-import ProductDescriptionText from "./ProductDescriptionText";
+import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
 
 const handleShare = () => {
   navigator.share({
@@ -44,7 +44,7 @@ const ProductDetails = () => {
             </button>
           </div>
         </div>
-        <ProductDescriptionText />
+        <DisplayLargeDescriptionText />
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Total Amount of charity:</h2>
           <p className="text-green-600">{productDetails?.charity}%</p>

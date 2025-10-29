@@ -6,8 +6,8 @@ import {
   MenubarItem,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { WishListIcon } from "@/icons";
-import { Heart, Trash } from "lucide-react";
+import { CartIcon } from "@/icons";
+import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ export default function CartDropDown() {
   return (
     <>
       <MenubarTrigger>
-        <WishListIcon className="size-5 lg:size-6 " />
+        <CartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
       <MenubarContent className="md:min-w-sm">
         {productData.map((product, idx: number) => (
@@ -45,14 +45,14 @@ export default function CartDropDown() {
                   </div>
 
                   <div onClick={(e)=>e.preventDefault()}>
-                    <Trash fill="red"  className="size-5 text-red-600 border-red-600" />
+                    <Trash   className="size-5 text-red-500" />
                   </div>
                 </div>
               </Card>
             </MenubarItem>
           </div>
         ))}
-        <Link href={"/wishlist"}>
+        <Link href={"/shopping-cart/shopping"}>
           <Button className="w-full mt-2">View All</Button>
         </Link>
       </MenubarContent>

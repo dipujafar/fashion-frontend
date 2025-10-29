@@ -7,8 +7,8 @@ import NavbarCategories from "./NavbarCategories";
 const Navbar = () => {
   return (
     <div>
-      <NavLogoCategory></NavLogoCategory>
-      <Container className="md:hidden">
+      <NavLogoCategory/>
+      <Container className="md:hidden px-0">
         <GlobalItemAndMemberSearch/>
       </Container>
       <div className="hidden md:block">

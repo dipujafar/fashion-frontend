@@ -6,7 +6,7 @@ import {
   MenubarItem,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { CartIcon } from "@/icons";
+import {  HeartIcon } from "@/icons";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default function WishListDropDown() {
   return (
     <>
       <MenubarTrigger>
-        <Heart className="size-5 lg:size-6 " />
+        <HeartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
       <MenubarContent className="md:min-w-sm">
         {productData.map((product, idx: number) => (
@@ -44,8 +44,8 @@ export default function WishListDropDown() {
                     </div>
                   </div>
 
-                  <div onClick={(e)=>e.preventDefault()}>
-                    <Heart fill="red"  className="size-5 text-red-600 border-red-600" />
+                  <div onClick={(e) => e.preventDefault()}>
+                    <Heart fill="red" className="size-5 text-red-600 border-red-600" />
                   </div>
                 </div>
               </Card>

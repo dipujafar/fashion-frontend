@@ -43,7 +43,7 @@ const CharitySupportCards = ({
   return (
     <>
       {/* ========================================= preview images and data ==================================== */}
-      <div className={cn("grid lg:grid-cols-3 md:grid-cols-2 gap-5", className)}>
+      <div className={cn("grid lg:grid-cols-3 grid-cols-2 md:gap-5 gap-2.5", className)}>
         {data?.map((charitySupport) => (
           <div onClick={()=> router.push(`/charity/profile-preview`)} key={charitySupport?._id} className="relative group cursor-pointer">
             <Image
@@ -54,7 +54,7 @@ const CharitySupportCards = ({
               className="object-cover origin-center max-h-[350px]"
             ></Image>
             
-            <div className="absolute flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out h-[50px] group-hover:h-full group-hover:rounded-2xl md:group-hover:text-[25px] group-hover:text-xl origin-bottom overflow-hidden">
+            <div className="absolute md:text-base text-sm flex-center bottom-0 w-full bg-[rgba(217,217,217,0.09)] text-white p-4 backdrop-blur-[7px] transition-all duration-1000 ease-in-out h-[50px] group-hover:h-full group-hover:rounded-2xl md:group-hover:text-[25px] group-hover:text-xl origin-bottom overflow-hidden">
               <p>{charitySupport?.title}</p>
             </div>
           </div>

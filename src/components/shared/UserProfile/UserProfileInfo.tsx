@@ -34,11 +34,11 @@ export default function UserProfileInfo(
         </div>
 
         {/* Profile Picture */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-16 -bottom-14">
+        <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-16 -bottom-10">
           <CustomAvatar
             img={profileImage || "/seller_profile.png"}
             name="Sarah_Style"
-            className="md:size-36 size-24"
+            className="md:size-36 size-20"
           />
           <div
             className="rounded-full size-5 flex justify-center items-center absolute md:top-3 top-1 right-0 md:right-2"
@@ -50,7 +50,7 @@ export default function UserProfileInfo(
       </div>
 
       {/* Profile Info */}
-      <div className="md:mt-20 mt-16 text-center md:px-4 max-w-5xl mx-auto">
+      <div className="md:mt-20 mt-10 text-center md:px-4 max-w-5xl mx-auto hidden lg:block">
         <h2 className="md:text-xl font-bold">{name}</h2>
         <p className="md:mt-2 md:text-xl text-black/60 text-sm  ">
           {bio}
