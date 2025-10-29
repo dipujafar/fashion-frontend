@@ -23,7 +23,6 @@ export default function StatsInfo({
     useState(false);
   const [type, setType] = useState("");
 
-  console.log("User role:", userRole);
 
   const handleOpenDonationHistoryModal = (type: string) => {
     if (type === "charity") {

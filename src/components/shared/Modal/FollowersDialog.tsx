@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Search, MessageCircle, UserPlus } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import Link from "next/link"
 
 interface User {
   id: string
@@ -115,7 +117,7 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
   const UserList = ({ users, isFollowingTab = false }: { users: User[]; isFollowingTab?: boolean }) => (
     <div className="space-y-3">
       {filterUsers(users).map((user) => (
-        <div key={user.id} className="flex items-center justify-between p-2 hover:bg-muted/50 rounded-lg">
+        <div key={user.id} className="flex items-center justify-between p-2 hover:bg-muted/50 rounded-lg gap-1">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
               <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
@@ -131,7 +133,33 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
               <span className="text-xs text-muted-foreground">{user.label}</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* follow btn and message btn for mobile */}
+          <div className="flex items-center gap-x-2">
+            <Tooltip>
+              <TooltipTrigger>
+                <Link href="#">
+                  <MessageCircle />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Message</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <Link href="#">
+                  <UserPlus />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Follow</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
+          {/* follow btn and message btn for desktop */}
+          <div className="md:flex items-center gap-2 hidden">
             <Button
               variant="outline"
               size="sm"
@@ -171,7 +199,7 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
         </div>
 
         <Tabs defaultValue={type ? type : "followers"}>
-          <TabsList className="grid w-full grid-cols-2 mx-6 mb-4 max-w-md">
+          <TabsList className="grid w-full grid-cols-2 mx-6 mb-4 md:max-w-md max-w-[350px]">
             <TabsTrigger value="followers" className="text-sm data-[state=active]:bg-black data-[state=active]:text-white">
               {followers?.length} Followers
             </TabsTrigger>

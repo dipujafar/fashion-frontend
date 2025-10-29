@@ -13,8 +13,10 @@ import userImage from "@/assets/images/message/user1.png"
 
 export default function MessageDropDown() {
     return (
+        
         <>
-            <MenubarTrigger>
+        
+            <MenubarTrigger className="px-1">
                 <Mail className="size-[20px] lg:size-[24px]" color="#212121" />
             </MenubarTrigger>
             <MenubarContent className="md:min-w-sm">
