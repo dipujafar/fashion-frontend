@@ -3,7 +3,7 @@ import type React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useCallback } from "react";
-import { X, Upload, PlusCircle, ChevronDown } from "lucide-react";
+import { X, Upload, PlusCircle, ChevronDown, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -47,11 +47,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
+import { useSearchParams } from "next/navigation";
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
+  const fromEditPage = useSearchParams().get("edit");
+  console.log(fromEditPage);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -117,6 +120,7 @@ export default function AddProductForm() {
   return (
     <div className="md:space-y-6 space-y-3">
       <Card className="py-0 border-none shadow-none">
+        <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>
         <CardContent className="px-0">
           <Form {...form}>
             <form
@@ -158,7 +162,7 @@ export default function AddProductForm() {
                       className={cn(
                         "aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border",
                         images?.length === 0 &&
-                          "col-span-2 md:col-span-1 2xl:col-span-1 aspect-video md:aspect-square"
+                          "col-span-2 md:col-span-1 2xl:col-span-5 aspect-video md:aspect-auto min-h-[300px]"
                       )}
                     >
                       <input
@@ -168,8 +172,8 @@ export default function AddProductForm() {
                         onChange={(e) => handleFileUpload(e.target.files)}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       />
-                      <Button>
-                        <Upload className="h-6 w-6" /> Upload
+                      <Button className="group">
+                        <Plus className="h-6 w-6  group-hover:animate-spin" /> Upload
                       </Button>
 
                       <span className="text-xs text-gray-500 text-center px-2 hidden md:block">

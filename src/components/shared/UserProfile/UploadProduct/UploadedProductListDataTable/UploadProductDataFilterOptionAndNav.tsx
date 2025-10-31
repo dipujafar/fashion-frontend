@@ -25,7 +25,7 @@ export default function UploadProductDataFilterOptionAndNav({
   return (
     <div>
       {/* ------------------- filter and navigate section ------------------ */}
-      <div className={cn("mb-4 grid grid-cols-2 md:grid-cols-4 gap-4", user === "charity store" && "md:grid-cols-3")}>
+      <div className={cn("mb-4 grid grid-cols-2 md:grid-cols-4 md:gap-4 gap-2", user === "charity store" && "md:grid-cols-3")}>
         <div className="relative ">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input

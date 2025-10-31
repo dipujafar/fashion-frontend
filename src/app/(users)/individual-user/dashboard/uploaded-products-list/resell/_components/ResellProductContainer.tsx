@@ -5,6 +5,9 @@ import ResellProductDescription from "./ResellProductDescription";
 import { Button } from "@/components/ui/button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Link from "next/link";
+import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const product = {
   id: "1",
@@ -29,26 +32,47 @@ const product = {
 const ResellProductContainer = () => {
   return (
     <div className="space-y-4">
-      <ResellProductImages productImages={product?.images} />
-      <div className="space-y-4 grid lg:grid-cols-3 gap-x-5">
-        <ResellProductDetails productDetails={product} />
-        <div className="lg:col-span-2">
-          <ResellProductDescription />
+      {/* <ResellProductImages productImages={product?.images} /> */}
+      <div className="space-y-4 grid xl:grid-cols-3 gap-x-5">
+        <ResellProductDetails />
+
+        <div className="lg:col-span-2 space-y-2">
+          <ResellProductImages productImages={product?.images} />
+          <DisplayLargeDescriptionText length={300} />
         </div>
       </div>
-      <div className="flex gap-x-4 flex-col md:flex-row">
+      <div className="flex md:gap-x-4 gap-y-2 flex-col md:flex-row">
         <div className="flex-1 group cursor-pointer">
-          <Link href={"/individual-user/uploaded-products-list/add-product"}>
-            <Button className="w-full bg-transparent text-black hover:bg-black/10 border-b-2 border-r-2 border-black rounded-none">
+          <Link href={"/sell-products?edit=true"}>
+            <Button className="w-full cursor-pointer bg-transparent text-black hover:bg-black/10 border-b-2 border-r-2 border-black rounded-none">
               Edit <AnimatedArrow />
             </Button>
           </Link>
         </div>
 
         <div className="flex-1 group cursor-pointer">
-          <Button className="w-full rounded-none">
-            Submit <AnimatedArrow />
-          </Button>
+          <Popover>
+            <PopoverTrigger className="w-full">
+              <Button className="w-full rounded-none cursor-pointer">
+                Submit <AnimatedArrow />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="lg:w-2xl  w-xl">
+              <p>If you don’t make any changes, the data will be submitted for sale with the same details and the same charity for donation. If you want to modify anything, please click Edit.
+              </p>
+              <div className="flex gap-x-2 mt-1">
+                <Link href={"/sell-products?edit=true"} className="flex-1">
+                  <Button className="w-full cursor-pointer bg-transparent text-black hover:bg-black/10 border-b-2 border-r-2 border-black rounded-none">
+                    Edit <AnimatedArrow />
+                  </Button>
+                </Link>
+                <Button  className="w-full rounded-none cursor-pointer flex-1">
+                  Submit <AnimatedArrow />
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+
         </div>
       </div>
     </div>

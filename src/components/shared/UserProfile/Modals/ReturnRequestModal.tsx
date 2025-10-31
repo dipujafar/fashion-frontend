@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { UploadIcon } from "@/icons";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
 const returnReasons = [
   { id: "wrong-size", label: "Wrong size" },
@@ -119,14 +120,14 @@ export function ReturnRequestModal({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 ">
             {/* Return Reasons */}
             <FormField
               control={form.control}
               name="reasons"
               render={() => (
                 <FormItem>
-                  <div className="space-y-3">
+                  <div className="space-y-1.5">
                     {returnReasons.map((reason) => (
                       <FormField
                         key={reason.id}
@@ -136,7 +137,7 @@ export function ReturnRequestModal({
                           return (
                             <FormItem
                               key={reason.id}
-                              className="flex flex-row items-center space-x-3 space-y-0"
+                              className="flex flex-row items-center space-x-1.5 space-y-0"
                             >
                               <FormControl>
                                 <Checkbox
@@ -144,14 +145,14 @@ export function ReturnRequestModal({
                                   onCheckedChange={(checked) => {
                                     return checked
                                       ? field.onChange([
-                                          ...field.value,
-                                          reason.id,
-                                        ])
+                                        ...field.value,
+                                        reason.id,
+                                      ])
                                       : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== reason.id
-                                          )
-                                        );
+                                        field.value?.filter(
+                                          (value) => value !== reason.id
+                                        )
+                                      );
                                   }}
                                   className="border-gray-300"
                                 />
@@ -175,7 +176,7 @@ export function ReturnRequestModal({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  
+
                   <FormControl>
                     <Textarea
                       placeholder="Write your return reason here..."
@@ -258,6 +259,8 @@ export function ReturnRequestModal({
               )}
             />
 
+            <h4>You are making this request to <Link href={"/celebrity/profile-preview"} className="underline font-medium">Alice</Link></h4>
+
             {/* Submit Button */}
             <Button
               type="submit"
@@ -269,6 +272,7 @@ export function ReturnRequestModal({
             </Button>
           </form>
         </Form>
+
       </DialogContent>
     </Dialog>
   );

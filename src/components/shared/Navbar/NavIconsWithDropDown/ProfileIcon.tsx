@@ -24,8 +24,8 @@ import { useRouter } from "next/navigation";
 const navLinksFotProfileIcon = [
   {
     icon: <UserRound className="h-5 w-5" />,
-    name: "Profile Details",
-    link: "/professional-seller/dashboard/profile",
+    name: "View Profile",
+    link: "/professional-seller/profile-preview",
   },
   {
     icon: <UserRoundCog className="h-5 w-5" />,
