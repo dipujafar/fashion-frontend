@@ -66,7 +66,7 @@ const SellerDetails = () => {
                 href="/celebrity/profile-preview"
                 className="flex items-center gap-x-2 group cursor-pointer"
               >
-                <h5 className="font-medium">Anita_Rahman</h5>
+                <h5 className="font-medium">@Sarah_Style</h5>
               </Link>
               <div className="flex items-center gap-x-1">
                 <Rating rating={5} size={16}></Rating>
@@ -85,7 +85,7 @@ const SellerDetails = () => {
         </div>
 
         <div className="lg:mt-4 mt-3 flex gap-x-2">
-          <CommonButton className="flex-1">message seller</CommonButton>
+          <CommonButton className="flex-1">Ask a Question</CommonButton>
           <CommonButton className="flex-1 bg-primary-white text-black hover:bg-primary-black/10 border-r-2 border-b-2 border-black">
             follow seller
           </CommonButton>

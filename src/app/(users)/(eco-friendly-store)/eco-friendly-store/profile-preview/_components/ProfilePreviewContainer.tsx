@@ -2,6 +2,7 @@ import Container from '@/components/shared/Container'
 import ProfileFeatures from '@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures'
 import StatsInfo from '@/components/shared/UserProfile/StatsInfo'
 import UserInfo from '@/components/shared/UserProfile/UserInfo'
+import UserInfoForSmallScreen from '@/components/shared/UserProfile/UserInfoForSmallScreen'
 import UserProfileInfo from '@/components/shared/UserProfile/UserProfileInfo'
 import Link from 'next/link'
 import React from 'react'
@@ -14,16 +15,14 @@ export default function ProfilePreviewContainer() {
         profileImage="/dummyImages/eco-friendly-store-profile-image.jpg"
         bio="By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the fight against ocean pollution and supporting initiatives."
         coverImage="/dummyImages/eco-friendly-store-cover-image.jpg"
-        user='eco-friendly store'
+        user='eco-friendly-store'
       />
 
       <Container className="lg:space-y-8 space-y-4 mt-8">
-        <Link href="/#" className="flex justify-center ">
-          {/* <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
-            Register as a Charity
-          </CommonButton> */}
-        </Link>
-        <div className="flex lg:flex-row flex-col gap-5">
+        <div className="lg:hidden" >
+          <UserInfoForSmallScreen userRole="eco-friendly-store" />
+        </div>
+        <div className="lg:flex lg:flex-row flex-col gap-5 hidden">
           <UserInfo
             link="/eco-friendly-store/dashboard/profile"
             userRole="eco-friendly-store"

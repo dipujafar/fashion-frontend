@@ -2,14 +2,12 @@ import Container from "@/components/shared/Container";
 import React from "react";
 import ProductDetails from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
-import ProductDescription from "./ProductDescription";
 import ReviewContainer from "./review/ReviewContainer";
 import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
 import CharityInfo from "./dialog/CharityInfo";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
-import ProductDetailsHeader from "./ProductDetails/ProductDetailsHeader";
 import { CharityDonationFormDialog } from "@/components/shared/Modal/Charity/CharityDonationFormDialog";
 
 const SingleProductDetails = () => {
@@ -18,7 +16,7 @@ const SingleProductDetails = () => {
       <div className="flex flex-col lg:flex-row xl:gap-x-8 gap-x-5 gap-y-5">
         <div className="flex-1">
           <div className="md:mb-0 mb-3 md:hidden">
-            <ProductDetailsHeader />
+            {/* <ProductDetailsHeader /> */}
           </div>
           <ProductImages></ProductImages>
         </div>

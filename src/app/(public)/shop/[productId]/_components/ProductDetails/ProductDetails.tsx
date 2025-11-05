@@ -18,7 +18,7 @@ const ProductDetails = () => {
   return (
     <div className=" md:space-y-5 space-y-3">
       {/* --------- product header ---------- */}
-      <div className="hidden md:block">
+      <div >
         <ProductDetailsHeader />
       </div>
 
@@ -60,8 +60,8 @@ const ProductDetails = () => {
         <div className="flex md:gap-x-8 gap-x-4 lg:items-center">
           <h2 className="w-[120px]  flex-shrink-0">Tags:</h2>
           <p className="flex flex-wrap gap-1 items-center ">
-            {productDetails?.tags?.map((tag) => (
-              <span className="bg-black text-white px-1.5 rounded text-[15px]">
+            {productDetails?.tags?.map((tag,index) => (
+              <span key={index} className="bg-black text-white px-1.5 rounded text-[15px]">
                 {tag}{" "}
               </span>
             ))}

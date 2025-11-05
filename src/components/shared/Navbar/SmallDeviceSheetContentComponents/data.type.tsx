@@ -22,6 +22,7 @@ import {
   TrainFrontTunnel,
   UsersRound,
   BrickWall,
+  Tags,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { CartIcon } from "@/icons";
@@ -155,6 +156,11 @@ export const navItems: NavItem[] = [
     icon: <Settings className="h-5 w-5" />,
     label: "Settings",
     link: "/professional-seller/dashboard/settings",
+  },
+   {
+    icon: <Tags  className="h-5 w-5" />,
+    label: "Badges",
+    link: "/badges",
   },
   {
     icon: <Users className="h-5 w-5" />,

@@ -23,14 +23,16 @@ const ShopPageContainer = () => {
 
         {/* ----------------------------------------- show filter option ------------------------------------- */}
         <div className="mt-5 space-x-2 text-black/70 mb-5">
-          {filterOptions &&<span>{formatLabel(filterOptions as string)}</span>}{" "}
+          {filterOptions && <span>{formatLabel(filterOptions as string)}</span>}{" "}
           {subCategory && <span>/</span>}{" "}
-         { subCategory && <span>{formatLabel(subCategory as string)}</span>}{" "}
+          {subCategory && <span>{formatLabel(subCategory as string)}</span>}{" "}
           {finalCategory && <span>/</span>}{" "}
-          { finalCategory && <span>{formatLabel(finalCategory as string)}</span>}
+          {finalCategory && <span>{formatLabel(finalCategory as string)}</span>}
         </div>
         {/* ------------------------------------------------------------------------------------------------ */}
-        <ProductFilterContainer />
+        <div className="hidden lg:block">
+          <ProductFilterContainer />
+        </div>
 
         <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
           {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
@@ -57,7 +59,7 @@ const ShopPageContainer = () => {
                 {/* ===================================search for item ================================= */}
                 <div />
 
-                <div className="lg:hidden block">
+                <div className="lg:hidden ">
                   <SmallDeviceFilter></SmallDeviceFilter>
                 </div>
               </div>
@@ -72,7 +74,7 @@ const ShopPageContainer = () => {
       </div>
       <div className="xl:mt-8 mt-5 space-y-10">
         <DisplayProductSection
-        title="Recently Viewed"
+          title="Recently Viewed"
           data={recentlyViewedData}
         ></DisplayProductSection>
 

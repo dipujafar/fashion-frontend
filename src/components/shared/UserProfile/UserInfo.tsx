@@ -50,7 +50,7 @@ export const findUserRole = (type: string) => {
 
 export default function UserInfo({
   preview = "",
-  name = "Sarah Rahman",
+  name = "Sarah",
   location = "Los Angeles, CA",
   email = "example@gmail.com",
   phone = "+123456789",
@@ -72,13 +72,13 @@ export default function UserInfo({
 
         {preview && (
           <div className="flex gap-x-2">
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <Button className=" w-full bg-transparent hover:text-white text-black border-b-2 border-r-2 border-black rounded-none duration-500 cursor-pointer group">
                 Message <AnimatedArrow />
               </Button>
-            </div>
+            </div> */}
             <div className="flex-1 group">
-              <Button className="rounded-none w-full">
+              <Button className="rounded-none w-full cursor-pointer">
                 Follow <AnimatedArrow />
               </Button>
             </div>
@@ -90,7 +90,7 @@ export default function UserInfo({
           <div className="grid grid-cols-2 sm:grid-cols-2 md:gap-4 gap-2">
             <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Name</p>
-              <p className="font-medium md:text-xl ">{name}</p>
+              <p className="font-medium md:text-xl">{name}</p>
             </div>
             <div className="md:space-y-1">
               <p className="md:text-lg text-muted-foreground">Location</p>

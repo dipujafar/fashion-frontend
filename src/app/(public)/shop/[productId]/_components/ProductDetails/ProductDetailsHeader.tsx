@@ -19,9 +19,9 @@ export default function ProductDetailsHeader() {
         <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
           <OfferIcon2 className="size-4"></OfferIcon2> 12 Offer sent
         </h6>
-        <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
+        {/* <h6 className="bg-[#C4C4C4] w-fit px-3 rounded-xs text-primary-white italic flex items-center gap-x-1">
           <HeartIcon2 className="size-4"></HeartIcon2> 24
-        </h6>
+        </h6> */}
       </div>
 
       <div className="flex  flex-row-reverse justify-between md:flex-col md:justify-start ">

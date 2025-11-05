@@ -14,6 +14,7 @@ import {
   Moon,
   Settings,
   Tag,
+  Tags,
   UserRound,
   UserRoundCog,
   Wallet,
@@ -46,6 +47,11 @@ const navLinksFotProfileIcon = [
     icon: <Settings className="h-5 w-5" />,
     name: "Settings",
     link: "/professional-seller/dashboard/settings",
+  },
+  {
+    icon: <Tags  className="h-5 w-5" />,
+    name: "Badges",
+    link: "/badges",
   },
 
   {

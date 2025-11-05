@@ -855,18 +855,18 @@ export function MessageIcon({ className }: { className?: string }) {
       <path
         d="M16.9014 7.35156L12.4581 10.9646C11.6186 11.6306 10.4375 11.6306 9.59797 10.9646L5.11719 7.35156"
         stroke="black"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M15.9089 19.5C18.9502 19.5084 21 17.0095 21 13.9384V7.07001C21 3.99883 18.9502 1.5 15.9089 1.5H6.09114C3.04979 1.5 1 3.99883 1 7.07001V13.9384C1 17.0095 3.04979 19.5084 6.09114 19.5H15.9089Z"
         stroke="black"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

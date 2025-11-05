@@ -23,20 +23,41 @@ export const userTag = (type: string) => {
                 label: "Celebrity",
                 color: "#123CA6"
             };
-        case "eco-friendly store":
-            return "#00B047";
+        case "eco-friendly-store":
+            return {
+                label: "Eco-Friendly Store",
+                color: "#00B047"
+            };
         case "charity":
-            return "#4B105F";
+            return {
+                label: "Charity",
+                color: "#4B105F"
+            };
         case "charity store":
-            return "#B59900";
-        case "professional seller":
-            return "#b91a4f";
+            return {
+                label: "Charity Store",
+                color: "#B59900"
+            };
+        case "professional-seller":
+            return {
+                label: "Professional Seller",
+                color: "#b91a4f"
+            };
         case "ambassador":
-            return "#81b91a";
+            return {
+                label: "Ambassador",
+                color: "#81b91a"
+            };
         case "individual seller":
-            return "#b96f1a";
+            return {
+                label: "Individual Seller",
+                color: "#b96f1a"
+            };
         default:
-            return "#000";
+            return {
+                label: "",
+                color: ""
+            };
     }
 };
 
@@ -121,7 +142,7 @@ export default function UserInfoForSmallScreen({ userRole }: { userRole: string 
                 {/* Message and follow option and Social Media */}
                 <div className="my-2 flex justify-between gap-x-1.5">
                     <div className="flex items-center gap-x-2">
-                        <Tooltip>
+                        {/* <Tooltip>
                             <TooltipTrigger>
                                 <Link href="#">
                                     <MessageCircle />
@@ -130,7 +151,7 @@ export default function UserInfoForSmallScreen({ userRole }: { userRole: string 
                             <TooltipContent>
                                 <p>Message</p>
                             </TooltipContent>
-                        </Tooltip>
+                        </Tooltip> */}
                         <Tooltip>
                             <TooltipTrigger>
                                 <Link href="#">

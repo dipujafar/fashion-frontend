@@ -46,7 +46,7 @@ const UserCard = ({ data }: { data: TUser }) => {
     case "ambassador":
       return "/ambassador/profile-preview";
     case "individual seller":
-      return "/individual-seller/profile-preview";
+      return "/individual-user/profile-preview";
     default:
       return "/";
   }
@@ -80,9 +80,9 @@ const UserCard = ({ data }: { data: TUser }) => {
         <div className="xl:space-y-4 space-y-3 flex flex-col items-center justify-center w-full -translate-y-5 italic">
           <div className="space-y-[2px]">
             <h5 className="font-medium text-center text-lg">{data?.name}</h5>
-            <div className="flex items-center gap-x-1">
+            <div className="flex flex-wrap justify-center items-center gap-x-1">
               <div
-                className={`  text-primary-white rounded text-xs w-fit mx-auto h-fit truncate px-2`}
+                className={`text-primary-white rounded text-xs w-fit mx-auto h-fit truncate px-2`}
                 style={{ backgroundColor: userTagColor(data?.type) }}
               >
                 <span className="uppercase text-center">{data?.type}</span>

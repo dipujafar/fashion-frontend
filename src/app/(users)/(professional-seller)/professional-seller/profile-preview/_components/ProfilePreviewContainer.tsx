@@ -4,6 +4,7 @@ import ChoiceBundleModal from "@/components/shared/UserProfile/Modals/ChoiceBund
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
+import UserInfoForSmallScreen from "@/components/shared/UserProfile/UserInfoForSmallScreen";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 import Link from "next/link";
 import React from "react";
@@ -20,12 +21,10 @@ export default function ProfilePreviewContainer() {
       />
 
       <Container className="lg:space-y-8 space-y-4">
-        <Link href="/#" className="flex justify-center mt-5 ">
-          {/* <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
-            Register to Another User
-          </CommonButton> */}
-        </Link>
-        <div className="flex lg:flex-row flex-col gap-5">
+        <div className="lg:hidden" >
+          <UserInfoForSmallScreen  userRole="professional-seller" />
+        </div>
+        <div className="lg:flex lg:flex-row flex-col gap-5 hidden">
           <UserInfo
             link="/professional-seller/dashboard/profile"
             userRole="professional-seller"

@@ -37,7 +37,7 @@ const replyFormSchema = z.object({
 const commentData = [
   {
     id: 1,
-    name: "John Doe",
+    name: "@Sarah",
     date: "2023-07-01",
     comment: "There is any more color available?",
     profileImage: "/userProfile1.png",
