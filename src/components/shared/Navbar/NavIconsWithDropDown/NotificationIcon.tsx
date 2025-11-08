@@ -48,7 +48,7 @@ export default function NotificationIcon() {
       <MenubarTrigger>
         <NotificationBellIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
-      <MenubarContent>
+      <MenubarContent className="overflow-y-auto max-h-[calc(100vh-100px)]">
         {dummyNotifications.map((notification) => (
           <div key={notification.id}>
             <MenubarItem className="cursor-pointer">

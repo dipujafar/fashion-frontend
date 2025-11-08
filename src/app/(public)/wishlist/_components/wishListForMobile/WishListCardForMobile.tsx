@@ -31,7 +31,7 @@ export function WishListCardForMobile({
     <div className="border border-border rounded-lg p-2 bg-card space-y-1">
       {/* Features badges */}
       <div className="flex flex-col gap-y-0.5 max-w-[250px]">
-        {features?.map((feature, idx) => (
+        {/* {features?.map((feature, idx) => (
           <div
             key={idx}
             className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1"
@@ -47,7 +47,7 @@ export function WishListCardForMobile({
               </h5>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
 
       {/* Main content */}

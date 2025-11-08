@@ -39,11 +39,11 @@ export function GotCharityDonationHistoryDialog({
                 <span className="font-semibold">{stats.totalRaised}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Direct Donations:</span>
+                <span>Direct Donations <span className="text-muted-foreground"> (22) </span>:</span>
                 <span className="font-medium">{stats.directDonations}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Item Sales Proceeds:</span>
+                <span>Item Sales Proceeds <span className="text-muted-foreground"> (12) </span>: </span>
                 <span className="font-medium">{stats.itemSalesProceeds}</span>
               </div>
             </div>

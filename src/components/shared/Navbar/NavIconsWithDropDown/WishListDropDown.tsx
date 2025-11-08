@@ -6,7 +6,7 @@ import {
   MenubarItem,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import {  HeartIcon } from "@/icons";
+import { HeartIcon } from "@/icons";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export default function WishListDropDown() {
       <MenubarTrigger>
         <HeartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm">
+      <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
         {productData.map((product, idx: number) => (
           <div key={idx}>
             <MenubarItem className="cursor-pointer">

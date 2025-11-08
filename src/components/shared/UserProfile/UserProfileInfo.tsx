@@ -20,7 +20,7 @@ export default function UserProfileInfo(
   }
 ) {
   return (
-    <div className="w-full ">
+    <div className="w-full  hidden md:block">
       <div className="relative">
         {/* Cover Photo */}
         <div className="w-full h-[80px] md:h-[200px] lg:h-[250px] relative overflow-hidden ">

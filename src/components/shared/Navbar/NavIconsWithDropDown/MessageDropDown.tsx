@@ -13,13 +13,11 @@ import userImage from "@/assets/images/message/user1.png"
 
 export default function MessageDropDown() {
     return (
-        
         <>
-        
             <MenubarTrigger className="px-1">
                 <Mail className="size-[20px] lg:size-[24px]" color="#212121" />
             </MenubarTrigger>
-            <MenubarContent className="md:min-w-sm">
+            <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
                 {Array.from({ length: 5 }).map((_, index) => (
                     <div key={index}>
                         <MenubarItem className="cursor-pointer">

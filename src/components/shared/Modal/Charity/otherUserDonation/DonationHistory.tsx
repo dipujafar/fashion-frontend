@@ -166,6 +166,10 @@ export function DonationHistory({
                 {/* Financial Summary */}
                 <div className="space-y-3 border-b pb-4">
                   <div className="flex items-center justify-between">
+                    <span className="font-medium">Total Raised</span>
+                    <span className="text-muted-foreground">£1,450</span>
+                  </div>
+                  <div className="flex items-center justify-between">
                     <span className="font-medium">Direct Donation</span>
                     <span className="text-muted-foreground">£1,450</span>
                   </div>

@@ -1,4 +1,3 @@
-
 import Container from "@/components/shared/Container";
 import ChoiceBundleModal from "@/components/shared/UserProfile/Modals/ChoiceBundleModal";
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
@@ -6,12 +5,11 @@ import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserInfoForSmallScreen from "@/components/shared/UserProfile/UserInfoForSmallScreen";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
-import Link from "next/link";
 import React from "react";
 
 export default function ProfilePreviewContainer() {
   return (
-    <div>
+    <div className="space-y-5">
       <UserProfileInfo
         name="@Sarah_Style"
         profileImage="/dummyImages/professional-seller-profile-image.png"

@@ -17,7 +17,7 @@ export default function CartDropDown() {
       <MenubarTrigger>
         <CartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm">
+      <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
         {productData.map((product, idx: number) => (
           <div key={idx}>
             <MenubarItem className="cursor-pointer">

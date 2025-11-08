@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -49,11 +47,11 @@ export function GotCharityStoreDonation({
                     <span className="text-muted-foreground">£1,450</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="font-medium">Direct Donation</span>
+                    <span className="font-medium">Direct Donation <span className="text-muted-foreground"> (12) </span></span>
                     <span className="text-muted-foreground">£1,450</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="font-medium">Item Sales Proceeds</span>
+                    <span className="font-medium">Item Sales Proceeds <span className="text-muted-foreground"> (20) </span></span>
                     <span className="text-muted-foreground">£450</span>
                   </div>
                 </div>

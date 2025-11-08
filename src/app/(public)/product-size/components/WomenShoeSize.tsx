@@ -58,11 +58,10 @@ const WomenShoeSize = () => {
                     <td
                       key={index}
                       onClick={() => handleSizeClick(header.id, value)}
-                      className={`border-r px-2 py-3 text-center cursor-pointer transition-colors text-primary-gray/90 ${
-                        isSelected(header.id, value)
+                      className={`border-r px-2 py-3 text-center cursor-pointer transition-colors text-primary-gray/90 ${isSelected(header.id, value)
                           ? "bg-[#efebeb]"
                           : "bg-white hover:bg-gray-50"
-                      } `}
+                        } `}
                     >
                       {value}
                     </td>

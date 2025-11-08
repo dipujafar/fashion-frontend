@@ -43,7 +43,7 @@ export default function WishListTable() {
                     className="md:size-28 size-20 rounded object-cover origin-center"
                   />
                   <div className="flex flex-col lg:gap-y-1.5">
-                    {data?.features?.map((feature, idx) => (
+                    {/* {data?.features?.map((feature, idx) => (
                       <div
                         key={idx}
                         className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1"
@@ -61,7 +61,7 @@ export default function WishListTable() {
                           </h5>
                         </div>
                       </div>
-                    ))}
+                    ))} */}
 
                     <p className="truncate font-medium 2xl:text-lg text-sm">
                       {data?.name}

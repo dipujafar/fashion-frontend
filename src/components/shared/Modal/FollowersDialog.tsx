@@ -135,7 +135,7 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
           </div>
 
           {/* follow btn and message btn for mobile */}
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2 md:hidden">
             <Tooltip>
               <TooltipTrigger>
                 <Link href="#">

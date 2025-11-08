@@ -9,10 +9,14 @@ import { Switch } from "@/components/ui/switch";
 import { ProfileNavIcon } from "@/icons";
 import {
   ChevronRight,
+  LifeBuoy,
   List,
   LogOut,
   Moon,
+  NotebookText,
+  Package,
   Settings,
+  SquareChartGantt,
   Tag,
   Tags,
   UserRound,
@@ -21,6 +25,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFormDialog";
 
 const navLinksFotProfileIcon = [
   {
@@ -30,13 +35,23 @@ const navLinksFotProfileIcon = [
   },
   {
     icon: <UserRoundCog className="h-5 w-5" />,
-    name: "Profile Details",
+    name: "Edit Profile ",
     link: "/professional-seller/dashboard/profile",
   },
   {
+    icon: <SquareChartGantt className="h-5 w-5" />,
+    name: "List an item",
+    link: "/sell-products",
+  },
+  {
     icon: <List className="h-5 w-5" />,
-    name: "Products-list",
+    name: "Products-Listing",
     link: "/professional-seller/dashboard/products-list",
+  },
+  {
+    icon: <Package className="h-5 w-5" />,
+    name: "My Orders",
+    link: "/professional-seller/dashboard/products-list/purchase-product",
   },
   {
     icon: <Tag className="h-5 w-5" />,
@@ -49,7 +64,7 @@ const navLinksFotProfileIcon = [
     link: "/professional-seller/dashboard/settings",
   },
   {
-    icon: <Tags  className="h-5 w-5" />,
+    icon: <Tags className="h-5 w-5" />,
     name: "Badges",
     link: "/badges",
   },
@@ -92,6 +107,18 @@ const navLinksFotProfileIcon = [
       </div>
     ),
   },
+  {
+    name: "Donate now",
+    label: (
+      <div className="px-1.5">
+        <div className="flex items-center gap-x-2 pl-1 cursor-pointer">
+          <LifeBuoy className="flex h-5 w-5 items-center justify-center text-muted-foreground" />
+          <CharityDonationFormDialog>Donate Now</CharityDonationFormDialog>
+        </div>
+        <MenubarSeparator />
+      </div>
+    ),
+  },
 ];
 
 export default function ProfileIcon() {
@@ -105,7 +132,7 @@ export default function ProfileIcon() {
       <MenubarTrigger className="md:flex hidden">
         <ProfileNavIcon />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm">
+      <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
         {navLinksFotProfileIcon.map((item, index) =>
           item?.link ? (
             <Link href={item?.link} key={item.name}>

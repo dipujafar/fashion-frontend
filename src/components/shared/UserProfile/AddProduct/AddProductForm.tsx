@@ -1,9 +1,9 @@
-"use client";
+"use client";;
 import type React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useCallback } from "react";
-import { X, Upload, PlusCircle, ChevronDown, Plus } from "lucide-react";
+import { X, PlusCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,7 +28,6 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import {
-  careInstructionsOptions,
   colors,
   productFormDefaultValues,
   productFormSchema,
@@ -40,12 +39,6 @@ import SelectDonationOption from "./SelectDonationOption";
 import { ImageUploadGuide } from "./ImageUploadGuide";
 import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
-import { Badge } from "@/components/ui/badge";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
 import { useSearchParams } from "next/navigation";
 
@@ -54,7 +47,7 @@ export default function AddProductForm() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
   const fromEditPage = useSearchParams().get("edit");
-  console.log(fromEditPage);
+  
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -120,7 +113,7 @@ export default function AddProductForm() {
   return (
     <div className="md:space-y-6 space-y-3">
       <Card className="py-0 border-none shadow-none">
-        <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>
+       { fromEditPage && <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>}
         <CardContent className="px-0">
           <Form {...form}>
             <form

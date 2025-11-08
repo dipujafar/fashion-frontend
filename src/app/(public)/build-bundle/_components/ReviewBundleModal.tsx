@@ -52,8 +52,9 @@ export default function ReviewBundleModal({
                 {selectedProducts?.length} Items
               </h3>
               <div className="flex flex-wrap gap-2">
-                {selectedProducts?.map((user) => (
+                {selectedProducts?.map((user, index) => (
                   <Image
+                    key={index}
                     src={user?.image}
                     alt="user_image"
                     width={1200}

@@ -71,11 +71,11 @@ export const stats: Stats = {
 export const navItems: NavItem[] = [
   {
     icon: <User className="h-5 w-5" />,
-    label: "Edit your profile",
+    label: "Edit Your profile",
     link: "/professional-seller/dashboard/profile",
   },
   {
-    icon: <CartIcon className="h-5 w-5" />,
+    icon: <CartIcon className="h-5 w-5 text-muted-foreground" />,
     label: "Shop",
     link: "/shop",
   },
@@ -96,7 +96,7 @@ export const navItems: NavItem[] = [
   },
   {
     icon: <Package className="h-5 w-5" />,
-    label: "Orders",
+    label: "My Orders",
     link: "/professional-seller/dashboard/products-list/purchase-product",
   },
   {
@@ -105,7 +105,7 @@ export const navItems: NavItem[] = [
     link: "/wishlist",
   },
   {
-    icon: <CartIcon className="h-5 w-5" />,
+    icon: <CartIcon className="h-5 w-5 text-muted-foreground" />,
     label: "Shopping Cart",
     link: "/shopping-cart/shopping",
   },

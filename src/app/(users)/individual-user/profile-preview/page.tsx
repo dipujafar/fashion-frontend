@@ -16,7 +16,6 @@ export default function page() {
     <div className="lg:space-y-8 space-y-4">
       <UserProfileInfo user="individual seller" />
       <Container className="lg:space-y-8 space-y-4">
-        
         <div className="flex lg:flex-row flex-col gap-5">
           <UserInfo userRole="user" preview="preview" />
           <StatsInfo userRole="user" />

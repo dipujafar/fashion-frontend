@@ -8,7 +8,7 @@ import React from "react";
 
 export default function ProfileContainer() {
   return (
-    <div>
+    <div className="space-y-5">
       <UserProfileInfo
         name="@Sarah_Style"
         profileImage="/dummyImages/professional-seller-profile-image.png"
@@ -17,11 +17,6 @@ export default function ProfileContainer() {
       />
 
       <Container className="lg:space-y-8 md:space-y-4 space-y-2">
-        {/* <Link href="/#" className="flex justify-center md:mt-5 ">
-          <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
-            Register to Another User
-          </CommonButton>
-        </Link> */}
         <div className="flex lg:flex-row flex-col md:gap-5 gap-2">
           <UserInfo
             link="/professional-seller/dashboard/profile"
