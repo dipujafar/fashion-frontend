@@ -1,5 +1,5 @@
 "use client";
-import { Star, MapPin, MessageCircle, UserPlus, Check, Dot } from "lucide-react"
+import { Star, MapPin, Check, Dot } from "lucide-react"
 import DisplayLargeDescriptionText from "../DisplayLargeDescriptionText";
 import {
     AwardIcon,
@@ -10,7 +10,6 @@ import {
     VerifiedIcon,
 } from "@/icons";
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
 import { GotCharityStoreDonation } from "../Modal/Charity/CharityStoreDonation/GotCharityStoreDonation";
@@ -19,6 +18,8 @@ import { FollowersDialog } from "../Modal/FollowersDialog";
 import Image from "next/image";
 import CustomAvatar from "../CustomAvatar";
 import { Button } from "@/components/ui/button";
+import CommonButton from "@/components/ui/common-button";
+import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
 
 export const userTag = (type: string) => {
     switch (type.toLowerCase()) {
@@ -65,7 +66,7 @@ export const userTag = (type: string) => {
     }
 };
 
-export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
+export default function UserInfoForSmallScreenForCharityStore({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
 
     const [openCharityHistory, setOpenCharityHistory] = useState(false);
     const [openFollowers, setOpenFollowers] = useState(false);
@@ -108,7 +109,7 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                     />
                     <div
                         className="rounded-full size-4 flex justify-center items-center absolute md:top-3 top-2 right-0 md:right-2"
-                        style={{ backgroundColor: userTag(userRole)?.color }}
+                        style={{ backgroundColor: "#B59900" }}
                     >
                         <Check size={14} color="#fff"></Check>
                     </div>
@@ -118,7 +119,7 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
             {/* ============= follow btn and user tag ================== */}
             <div className="flex justify-between item-center mt-2 px-2">
                 <Button size={"sm"} variant={"outline"}>Follow</Button>
-                <div style={{ background: userTag(userRole)?.color }} className="px-3 py-1  rounded text-white text-xs font-medium h-fit">{userTag(userRole)?.label}</div>
+                <div style={{ background: "#B59900" }} className="px-3 py-1  rounded text-white text-xs font-medium h-fit">Charity Store</div>
             </div>
 
 
@@ -127,9 +128,18 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
             <div className="w-full  border-gray-300 rounded-lg bg-white md:mt-20 mt-2">
                 {/* Header Section */}
                 <div>
-                    <h2 className="text-xl font-semibold text-gray-900 text-center">Sarah Style</h2>
-                    <h2 className="text-sm text-gray-900 text-center">@Sarah_Style</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 text-center">Save Ocean</h2>
+                    {/* <h2 className="text-sm text-gray-900 text-center">@Sarah_Style</h2> */}
                 </div>
+
+                {/* =============================== donate button ==================== */}
+                <div className="flex justify-center my-2 gap-x-5 items-center">
+                    <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
+                        Donate Clothes
+                    </CommonButton>
+                    <IndividualCharityDonationFormDialog />
+                </div>
+
                 {/* ============== rating and sold item and  location ============= */}
                 <div className="flex  justify-center gap-x-2">
                     <div className="flex items-center gap-1 line-clamp-1">
@@ -156,39 +166,9 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
 
                 {/*======================= Charity Section ========================== */}
                 <div className="flex items-center justify-between  mb-2 text-green-800  ">
-                    <p onClick={() => handleOpenDonationHistoryModal(userRole)} className="text-xl  underline cursor-pointer">Total charity donations</p>
+                    <p onClick={() => handleOpenDonationHistoryModal("charity store")} className="text-xl  underline cursor-pointer">Total charity donations</p>
                     <p className="text-xl">$5,000</p>
                 </div>
-
-                {/* ========================= badges ============================= */}
-                {userRole !== "eco-friendly-store" && <div className="flex justify-center items-center gap-x-2">
-                    <div className="size-8 bg-black/20 rounded-full flex justify-center items-center">
-                        🌱
-                    </div>
-                    <div className="size-8 bg-black/20 rounded-full flex justify-center items-center">
-                        💚
-                    </div>
-                    <div className="size-8 bg-black/20 rounded-full flex justify-center items-center">
-                        👕
-                    </div>
-
-
-                    <div className="bg-[#FFFBE6] md:mt-5 mt-2 md:p-2 p-1 rounded-lg flex justify-center items-center mb-2 px-4">
-                        <AwardIcon />
-                        <p className="text-[#8C7600]">Fashion Activist</p>
-                    </div>
-
-                </div>
-                }
-
-
-
-
-
-
-
-
-
 
 
                 {/* Message and follow option and Social Media */}

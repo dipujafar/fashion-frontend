@@ -27,7 +27,7 @@ export default function SendOfferModal({
   const [selectedOffer, setSelectedOffer] = useState<number>(0);
 
   const handleSendOffer = () => {
-    router.push("/individual-user/message");
+    router.push("/individual-user/dashboard/message");
   };
 
   const offerData = [

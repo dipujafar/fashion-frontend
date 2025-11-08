@@ -4,9 +4,9 @@ import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/E
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
+import UserInfoForSmallScreenForCharityStore from "@/components/shared/UserProfile/UserInfoForSmallScreenForCharityStore";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 import CommonButton from "@/components/ui/common-button";
-import Link from "next/link";
 
 export const metadata = {
   title: "Charity Shop Profile",
@@ -24,14 +24,18 @@ export default function ProfilePreviewPage() {
       />
 
       <Container className="lg:space-y-8 space-y-4">
-        <div className="flex justify-center my-5 gap-x-5 items-center">
+        <div className="lg:flex justify-center my-5 gap-x-5 items-center hidden">
           <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
             Donate Clothes
           </CommonButton>
           <IndividualCharityDonationFormDialog />
         </div>
 
-        <div className="flex lg:flex-row flex-col gap-5">
+         <div className="lg:hidden" >
+          <UserInfoForSmallScreenForCharityStore  userRole="charity-store" />
+        </div>
+
+        <div className="lg:flex lg:flex-row flex-col gap-5 hidden">
           <UserInfo
             link="/charity-shop/dashboard/profile"
             userRole="charity store"

@@ -27,7 +27,7 @@ export default function CelebrityProfilePreviewPage() {
           <UserInfo userRole="celebrity" link="/celebrity/dashboard/profile" preview="preview" />
           <StatsInfo userRole="celebrity" />
         </div>
-        <div className="flex justify-between items-center bg-[#ecfef4] md:py-4 md:px-5 py-2 px-2">
+        <div className="flex justify-between items-center bg-[#ecfef4] md:py-4  md:px-5 py-2 px-2">
           <span className="text-lg">Shop Bundle</span>
           <ChoiceBundleModal />
         </div>

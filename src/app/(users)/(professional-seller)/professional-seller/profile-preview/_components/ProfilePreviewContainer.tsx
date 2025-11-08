@@ -30,7 +30,7 @@ export default function ProfilePreviewContainer() {
           />
           <StatsInfo userRole="professional-seller" />
         </div>
-        <div className="flex justify-between items-center bg-[#ecfef4] py-4 px-5">
+        <div className="flex justify-between items-center bg-[#ecfef4] lg:py-4 py-2 px-5">
           <span className="text-lg">Shop Bundle</span>
           <ChoiceBundleModal />
         </div>

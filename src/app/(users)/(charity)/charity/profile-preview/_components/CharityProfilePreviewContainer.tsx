@@ -3,6 +3,7 @@ import { IndividualCharityDonationFormDialog } from "@/components/shared/Modal/I
 import AboutCharity from "@/components/shared/Profile/AboutCharity";
 import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
+import UserInfoForSmallScreenForCharity from "@/components/shared/UserProfile/UserInfoForSmallScreenForCharity";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 export default function CharityProfilePreviewContainer() {
   return (
@@ -19,7 +20,12 @@ export default function CharityProfilePreviewContainer() {
       </Container>
 
       <Container className="lg:space-y-8 space-y-4 ">
-        <div className="flex lg:flex-row flex-col gap-5">
+
+        <div className="lg:hidden" >
+          <UserInfoForSmallScreenForCharity userRole="professional-seller" />
+        </div>
+
+        <div className="lg:flex lg:flex-row flex-col gap-5 hidden">
           <UserInfo userRole="charity" preview="preview" />
           <StatsInfo userRole="charity" preview="preview" />
         </div>
