@@ -54,6 +54,7 @@ export function BadgeCard({ badge }: BadgeCardProps) {
       <p className="text-center text-muted-foreground text-sm leading-relaxed mb-2 md:mb-4">{badge.description}</p>
 
       {!isEarned && (
+        
         <div className="text-center text-xs text-muted-foreground bg-muted px-3 py-2 rounded-lg">
           <p className="font-medium">Unlock by:</p>
           <p className="mt-1">{badge.trigger}</p>

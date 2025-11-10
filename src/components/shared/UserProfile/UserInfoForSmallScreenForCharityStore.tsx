@@ -2,7 +2,6 @@
 import { Star, MapPin, Check, Dot } from "lucide-react"
 import DisplayLargeDescriptionText from "../DisplayLargeDescriptionText";
 import {
-    AwardIcon,
     FacebookIcon,
     InstagramIcon,
     TikTokIcon,
@@ -20,51 +19,8 @@ import CustomAvatar from "../CustomAvatar";
 import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-export const userTag = (type: string) => {
-    switch (type.toLowerCase()) {
-        case "celebrity":
-            return {
-                label: "Celebrity",
-                color: "#123CA6"
-            };
-        case "eco-friendly-store":
-            return {
-                label: "Eco-Friendly Store",
-                color: "#00B047"
-            };
-        case "charity":
-            return {
-                label: "Charity",
-                color: "#4B105F"
-            };
-        case "charity store":
-            return {
-                label: "Charity Store",
-                color: "#B59900"
-            };
-        case "professional-seller":
-            return {
-                label: "Professional Seller",
-                color: "#b91a4f"
-            };
-        case "ambassador":
-            return {
-                label: "Ambassador",
-                color: "#81b91a"
-            };
-        case "individual-seller":
-            return {
-                label: "Individual Seller",
-                color: "#b96f1a"
-            };
-        default:
-            return {
-                label: "",
-                color: ""
-            };
-    }
-};
 
 export default function UserInfoForSmallScreenForCharityStore({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
 
@@ -107,12 +63,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                         name="Sarah_Style"
                         className="md:size-36 size-20"
                     />
-                    <div
-                        className="rounded-full size-4 flex justify-center items-center absolute md:top-3 top-2 right-0 md:right-2"
-                        style={{ backgroundColor: "#B59900" }}
-                    >
-                        <Check size={14} color="#fff"></Check>
-                    </div>
+
                 </div>
             </div>
 
@@ -127,9 +78,27 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
             {/* ============================= profile other information =================== */}
             <div className="w-full  border-gray-300 rounded-lg bg-white md:mt-20 mt-2">
                 {/* Header Section */}
-                <div>
+
+
+                <div className="flex justify-center items-center  gap-x-1">
                     <h2 className="text-xl font-semibold text-gray-900 text-center">Save Ocean</h2>
-                    {/* <h2 className="text-sm text-gray-900 text-center">@Sarah_Style</h2> */}
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <div
+                                className="rounded-full size-4 flex justify-center items-center "
+                                style={{ backgroundColor: "#B59900" }}
+                            >
+                                <Check size={14} color="#fff"></Check>
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <div className="flex  flex-wrap items-center text-green-500 ">
+                                <VerifiedIcon />
+                                <span className="text-green-500 font-medium">Verified User</span>
+                            </div>
+
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
 
                 {/* =============================== donate button ==================== */}
@@ -137,7 +106,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                     <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
                         Donate Clothes
                     </CommonButton>
-                    <IndividualCharityDonationFormDialog />
+                    <IndividualCharityDonationFormDialog/>
                 </div>
 
                 {/* ============== rating and sold item and  location ============= */}
@@ -172,37 +141,23 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
 
 
                 {/* Message and follow option and Social Media */}
-                <div className="my-1 flex justify-between gap-x-1.5">
 
-                    <div>
-                        <div className="flex gap-x-1">
-                            <span>  Phone: </span> <div className="flex  flex-wrap items-center text-green-500 ">
-                                (<VerifiedIcon />
-                                <span className="text-green-500 font-medium">Verified</span>)
-                            </div>
-                        </div>
-                        <div className="flex gap-x-1">
-                            <span>Official Email: </span> <div className="flex  flex-wrap items-center text-green-500 ">
-                                (<VerifiedIcon />
-                                <span className="text-green-500 font-medium">Verified</span>)
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-x-2">
-                        <Link href="#">
-                            <FacebookIcon />
-                        </Link>
-                        <Link href="#">
-                            <InstagramIcon />
-                        </Link>
-                        <Link href="#">
-                            <TwitterIcon />
-                        </Link>
-                        <Link href="#">
-                            <TikTokIcon />
-                        </Link>
-                    </div>
+
+                <div className="flex justify-center items-center gap-x-2 mb-1">
+                    <Link href="#">
+                        <FacebookIcon />
+                    </Link>
+                    <Link href="#">
+                        <InstagramIcon />
+                    </Link>
+                    <Link href="#">
+                        <TwitterIcon />
+                    </Link>
+                    <Link href="#">
+                        <TikTokIcon />
+                    </Link>
                 </div>
+
 
                 {/* Stats Section */}
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">

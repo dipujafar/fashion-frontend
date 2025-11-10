@@ -3,7 +3,9 @@ export interface Badge {
   name: string
   description: string
   trigger: string
-  icon: string
+  icon: string,
+  remaining?: number,
+  total?: number
 }
 
 export const BADGES: Badge[] = [
@@ -13,6 +15,8 @@ export const BADGES: Badge[] = [
     description: "Encourages users to begin selling and join the circular fashion movement.",
     trigger: "List your first two items for sale",
     icon: "👕",
+    remaining: 0,
+    total: 10
   },
   {
     id: "first-purchase",

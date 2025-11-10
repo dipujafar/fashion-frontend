@@ -1,5 +1,5 @@
 "use client";
-import { Star, MapPin, MessageCircle, UserPlus, Check, Dot } from "lucide-react"
+import { Star, MapPin, Check, Dot } from "lucide-react"
 import DisplayLargeDescriptionText from "../DisplayLargeDescriptionText";
 import {
     AwardIcon,
@@ -10,7 +10,6 @@ import {
     VerifiedIcon,
 } from "@/icons";
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
 import { GotCharityStoreDonation } from "../Modal/Charity/CharityStoreDonation/GotCharityStoreDonation";
@@ -19,6 +18,7 @@ import { FollowersDialog } from "../Modal/FollowersDialog";
 import Image from "next/image";
 import CustomAvatar from "../CustomAvatar";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const userTag = (type: string) => {
     switch (type.toLowerCase()) {
@@ -106,12 +106,12 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                         name="Sarah_Style"
                         className="md:size-36 size-20"
                     />
-                    <div
+                    {/* <div
                         className="rounded-full size-4 flex justify-center items-center absolute md:top-3 top-2 right-0 md:right-2"
                         style={{ backgroundColor: userTag(userRole)?.color }}
                     >
                         <Check size={14} color="#fff"></Check>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
@@ -127,7 +127,26 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
             <div className="w-full  border-gray-300 rounded-lg bg-white md:mt-20 mt-2">
                 {/* Header Section */}
                 <div>
-                    <h2 className="text-xl font-semibold text-gray-900 text-center">Sarah Style</h2>
+                    <div className="flex justify-center items-center  gap-x-1">
+                        <h2 className="text-xl font-semibold text-gray-900 text-center">Sarah</h2>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <div
+                                    className="rounded-full size-4 flex justify-center items-center "
+                                    style={{ backgroundColor: userTag(userRole)?.color }}
+                                >
+                                    <Check size={14} color="#fff"></Check>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <div className="flex  flex-wrap items-center text-green-500 ">
+                                    <VerifiedIcon />
+                                    <span className="text-green-500 font-medium">Verified User</span>
+                                </div>
+
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
                     <h2 className="text-sm text-gray-900 text-center">@Sarah_Style</h2>
                 </div>
                 {/* ============== rating and sold item and  location ============= */}
@@ -181,20 +200,7 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                 </div>
                 }
 
-
-
-
-
-
-
-
-
-
-
-                {/* Message and follow option and Social Media */}
-                <div className="my-1 flex justify-between gap-x-1.5">
-
-                    <div>
+                {/* <div>
                         <div className="flex gap-x-1">
                             <span>  Phone: </span> <div className="flex  flex-wrap items-center text-green-500 ">
                                 (<VerifiedIcon />
@@ -207,22 +213,22 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                                 <span className="text-green-500 font-medium">Verified</span>)
                             </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-x-2">
-                        <Link href="#">
-                            <FacebookIcon />
-                        </Link>
-                        <Link href="#">
-                            <InstagramIcon />
-                        </Link>
-                        <Link href="#">
-                            <TwitterIcon />
-                        </Link>
-                        <Link href="#">
-                            <TikTokIcon />
-                        </Link>
-                    </div>
+                    </div> */}
+                <div className="flex items-center justify-center gap-x-2 mb-1">
+                    <Link href="#">
+                        <FacebookIcon />
+                    </Link>
+                    <Link href="#">
+                        <InstagramIcon />
+                    </Link>
+                    <Link href="#">
+                        <TwitterIcon />
+                    </Link>
+                    <Link href="#">
+                        <TikTokIcon />
+                    </Link>
                 </div>
+
 
                 {/* Stats Section */}
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
