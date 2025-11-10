@@ -361,7 +361,7 @@ const ProfessionalSellerProfileForm = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Business Email Address</FormLabel>
+                          <FormLabel>Official Email</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Enter Your Email"

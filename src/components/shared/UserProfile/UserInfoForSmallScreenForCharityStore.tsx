@@ -182,7 +182,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                             </div>
                         </div>
                         <div className="flex gap-x-1">
-                            <span>  Email: </span> <div className="flex  flex-wrap items-center text-green-500 ">
+                            <span>Official Email: </span> <div className="flex  flex-wrap items-center text-green-500 ">
                                 (<VerifiedIcon />
                                 <span className="text-green-500 font-medium">Verified</span>)
                             </div>

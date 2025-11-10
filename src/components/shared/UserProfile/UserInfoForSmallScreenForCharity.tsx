@@ -2,7 +2,6 @@
 import { Star, MapPin, Check, Dot } from "lucide-react"
 import DisplayLargeDescriptionText from "../DisplayLargeDescriptionText";
 import {
-    AwardIcon,
     FacebookIcon,
     InstagramIcon,
     TikTokIcon,
@@ -18,8 +17,8 @@ import { FollowersDialog } from "../Modal/FollowersDialog";
 import Image from "next/image";
 import CustomAvatar from "../CustomAvatar";
 import { Button } from "@/components/ui/button";
-import CommonButton from "@/components/ui/common-button";
 import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
+import webLogo from "@/assets/icons/web-logo.png";
 
 export const userTag = (type: string) => {
     switch (type.toLowerCase()) {
@@ -180,7 +179,7 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
                             </div>
                         </div>
                         <div className="flex gap-x-1">
-                            <span>  Email: </span> <div className="flex  flex-wrap items-center text-green-500 ">
+                            <span>Official Email: </span> <div className="flex  flex-wrap items-center text-green-500 ">
                                 (<VerifiedIcon />
                                 <span className="text-green-500 font-medium">Verified</span>)
                             </div>
@@ -203,7 +202,7 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
                 </div>
 
                 {/* Stats Section */}
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
                     <div className="text-center">
                         <p className="text-xl font-bold text-gray-900">2434</p>
                         <p onClick={() => setOpenFollowers(true)} className="text-sm text-gray-600  underline cursor-pointer">Followers</p>
@@ -214,6 +213,10 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
                             setOpenFollowers(true);
                             setType("following");
                         }} className="text-sm text-gray-600 underline cursor-pointer">Following</p>
+                    </div>
+                    <div className="text-center flex flex-col justify-center items-center gap-y-0.5">
+                        <Image src={webLogo} alt="web-logo" width={30} height={30} />
+                        <p className="text-sm ">Website</p>
                     </div>
 
                 </div>

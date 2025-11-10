@@ -361,7 +361,7 @@ const ProfileContainerForm = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Business Email Address</FormLabel>
+                          <FormLabel>Official Email Address</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Enter Your Email"

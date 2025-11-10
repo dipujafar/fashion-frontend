@@ -128,7 +128,7 @@ export default function UserInfo({
                   userRole === "charity" ||
                   userRole === "eco-friendly-store" ||
                   userRole === "professional-seller") &&
-                  "Business Email"}
+                  "Official Email"}
               </p>
               <div className="flex flex-wrap gap-x-2">
                 {preview !== "preview" && (

@@ -41,8 +41,8 @@ const formSchema = z
       .string({ required_error: "Name is required" })
       .min(1, { message: "Name is required" }),
     businessEmail: z
-      .string({ required_error: "Business Email is required" })
-      .min(1, { message: "Business Email is required" })
+      .string({ required_error: "Official Email is required" })
+      .min(1, { message: "Official Email is required" })
       .email({ message: "Please enter a valid email address" }),
     phoneNumber: z
       .string({ required_error: "Phone Number is required" })
@@ -250,10 +250,10 @@ const CharitySignForm = () => {
                     name="businessEmail"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Business Email Address</FormLabel>
+                        <FormLabel>Official Email</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Enter Your Business Email"
+                            placeholder="Enter Your Official Email"
                             {...field}
                             className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] md:py-5"
                           />
