@@ -39,7 +39,7 @@ export default function PhilanthropistBox({
           </h2> */}
 
           <TextAnimation
-            text="Become a fashion philanthropist!"
+            text="Join the Fashion Philanthropist Community!"
             className=" lg:text-2xl text-xl  font-medium "
             initialDelay={0.5}
           />

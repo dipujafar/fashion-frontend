@@ -39,7 +39,7 @@ const UserAvatar = () => {
           viewport={{ once: true }}
           className="uppercase md:text-base text-sm text-center text-primary-gray"
         >
-          Become a Fashion philanthropist today!
+          Join the Fashion Philanthropist Community!
         </motion.h6>
         <div className="flex justify-center flex-shrink-0 -space-x-1.5 md:-space-x-2">
           {UserData.map((data) => (

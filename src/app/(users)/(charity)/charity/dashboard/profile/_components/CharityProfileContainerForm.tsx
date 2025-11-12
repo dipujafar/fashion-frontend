@@ -629,7 +629,7 @@ const CharityProfileContainerForm = () => {
                       <FormLabel>Mission</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Tell us about your business mission"
+                          placeholder="Tell us about your mission"
                           {...field}
                           className="focus-visible:ring-0 focus-visible:ring-offset-0 rounded bg-[#F5F5F5] min-h-[100px]"
                         />

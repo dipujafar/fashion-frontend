@@ -6,7 +6,7 @@ import BadgesContainer from './_components/BadgesContainer'
 export default function BadgesPage() {
   return (
     <Container>
-        <BadgesHeader />
+        {/* <BadgesHeader /> */}
         <BadgesContainer />
     </Container>
   )

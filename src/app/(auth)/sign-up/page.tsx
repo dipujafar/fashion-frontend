@@ -9,7 +9,7 @@ const SignUpPage = () => {
       <PageTopSection title="Choose Your  Role"></PageTopSection>
       <Container className="lg:space-y-8 space-y-5">
         <h1 className="text-center text-lg md:text-3xl">
-          Become a Fashion Philanthropist today!
+          Join the Fashion Philanthropist Community! 
         </h1>
         <UserRoleContainer></UserRoleContainer>
       </Container>

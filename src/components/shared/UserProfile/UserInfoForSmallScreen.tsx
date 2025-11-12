@@ -1,8 +1,7 @@
 "use client";
-import { Star, MapPin, Check, Dot } from "lucide-react"
+import { Star, MapPin, Check, Dot, AlertCircle } from "lucide-react"
 import DisplayLargeDescriptionText from "../DisplayLargeDescriptionText";
 import {
-    AwardIcon,
     FacebookIcon,
     InstagramIcon,
     TikTokIcon,
@@ -19,6 +18,7 @@ import Image from "next/image";
 import CustomAvatar from "../CustomAvatar";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import XIcon from "@/assets/icons/x-icon.png";
 
 export const userTag = (type: string) => {
     switch (type.toLowerCase()) {
@@ -173,48 +173,7 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                 fight against ocean pollution and supporting initiatives." />
                 </div>
 
-                {/*======================= Charity Section ========================== */}
-                <div className="flex items-center justify-between  mb-2 text-green-800  ">
-                    <p onClick={() => handleOpenDonationHistoryModal(userRole)} className="text-xl  underline cursor-pointer">Total charity donations</p>
-                    <p className="text-xl">$5,000</p>
-                </div>
-
-                {/* ========================= badges ============================= */}
-                {userRole !== "eco-friendly-store" && <div className="flex justify-center items-center gap-x-2">
-                    <div className="size-8 bg-black/20 rounded-full flex justify-center items-center">
-                        🌱
-                    </div>
-                    <div className="size-8 bg-black/20 rounded-full flex justify-center items-center">
-                        💚
-                    </div>
-                    <div className="size-8 bg-black/20 rounded-full flex justify-center items-center">
-                        👕
-                    </div>
-
-
-                    <div className="bg-[#FFFBE6] md:mt-5 mt-2 md:p-2 p-1 rounded-lg flex justify-center items-center mb-2 px-4">
-                        <AwardIcon />
-                        <p className="text-[#8C7600]">Fashion Activist</p>
-                    </div>
-
-                </div>
-                }
-
-                {/* <div>
-                        <div className="flex gap-x-1">
-                            <span>  Phone: </span> <div className="flex  flex-wrap items-center text-green-500 ">
-                                (<VerifiedIcon />
-                                <span className="text-green-500 font-medium">Verified</span>)
-                            </div>
-                        </div>
-                        <div className="flex gap-x-1">
-                            <span>  Email: </span> <div className="flex  flex-wrap items-center text-green-500 ">
-                                (<VerifiedIcon />
-                                <span className="text-green-500 font-medium">Verified</span>)
-                            </div>
-                        </div>
-                    </div> */}
-                <div className="flex items-center justify-center gap-x-2 mb-1">
+                <div className="flex items-center justify-end  gap-x-2 mb-1">
                     <Link href="#">
                         <FacebookIcon />
                     </Link>
@@ -222,7 +181,11 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                         <InstagramIcon />
                     </Link>
                     <Link href="#">
-                        <TwitterIcon />
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            className="size-8"
+                        ></Image>
                     </Link>
                     <Link href="#">
                         <TikTokIcon />
@@ -230,22 +193,54 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                 </div>
 
 
+
+                {/* ========================= badges ============================= */}
+                <div className="flex justify-center items-center gap-x-2">
+                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                        🌱
+                    </div>
+                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                        💚
+                    </div>
+                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                        👕
+                    </div>
+                </div>
+
+
+
+
+
                 {/* Stats Section */}
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+                <div className="grid grid-cols-2 gap-4 pt-2 mb-2 ">
                     <div className="text-center">
-                        <p className="text-xl font-bold text-gray-900">2434</p>
                         <p onClick={() => setOpenFollowers(true)} className="text-sm text-gray-600  underline cursor-pointer">Followers</p>
+                        <p className="text-xl font-bold text-gray-900">2434</p>
+
                     </div>
                     <div className="text-center">
-                        <p className="text-xl font-bold text-gray-900">812</p>
                         <p onClick={() => {
                             setOpenFollowers(true);
                             setType("following");
                         }} className="text-sm text-gray-600 underline cursor-pointer">Following</p>
+                        <p className="text-xl font-bold text-gray-900">812</p>
+
                     </div>
+
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-200">
                     <div className="text-center">
-                        <p className="text-xl font-bold text-gray-900">600</p>
+                        <div onClick={() => handleOpenDonationHistoryModal(userRole)} className="flex items-center justify-center gap-1 mb-1">
+                            <AlertCircle size={14} className="text-green-700" />
+                            <p className="text-xs text-gray-600 font-medium">Total Donations</p>
+                        </div>
+                        <p className="text-2xl font-bold text-gray-900">$5,000</p>
+                    </div>
+
+                    <div className="text-center">
                         <p className="text-sm text-gray-600">Total Products</p>
+                        <p className="text-xl font-bold text-gray-900">600</p>
+
                     </div>
                 </div>
             </div>

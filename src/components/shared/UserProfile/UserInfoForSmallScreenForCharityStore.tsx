@@ -1,13 +1,7 @@
-"use client";
-import { Star, MapPin, Check, Dot } from "lucide-react"
+"use client";;
+import { Star, MapPin, Check, Dot, AlertCircle } from "lucide-react"
 import DisplayLargeDescriptionText from "../DisplayLargeDescriptionText";
-import {
-    FacebookIcon,
-    InstagramIcon,
-    TikTokIcon,
-    TwitterIcon,
-    VerifiedIcon,
-} from "@/icons";
+import { FacebookIcon, InstagramIcon, TikTokIcon, TwitterIcon, VerifiedIcon } from "@/icons";
 import Link from "next/link";
 import { useState } from "react";
 import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
@@ -17,9 +11,9 @@ import { FollowersDialog } from "../Modal/FollowersDialog";
 import Image from "next/image";
 import CustomAvatar from "../CustomAvatar";
 import { Button } from "@/components/ui/button";
-import CommonButton from "@/components/ui/common-button";
 import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import XIcon from "@/assets/icons/x-icon.png";
 
 
 export default function UserInfoForSmallScreenForCharityStore({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
@@ -27,6 +21,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
     const [openCharityHistory, setOpenCharityHistory] = useState(false);
     const [openFollowers, setOpenFollowers] = useState(false);
     const [openDonationHistory, setOpenDonationHistory] = useState(false);
+    const [openDonationModal, setOpenDonationModal] = useState(false);
     const [openCharityStoreDonationHistory, setOpenCharityStoreDonationHistory] =
         useState(false);
     const [type, setType] = useState("");
@@ -73,13 +68,8 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                 <div style={{ background: "#B59900" }} className="px-3 py-1  rounded text-white text-xs font-medium h-fit">Charity Store</div>
             </div>
 
-
-
-            {/* ============================= profile other information =================== */}
-            <div className="w-full  border-gray-300 rounded-lg bg-white md:mt-20 mt-2">
-                {/* Header Section */}
-
-
+            {/* charity store name and  user name */}
+            <div>
                 <div className="flex justify-center items-center  gap-x-1">
                     <h2 className="text-xl font-semibold text-gray-900 text-center">Save Ocean</h2>
                     <Tooltip>
@@ -100,14 +90,28 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                         </TooltipContent>
                     </Tooltip>
                 </div>
+                <h6 className="text-center te">@save Ocean</h6>
+            </div>
 
-                {/* =============================== donate button ==================== */}
-                <div className="flex justify-center my-2 gap-x-5 items-center">
-                    <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
+
+
+            {/* ============================= profile other information =================== */}
+            <div className="w-full  border-gray-300 rounded-lg bg-white md:mt-20 shadow-md overflow-hidden border-t-4 border-t-green-700 mt-2 px-4 pb-2">
+
+                <div className="px-4 pt-4 pb-2 flex gap-2 bg-white">
+                    <button className="flex-1 px-4 py-2 bg-white border border-green-700 text-green-700 rounded font-semibold text-sm hover:bg-gray-50">
                         Donate Clothes
-                    </CommonButton>
-                    <IndividualCharityDonationFormDialog/>
+                    </button>
+
+                    <button onClick={() => setOpenDonationModal(true)} className="flex-1 px-4 py-2 bg-green-700 text-white rounded font-semibold text-sm hover:bg-green-800">
+                        Donate Now
+                    </button>
                 </div>
+
+
+
+
+
 
                 {/* ============== rating and sold item and  location ============= */}
                 <div className="flex  justify-center gap-x-2">
@@ -132,18 +136,8 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                 <div className="flex justify-center mt-2 text-center"> <DisplayLargeDescriptionText length={90} data=" By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the
                 fight against ocean pollution and supporting initiatives." />
                 </div>
-
-                {/*======================= Charity Section ========================== */}
-                <div className="flex items-center justify-between  mb-2 text-green-800  ">
-                    <p onClick={() => handleOpenDonationHistoryModal("charity store")} className="text-xl  underline cursor-pointer">Total charity donations</p>
-                    <p className="text-xl">$5,000</p>
-                </div>
-
-
                 {/* Message and follow option and Social Media */}
-
-
-                <div className="flex justify-center items-center gap-x-2 mb-1">
+                <div className="flex justify-end items-center gap-x-2 mb-2">
                     <Link href="#">
                         <FacebookIcon />
                     </Link>
@@ -151,7 +145,11 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                         <InstagramIcon />
                     </Link>
                     <Link href="#">
-                        <TwitterIcon />
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            className="size-8"
+                        ></Image>
                     </Link>
                     <Link href="#">
                         <TikTokIcon />
@@ -159,22 +157,54 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                 </div>
 
 
+
+                {/* ========================= badges ============================= */}
+                <div className="flex justify-center items-center gap-x-2">
+                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                        🌱
+                    </div>
+                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                        💚
+                    </div>
+                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                        👕
+                    </div>
+                </div>
+
+
+
+
+
                 {/* Stats Section */}
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+                <div className="grid grid-cols-2 gap-4 pt-4 mb-2 ">
                     <div className="text-center">
-                        <p className="text-xl font-bold text-gray-900">2434</p>
                         <p onClick={() => setOpenFollowers(true)} className="text-sm text-gray-600  underline cursor-pointer">Followers</p>
+                        <p className="text-xl font-bold text-gray-900">2434</p>
+
                     </div>
                     <div className="text-center">
-                        <p className="text-xl font-bold text-gray-900">812</p>
                         <p onClick={() => {
                             setOpenFollowers(true);
                             setType("following");
                         }} className="text-sm text-gray-600 underline cursor-pointer">Following</p>
+                        <p className="text-xl font-bold text-gray-900">812</p>
+
                     </div>
+
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-200">
                     <div className="text-center">
-                        <p className="text-xl font-bold text-gray-900">600</p>
+                        <div onClick={() => handleOpenDonationHistoryModal("charity store")} className="flex items-center justify-center gap-1 mb-1">
+                            <AlertCircle size={14} className="text-green-700" />
+                            <p className="text-xs text-gray-600 font-medium">Total Donations</p>
+                        </div>
+                        <p className="text-2xl font-bold text-gray-900">$5,000</p>
+                    </div>
+
+                    <div className="text-center">
                         <p className="text-sm text-gray-600">Total Products</p>
+                        <p className="text-xl font-bold text-gray-900">600</p>
+
                     </div>
                 </div>
             </div>
@@ -190,6 +220,11 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
             <DonationHistory
                 open={openCharityHistory}
                 setOpen={setOpenCharityHistory}
+            />
+            <IndividualCharityDonationFormDialog
+                showTrigger={false}
+                open={openDonationModal}
+                setOpen={setOpenDonationModal}
             />
 
             <FollowersDialog

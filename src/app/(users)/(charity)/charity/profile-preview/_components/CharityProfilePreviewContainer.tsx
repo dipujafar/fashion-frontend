@@ -15,7 +15,7 @@ export default function CharityProfilePreviewContainer() {
         coverImage="/dummyImages/charity-cover-images.jpg"
         user="charity"
       />
-      <Container className="w-fit mx-auto my-5">
+      <Container className="w-fit mx-auto my-5 hidden lg:block">
         <IndividualCharityDonationFormDialog />
       </Container>
 
