@@ -1,5 +1,14 @@
 export const GENERAL_BADGES = [
   {
+    id: "fashion-philanthropist",
+    title: "Fashion Philanthropist",
+    description:
+      "Recognizes users who have raised or donated over £1,000 through sales or charity contributions — true icons of giving back through fashion.",
+    icon: "💷",
+    category: "general" as const,
+    subtitle: "£0 - £1,000",
+  },
+  {
     id: "style-starter",
     title: "Style Starter",
     description: "List first 2 items",
@@ -7,6 +16,7 @@ export const GENERAL_BADGES = [
     category: "general" as const,
     progress: { current: 0, total: 2 },
   },
+
   {
     id: "first-purchase",
     title: "First Purchase",
@@ -87,7 +97,7 @@ export const GENERAL_BADGES = [
     category: "general" as const,
     progress: { current: 3, total: 10 },
   },
-]
+];
 
 export const ECO_BADGES = [
   {
@@ -130,7 +140,7 @@ export const ECO_BADGES = [
     category: "eco" as const,
     progress: { current: 8, total: 10 },
   },
-]
+];
 
 export const CHARITY_BADGES = [
   {
@@ -173,4 +183,4 @@ export const CHARITY_BADGES = [
     category: "charity" as const,
     progress: { current: 7, total: 10 },
   },
-]
+];
