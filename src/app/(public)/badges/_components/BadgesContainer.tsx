@@ -1,5 +1,4 @@
 import React from 'react'
-import { FeaturedBadge } from './FeaturedBadge'
 import { BadgeGrid } from './BadgeCard'
 import { CHARITY_BADGES, ECO_BADGES, GENERAL_BADGES } from './data'
 

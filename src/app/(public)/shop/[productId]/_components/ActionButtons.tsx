@@ -45,18 +45,18 @@ const ActionButtons = () => {
           {/* =============== buy now  button ================ */}
           <CommonButton
             handlerFunction={handleCharitySelect}
-            className="w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 border-b-4 border-r-4 border-black"
+            className="w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 "
           >
             Buy It Now
           </CommonButton>
 
-          <Button className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 border-b-4 border-r-4 border-black group">
+          <Button className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20  group">
             add to favourite <HeartIcon className="ml-2 size-5"></HeartIcon>
           </Button>
 
           <Button
             onClick={() => setShowOpenOfferModal(true)}
-            className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 border-b-4 border-r-4 border-black group"
+            className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20  group"
           >
             make an offer <OfferIcon className="ml-2 size-5"></OfferIcon>
           </Button>
