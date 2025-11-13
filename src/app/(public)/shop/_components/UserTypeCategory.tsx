@@ -33,8 +33,8 @@ const userTypes = [
     label: "Eco-Friendly Stores",
   },
   {
-    value: "influencer",
-    label: "Influencer",
+    value: "celebrity",
+    label: "Celebrity",
   },
   {
     value: "ambassadors",

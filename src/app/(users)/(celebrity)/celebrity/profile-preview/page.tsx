@@ -5,7 +5,6 @@ import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserInfoForSmallScreen from "@/components/shared/UserProfile/UserInfoForSmallScreen";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
-import Link from "next/link";
 
 export const metadata = {
   title: "Celebrity Profile",
@@ -15,7 +14,7 @@ export const metadata = {
 export default function CelebrityProfilePreviewPage() {
   return (
     <div className="lg:space-y-8 space-y-4">
-      <UserProfileInfo user="Influencer" />
+      <UserProfileInfo user="Celebrity" />
       <Container className="lg:space-y-8 md:space-y-4 space-y-2">
 
         {/* profile information  for small screen */}

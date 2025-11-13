@@ -55,7 +55,7 @@ const ProductDetails = () => {
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] ">Category :</h2>
-          <p>{productDetails?.category}</p>
+          <p>{productDetails?.category} / T-shirt</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 lg:items-center">
           <h2 className="w-[120px]  flex-shrink-0">Tags:</h2>

@@ -1,11 +1,11 @@
 export const userTagColor = (type: string) => {
   switch (type.toLowerCase()) {
-    case "influencer":
+    case "celebrity":
       return "#123CA6";
     case "eco-friendly store":
       return "#00B047";
     case "charity":
-      return "#4B105F";
+      return "#008236";
     case "charity store":
       return "#B59900";
     case "professional seller":

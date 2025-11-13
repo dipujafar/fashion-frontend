@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import Image from "next/image"
-import { Eye, ChevronDown } from "lucide-react"
+import { Eye, ChevronDown, Trash2, SquarePen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -14,6 +14,7 @@ import {
 
 import Link from "next/link"
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
+import { QuestionIcon } from "@/icons"
 
 interface Product {
   id: string
@@ -21,7 +22,7 @@ interface Product {
   title: string
   itemNumber: string
   date: string
-  status: "Pending" | "Approved" | "Reject"
+  status: "Pending" | "Approved" | "Declined"
   price: number;
   returnRequest?: string;
 }
@@ -52,7 +53,7 @@ const products: Product[] = [
     title: "Teen Tops Shirt & Pant...",
     itemNumber: "#A001",
     date: "Feb 10, 2025",
-    status: "Reject",
+    status: "Declined",
     price: 20
   },
   {
@@ -70,7 +71,7 @@ const products: Product[] = [
     title: "Teen Tops Shirt & Pant...",
     itemNumber: "#A001",
     date: "Feb 10, 2025",
-    status: "Reject",
+    status: "Declined",
     price: 20
   },
   {
@@ -88,7 +89,7 @@ const products: Product[] = [
     title: "Teen Tops Shirt & Pant...",
     itemNumber: "#A001",
     date: "Feb 10, 2025",
-    status: "Reject",
+    status: "Declined",
     price: 20
   },
   {
@@ -103,24 +104,7 @@ const products: Product[] = [
 ]
 
 export default function UploadedProductListTable() {
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
-  const [statusFilters, setStatusFilters] = useState<string[]>(["Pending", "Approved", "Reject"])
-
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedItems(filteredProducts.map((product) => product.id))
-    } else {
-      setSelectedItems([])
-    }
-  }
-
-  const handleSelectItem = (productId: string, checked: boolean) => {
-    if (checked) {
-      setSelectedItems([...selectedItems, productId])
-    } else {
-      setSelectedItems(selectedItems.filter((id) => id !== productId))
-    }
-  }
+  const [statusFilters, setStatusFilters] = useState<string[]>(["Pending", "Approved", "Declined"])
 
   const handleStatusFilterChange = (status: string, checked: boolean) => {
     if (checked) {
@@ -138,7 +122,7 @@ export default function UploadedProductListTable() {
         return "text-green-600"
       case "Approved":
         return "text-blue-600"
-      case "Reject":
+      case "Declined":
         return "text-red-600"
       default:
         return "text-gray-600"
@@ -147,23 +131,11 @@ export default function UploadedProductListTable() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end mb-4">
-        <Button variant="outline" disabled={selectedItems.length === 0} className="text-sm bg-transparent">
-          Mark as Delete
-        </Button>
-      </div>
-
       <div className="hidden md:block border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="bg-black hover:bg-black">
-              <TableHead className="w-12 text-white">
-                <Checkbox
-                  checked={filteredProducts.length > 0 && selectedItems.length === filteredProducts.length}
-                  onCheckedChange={handleSelectAll}
-                  className="border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
-                />
-              </TableHead>
+
               <TableHead className="text-white font-medium">Image</TableHead>
               <TableHead className="text-white font-medium">Product Title</TableHead>
               <TableHead className="text-white font-medium">Item Number</TableHead>
@@ -186,19 +158,19 @@ export default function UploadedProductListTable() {
                       checked={statusFilters.includes("Pending")}
                       onCheckedChange={(checked) => handleStatusFilterChange("Pending", checked)}
                     >
-                      <span className="text-green-600">Pending</span>
+                      <span className="text-blue-600">Pending</span>
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
                       checked={statusFilters.includes("Approved")}
                       onCheckedChange={(checked) => handleStatusFilterChange("Approved", checked)}
                     >
-                      <span className="text-blue-600">Approved</span>
+                      <span className="text-green-600">Approved</span>
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
-                      checked={statusFilters.includes("Reject")}
-                      onCheckedChange={(checked) => handleStatusFilterChange("Reject", checked)}
+                      checked={statusFilters.includes("Declined")}
+                      onCheckedChange={(checked) => handleStatusFilterChange("Declined", checked)}
                     >
-                      <span className="text-red-600">Reject</span>
+                      <span className="text-red-600">Declined</span>
                     </DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -209,12 +181,6 @@ export default function UploadedProductListTable() {
           <TableBody>
             {filteredProducts.map((product) => (
               <TableRow key={product.id} className="hover:bg-gray-50">
-                <TableCell>
-                  <Checkbox
-                    checked={selectedItems.includes(product.id)}
-                    onCheckedChange={(checked) => handleSelectItem(product.id, checked as boolean)}
-                  />
-                </TableCell>
                 <TableCell>
                   <div className="w-12 h-12 relative rounded overflow-hidden">
                     <Image
@@ -234,12 +200,19 @@ export default function UploadedProductListTable() {
                 <TableCell>
                   <span className={`text-sm font-medium ${getStatusColor(product.status)}`}>{product.status}</span>
                 </TableCell>
-                <TableCell>
+                <TableCell className="flex items-center gap-x-1">
                   <Link href={`/shop/${product.id}`}>
                     <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Eye className="h-4 w-4 text-gray-600" />
+                      <Eye className="size-5 text-gray-600" />
                     </Button>
                   </Link>
+                  <Trash2 color="red" className="size-5 cursor-pointer" />
+                  {
+                    product.status === "Pending" && <Link href={"/sell-products"}> <SquarePen className="size-5 cursor-pointer" /></Link>
+                  }
+                  {
+                    product.status === "Declined" && <QuestionIcon className="cursor-pointer" />
+                  }
                 </TableCell>
               </TableRow>
             ))}
@@ -249,7 +222,7 @@ export default function UploadedProductListTable() {
 
       <div className="md:hidden space-y-3">
         <div className="flex items-center justify-between mb-4 md:hidden">
-          <span className="text-sm font-medium text-gray-600">{filteredProducts.length} items</span>
+          <span className="text-sm font-medium text-gray-600">{filteredProducts.length} Items</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="flex items-center gap-1 bg-transparent">
@@ -271,10 +244,10 @@ export default function UploadedProductListTable() {
                 <span className="text-blue-600">Approved</span>
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
-                checked={statusFilters.includes("Reject")}
-                onCheckedChange={(checked) => handleStatusFilterChange("Reject", checked)}
+                checked={statusFilters.includes("Declined")}
+                onCheckedChange={(checked) => handleStatusFilterChange("Declined", checked)}
               >
-                <span className="text-red-600">Reject</span>
+                <span className="text-red-600">Declined</span>
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -283,11 +256,6 @@ export default function UploadedProductListTable() {
         {filteredProducts.map((product) => (
           <div key={product.id} className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
             <div className="flex gap-3 mb-3">
-              <Checkbox
-                checked={selectedItems.includes(product.id)}
-                onCheckedChange={(checked) => handleSelectItem(product.id, checked as boolean)}
-                className="mt-1"
-              />
               <div className="w-16 h-16 relative rounded overflow-hidden flex-shrink-0">
                 <Image src={product.image || "/placeholder.svg"} alt={product.title} fill className="object-cover" />
               </div>
@@ -313,6 +281,7 @@ export default function UploadedProductListTable() {
                 <span className="text-gray-600">Condition: </span>
                 <span className="font-medium">2 months used</span>
               </div>
+
               <div>
                 <span className="text-gray-600">Price: </span>
                 <span className="font-medium">${product.price}</span>
@@ -326,8 +295,8 @@ export default function UploadedProductListTable() {
         ))}
       </div>
 
-      <div className="mt-6">
-        <PaginationSection />
+      <div>
+        <PaginationSection className="mt-3" />
       </div>
     </div>
   )

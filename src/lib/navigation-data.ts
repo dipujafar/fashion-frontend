@@ -428,7 +428,7 @@ export const navigationData = {
             items: [
               "As Seen on Social",
               "Celebrity Picks",
-              "Style Influencers",
+              "Style Celebrities",
               "Seasonal Trends",
               "Buzzworthy Finds",
             ],

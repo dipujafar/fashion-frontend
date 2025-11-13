@@ -100,7 +100,7 @@ export default function StatsInfo({
         )}
         {/* --------------------------- display tag for charity role ---------------------------   */}
         {userRole === "charity" && (
-          <div className=" bg-[#4B105F] text-white p-1.5 text-center ">
+          <div className=" bg-[#008236] text-white p-1.5 text-center ">
             <h5>CHARITABLE ORGANIZATION</h5>
           </div>
         )}

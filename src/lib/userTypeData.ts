@@ -26,8 +26,8 @@ export const userTypes = [
   },
   {
     _id: 6,
-    label: "Influencer / Star Wardrobe",
-    value: "influencer_star_wardrobe",
+    label: "Celebrity / Star Wardrobe",
+    value: "Celebrity_star_wardrobe",
   },
   {
     _id: 7,

@@ -1,15 +1,8 @@
-"use client";
+"use client";;
 import { MapPin, Check, AlertCircle } from "lucide-react"
-import {
-    FacebookIcon,
-    InstagramIcon,
-    TikTokIcon,
-    TwitterIcon,
-    VerifiedIcon,
-} from "@/icons";
+import { FacebookIcon, InstagramIcon, TikTokIcon, VerifiedIcon } from "@/icons";
 import Link from "next/link";
 import { useState } from "react";
-import { GotCharityStoreDonation } from "../Modal/Charity/CharityStoreDonation/GotCharityStoreDonation";
 import { FollowersDialog } from "../Modal/FollowersDialog";
 import Image from "next/image";
 import CustomAvatar from "../CustomAvatar";
@@ -17,11 +10,13 @@ import webLogo from "@/assets/icons/web-logo.png";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
 import XIcon from "@/assets/icons/x-icon.png";
+import { DonationHistory } from "../Modal/Charity/otherUserDonation/DonationHistory";
+import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
 
 export default function UserInfoForSmallScreenForCharity({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
     const [openFollowers, setOpenFollowers] = useState(false);
     const [openDonationModal, setOpenDonationModal] = useState(false);
-    const [openCharityStoreDonationHistory, setOpenCharityStoreDonationHistory] =
+    const [openCharityHistory, setOpenCharityHistory] =
         useState(false);
     const [type, setType] = useState("");
 
@@ -168,7 +163,7 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
 
 
                         <div className="text-center">
-                            <div onClick={() => setOpenCharityStoreDonationHistory(!openCharityStoreDonationHistory)} className="flex items-center justify-center gap-1 mb-1">
+                            <div onClick={() => setOpenCharityHistory(!openCharityHistory)} className="flex items-center justify-center gap-1 mb-1">
                                 <AlertCircle size={14} className="text-green-700" />
                                 <p className="text-xs text-gray-600 font-medium">Total Donations</p>
                             </div>
@@ -189,9 +184,9 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
 
 
 
-            <GotCharityStoreDonation
-                open={openCharityStoreDonationHistory}
-                onOpenChange={setOpenCharityStoreDonationHistory}
+            <GotCharityDonationHistoryDialog
+                open={openCharityHistory}
+                setOpen={setOpenCharityHistory}
             />
 
             <IndividualCharityDonationFormDialog showTrigger={false} open={openDonationModal} setOpen={setOpenDonationModal} />

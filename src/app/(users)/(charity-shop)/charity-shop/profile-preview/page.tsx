@@ -1,3 +1,4 @@
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Container from "@/components/shared/Container";
 import { IndividualCharityDonationFormDialog } from "@/components/shared/Modal/IndividualCharityDonationFormDialog";
 import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/EnableBundleCreation";
@@ -6,6 +7,7 @@ import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserInfoForSmallScreenForCharityStore from "@/components/shared/UserProfile/UserInfoForSmallScreenForCharityStore";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
+import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
 
 export const metadata = {
@@ -24,15 +26,15 @@ export default function ProfilePreviewPage() {
       />
 
       <Container className="lg:space-y-8 space-y-4">
-        <div className="lg:flex justify-center my-5 gap-x-5 items-center hidden">
-          <CommonButton className=" bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732]">
-            Donate Clothes
-          </CommonButton>
+        <div className="lg:flex justify-center my-5 gap-x-4 items-center hidden">
+          <Button className="bg-transparent font-medium hover:bg-gray-100 duration-300  text-green-700 rounded  uppercase md:min-w-40 md:py-5 cursor-pointer group border border-green-700">
+            Donate Clothes <AnimatedArrow />
+          </Button>
           <IndividualCharityDonationFormDialog />
         </div>
 
-         <div className="lg:hidden" >
-          <UserInfoForSmallScreenForCharityStore  userRole="charity-store" />
+        <div className="lg:hidden" >
+          <UserInfoForSmallScreenForCharityStore userRole="charity-store" />
         </div>
 
         <div className="lg:flex lg:flex-row flex-col gap-5 hidden">

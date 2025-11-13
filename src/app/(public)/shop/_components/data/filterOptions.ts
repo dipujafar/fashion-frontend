@@ -269,8 +269,8 @@ export const filterData: Record<string, FilterOption[]> = {
     },
     {
       id: 4,
-      value: "influencer",
-      label: "Influencer",
+      value: "celebrity",
+      label: "Celebrity",
     },
     {
       id: 5,

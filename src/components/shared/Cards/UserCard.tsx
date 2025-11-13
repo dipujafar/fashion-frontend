@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 export const userTagColor2 = (type: string) => {
   switch (type.toLowerCase()) {
-    case "influencer":
+    case "celebrity":
       return "#123CA6";
     case "eco-friendly store":
       return "#00B047";
@@ -33,7 +33,7 @@ const UserCard = ({ data }: { data: TUser }) => {
   const router = useRouter();
   const handleRedirect = (user: string) => {
     switch (user?.toLowerCase()) {
-      case "influencer":
+      case "celebrity":
         return "/celebrity/profile-preview";
       case "eco-friendly store":
         return "/eco-friendly-store/profile-preview";

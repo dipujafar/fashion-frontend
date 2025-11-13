@@ -86,7 +86,7 @@ export function IndividualCharityDonationFormDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-      {showTrigger &&  <Button className=" group bg-[#F8FFFB] hover:bg-black/5  text-black border-b-3 border-r-3 border-[#0F3732] rounded  uppercase md:min-w-40 md:py-5 cursor-pointer group">
+      {showTrigger &&  <Button className=" group bg-green-700 hover:bg-green-800  text-white rounded  uppercase md:min-w-40 md:py-5 cursor-pointer group">
           Donate Now <AnimatedArrow />
         </Button>}
       </DialogTrigger>

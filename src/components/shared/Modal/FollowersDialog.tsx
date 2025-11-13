@@ -75,7 +75,7 @@ const mockFollowing: User[] = [
     name: "John Smith",
     username: "@johnsmith",
     avatar: "/userProfile1.png",
-    label: "Influencer",
+    label: "Celebrity",
     isFollowing: true,
   },
   {

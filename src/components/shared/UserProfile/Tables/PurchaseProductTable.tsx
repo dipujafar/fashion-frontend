@@ -9,6 +9,7 @@ import { ReturnRequestModal } from "../Modals/ReturnRequestModal"
 import Link from "next/link"
 import Image from "next/image"
 import PaginationSection from "../../Pagination/PaginationSection"
+import { cn } from "@/lib/utils"
 
 interface SaleItem {
   id: string
@@ -118,9 +119,9 @@ export default function PurchaseProductTable() {
       case "Shipping":
         return "text-blue-600"
       case "Order Received":
-        return "text-orange-600"
+        return "text-purple-600"
       default:
-        return "text-gray-600"
+        return "text-black"
     }
   }
 
@@ -193,7 +194,7 @@ export default function PurchaseProductTable() {
                     <TableCell className="text-center">2 months used</TableCell>
                     <TableCell className="font-medium text-center">${item.purchasePrice.toFixed(2)}</TableCell>
                     <TableCell className="text-center">{item.purchaseDate}</TableCell>
-                    <TableCell className="text-center">{item.status}</TableCell>
+                    <TableCell className={cn("text-center", getStatusColor(item.status))}>{item.status}</TableCell>
                     <TableCell>
                       {item?.status === "Delivered" && (
                         <div className="flex justify-center gap-x-2">
