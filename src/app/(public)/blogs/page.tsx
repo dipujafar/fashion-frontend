@@ -10,7 +10,7 @@ export const metadata = {
 const BlogPage = () => {
   return (
     <Container>
-      <h1 className="page-title text-center">Our Style Blog</h1>
+      <h1 className="page-title text-center pt-5">Our Style Blog</h1>
       <BlogPageContainer></BlogPageContainer>
     </Container>
   );

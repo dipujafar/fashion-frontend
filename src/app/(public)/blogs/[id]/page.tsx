@@ -5,7 +5,7 @@ import SingleBlogPageContainer from "./_components/SingleBlogPageContainer";
 const page = () => {
   return (
     <Container>
-      <h1 className="page-title text-center">Our Style Blog</h1>
+      <h1 className="page-title text-center ">Our Style Blog</h1>
       <SingleBlogPageContainer></SingleBlogPageContainer>
     </Container>
   );

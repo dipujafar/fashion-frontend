@@ -563,7 +563,7 @@ export const productsData = [
 export const productDetails = {
   _id: 1,
   image: [
-    { _id: "1", url: "/product_details_image1.jpeg", key: "1" },
+    { _id: "1", url: "/product_details_image2.jpeg", key: "1" },
     { _id: "2", url: "/product_details_image2.jpeg", key: "2" },
     { _id: "3", url: "/product_details_image3.jpeg", key: "3" },
     { _id: "4", url: "/product_details_image4.jpeg", key: "4" },

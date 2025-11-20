@@ -119,9 +119,9 @@ export default function UploadedProductListTable() {
   const getStatusColor = (status: Product["status"]) => {
     switch (status) {
       case "Pending":
-        return "text-green-600"
-      case "Approved":
         return "text-blue-600"
+      case "Approved":
+        return "text-green-600"
       case "Declined":
         return "text-red-600"
       default:
@@ -181,18 +181,21 @@ export default function UploadedProductListTable() {
           <TableBody>
             {filteredProducts.map((product) => (
               <TableRow key={product.id} className="hover:bg-gray-50">
+
                 <TableCell>
-                  <div className="w-12 h-12 relative rounded overflow-hidden">
-                    <Image
-                      src={product.image || "/placeholder.svg"}
-                      alt={product.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                  <Link href={`/shop/2`}>
+                    <div className="w-12 h-12 relative rounded overflow-hidden">
+                      <Image
+                        src={product.image || "/placeholder.svg"}
+                        alt={product.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </Link>
                 </TableCell>
-                <TableCell className="font-medium">{product.title}</TableCell>
-                <TableCell className="text-gray-600">{product.itemNumber}</TableCell>
+                <TableCell className="font-medium"> <Link href={`/shop/2`}>{product.title} </Link></TableCell>
+                <TableCell className="text-gray-600">  <Link href={`/shop/2`}> {product.itemNumber} </Link></TableCell>
                 <TableCell className="text-center">UK 10</TableCell>
                 <TableCell className="text-center">2 months used</TableCell>
                 <TableCell className="text-center">${product.price}</TableCell>
@@ -201,11 +204,7 @@ export default function UploadedProductListTable() {
                   <span className={`text-sm font-medium ${getStatusColor(product.status)}`}>{product.status}</span>
                 </TableCell>
                 <TableCell className="flex items-center gap-x-1">
-                  <Link href={`/shop/${product.id}`}>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Eye className="size-5 text-gray-600" />
-                    </Button>
-                  </Link>
+
                   <Trash2 color="red" className="size-5 cursor-pointer" />
                   {
                     product.status === "Pending" && <Link href={"/sell-products"}> <SquarePen className="size-5 cursor-pointer" /></Link>
@@ -257,18 +256,14 @@ export default function UploadedProductListTable() {
           <div key={product.id} className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
             <div className="flex gap-3 mb-3">
               <div className="w-16 h-16 relative rounded overflow-hidden flex-shrink-0">
-                <Image src={product.image || "/placeholder.svg"} alt={product.title} fill className="object-cover" />
+                <Link href={`/shop/${product.id}`}>  <Image src={product.image || "/placeholder.svg"} alt={product.title} fill className="object-cover" /> </Link>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm truncate">{product.title}</p>
-                <p className="text-xs text-gray-600">{product.itemNumber}</p>
+                <p className="font-medium text-sm truncate"><Link href={`/shop/${product.id}`}> {product.title} </Link></p>
+                <p className="text-xs text-gray-600"><Link href={`/shop/${product.id}`}> {product.itemNumber} </Link></p>
                 <div className="flex items-center justify-between mt-1">
                   <span className={`text-xs font-medium ${getStatusColor(product.status)}`}>{product.status}</span>
-                  <Link href={`/shop/${product.id}`}>
-                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                      <Eye className="h-3.5 w-3.5 text-gray-600" />
-                    </Button>
-                  </Link>
+
                 </div>
               </div>
             </div>

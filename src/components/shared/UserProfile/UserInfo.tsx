@@ -137,8 +137,8 @@ export default function UserInfo({
                   </span>
                 )}
                 <div className="flex items-center text-green-500 ">
-                  (<VerifiedIcon />
-                  <span className="text-green-500 font-medium">Verified</span>)
+                  <VerifiedIcon />
+                  <span className="text-green-500 font-medium">Verified</span>
                 </div>
               </div>
             </div>
@@ -151,8 +151,8 @@ export default function UserInfo({
                   </span>
                 )}
                 <div className="flex  flex-wrap items-center text-green-500 ">
-                  (<VerifiedIcon />
-                  <span className="text-green-500 font-medium">Verified</span>)
+                  s<VerifiedIcon />
+                  <span className="text-green-500 font-medium">Verified</span>
                 </div>
               </div>
             </div>

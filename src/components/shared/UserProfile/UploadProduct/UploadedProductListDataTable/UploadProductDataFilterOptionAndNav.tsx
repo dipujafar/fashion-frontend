@@ -69,7 +69,7 @@ export default function UploadProductDataFilterOptionAndNav({
               currentPath?.includes("sale") && "bg-black text-white"
             )}
           >
-            <p>Sale</p>
+            <p>My Sale</p>  
           </div>
         </Link>
       { user !== "charity store" &&  <Link href={`${baseLink}/purchase-product`}>
@@ -79,7 +79,7 @@ export default function UploadProductDataFilterOptionAndNav({
               currentPath?.includes("purchase-product") && "bg-black text-white"
             )}
           >
-            <p>Purchase</p>
+            <p>My Purchase</p>
           </div>
         </Link>}
       </div>

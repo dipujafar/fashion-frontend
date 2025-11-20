@@ -10,7 +10,7 @@ const UserPages = () => {
   return (
     <Container>
       <div>
-        <h1 className="page-title text-center">Explore User</h1>
+        <h1 className="page-title text-center pt-5">Explore User</h1>
       </div>
       <UsersPageContainer></UsersPageContainer>
     </Container>

@@ -9,6 +9,7 @@ import PaginationSection from "@/components/shared/Pagination/PaginationSection"
 import { ReturnProductModal } from "../Modals/ReturnProductModal"
 import Link from "next/link"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 interface SaleItem {
   id: string
@@ -16,7 +17,7 @@ interface SaleItem {
   buyerName: string
   saleDate: string
   salePrice: number
-  status: "Sold" | "Returned" | "Ongoing" | "Return Request"
+  status: "Sold" | "Returned" | "In Progress" | "Return Request"
   image: string
   title: string
 }
@@ -58,7 +59,7 @@ const salesData: SaleItem[] = [
     buyerName: "Alice M",
     saleDate: "Feb 10, 2025",
     salePrice: 35.0,
-    status: "Ongoing",
+    status: "In Progress",
     image: "/product_image_3.jpg",
     title: "Tops Shirt",
   },
@@ -78,7 +79,7 @@ const salesData: SaleItem[] = [
     buyerName: "Alice M",
     saleDate: "Feb 10, 2025",
     salePrice: 35.0,
-    status: "Ongoing",
+    status: "In Progress",
     image: "/product_image_3.jpg",
     title: "Tops Shirt",
   },
@@ -107,22 +108,22 @@ const salesData: SaleItem[] = [
 export default function SaleProductTable({ userRole }: { userRole?: string }) {
   const [salesItems, setSalesItems] = useState<SaleItem[]>(salesData)
   const [openRequestModal, setOpenRequestModal] = useState<boolean>(false)
-  const [statusFilter, setStatusFilter] = useState<"All" | "Sold" | "Return" | "Ongoing">("All")
+  const [statusFilter, setStatusFilter] = useState<"All" | "Sold" | "Return" | "In progress">("All")
 
   const filteredItems = salesItems.filter((item) => statusFilter === "All" || item.status === statusFilter)
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "Sold":
-        return "default"
+        return "bg-black"
       case "Returned":
-        return "destructive"
-      case "Ongoing":
-        return "secondary"
+        return "bg-red-600"
+      case "In Progress":
+        return "bg-gray-100 text-black"
       case "Return Request":
-        return "destructive"
+        return "bg-orange-600"
       default:
-        return "default"
+        return "bg-black"
     }
   }
 
@@ -132,7 +133,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
         <span className="text-sm font-medium">Filter:</span>
         <Select
           value={statusFilter}
-          onValueChange={(value) => setStatusFilter(value as "All" | "Sold" | "Return" | "Ongoing")}
+          onValueChange={(value) => setStatusFilter(value as "All" | "Sold" | "Return" | "In progress")}
         >
           <SelectTrigger className="w-32 h-9 text-xs">
             <ArrowDownWideNarrow size={16} />
@@ -142,7 +143,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
             <SelectItem value="Sold">Sold</SelectItem>
             <SelectItem value="Returned">Returned</SelectItem>
             <SelectItem value="Return Request">Return Request</SelectItem>
-            <SelectItem value="Ongoing">Ongoing</SelectItem>
+            <SelectItem value="In progress">In progress</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -165,7 +166,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
                       <span>Status</span>
                       <Select
                         value={statusFilter}
-                        onValueChange={(value) => setStatusFilter(value as "All" | "Sold" | "Return" | "Ongoing")}
+                        onValueChange={(value) => setStatusFilter(value as "All" | "Sold" | "Return" | "In progress")}
                       >
                         <SelectTrigger showIcon={false} className="w-20 h-6 text-xs text-white border-0">
                           <ArrowDownWideNarrow color="#fff" />
@@ -175,7 +176,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
                           <SelectItem value="Sold">Sold</SelectItem>
                           <SelectItem value="Returned">Returned</SelectItem>
                           <SelectItem value="Return Request">Return Request</SelectItem>
-                          <SelectItem value="Ongoing">Ongoing</SelectItem>
+                          <SelectItem value="In progress">In progress</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -215,14 +216,15 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
                     <TableCell className="text-center -translate-x-4">
                       {item?.status === "Return Request" ? (
                         <Badge
-                          className="cursor-pointer"
+                          className={cn("cursor-pointer", getStatusBadgeVariant(item.status))}
                           onClick={() => setOpenRequestModal(true)}
-                          variant={getStatusBadgeVariant(item.status)}
+                        // variant={getStatusBadgeVariant(item.status)}
+
                         >
                           {item.status}
                         </Badge>
                       ) : (
-                        <Badge variant={getStatusBadgeVariant(item.status)}>{item.status}</Badge>
+                        <Badge className={cn(getStatusBadgeVariant(item.status))} >{item.status}</Badge>
                       )}
                     </TableCell>
                   </TableRow>
@@ -276,14 +278,13 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
               <div className="pt-2 border-t">
                 {item?.status === "Return Request" ? (
                   <Badge
-                    className="cursor-pointer w-full justify-center"
+                    className={cn("cursor-pointer w-full justify-center", getStatusBadgeVariant(item.status))}
                     onClick={() => setOpenRequestModal(true)}
-                    variant={getStatusBadgeVariant(item.status)}
                   >
                     {item.status}
                   </Badge>
                 ) : (
-                  <Badge variant={getStatusBadgeVariant(item.status)} className="w-full justify-center">
+                  <Badge className={cn("w-full justify-center", getStatusBadgeVariant(item.status))}>
                     {item.status}
                   </Badge>
                 )}
