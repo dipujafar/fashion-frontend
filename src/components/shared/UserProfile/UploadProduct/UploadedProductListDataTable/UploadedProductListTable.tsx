@@ -207,7 +207,7 @@ export default function UploadedProductListTable() {
 
                   <Trash2 color="red" className="size-5 cursor-pointer" />
                   {
-                    product.status === "Pending" && <Link href={"/sell-products"}> <SquarePen className="size-5 cursor-pointer" /></Link>
+                    (product.status === "Pending" || product.status === "Approved") && <Link href={"/sell-products"}> <SquarePen className="size-5 cursor-pointer" /></Link>
                   }
                   {
                     product.status === "Declined" && <QuestionIcon className="cursor-pointer" />
@@ -253,7 +253,18 @@ export default function UploadedProductListTable() {
         </div>
 
         {filteredProducts.map((product) => (
-          <div key={product.id} className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
+          <div key={product.id} className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow relative">
+
+            <div className="absolute  top-2 right-2 flex gap-x-2">
+              <Trash2 color="red" className="size-5 cursor-pointer" />
+              {
+                (product.status === "Pending" || product.status === "Approved") && <Link href={"/sell-products"}> <SquarePen className="size-5 cursor-pointer" /></Link>
+              }
+              {
+                product.status === "Declined" && <QuestionIcon className="cursor-pointer" />
+              }
+            </div>
+
             <div className="flex gap-3 mb-3">
               <div className="w-16 h-16 relative rounded overflow-hidden flex-shrink-0">
                 <Link href={`/shop/${product.id}`}>  <Image src={product.image || "/placeholder.svg"} alt={product.title} fill className="object-cover" /> </Link>

@@ -155,7 +155,7 @@ export default function AddProductForm() {
                       className={cn(
                         "aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border",
                         images?.length === 0 &&
-                          "col-span-2 md:col-span-1 2xl:col-span-5 aspect-video md:aspect-auto min-h-[300px]"
+                          "col-span-2 md:col-span-4 2xl:col-span-5 aspect-video md:aspect-auto md:min-h-[300px]"
                       )}
                     >
                       <input
