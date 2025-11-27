@@ -10,10 +10,9 @@ import webLogo from "@/assets/icons/web-logo.png";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
 import XIcon from "@/assets/icons/x-icon.png";
-import { DonationHistory } from "../Modal/Charity/otherUserDonation/DonationHistory";
 import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
 
-export default function UserInfoForSmallScreenForCharity({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
+export default function UserInfoForSmallScreenForCharity({ coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
     const [openFollowers, setOpenFollowers] = useState(false);
     const [openDonationModal, setOpenDonationModal] = useState(false);
     const [openCharityHistory, setOpenCharityHistory] =
@@ -25,7 +24,7 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
             {/* ================= user profile avatar and cover image ================================ */}
             <div className="relative">
                 {/* Cover Photo */}
-                <div className="w-full h-[80px] md:h-[200px] lg:h-[250px] relative overflow-hidden ">
+                <div className="w-full h-[80px] md:h-[100px] lg:h-[250px] relative overflow-hidden ">
                     <Image
                         src={coverImage}
                         alt="Cover photo"
@@ -36,11 +35,11 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
                 </div>
 
                 {/* Profile Picture */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-16 -bottom-10">
+                <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-12 -bottom-10">
                     <CustomAvatar
                         img={profileImage || "/seller_profile.png"}
                         name="Sarah_Style"
-                        className="md:size-36 size-20"
+                        className="md:size-24 size-20"
                     />
                     {/* <div
                         className="rounded-full size-4 flex justify-center items-center absolute md:top-3 top-2 right-0 md:right-2 bg-green-700"
@@ -53,7 +52,7 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
 
             {/* ====================== charity name and user name ================================ */}
             <div>
-                <div className="flex justify-center items-center  gap-x-1 mt-10">
+                <div className="flex justify-center items-center  gap-x-1 mt-10 md:mt-14">
                     <h2 className="text-xl font-semibold text-gray-900 text-center">Save Ocean</h2>
                     <Tooltip>
                         <TooltipTrigger>
@@ -76,7 +75,7 @@ export default function UserInfoForSmallScreenForCharity({ userRole, coverImage 
                 <h6 className="text-center te">@save Ocean</h6>
             </div>
 
-            <div className="w-full max-w-sm bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-t-green-700 mt-2">
+            <div className="w-full  bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-t-green-700 mt-2">
                 {/* Header Buttons */}
                 <div className="px-4 pt-4 flex gap-2 bg-white">
                     <button className="flex-1 px-4 py-2 bg-white border border-green-700 text-green-700 rounded font-semibold text-sm hover:bg-gray-50">

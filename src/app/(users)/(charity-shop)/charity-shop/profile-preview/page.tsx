@@ -8,13 +8,13 @@ import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserInfoForSmallScreenForCharityStore from "@/components/shared/UserProfile/UserInfoForSmallScreenForCharityStore";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
 import { Button } from "@/components/ui/button";
-import CommonButton from "@/components/ui/common-button";
 
 export const metadata = {
   title: "Charity Shop Profile",
   description: "Here find charity shop profile",
 };
 export default function ProfilePreviewPage() {
+  
   return (
     <div>
       <UserProfileInfo

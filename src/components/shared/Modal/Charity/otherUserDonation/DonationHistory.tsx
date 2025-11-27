@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { buyerCampaigns, clothingDonations, directDonations, getBadgeVariant, sellerCampaigns } from "./data.type";
+import { buyerCampaigns, clothingDonations, directDonations, getBadgeVariant, sellerCampaigns, treeDonationData } from "./data.type";
 
 export function DonationHistory({
   open,
@@ -16,8 +16,34 @@ export function DonationHistory({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-[550px] p-0">
         <div className="relative">
-          <Tabs defaultValue="seller" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 rounded-none  bg-transparent p-8">
+          <div className="mt-0 pt-8 px-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b pb-1">
+                <span className="font-medium">Total Raised</span>
+                <span className="text-muted-foreground">£1,450</span>
+              </div>
+
+              <div className="flex items-center justify-between border-b pb-1">
+                <span className="font-medium">Item Sales Proceeds</span>
+                <span className="text-muted-foreground">£450</span>
+              </div>
+              <div className="space-y-3 border-b pb-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">Purchase Proceeds</span>
+                  <span className="text-muted-foreground">£450</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">Extra Donations</span>
+                  <span className="text-muted-foreground">£120</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <Tabs defaultValue="seller" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hide ">
+
+
+            <TabsList className="grid w-full grid-cols-5 rounded-none  bg-transparent p-8">
               <TabsTrigger
                 value="seller"
                 className="rounded-none border-transparent data-[state=active]:border-black data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-none py-2 font-medium"
@@ -42,24 +68,20 @@ export function DonationHistory({
               >
                 Clothing
               </TabsTrigger>
+              <TabsTrigger
+                value="tree"
+                className="rounded-none border-transparent data-[state=active]:border-black data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-none py-2 font-medium"
+              >
+                Trees
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="seller" className="mt-0 p-6">
               <div className="space-y-4">
-                {/* Financial Summary */}
-                <div className="space-y-3 border-b pb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Total Raised</span>
-                    <span className="text-muted-foreground">£1,450</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Item Sales Proceeds</span>
-                    <span className="text-muted-foreground">£450</span>
-                  </div>
-                </div>
+
 
                 {/* Campaign List */}
-                <div className="max-h-[400px] space-y-4 overflow-y-auto pr-2">
+                <div className="space-y-4 pr-2">
                   {sellerCampaigns.map((campaign) => (
                     <div
                       key={campaign.id}
@@ -88,7 +110,7 @@ export function DonationHistory({
                       <Badge
                         variant={getBadgeVariant(campaign.type)}
                         className={
-                          campaign.type === "Item sale"
+                          campaign.type === "Item sold"
                             ? "bg-blue-100 text-blue-700 hover:bg-blue-100"
                             : "bg-purple-100 text-purple-700 hover:bg-purple-100"
                         }
@@ -101,26 +123,22 @@ export function DonationHistory({
               </div>
             </TabsContent>
 
-            <TabsContent value="buyer" className="mt-0 p-6">
+            <TabsContent value="buyer" className="mt-0 p-6 ">
               <div className="space-y-4">
                 {/* Financial Summary */}
                 <div className="space-y-3 border-b pb-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium">Total Raised</span>
-                    <span className="text-muted-foreground">£1,450</span>
-                  </div>
-                  {/* <div className="flex items-center justify-between">
-                    <span className="font-medium">Direct Donation</span>
-                    <span className="text-muted-foreground">£1,450</span>
-                  </div> */}
-                  <div className="flex items-center justify-between">
                     <span className="font-medium">Purchase Proceeds</span>
                     <span className="text-muted-foreground">£450</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">Extra Donations</span>
+                    <span className="text-muted-foreground">£120</span>
                   </div>
                 </div>
 
                 {/* Campaign List */}
-                <div className="max-h-[400px] space-y-4 overflow-y-auto pr-2">
+                <div className="space-y-4 pr-2">
                   {buyerCampaigns.map((campaign) => (
                     <div
                       key={campaign.id}
@@ -161,7 +179,7 @@ export function DonationHistory({
               </div>
             </TabsContent>
 
-            <TabsContent value="direct" className="mt-0 p-6">
+            <TabsContent value="direct" className="mt-0 p-6 ">
               <div className="space-y-4">
                 {/* Financial Summary */}
                 <div className="space-y-3 border-b pb-4">
@@ -176,7 +194,7 @@ export function DonationHistory({
                 </div>
 
                 {/* Campaign List */}
-                <div className="max-h-[400px] space-y-4 overflow-y-auto pr-2">
+                <div className=" space-y-4  pr-2">
                   {directDonations.map((campaign) => (
                     <div
                       key={campaign.id}
@@ -230,7 +248,7 @@ export function DonationHistory({
               </div>
 
               {/* Clothing Donations List */}
-              <div className="space-y-3 max-h-[400px] overflow-y-auto scroll-hide">
+              <div className="space-y-3">
                 {clothingDonations.map((donation) => (
                   <div key={donation.id} className="flex items-start gap-3">
                     <Avatar className="h-10 w-10 flex-shrink-0">
@@ -267,6 +285,42 @@ export function DonationHistory({
                 ))}
               </div>
             </TabsContent>
+
+            <TabsContent value="tree" className="mt-0 p-6">
+              <div className="space-y-4">
+                {/* Financial Summary */}
+                <div className="space-y-3 border-b pb-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">Total Tree Donated</span>
+                    <span className="text-muted-foreground">150</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">Total Amount Raised</span>
+                    <span className="text-muted-foreground">£600</span>
+                  </div>
+                </div>
+
+                {/* Campaign List */}
+                <div className=" space-y-4 pr-2">
+                  <ul className="flex justify-between items-center  font-medium">
+                    <li className="flex-1">SL</li>
+                    <li className="flex-1 text-center">Quantity</li>
+                    <li className="flex-1 text-center">Amount</li>
+                  </ul>
+                  {treeDonationData?.map((donation) => (
+                    <div
+                      key={donation.id}
+                      className="flex items-center justify-between  gap-4"
+                    >
+                      <span className="flex-1">{donation.id}</span>
+                      <span className="flex-1 text-center">{donation.quantity}</span>
+                      <span className="flex-1 text-center">{donation.amount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+
           </Tabs>
         </div>
       </DialogContent>

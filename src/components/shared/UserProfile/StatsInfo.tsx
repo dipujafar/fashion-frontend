@@ -8,6 +8,7 @@ import { FollowersDialog } from "../Modal/FollowersDialog";
 import { GotCharityDonationHistoryDialog } from "../Modal/Charity/ChariryDonation/GotCharityDonationHistoryDialog";
 import { GotCharityStoreDonation } from "../Modal/Charity/CharityStoreDonation/GotCharityStoreDonation";
 import { DonationHistory } from "../Modal/Charity/otherUserDonation/DonationHistory";
+import { user } from "../Navbar/SmallDeviceSheetContentComponents/data.type";
 
 export default function StatsInfo({
   userRole,
@@ -121,7 +122,7 @@ export default function StatsInfo({
             </div>
           )}
 
-          <div className="md:space-y-1">
+         { userRole !== "eco-friendly-store" && <div className="md:space-y-1">
             <p
               onClick={() => handleOpenDonationHistoryModal(userRole)}
               className="md:text-lg text-muted-foreground underline cursor-pointer"
@@ -129,7 +130,7 @@ export default function StatsInfo({
               Total Donations Raised
             </p>
             <p className="md:text-2xl text-xl font-medium">$5.00</p>
-          </div>
+          </div>}
 
           {/* Second Row */}
           <div className="md:space-y-1">

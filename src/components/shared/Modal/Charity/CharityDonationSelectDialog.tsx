@@ -176,7 +176,7 @@ export function CharityDonationSelectDialog({
                 type="submit"
                 className="w-full bg-black hover:bg-black/90 text-white py-3 rounded-lg font-medium"
               >
-                SEND
+                Continue to Checkout
               </Button>
             </div>
           </form>

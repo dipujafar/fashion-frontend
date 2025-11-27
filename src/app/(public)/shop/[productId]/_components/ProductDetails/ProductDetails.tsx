@@ -108,7 +108,7 @@ const ProductDetails = () => {
         {/* =============== Returns Policy =============== */}
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Returns Policy:</h2>
-          <p>Returns accepted – 7 days (seller pays postage)</p>
+          <p>Returns accepted – 7 days </p>
         </div>
         {/* ======== alert section ============= */}
         <div className="flex gap-x-2 bg-primary-green/10 px-2 py-1 w-fit rounded">

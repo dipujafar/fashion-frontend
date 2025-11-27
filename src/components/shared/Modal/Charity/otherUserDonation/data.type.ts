@@ -5,7 +5,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://i.pravatar.cc/150?img=12",
   },
   {
@@ -14,7 +14,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=PlantTrees",
   },
   {
@@ -23,7 +23,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=WomensRights",
   },
   {
@@ -32,7 +32,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=PlantTrees2",
   },
   {
@@ -41,7 +41,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=SaveAnimals2",
   },
   {
@@ -50,7 +50,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=PlantTrees3",
   },
   {
@@ -59,7 +59,7 @@ export const sellerCampaigns = [
     amount: "£20",
     time: "6 mos",
     item: "T-Shirt",
-    type: "Item sale" as const,
+    type: "Item sold" as const,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=SaveAnimals3",
   },
 ];
@@ -221,7 +221,7 @@ export const clothingDonations: ClothingDonation[] = [
     time: "6 mos",
     items: ["T-shirts", "Jeans", "Jackets"],
   },
- 
+
   {
     id: "8",
     name: "Save the Animals",
@@ -235,6 +235,34 @@ export const clothingDonations: ClothingDonation[] = [
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=PlantTrees3",
     time: "6 mos",
     items: ["T-shirts", "Jeans", "Jackets"],
+  },
+];
+
+export const treeDonationData = [
+  {
+    id: 1,
+    quantity: 5,
+    amount: "£20",
+  },
+  {
+    id: 2,
+    quantity: 4,
+    amount: "£16",
+  },
+  {
+    id: 3,
+    quantity: 3,
+    amount: "£12",
+  },
+  {
+    id: 4,
+    quantity: 2,
+    amount: "£8",
+  },
+  {
+    id: 5,
+    quantity: 1,
+    amount: "£4",
   },
 ];
 

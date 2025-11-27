@@ -76,7 +76,7 @@ const ResellProductDetails = () => {
       {/* =============== Returns Policy =============== */}
       <div className="flex md:gap-x-8 gap-x-4 items-center">
         <h2 className="w-[120px] flex-shrink-0 ">Returns Policy:</h2>
-        <p>Returns accepted – 7 days (seller pays postage)</p>
+        <p>Returns accepted – 7 days </p>
       </div>
 
 

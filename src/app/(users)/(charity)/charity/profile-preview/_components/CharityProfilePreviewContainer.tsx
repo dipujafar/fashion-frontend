@@ -5,7 +5,7 @@ import StatsInfo from "@/components/shared/UserProfile/StatsInfo";
 import UserInfo from "@/components/shared/UserProfile/UserInfo";
 import UserInfoForSmallScreenForCharity from "@/components/shared/UserProfile/UserInfoForSmallScreenForCharity";
 import UserProfileInfo from "@/components/shared/UserProfile/UserProfileInfo";
-export default function CharityProfilePreviewContainer() {
+export default function   CharityProfilePreviewContainer() {
   return (
     <div>
       <UserProfileInfo

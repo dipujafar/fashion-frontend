@@ -31,7 +31,7 @@ export function GotCharityDonationHistoryDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className=" p-0 gap-0 max-h-[80vh]">
+        <DialogContent className=" p-0 gap-0 max-h-[80vh] overflow-y-auto">
           <div className="flex flex-col h-full pt-8">
             <div className="px-4 py-3 bg-muted/50 space-y-2">
               <div className="flex justify-between text-sm">
@@ -110,15 +110,15 @@ export const CharityDonationTable = ({ data }: CharityDonationTableProps) => {
       }`,
       badge:
         donation.type === "item_sale"
-          ? "Item Sale"
+          ? "Item Sold"
           : donation.type === "direct"
           ? "Direct"
-          : "Purchase",
+          : "Extra Donation",
     };
   };
 
   return (
-    <div className="px-4 space-y-3 max-h-96 overflow-y-auto">
+    <div className="px-4 space-y-3 lg:h-96 md:h-52 overflow-y-auto">
       {data.map((donation) => {
         const display = getDisplayText(donation);
         return (

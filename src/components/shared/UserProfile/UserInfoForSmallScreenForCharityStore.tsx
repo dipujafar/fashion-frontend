@@ -41,7 +41,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
             {/* ================= user profile avatar and cover image ================================ */}
             <div className="relative">
                 {/* Cover Photo */}
-                <div className="w-full h-[80px] md:h-[200px] lg:h-[250px] relative overflow-hidden ">
+                <div className="w-full h-[80px] md:h-[100px] lg:h-[250px] relative overflow-hidden ">
                     <Image
                         src={coverImage}
                         alt="Cover photo"
@@ -52,11 +52,11 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                 </div>
 
                 {/* Profile Picture */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-16 -bottom-10">
+                <div className="absolute left-1/2 transform -translate-x-1/2 md:-bottom-12 -bottom-10">
                     <CustomAvatar
                         img={profileImage || "/seller_profile.png"}
                         name="Sarah_Style"
-                        className="md:size-36 size-20"
+                        className="md:size-24  size-20"
                     />
 
                 </div>
@@ -69,7 +69,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
             </div>
 
             {/* charity store name and  user name */}
-            <div>
+            <div className="md:mt-4">
                 <div className="flex justify-center items-center  gap-x-1">
                     <h2 className="text-xl font-semibold text-gray-900 text-center">Save Ocean</h2>
                     <Tooltip>
@@ -96,7 +96,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
 
 
             {/* ============================= profile other information =================== */}
-            <div className="w-full  border-gray-300 rounded-lg bg-white md:mt-20 shadow-md overflow-hidden border-t-4 border-t-green-700 mt-2 px-4 pb-2">
+            <div className="w-full  border-gray-300 rounded-lg bg-white lg:mt-20 shadow-md overflow-hidden border-t-4 border-t-green-700 mt-2 px-4 pb-2">
 
                 <div className="px-4 pt-4 pb-2 flex gap-2 bg-white">
                     <button className="flex-1 px-4 py-2 bg-white border border-green-700 text-green-700 rounded font-semibold text-sm hover:bg-gray-50">

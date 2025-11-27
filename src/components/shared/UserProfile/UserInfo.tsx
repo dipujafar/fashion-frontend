@@ -151,7 +151,7 @@ export default function UserInfo({
                   </span>
                 )}
                 <div className="flex  flex-wrap items-center text-green-500 ">
-                  s<VerifiedIcon />
+                  <VerifiedIcon />
                   <span className="text-green-500 font-medium">Verified</span>
                 </div>
               </div>

@@ -146,9 +146,9 @@ export const shippingDelivery = [
 ];
 
 export const returnsPolicy = [
-  "Returns accepted – 3 days (seller pays postage)",
-  "Returns accepted – 7 days (seller pays postage)",
-  "Returns accepted – 14 days (seller pays postage)",
+  "Returns accepted – 3 days",
+  "Returns accepted – 7 days",
+  "Returns accepted – 14 days",
   "No returns",
 ];
 
