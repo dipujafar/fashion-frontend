@@ -17,17 +17,17 @@ export function DonationHistory({
       <DialogContent className="max-w-[550px] p-0">
         <div className="relative">
           <div className="mt-0 pt-8 px-6">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b pb-1">
+            <div className="">
+              <div className="flex items-center justify-between border-b pb-0.5">
                 <span className="font-medium">Total Raised</span>
                 <span className="text-muted-foreground">£1,450</span>
               </div>
 
-              <div className="flex items-center justify-between border-b pb-1">
+              <div className="flex items-center justify-between border-b pb-0.5">
                 <span className="font-medium">Item Sales Proceeds</span>
                 <span className="text-muted-foreground">£450</span>
               </div>
-              <div className="space-y-3 border-b pb-1">
+              <div className="space-y-1 border-b pb-0.5">
                 <div className="flex items-center justify-between">
                   <span className="font-medium">Purchase Proceeds</span>
                   <span className="text-muted-foreground">£450</span>
@@ -37,6 +37,26 @@ export function DonationHistory({
                   <span className="text-muted-foreground">£120</span>
                 </div>
               </div>
+
+              <div className="flex items-center justify-between border-b pb-1">
+                <span className="font-medium">Direct Donation</span>
+                <span className="text-muted-foreground">£1,450</span>
+              </div>
+              <div className="flex items-center justify-between border-b pb-1">
+                <span className="font-medium">Total Clothing Donated</span>
+                <span className="text-muted-foreground">7 items</span>
+              </div>
+              <div className="space-y-1 border-b pb-0.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">Total Tree Donated</span>
+                  <span className="text-muted-foreground">150</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">Total Amount Raised</span>
+                  <span className="text-muted-foreground">£600</span>
+                </div>
+              </div>
+
 
             </div>
           </div>
@@ -126,17 +146,7 @@ export function DonationHistory({
             <TabsContent value="buyer" className="mt-0 p-6 ">
               <div className="space-y-4">
                 {/* Financial Summary */}
-                <div className="space-y-3 border-b pb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Purchase Proceeds</span>
-                    <span className="text-muted-foreground">£450</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Extra Donations</span>
-                    <span className="text-muted-foreground">£120</span>
-                  </div>
-                </div>
-
+             
                 {/* Campaign List */}
                 <div className="space-y-4 pr-2">
                   {buyerCampaigns.map((campaign) => (
@@ -181,19 +191,6 @@ export function DonationHistory({
 
             <TabsContent value="direct" className="mt-0 p-6 ">
               <div className="space-y-4">
-                {/* Financial Summary */}
-                <div className="space-y-3 border-b pb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Total Raised</span>
-                    <span className="text-muted-foreground">£1,450</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Direct Donation</span>
-                    <span className="text-muted-foreground">£1,450</span>
-                  </div>
-                </div>
-
-                {/* Campaign List */}
                 <div className=" space-y-4  pr-2">
                   {directDonations.map((campaign) => (
                     <div
@@ -235,18 +232,6 @@ export function DonationHistory({
             </TabsContent>
 
             <TabsContent value="clothing" className="mt-0 p-6">
-              {/* Clothing Summary */}
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm font-medium">
-                  Total Clothing Donated
-                </span>
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-muted-foreground">
-                    {clothingDonations.length} items
-                  </span>
-                </div>
-              </div>
-
               {/* Clothing Donations List */}
               <div className="space-y-3">
                 {clothingDonations.map((donation) => (
@@ -288,18 +273,6 @@ export function DonationHistory({
 
             <TabsContent value="tree" className="mt-0 p-6">
               <div className="space-y-4">
-                {/* Financial Summary */}
-                <div className="space-y-3 border-b pb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Total Tree Donated</span>
-                    <span className="text-muted-foreground">150</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">Total Amount Raised</span>
-                    <span className="text-muted-foreground">£600</span>
-                  </div>
-                </div>
-
                 {/* Campaign List */}
                 <div className=" space-y-4 pr-2">
                   <ul className="flex justify-between items-center  font-medium">
