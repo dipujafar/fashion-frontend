@@ -1,13 +1,14 @@
-export type DonationType = "direct" | "purchase" | "item-sale"
+export type DonationType = "direct" | "purchase" | "item-sale";
 
 interface Donation {
-  id: string
-  name: string
-  avatar?: string
-  amount: string
-  time: string
-  item?: string
-  type: DonationType
+  id: string;
+  name: string;
+  avatar?: string;
+  amount: string;
+  time: string;
+  item?: string;
+  type: DonationType;
+  extraDonation?: string;
 }
 
 export const moneyDonations: Donation[] = [
@@ -18,6 +19,7 @@ export const moneyDonations: Donation[] = [
     amount: "£20",
     time: "6 mos",
     item: "Jacket",
+    extraDonation: "£10",
     type: "item-sale",
   },
   {
@@ -27,6 +29,7 @@ export const moneyDonations: Donation[] = [
     amount: "£20",
     time: "6 mos",
     item: "Jacket",
+
     type: "purchase",
   },
   {
@@ -36,6 +39,7 @@ export const moneyDonations: Donation[] = [
     amount: "£20",
     time: "6 mos",
     item: "Jacket",
+    extraDonation: "£10",
     type: "direct",
   },
   {
@@ -52,6 +56,7 @@ export const moneyDonations: Donation[] = [
     amount: "£20",
     time: "6 mos",
     item: "Jacket",
+    extraDonation: "£10",
     type: "purchase",
   },
   {
@@ -88,14 +93,14 @@ export const moneyDonations: Donation[] = [
     item: "Jacket",
     type: "purchase",
   },
-]
+];
 
-export  interface ClothingDonation {
-  id: string
-  name: string
-  avatar?: string
-  time: string
-  items: string[]
+export interface ClothingDonation {
+  id: string;
+  name: string;
+  avatar?: string;
+  time: string;
+  items: string[];
 }
 
 export const clothingDonations: ClothingDonation[] = [
@@ -160,11 +165,9 @@ export const clothingDonations: ClothingDonation[] = [
     time: "6 mos",
     items: ["T-shirts", "Jeans", "Jackets"],
   },
-]
+];
 
 export interface DonationPopupProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
-
-

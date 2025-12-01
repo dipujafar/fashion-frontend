@@ -1,5 +1,6 @@
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Container from "@/components/shared/Container";
+import ClothesDonationDialog from "@/components/shared/Modal/clothesDonation/ClothesDonationDialog";
 import { IndividualCharityDonationFormDialog } from "@/components/shared/Modal/IndividualCharityDonationFormDialog";
 import EnableBundleCreation from "@/components/shared/UserProfile/CreateBundle/EnableBundleCreation";
 import ProfileFeatures from "@/components/shared/UserProfile/ProfileFeatures/ProfileFeatures";
@@ -14,7 +15,7 @@ export const metadata = {
   description: "Here find charity shop profile",
 };
 export default function ProfilePreviewPage() {
-  
+
   return (
     <div>
       <UserProfileInfo
@@ -27,9 +28,10 @@ export default function ProfilePreviewPage() {
 
       <Container className="lg:space-y-8 space-y-4">
         <div className="lg:flex justify-center my-5 gap-x-4 items-center hidden">
-          <Button className="bg-transparent font-medium hover:bg-gray-100 duration-300  text-green-700 rounded  uppercase md:min-w-40 md:py-5 cursor-pointer group border border-green-700">
+          {/* <Button className="bg-transparent font-medium hover:bg-gray-100 duration-300  text-green-700 rounded  uppercase md:min-w-40 md:py-5 cursor-pointer group border border-green-700">
             Donate Clothes <AnimatedArrow />
-          </Button>
+          </Button> */}
+          <ClothesDonationDialog />
           <IndividualCharityDonationFormDialog />
         </div>
 

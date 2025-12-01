@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buyerCampaigns, clothingDonations, directDonations, getBadgeVariant, sellerCampaigns, treeDonationData } from "./data.type";
+import { cn } from "@/lib/utils";
 
 export function DonationHistory({
   open,
@@ -29,7 +30,7 @@ export function DonationHistory({
               </div>
               <div className="space-y-1 border-b pb-0.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">Purchase Proceeds</span>
+                  <span className="font-medium">Purchase Contributions</span>
                   <span className="text-muted-foreground">£450</span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -60,7 +61,7 @@ export function DonationHistory({
 
             </div>
           </div>
-          <Tabs defaultValue="seller" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hide ">
+          <Tabs defaultValue="seller" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hides ">
 
 
             <TabsList className="grid w-full grid-cols-5 rounded-none  bg-transparent p-8">
@@ -72,7 +73,7 @@ export function DonationHistory({
               </TabsTrigger>
               <TabsTrigger
                 value="buyer"
-                className="rounded-none border-transparent data-[state=active]:border-black data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-none py-2 font-medium"
+                className="rounded-none border-transparent data-[state=active]:border-black data-[state=active]:bg-black data-[state=active]:text-white  data-[state=active]:shadow-none py-2 font-medium"
               >
                 Bought
               </TabsTrigger>
@@ -96,7 +97,7 @@ export function DonationHistory({
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="seller" className="mt-0 p-6">
+            <TabsContent value="seller" className="mt-0 p-6 lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
               <div className="space-y-4">
 
 
@@ -143,10 +144,10 @@ export function DonationHistory({
               </div>
             </TabsContent>
 
-            <TabsContent value="buyer" className="mt-0 p-6 ">
+            <TabsContent value="buyer" className="mt-0 p-6 lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
               <div className="space-y-4">
                 {/* Financial Summary */}
-             
+
                 {/* Campaign List */}
                 <div className="space-y-4 pr-2">
                   {buyerCampaigns.map((campaign) => (
@@ -169,27 +170,39 @@ export function DonationHistory({
                             {campaign.name}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {campaign.amount} • {campaign.time} •{" "}
+                            {campaign.amount} <span className={cn("text-orange-700", !campaign?.extraDonation && "hidden" )}> • {campaign?.extraDonation}</span> • {campaign.time} •{" "}
                             {campaign.item}
                           </p>
                         </div>
                       </div>
-                      <Badge
-                        variant={getBadgeVariant(campaign.type)}
-                        className={
+                      <div className="flex gap-1.5">
+                        {campaign?.extraDonation && <Badge
+                          variant={getBadgeVariant(campaign.type)}
+                          className={
 
-                          "bg-purple-100 text-purple-700 hover:bg-purple-100"
-                        }
-                      >
-                        {campaign.type}
-                      </Badge>
+                            "bg-orange-100 text-orange-700 hover:bg-orange-100"
+                          }
+                        >
+                          Extra Donation
+                        </Badge>}
+                        <Badge
+                          variant={getBadgeVariant(campaign.type)}
+                          className={
+
+                            "bg-purple-100 text-purple-700 hover:bg-purple-100"
+                          }
+                        >
+                          {campaign.type}
+                        </Badge>
+
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             </TabsContent>
 
-            <TabsContent value="direct" className="mt-0 p-6 ">
+            <TabsContent value="direct" className="mt-0 p-6 lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
               <div className="space-y-4">
                 <div className=" space-y-4  pr-2">
                   {directDonations.map((campaign) => (
@@ -231,7 +244,7 @@ export function DonationHistory({
               </div>
             </TabsContent>
 
-            <TabsContent value="clothing" className="mt-0 p-6">
+            <TabsContent value="clothing" className="mt-0 p-6 lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
               {/* Clothing Donations List */}
               <div className="space-y-3">
                 {clothingDonations.map((donation) => (
@@ -271,7 +284,7 @@ export function DonationHistory({
               </div>
             </TabsContent>
 
-            <TabsContent value="tree" className="mt-0 p-6">
+            <TabsContent value="tree" className="mt-0 p-6 lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
               <div className="space-y-4">
                 {/* Campaign List */}
                 <div className=" space-y-4 pr-2">

@@ -9,6 +9,7 @@ import {
   moneyDonations,
 } from "./data.type";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 export function GotCharityStoreDonation({
   open,
@@ -19,7 +20,7 @@ export function GotCharityStoreDonation({
       <DialogContent className="max-w-md p-0  pt-5 gap-0">
         <div className="relative">
           {/* Tabs */}
-          <Tabs defaultValue="money" className="w-full">
+          <Tabs defaultValue="money" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
             <div className="p-4 pb-0">
               <TabsList className="grid w-full grid-cols-2 h-auto p-0 bg-transparent gap-2">
                 <TabsTrigger
@@ -51,7 +52,11 @@ export function GotCharityStoreDonation({
                     <span className="text-muted-foreground">£1,450</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="font-medium">Item Sales Proceeds <span className="text-muted-foreground"> (20) </span></span>
+                    <span className="font-medium">Item Sold Proceeds <span className="text-muted-foreground"> (20) </span></span>
+                    <span className="text-muted-foreground">£450</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium">Extra Donation <span className="text-muted-foreground"> (20) </span></span>
                     <span className="text-muted-foreground">£450</span>
                   </div>
                 </div>
@@ -80,12 +85,12 @@ export function GotCharityStoreDonation({
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium">{donation.name}</p>
                           <p className="text-xs text-muted-foreground">
-                            {donation.amount} • {donation.time}
+                            {donation.amount} <span className={cn("text-orange-700", !donation?.extraDonation && "hidden")}>• {donation?.extraDonation}</span>  • {donation.time}
                             {donation.item && ` • ${donation.item}`}
                           </p>
                         </div>
                       </div>
-                      {getDonationTypeBadge(donation.type)}
+                      {getDonationTypeBadge(donation.type, donation.extraDonation)}
                     </div>
                   ))}
                 </div>
@@ -105,7 +110,7 @@ export function GotCharityStoreDonation({
                 </div>
 
                 {/* Clothing Donations List */}
-                <div className="space-y-3 max-h-[400px] overflow-y-auto scroll-hide">
+                <div className="space-y-3 max-h-[500px] overflow-y-auto scroll-hide">
                   {clothingDonations.map((donation) => (
                     <div key={donation.id} className="flex items-start gap-3">
                       <Avatar className="h-10 w-10 flex-shrink-0">
@@ -151,11 +156,12 @@ export function GotCharityStoreDonation({
 }
 
 // Function to get donation type badge
-const getDonationTypeBadge = (type: DonationType) => {
+const getDonationTypeBadge = (type: DonationType, extraDonation?: string) => {
   const styles = {
     direct: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100",
     purchase: "bg-purple-100 text-purple-700 hover:bg-purple-100",
     "item-sale": "bg-blue-100 text-blue-700 hover:bg-blue-100",
+    extraDonation: "bg-orange-100 text-orange-700 hover:bg-orange-100",
   };
 
   const labels = {
@@ -165,8 +171,15 @@ const getDonationTypeBadge = (type: DonationType) => {
   };
 
   return (
-    <Badge variant="secondary" className={styles[type]}>
-      {labels[type]}
-    </Badge>
+    <div className="flex items-center gap-2">
+
+      {extraDonation && <Badge variant="secondary" className={styles["extraDonation"]}>
+        Extra Donation
+      </Badge>}
+
+      <Badge variant="secondary" className={styles[type]}>
+        {labels[type]}
+      </Badge>
+    </div>
   );
 };

@@ -72,6 +72,7 @@ export const buyerCampaigns = [
     time: "6 mos",
     item: "T-Shirt",
     type: "Purchase" as const,
+    extraDonation: "£10",
     avatar: "https://i.pravatar.cc/150?img=12",
   },
   {
@@ -97,6 +98,7 @@ export const buyerCampaigns = [
     name: "Plant More Trees",
     amount: "£20",
     time: "6 mos",
+    extraDonation: "£10",
     item: "T-Shirt",
     type: "Purchase" as const,
     avatar: "https://i.pravatar.cc/150?img=12",
@@ -115,6 +117,7 @@ export const buyerCampaigns = [
     name: "Plant More Trees",
     amount: "£20",
     time: "6 mos",
+    extraDonation: "£10",
     item: "T-Shirt",
     type: "Purchase" as const,
     avatar: "https://i.pravatar.cc/150?img=12",

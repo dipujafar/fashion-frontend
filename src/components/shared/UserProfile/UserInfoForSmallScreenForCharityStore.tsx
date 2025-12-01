@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { IndividualCharityDonationFormDialog } from "../Modal/IndividualCharityDonationFormDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import XIcon from "@/assets/icons/x-icon.png";
+import ClothesDonationDialog from "../Modal/clothesDonation/ClothesDonationDialog";
 
 
 export default function UserInfoForSmallScreenForCharityStore({ userRole, coverImage = "/user_profile_cover_image.png", profileImage = "/seller_profile.png", }: { userRole: string, coverImage?: string, profileImage?: string }) {
@@ -99,9 +100,10 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
             <div className="w-full  border-gray-300 rounded-lg bg-white lg:mt-20 shadow-md overflow-hidden border-t-4 border-t-green-700 mt-2 px-4 pb-2">
 
                 <div className="px-4 pt-4 pb-2 flex gap-2 bg-white">
-                    <button className="flex-1 px-4 py-2 bg-white border border-green-700 text-green-700 rounded font-semibold text-sm hover:bg-gray-50">
+                    {/* <button className="flex-1 px-4 py-2 bg-white border border-green-700 text-green-700 rounded font-semibold text-sm hover:bg-gray-50">
                         Donate Clothes
-                    </button>
+                    </button> */}
+                    <ClothesDonationDialog className="flex-1 px-4 py-2 bg-white border border-green-700 text-green-700 rounded font-semibold text-sm hover:bg-gray-50"/>
 
                     <button onClick={() => setOpenDonationModal(true)} className="flex-1 px-4 py-2 bg-green-700 text-white rounded font-semibold text-sm hover:bg-green-800">
                         Donate Now

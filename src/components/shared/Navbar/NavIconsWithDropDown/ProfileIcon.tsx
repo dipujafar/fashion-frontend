@@ -9,11 +9,11 @@ import { Switch } from "@/components/ui/switch";
 import { ProfileNavIcon } from "@/icons";
 import {
   ChevronRight,
+  Handshake,
   LifeBuoy,
   List,
   LogOut,
   Moon,
-  NotebookText,
   Package,
   Settings,
   SquareChartGantt,
@@ -62,6 +62,11 @@ const navLinksFotProfileIcon = [
     icon: <Settings className="h-5 w-5" />,
     name: "Settings",
     link: "/professional-seller/dashboard/settings",
+  },
+  {
+    icon: <Handshake className="h-5 w-5" />,
+    name: "Assisted Seller",
+    link: "/assisted-seller",
   },
   {
     icon: <Tags className="h-5 w-5" />,
