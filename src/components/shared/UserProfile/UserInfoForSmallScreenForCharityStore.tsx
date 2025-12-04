@@ -135,7 +135,7 @@ export default function UserInfoForSmallScreenForCharityStore({ userRole, coverI
                 </div>
 
                 {/* ====================== description ========================== */}
-                <div className="flex justify-center mt-2 text-center"> <DisplayLargeDescriptionText length={90} data=" By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the
+                <div className="flex justify-center mt-2"> <DisplayLargeDescriptionText length={90} data=" By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the
                 fight against ocean pollution and supporting initiatives." />
                 </div>
                 {/* Message and follow option and Social Media */}

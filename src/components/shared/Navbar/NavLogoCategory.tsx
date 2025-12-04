@@ -28,8 +28,8 @@ import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
 
 const NavLogoCategory = () => {
   return (
-    <div>
-      <Container className="flex flex-row-reverse md:flex-row  justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16 bg-primary-white py-4">
+    <div className="bg-primary-white">
+      <Container className="flex flex-row-reverse md:flex-row  justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16  py-4">
         {/* ======= Small Screen view ========== */}
         <div className="flex items-center gap-x-2">
           <div className="md:hidden ">

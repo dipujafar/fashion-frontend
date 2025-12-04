@@ -5,7 +5,6 @@ import {
     FacebookIcon,
     InstagramIcon,
     TikTokIcon,
-    TwitterIcon,
     VerifiedIcon,
 } from "@/icons";
 import Link from "next/link";
@@ -149,98 +148,101 @@ export default function UserInfoForSmallScreen({ userRole, coverImage = "/user_p
                     </div>
                     <h2 className="text-sm text-gray-900 text-center">@Sarah_Style</h2>
                 </div>
-                {/* ============== rating and sold item and  location ============= */}
-                <div className="flex  justify-center gap-x-2">
-                    <div className="flex items-center gap-1 line-clamp-1">
-                        <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                        <p className="md:text-lg font-medium">4.9</p>
-                        <p className="md:text-lg text-muted-foreground line-clamp-1">
-                            (12 Reviews)
-                        </p>
-                    </div>
-                    <Dot />
-                    <h5>500 Sold</h5>
-                    <Dot />
-                    <div className="flex items-center justify-center gap-1 px-3 py-1 bg-gray-100 rounded border border-gray-300">
-                        <MapPin size={14} />
-                        <span className="text-xs font-medium text-gray-700">USA</span>
-                    </div>
 
-                </div>
-
-                {/* ====================== description ========================== */}
-                <div className="flex justify-center mt-2 text-center"> <DisplayLargeDescriptionText length={90} data=" By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the
-                fight against ocean pollution and supporting initiatives." />
-                </div>
-
-                <div className="flex items-center justify-end  gap-x-2 mb-1">
-                    <Link href="#">
-                        <FacebookIcon />
-                    </Link>
-                    <Link href="#">
-                        <InstagramIcon />
-                    </Link>
-                    <Link href="#">
-                        <Image
-                            src={XIcon}
-                            alt="X"
-                            className="size-8"
-                        ></Image>
-                    </Link>
-                    <Link href="#">
-                        <TikTokIcon />
-                    </Link>
-                </div>
-
-
-
-                {/* ========================= badges ============================= */}
-                <div className="flex justify-center items-center gap-x-2">
-                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
-                        🌱
-                    </div>
-                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
-                        💚
-                    </div>
-                    <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
-                        👕
-                    </div>
-                </div>
-
-
-
-
-
-                {/* Stats Section */}
-                <div className="grid grid-cols-2 gap-4 pt-2 mb-2 ">
-                    <div className="text-center">
-                        <p onClick={() => setOpenFollowers(true)} className="text-sm text-gray-600  underline cursor-pointer">Followers</p>
-                        <p className="text-xl font-bold text-gray-900">2434</p>
-
-                    </div>
-                    <div className="text-center">
-                        <p onClick={() => {
-                            setOpenFollowers(true);
-                            setType("following");
-                        }} className="text-sm text-gray-600 underline cursor-pointer">Following</p>
-                        <p className="text-xl font-bold text-gray-900">812</p>
-
-                    </div>
-
-                </div>
-                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-200">
-                    <div className="text-center">
-                        <div onClick={() => handleOpenDonationHistoryModal(userRole)} className="flex items-center justify-center gap-1 mb-1">
-                            <AlertCircle size={14} className="text-green-700" />
-                            <p className="text-xs text-gray-600 font-medium">Total Donations</p>
+                <div style={{borderTop: `4px solid ${userTag(userRole)?.color}`}} className="bg-white rounded-lg shadow-md overflow-hidden  p-5 mt-2">
+                    {/* ============== rating and sold item and  location ============= */}
+                    <div className="flex  justify-center gap-x-2">
+                        <div className="flex items-center gap-1 line-clamp-1">
+                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <p className="md:text-lg font-medium">4.9</p>
+                            <p className="md:text-lg text-muted-foreground line-clamp-1">
+                                (12 Reviews)
+                            </p>
                         </div>
-                        <p className="text-2xl font-bold text-gray-900">$5,000</p>
+                        <Dot />
+                        <h5>500 Sold</h5>
+                        <Dot />
+                        <div className="flex items-center justify-center gap-1 px-3 py-1 bg-gray-100 rounded border border-gray-300">
+                            <MapPin size={14} />
+                            <span className="text-xs font-medium text-gray-700">USA</span>
+                        </div>
+
                     </div>
 
-                    <div className="text-center">
-                        <p className="text-sm text-gray-600">Total Products</p>
-                        <p className="text-xl font-bold text-gray-900">600</p>
+                    {/* ====================== description ========================== */}
+                    <div className="flex justify-center mt-2 "> <DisplayLargeDescriptionText length={90} data=" By shopping with us, you're not just getting great items at affordable prices, you're also contributing to the
+                fight against ocean pollution and supporting initiatives." />
+                    </div>
 
+                    <div className="flex items-center justify-end  gap-x-2  my-1">
+                        <Link href="#">
+                            <FacebookIcon />
+                        </Link>
+                        <Link href="#">
+                            <InstagramIcon />
+                        </Link>
+                        <Link href="#">
+                            <Image
+                                src={XIcon}
+                                alt="X"
+                                className="size-8"
+                            ></Image>
+                        </Link>
+                        <Link href="#">
+                            <TikTokIcon />
+                        </Link>
+                    </div>
+
+
+
+                    {/* ========================= badges ============================= */}
+                    <div className="flex justify-center items-center gap-x-2  my-1">
+                        <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                            🌱
+                        </div>
+                        <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                            💚
+                        </div>
+                        <div className="size-10 bg-black/20 rounded-full flex justify-center items-center">
+                            👕
+                        </div>
+                    </div>
+
+
+
+
+
+                    {/* Stats Section */}
+                    <div className="grid grid-cols-2 gap-4 pt-2 mb-2 ">
+                        <div className="text-center">
+                            <p onClick={() => setOpenFollowers(true)} className="text-sm text-gray-600  underline cursor-pointer">Followers</p>
+                            <p className="text-xl font-bold text-gray-900">2434</p>
+
+                        </div>
+                        <div className="text-center">
+                            <p onClick={() => {
+                                setOpenFollowers(true);
+                                setType("following");
+                            }} className="text-sm text-gray-600 underline cursor-pointer">Following</p>
+                            <p className="text-xl font-bold text-gray-900">812</p>
+
+                        </div>
+
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-200">
+                        <div className="text-center">
+                            <div onClick={() => handleOpenDonationHistoryModal(userRole)} className="flex items-center justify-center gap-1 mb-1">
+                                <AlertCircle size={14} className="text-green-700" />
+                                <p className="text-xs text-gray-600 font-medium">Total Donations</p>
+                            </div>
+                            <p className="text-2xl font-bold text-gray-900">$5,000</p>
+                        </div>
+
+                        <div className="text-center">
+                            <p className="text-sm text-gray-600">Total Products</p>
+                            <p className="text-xl font-bold text-gray-900">600</p>
+
+                        </div>
                     </div>
                 </div>
             </div>
