@@ -54,7 +54,7 @@ export function GotCharityDonationHistoryDialog({
                   value="newest"
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
-                  Recent
+                  Money Raised
                 </TabsTrigger>
                 <TabsTrigger
                   value="top"

@@ -43,7 +43,7 @@ export default function RootLayout({
         </div>
 
           <NextTopLoader
-          color="#fff"
+          color="#DEEEFF"
           initialPosition={0.08}
           crawlSpeed={200}
           height={3}

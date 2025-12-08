@@ -23,6 +23,7 @@ import {
   UsersRound,
   BrickWall,
   Tags,
+  Handshake,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { CartIcon } from "@/icons";
@@ -103,6 +104,11 @@ export const navItems: NavItem[] = [
     icon: <Heart className="h-5 w-5" />,
     label: "Favorites",
     link: "/wishlist",
+  },
+  {
+    icon: <Handshake className="h-5 w-5" />,
+    label: "Assisted Seller",
+    link: "/assisted-seller",
   },
   {
     icon: <CartIcon className="h-5 w-5 text-muted-foreground" />,
