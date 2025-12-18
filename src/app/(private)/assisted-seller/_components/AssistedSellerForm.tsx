@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,9 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Plus, PlusCircle } from "lucide-react"
+import SelectDonationOption from "@/components/shared/UserProfile/AddProduct/SelectDonationOption"
+import InputCharityDonationInput from "@/components/shared/UserProfile/AddProduct/InputCharityDonationInput"
 
 const formSchema = z.object({
   itemCount: z.string().min(1, "Please enter number of items"),
@@ -32,6 +35,15 @@ const formSchema = z.object({
   companyAddress: z.string().optional(),
   contactNumber: z.string().optional(),
   notes: z.string().optional(),
+  donations: z.array(
+    z.object({
+      donateToCharity: z.string().min(1, "Please select a charity"),
+      donationAmount: z.preprocess(
+        (val) => Number(val),
+        z.number().min(1).max(100)
+      ),
+    })
+  ),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -56,11 +68,18 @@ export function AssistedSellerForm() {
       companyAddress: "",
       contactNumber: "",
       notes: "",
+      donations: [{ donateToCharity: "", donationAmount: 0 }],
     },
   })
 
   const pricingOption = form.watch("pricingOption")
-  const openToOffers = form.watch("openToOffers")
+
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "donations",
+  });
+
 
   function onSubmit(values: FormValues) {
     console.log("Form submitted:", values)
@@ -122,10 +141,14 @@ export function AssistedSellerForm() {
                       className="hidden"
                       id="image-upload"
                     />
-                    <label htmlFor="image-upload" className="cursor-pointer block">
-                      <div className="text-4xl mb-2">📷</div>
-                      <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
-                      <p className="text-xs text-muted-foreground mt-1">PNG, JPG, GIF up to 10MB</p>
+                    <label htmlFor="image-upload" className="cursor-pointer block space-y-1">
+                      <p className="flex-center gap-x-1 bg-black w-fit mx-auto text-white text-sm px-3 py-1.5 rounded-md">
+                        <Plus className="size-5" /> Upload
+                      </p>
+
+                      <span className="text-xs text-gray-500 text-center px-2 hidden md:block">
+                        Drop images or click to upload
+                      </span>
                     </label>
                   </div>
                 </FormControl>
@@ -283,47 +306,7 @@ export function AssistedSellerForm() {
             </div>
           </Card>
 
-          {/* Charity & Open to Offers */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">   
-            <FormField
-              control={form.control}
-              name="charityType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Donate to charity</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger className="bg-gray-100 w-full py-5">
-                        <SelectValue placeholder="Select charity" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="unicef">UNICEF</SelectItem>
-                      <SelectItem value="redcross">Red Cross</SelectItem>
-                      <SelectItem value="oxfam">Oxfam</SelectItem>
-                      <SelectItem value="none">None</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="charityAmount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Donation Amount (%)</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="Percentage to donate" className="bg-gray-100 py-5" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
+          <InputCharityDonationInput form={form} fields={fields} append={append} remove={remove} />
           {/* Shipping & Address */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField

@@ -97,6 +97,22 @@ export const GENERAL_BADGES = [
     category: "general" as const,
     progress: { current: 3, total: 10 },
   },
+  {
+    id: "trusted-seller",
+    title: "Trusted Seller",
+    description: "Verified seller with consistent positive reviews",
+    icon: "✅",
+    category: "general" as const,
+    progress: { current: 40, total: 100 },
+  },
+  {
+    id: "charity-supporter-general",
+    title: "Charity Supporter",
+    description: "Raise £100+ for charity",
+    icon: "❤️",
+    category: "general" as const,
+    progress: { current: 0, total: 100 },
+  },
 ];
 
 export const ECO_BADGES = [
@@ -140,9 +156,41 @@ export const ECO_BADGES = [
     category: "eco" as const,
     progress: { current: 8, total: 10 },
   },
+  {
+    id: "eco-charity-supporter",
+    title: "Charity Supporter",
+    description: "Raise £100+ for charity through eco sales",
+    icon: "❤️",
+    category: "eco" as const,
+    progress: { current: 0, total: 100 },
+  },
+  {
+    id: "eco-charity-champion",
+    title: "Charity Champion",
+    description: "Raise £1,000+ for charity through eco sales",
+    icon: "💷",
+    category: "eco" as const,
+    progress: { current: 400, total: 1000 },
+  },
+  {
+    id: "eco-top-charity-fundraiser",
+    title: "Top Charity Fundraiser",
+    description: "Raise £10,000+ for charity through eco sales",
+    icon: "🏆",
+    category: "eco" as const,
+    progress: { current: 1200, total: 10000 },
+  },
 ];
 
-export const CHARITY_BADGES = [
+export const CHARITY_BADGES_STORE = [
+  {
+    id: "charity-supporter-store",
+    title: "Charity Supporter",
+    description: "Raise £100+ for your charity",
+    icon: "❤️",
+    category: "charity" as const,
+    progress: { current: 0, total: 100 },
+  },
   {
     id: "fast-shipper-charity",
     title: "Fast Shipper",
@@ -160,17 +208,17 @@ export const CHARITY_BADGES = [
     progress: { current: 60, total: 100 },
   },
   {
-    id: "top-charity-seller",
-    title: "Top Charity Seller",
-    description: "100+ items sold",
+    id: "top-charity-fundraiser-store",
+    title: "Top Charity Fundraiser",
+    description: "Raise £10,000+ for your charity",
     icon: "🏆",
     category: "charity" as const,
-    progress: { current: 75, total: 100 },
+    progress: { current: 3200, total: 10000 },
   },
   {
-    id: "raised-1000",
-    title: "Raised £1,000+",
-    description: "Charity fundraising",
+    id: "charity-champion-store",
+    title: "Charity Champion",
+    description: "Raise £1,000+ for your charity",
     icon: "💷",
     category: "charity" as const,
     progress: { current: 650, total: 1000 },
@@ -184,3 +232,32 @@ export const CHARITY_BADGES = [
     progress: { current: 7, total: 10 },
   },
 ];
+
+
+export const CHARITY_BADGES = [
+  {
+    id: "charity-supporter",
+    title: "Charity Supporter",
+    description: "Raise £100+ for your charity",
+    icon: "❤️",
+    category: "charity" as const,
+    progress: { current: 0, total: 100 },
+  },
+  {
+    id: "charity-champion",
+    title: "Charity Champion",
+    description: "Raise £1,000+ for your charity",
+    icon: "💷",
+    category: "charity" as const,
+    progress: { current: 650, total: 1000 },
+  },
+  {
+    id: "top-charity-fundraiser",
+    title: "Top Charity Fundraiser",
+    description: "Raise £10,000+ for your charity",
+    icon: "🏆",
+    category: "charity" as const,
+    progress: { current: 3200, total: 10000 },
+  },
+];
+

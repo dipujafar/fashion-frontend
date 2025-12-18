@@ -136,7 +136,7 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
 
           {/* follow btn and message btn for mobile */}
           <div className="flex items-center gap-x-2 md:hidden">
-            <Tooltip>
+            {/* <Tooltip>
               <TooltipTrigger>
                 <Link href="#">
                   <MessageCircle />
@@ -145,7 +145,7 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
               <TooltipContent>
                 <p>Message</p>
               </TooltipContent>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip>
               <TooltipTrigger>
                 <Link href="#">
@@ -169,10 +169,10 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
               <UserPlus className="h-3 w-3 mr-1" />
               {user.isFollowing ? "UNFOLLOW" : "FOLLOW"}
             </Button>
-            <Button variant="outline" size="sm" className="h-8 px-3 text-xs bg-transparent">
+            {/* <Button variant="outline" size="sm" className="h-8 px-3 text-xs bg-transparent">
               <MessageCircle className="h-3 w-3 mr-1" />
               MESSAGE
-            </Button>
+            </Button> */}
           </div>
         </div>
       ))}

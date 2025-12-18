@@ -8,7 +8,6 @@ import { productsData } from "@/data/dummyData.tsx";
 import { cn } from "@/lib/utils";
 import { TProduct } from "@/types";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ReviewBundleModal from "./ReviewBundleModal";
 
@@ -16,8 +15,7 @@ export default function () {
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<TProduct[]>([]);
   const [openReviewBundleModal, setOpenReviewBundleModal] = useState(false);
-  const discount = useSearchParams().get("discount");
-  const minimumItems = useSearchParams().get("item");
+
 
   const allAddedData = productsData?.filter((user) =>
     selectedProductIds?.includes(user?._id)
@@ -37,7 +35,7 @@ export default function () {
     <>
       <Container>
         {/* -------------------------------------------------- added products for bundle -------------------------------- */}
-        <div className="flex justify-between items-center flex-wrap gap-2">
+        <div className="md:flex justify-between items-center flex-wrap gap-2 mt-5 hidden ">
           <div className="flex gap-x-2 items-center flex-wrap">
             <div className="flex flex-wrap gap-2">
               {selectedProducts?.map((user) => (
@@ -61,18 +59,76 @@ export default function () {
                 )}
               </div>
               <div className="flex">
-                Bundle Discount: {selectedProductIds?.length ? discount : 0}%{" "}
+                Bundle Discount: 10%{" "}
               </div>
             </div>
           </div>
           <CommonButton
             handlerFunction={openReviewBundleModalHandler}
-            disabled={selectedProductIds?.length < Number(minimumItems)}
+            disabled={selectedProductIds?.length < 1}
             className="bg-transparent text-primary-black border-b-2 border-r-2 border-black hover:bg-gray-100"
           >
             Review Bundle
           </CommonButton>
         </div>
+        {/* ------------------------------------------ added products for bundle in mobile view ---------------- */}
+        <div className="fixed -bottom-2 left-0 right-0 bg-white border-t border-border p-4 shadow-lg z-10 md:hidden">
+          <div className="space-y-2">
+            <div className="flex gap-x-2 items-center">
+              <div className="flex  gap-2">
+                {selectedProducts?.slice(0, 1)?.map((user) => (
+                  <Image
+                    key={user?._id}
+                    src={user?.image}
+                    alt="user_image"
+                    width={1200}
+                    height={1200}
+                    className="rounded-xl size-24 object-cover"
+                  />
+                ))}
+                <div className="relative">
+                  {selectedProducts?.slice(1, 2)?.map((user) => (
+                    <Image
+                      key={user?._id}
+                      src={user?.image}
+                      alt="user_image"
+                      width={1200}
+                      height={1200}
+                      className="rounded-xl size-24 object-cover"
+                    />
+
+                  ))}
+                  {selectedProducts?.length > 2 && <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-xl ">
+                    <span className="text-white text-lg bg-black-50 p-2">+{selectedProducts?.length - 2}</span>
+                  </div>}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <div className="flex text-sm">Item: {selectedProductIds?.length}</div>
+                <div className="flex text-sm">
+                  Price: $
+                  {allAddedData?.reduce(
+                    (acc: number, curr: TProduct) => acc + curr?.price,
+                    0
+                  )}
+                </div>
+                <div className="flex text-sm">
+                  Bundle Discount: 10%{" "}
+                </div>
+              </div>
+            </div>
+            <CommonButton
+              handlerFunction={openReviewBundleModalHandler}
+              disabled={selectedProductIds?.length < 1}
+              className="bg-transparent text-primary-black border-b-2 border-r-2 border-black hover:bg-gray-100 w-full"
+            >
+              Review Bundle
+            </CommonButton>
+          </div>
+
+
+        </div>
+
         {/* ----------------------------------------------------------------------------------------------------- */}
         <div>
           <h5 className="md:text-2xl text-lg font-bold text-center mb-4">
@@ -116,6 +172,8 @@ export default function () {
             </ProductCard>
           ))}
         </div>
+
+
       </Container>
       <ReviewBundleModal
         open={openReviewBundleModal}

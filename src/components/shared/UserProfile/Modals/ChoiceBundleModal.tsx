@@ -55,9 +55,7 @@ export default function ChoiceBundleModal() {
               onClick={() => setSelectItem(bundle?.item)}
               key={bundle?.id}
               className={cn(
-                "flex justify-between items-center border border-black rounded-xl bg-gray-50 py-3 px-5 cursor-pointer",
-                selectItem === bundle?.item &&
-                  "bg-[#000] border-primary-gray/40 text-white duration-500"
+                "flex justify-between items-center border border-black rounded-xl bg-gray-50 py-3 px-5"
               )}
             >
               <span className="text-lg">{bundle.item} Items</span>
@@ -66,9 +64,7 @@ export default function ChoiceBundleModal() {
           ))}
         </div>
         <Link
-          href={`/build-bundle?item=${selectItem}&discount=${
-            bundleData?.find((bundle) => bundle?.item === selectItem)?.discount
-          }`}
+          href={`/build-bundle`}
           className="w-full"
         >
           {" "}
@@ -79,6 +75,7 @@ export default function ChoiceBundleModal() {
             Choose a bundle
           </Button>
         </Link>
+        <p className="text-lg font-medium text-center">Save on shipping fees</p>
       </DialogContent>
     </Dialog>
   );

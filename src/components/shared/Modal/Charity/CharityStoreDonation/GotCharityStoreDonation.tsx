@@ -22,7 +22,7 @@ export function GotCharityStoreDonation({
           {/* Tabs */}
           <Tabs defaultValue="money" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
             <div className="p-4 pb-0">
-              <TabsList className="grid w-full grid-cols-2 h-auto p-0 bg-transparent gap-2">
+              <TabsList className="grid w-full grid-cols-3 h-auto p-0 bg-transparent gap-2">
                 <TabsTrigger
                   value="money"
                   className="py-2 px-4 rounded-lg data-[state=active]:bg-black data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-600 "
@@ -34,6 +34,12 @@ export function GotCharityStoreDonation({
                   className="py-2 px-4 rounded-lg data-[state=active]:bg-black data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-600"
                 >
                   Clothing Donated
+                </TabsTrigger>
+                <TabsTrigger
+                  value="top"
+                  className="py-2 px-4 rounded-lg data-[state=active]:bg-black data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-600"
+                >
+                  Top
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -147,6 +153,44 @@ export function GotCharityStoreDonation({
                   ))}
                 </div>
               </TabsContent>
+
+              <TabsContent value="top" className="mt-0">
+
+
+                {/* Donations List */}
+                <div className="space-y-3 max-h-[500px] overflow-y-auto scroll-hide">
+                  {moneyDonations.map((donation) => (
+                    <div
+                      key={donation.id}
+                      className="flex items-center justify-between gap-3"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <Avatar className="h-10 w-10 flex-shrink-0">
+                          {donation.avatar ? (
+                            <AvatarImage
+                              src={donation.avatar || "/placeholder.svg"}
+                              alt={donation.name}
+                            />
+                          ) : null}
+                          <AvatarFallback className="bg-gray-200 text-gray-600">
+                            {donation.name === "Anonymous"
+                              ? "?"
+                              : donation.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium">{donation.name}</p>
+                          <p className="text-xs text-muted-foreground">{"Celebrity"}</p>
+                        </div>
+                      </div>
+                      {/* amount */}
+                      <p>{donation.amount}</p>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+
+
             </div>
           </Tabs>
         </div>

@@ -16,6 +16,7 @@ interface Charity {
   id: string;
   name: string;
   amount: number;
+  discount?: string;
 }
 
 interface CharityDonationFormData {
@@ -31,9 +32,9 @@ interface CharityDonationDialogProps {
 }
 
 const charities: Charity[] = [
-  { id: "save-planet", name: "Save the Planet", amount: 29.3 },
-  { id: "plant-trees", name: "Plant More Trees", amount: 29.3 },
-  { id: "clean-oceans", name: "Clean Oceans", amount: 0.0 },
+  { id: "save-planet", name: "Save the Planet", amount: 14.3, discount: "05%" },
+  { id: "plant-trees", name: "Plant More Trees", amount: 29.3, discount: "10%" },
+  { id: "clean-oceans", name: "Clean Oceans", amount: 30.0, discount: "15%" },
 ];
 
 export function CharityDonationSelectDialog({
@@ -45,12 +46,13 @@ export function CharityDonationSelectDialog({
   const [selectedCharities, setSelectedCharities] = useState<string[]>([
     "save-planet",
     "plant-trees",
+    "clean-oceans",
   ]);
   const [additionalDonation, setAdditionalDonation] = useState<number>(0);
 
   const { handleSubmit } = useForm<CharityDonationFormData>({
     defaultValues: {
-      selectedCharities: ["save-planet", "plant-trees"],
+      selectedCharities: ["save-planet", "plant-trees", "clean-oceans"],
       additionalDonation: 0,
     },
   });
@@ -128,6 +130,7 @@ export function CharityDonationSelectDialog({
                       {charity.name}
                     </Label>
                     <span className="text-sm text-muted-foreground">
+                      ${charity.discount} --
                       ${charity.amount.toFixed(2)}
                     </span>
                   </div>

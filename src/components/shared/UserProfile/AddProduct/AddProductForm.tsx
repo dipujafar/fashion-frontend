@@ -1,9 +1,9 @@
 "use client";;
-import type React from "react";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useCallback } from "react";
-import { X, PlusCircle, Plus } from "lucide-react";
+import { X, PlusCircle, Plus, ChevronsUpDown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -41,13 +41,19 @@ import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
 import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
 import { useSearchParams } from "next/navigation";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import InputCharityDonationInput from "./InputCharityDonationInput";
+
+
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
   const fromEditPage = useSearchParams().get("edit");
-  
+
+
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -113,7 +119,7 @@ export default function AddProductForm() {
   return (
     <div className="md:space-y-6 space-y-3">
       <Card className="py-0 border-none shadow-none">
-       { fromEditPage && <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>}
+        {fromEditPage && <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>}
         <CardContent className="px-0">
           <Form {...form}>
             <form
@@ -155,7 +161,7 @@ export default function AddProductForm() {
                       className={cn(
                         "aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border",
                         images?.length === 0 &&
-                          "col-span-2 md:col-span-4 2xl:col-span-5 aspect-video md:aspect-auto md:min-h-[300px]"
+                        "col-span-2 md:col-span-4 2xl:col-span-5 aspect-video md:aspect-auto md:min-h-[300px]"
                       )}
                     >
                       <input
@@ -464,7 +470,7 @@ export default function AddProductForm() {
                                           : color.hex,
                                       border:
                                         color.name === "White" ||
-                                        color.name === "Clear"
+                                          color.name === "Clear"
                                           ? "1px solid #e5e5e5"
                                           : "none",
                                     }}
@@ -522,94 +528,8 @@ export default function AddProductForm() {
                   />
                 </div>
 
-                {fields.map((field, index) => (
-                  <div
-                    key={field.id}
-                    className="grid grid-cols-2 md:gap-4 gap-x-2"
-                  >
-                    {/* Charity Select */}
-                    <FormField
-                      control={form.control}
-                      name={`donations.${index}.donateToCharity`}
-                      render={({ field }) => (
-                        <FormItem className=" ">
-                          <FormLabel>
-                            Donate to charity <SelectDonationOption />{" "}
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                                <SelectValue placeholder="Select charity" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="save_the_children">
-                                Save the Children
-                              </SelectItem>
-                              <SelectItem value="plant_more_trees">
-                                Plant More Trees
-                              </SelectItem>
-                              <SelectItem value="women_for_women_international">
-                                Women for Women International
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                <InputCharityDonationInput form={form} fields={fields} append={append} remove={remove} />
 
-                    {/* Donation Amount */}
-                    <div className="flex gap-2">
-                      <FormField
-                        control={form.control}
-                        name={`donations.${index}.donationAmount`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1 mt-2">
-                            <FormLabel>Amount (%)</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                placeholder="Enter Amount (%)"
-                                {...field}
-                                className="bg-[#f2f2f2] md:py-5"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {/* Remove button */}
-                      {index > 0 && (
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          className="self-end -translate-y-1 "
-                          onClick={() => remove(index)}
-                        >
-                          ✕
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-
-                {/* Add More Button */}
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() =>
-                    append({ donateToCharity: "", donationAmount: 0 })
-                  }
-                  className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer"
-                >
-                  <PlusCircle /> Add More
-                </Button>
 
                 {/* Donation Privacy */}
                 <FormField

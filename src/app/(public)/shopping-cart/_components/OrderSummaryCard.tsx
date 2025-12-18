@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import CommonButton from "@/components/ui/common-button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -14,9 +15,7 @@ const OrderSummaryCard = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const handleProceed = () => {
-    router.push("/billing-info");
-  };
+
   return (
     <Card className=" hover:border hover:border-primary-color/50 duration-300 text-black h-fit">
       <CardHeader className="mb-0">
@@ -63,8 +62,17 @@ const OrderSummaryCard = () => {
             <p className="font-medium">$0.00</p>
           </div>
           <hr />
+          <div className="flex justify-between items-center">
+            <div className="text-[#8A8A8A]">
+              <p>Promo code:</p>
+              <span>(If you have a discount code)</span>
+            </div>
+            <Input className="w-1/2 bg-gray-100" placeholder="Enter code" />
+          </div>
+          <hr />
           <div className="flex justify-between ">
             <p className="text-[#8A8A8A]">Total:</p>
+
             <p className="font-medium">$633.00</p>
           </div>
         </div>

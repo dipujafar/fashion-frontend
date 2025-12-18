@@ -47,24 +47,27 @@ export default function ReviewBundleModal({
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-5">
-            <div className="flex items-center gap-x-2">
-              <h3 className=" text-primary-gray">
+            <div>
+              <h3 className=" text-primary-gray mb-1">
                 {selectedProducts?.length} Items
               </h3>
-              <div className="flex flex-wrap gap-2">
-                {selectedProducts?.map((user, index) => (
-                  <Image
-                    key={index}
-                    src={user?.image}
-                    alt="user_image"
-                    width={1200}
-                    height={1200}
-                    className="rounded-xl h-[80px] w-[80px] "
-                  />
-                ))}
+              <div className="flex items-center gap-x-2">
+                <div className="flex flex-wrap gap-2">
+                  {selectedProducts?.map((user, index) => (
+                    <Image
+                      key={index}
+                      src={user?.image}
+                      alt="user_image"
+                      width={1200}
+                      height={1200}
+                      className="rounded-xl h-[80px] w-[80px] "
+                    />
+                  ))}
+                </div>
               </div>
             </div>
             <hr />
+
             {/* ----------------------------- all features ---------------------- */}
             <div className="text-primary-gray space-y-2">
               <div className="flex gap-2 flex-wrap justify-between">
