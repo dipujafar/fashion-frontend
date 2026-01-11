@@ -10,6 +10,8 @@ import {
 } from "./data.type";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronsUpDown } from "lucide-react";
 
 export function GotCharityStoreDonation({
   open,
@@ -17,7 +19,7 @@ export function GotCharityStoreDonation({
 }: DonationPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-0  pt-5 gap-0">
+      <DialogContent className="max-w-md p-0  pt-5 gap-0 max-h-[700px] overflow-y-auto scroll-hide">
         <div className="relative">
           {/* Tabs */}
           <Tabs defaultValue="money" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hide">
@@ -53,18 +55,35 @@ export function GotCharityStoreDonation({
                     <span className="font-medium">Total Raised</span>
                     <span className="text-muted-foreground">£1,450</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="font-medium">Direct Donation <span className="text-muted-foreground"> (12) </span></span>
-                    <span className="text-muted-foreground">£1,450</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="font-medium">Item Sold Proceeds <span className="text-muted-foreground"> (20) </span></span>
-                    <span className="text-muted-foreground">£450</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="font-medium">Extra Donation <span className="text-muted-foreground"> (20) </span></span>
-                    <span className="text-muted-foreground">£450</span>
-                  </div>
+
+                  <Collapsible>
+                    <CollapsibleTrigger className="w-full"><div className="flex items-center justify-between w-full cursor-pointer">
+                      <span>
+                        Summary
+                      </span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4" />
+                    </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">Direct Donation <span className="text-muted-foreground"> (12) </span></span>
+                        <span className="text-muted-foreground">£1,450</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">Item Sold Proceeds <span className="text-muted-foreground"> (20) </span></span>
+                        <span className="text-muted-foreground">£450</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">Extra Donation <span className="text-muted-foreground"> (20) </span></span>
+                        <span className="text-muted-foreground">£450</span>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+
+
+
+
+
                 </div>
 
                 {/* Donations List */}

@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buyerCampaigns, clothingDonations, directDonations, getBadgeVariant, sellerCampaigns, treeDonationData } from "./data.type";
 import { cn } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronsUpDown } from "lucide-react";
 
 export function DonationHistory({
   open,
@@ -15,7 +17,7 @@ export function DonationHistory({
 }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-[550px] p-0">
+      <DialogContent className="max-w-[550px] p-0 max-h-[700px] overflow-y-auto scroll-hide">
         <div className="relative">
           <div className="mt-0 pt-8 px-6">
             <div className="">
@@ -23,42 +25,51 @@ export function DonationHistory({
                 <span className="font-medium">Total Raised</span>
                 <span className="text-muted-foreground">£1,450</span>
               </div>
-
-              <div className="flex items-center justify-between border-b pb-0.5">
-                <span className="font-medium">Item Sales Proceeds</span>
-                <span className="text-muted-foreground">£450</span>
-              </div>
-              <div className="space-y-1 border-b pb-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Purchase Contributions</span>
-                  <span className="text-muted-foreground">£450</span>
+              <Collapsible>
+                <CollapsibleTrigger className="w-full"><div className="flex items-center justify-between w-full cursor-pointer">
+                  <span>
+                    Summary
+                  </span>
+                  <ChevronsUpDown className="ml-2 h-4 w-4" />
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Extra Donations</span>
-                  <span className="text-muted-foreground">£120</span>
-                </div>
-              </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <hr />
+                  <div className="flex items-center justify-between border-b pb-0.5">
+                    <span className="font-medium">Item Sales Proceeds</span>
+                    <span className="text-muted-foreground">£450</span>
+                  </div>
+                  <div className="space-y-1 border-b pb-0.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">Purchase Contributions</span>
+                      <span className="text-muted-foreground">£450</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">Extra Donations</span>
+                      <span className="text-muted-foreground">£120</span>
+                    </div>
+                  </div>
 
-              <div className="flex items-center justify-between border-b pb-1">
-                <span className="font-medium">Direct Donation</span>
-                <span className="text-muted-foreground">£1,450</span>
-              </div>
-              <div className="flex items-center justify-between border-b pb-1">
-                <span className="font-medium">Total Clothing Donated</span>
-                <span className="text-muted-foreground">7 items</span>
-              </div>
-              <div className="space-y-1 border-b pb-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Total Tree Donated</span>
-                  <span className="text-muted-foreground">150</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Total Amount Raised</span>
-                  <span className="text-muted-foreground">£600</span>
-                </div>
-              </div>
-
-
+                  <div className="flex items-center justify-between border-b pb-1">
+                    <span className="font-medium">Direct Donation</span>
+                    <span className="text-muted-foreground">£1,450</span>
+                  </div>
+                  <div className="flex items-center justify-between border-b pb-1">
+                    <span className="font-medium">Total Clothing Donated</span>
+                    <span className="text-muted-foreground">7 items</span>
+                  </div>
+                  <div className="space-y-1 border-b pb-0.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">Total Tree Donated</span>
+                      <span className="text-muted-foreground">150</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">Total Amount Raised</span>
+                      <span className="text-muted-foreground">£600</span>
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
           </div>
           <Tabs defaultValue="seller" className="w-full lg:h-[600px] h-[500px] overflow-y-auto scroll-hides ">
@@ -170,7 +181,7 @@ export function DonationHistory({
                             {campaign.name}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {campaign.amount} <span className={cn("text-orange-700", !campaign?.extraDonation && "hidden" )}> • {campaign?.extraDonation}</span> • {campaign.time} •{" "}
+                            {campaign.amount} <span className={cn("text-orange-700", !campaign?.extraDonation && "hidden")}> • {campaign?.extraDonation}</span> • {campaign.time} •{" "}
                             {campaign.item}
                           </p>
                         </div>

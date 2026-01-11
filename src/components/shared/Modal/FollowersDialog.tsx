@@ -209,13 +209,13 @@ export function FollowersDialog({ open, setOpen, type }: FollowersDialogProps) {
           </TabsList>
 
           <TabsContent value="followers" className="px-6 pb-6 mt-0">
-            <div className="max-h-96 overflow-y-auto">
+            <div className="h-96 overflow-y-auto">
               <UserList users={followers} />
             </div>
           </TabsContent>
 
           <TabsContent value="following" className="px-6 pb-6 mt-0">
-            <div className="max-h-96 overflow-y-auto">
+            <div className="h-96 overflow-y-auto">
               <UserList users={following} isFollowingTab={true} />
             </div>
           </TabsContent>
