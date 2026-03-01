@@ -16,7 +16,7 @@ export default function PhilanthropistBox({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden bg-gradient-warm shadow-strong max-w-md mx-auto py-0 bg-black/30 border-none  space-y-0 rounded-sm md:min-h-36 text-white",
+        "relative overflow-hidden bg-gradient-warm shadow-strong  mx-auto py-0 bg-black/30 border-none  space-y-0 rounded-sm md:min-h-36 text-white",
         className
       )}
     >
@@ -40,7 +40,7 @@ export default function PhilanthropistBox({
 
           <TextAnimation
             text="Join the Fashion Philanthropist Community!"
-            className=" lg:text-2xl text-xl  font-medium "
+            className=" lg:text-2xl md:text-xl text-lg  font-medium "
             initialDelay={0.5}
           />
 

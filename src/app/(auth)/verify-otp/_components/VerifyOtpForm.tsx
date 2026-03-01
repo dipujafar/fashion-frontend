@@ -1,5 +1,4 @@
 "use client";
-
 import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,6 +17,10 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useVerifyOtpMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
+import { setUser } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 // ✅ Define form validation schema using Zod
 const formSchema = z.object({
@@ -29,6 +32,7 @@ const formSchema = z.object({
 });
 
 const VerifyOtpForm = () => {
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,9 +41,17 @@ const VerifyOtpForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("Submitted Data:", data);
-    router.push("/set-new-password");
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    // console.log("Submitted Data:", data);
+    // router.push("/set-new-password");
+    try {
+      await verifyOtp(data).unwrap();
+      toast.success("OTP verified successfully! Please login.");
+      sessionStorage.removeItem("verifyOtpToken");
+      router.push("/sign-in");
+    } catch (error: any) {
+      toast.error(error.data.message);
+    }
   };
 
   return (
@@ -84,7 +96,7 @@ const VerifyOtpForm = () => {
               )}
             />
 
-            <CommonButton className="w-full">Verify Code</CommonButton>
+            <CommonButton loading={isLoading} disabled={isLoading} className="w-full">Verify Code</CommonButton>
           </form>
         </Form>
       </CardContent>

@@ -66,7 +66,7 @@ const HeroSection = () => {
               className="2xl:text-7xl xl:text-6xl lg:text-5xl md:text-4xl  font-bold"
             />
           </div> */}
-          <div className="absolute lg:top-1/3 lg:left-1/3 top-[40%] left-[40%] -translate-x-1/2 -translate-y-1/2  hidden md:block">
+          <div className="absolute lg:top-1/3 xl:left-1/3 lg:left-[40%] top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2  hidden md:block">
             <PhilanthropistBox />
           </div>
         </div>

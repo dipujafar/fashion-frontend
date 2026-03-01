@@ -61,13 +61,13 @@ export const userRoleData = [
     link: "/professional-seller/sign-up",
     role: "professional_seller",
   },
-  {
-    _id: 8,
-    image: "/userRoleImage8.png",
-    title: "Assisted Seller",
-    description:
-      "Get support in managing your store while selling your fashion items.",
-    link: "/assisted-seller/sign-up",
-    role: "assisted_seller",
-  },
+  // {
+  //   _id: 8,
+  //   image: "/userRoleImage8.png",
+  //   title: "Assisted Seller",
+  //   description:
+  //     "Get support in managing your store while selling your fashion items.",
+  //   link: "/assisted-seller/sign-up",
+  //   role: "assisted_seller",
+  // },
 ];

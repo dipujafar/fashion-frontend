@@ -19,13 +19,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
 import appleIcon from "@/assets/icons/apple.png";
 import googleIcon from "@/assets/icons/google.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useLoginMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser } from "@/redux/features/authSlice";
+import { redirectUrl } from "./utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   email: z
@@ -42,6 +48,8 @@ const formSchema = z.object({
 const SIgnInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,44 +58,21 @@ const SIgnInForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    if (data.email === "individualuser@gmail.com" && data.password === "112233") {
-      router.push("/individual-user/profile");
-      return;
-    }
-
-    if(data?.email === "charityshop@gmail.com" && data?.password === "112233"){
-      router.push("/charity-shop/profile");
-      return;
-
-    }
-    if(data?.email === "charity@gmail.com" && data?.password === "112233"){
-      router.push("/charity/profile");
-      return;
-
-    }
-    if(data?.email === "celebrity@gmail.com" && data?.password === "112233"){
-      router.push("/celebrity/profile");
-      return;
-
-    }
-    if(data?.email === "professionalseller@gmail.com" && data?.password === "112233"){
-      router.push("/professional-seller/profile");
-      return;
-
-    }
-    if(data?.email === "ambassador@gmail.com" && data?.password === "112233"){
-      router.push("/ambassador/profile");
-      return;
-    }
-    if(data?.email === "ecofriendlystore@gmail.com" && data?.password === "112233"){
-      router.push("/eco-friendly-store/profile");
-      return;
-    }
-
-    if(data?.email === "assistedseller@gmail.com" && data?.password === "112233"){
-      router.push("/assisted-seller/profile");
-      return;
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const res = await login(data).unwrap();
+      if (res?.data?.user?.role) {
+        dispatch(
+          setUser({
+            user: jwtDecode(res?.data?.accessToken),
+            token: res?.data?.accessToken,
+          })
+        );
+        toast.success("Login successful");
+        router.push(redirectUrl(res?.data?.user?.role));
+      }
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
   };
 
@@ -178,12 +163,13 @@ const SIgnInForm = () => {
                   Remember me
                 </label>
               </div>
+              <div></div>
               <Link href="/forget-password">
-                <p className="text-secondary-gray">Forgot Password</p>
+                <p className="text-secondary-gray font-medium hover:text-black duration-500">Forgot Password</p>
               </Link>
             </div>
 
-            <CommonButton className="w-full">SIGN IN</CommonButton>
+            <CommonButton loading={isLoading} disabled={isLoading} className="w-full">SIGN IN</CommonButton>
 
             <div className="flex justify-center gap-x-2">
               <p className="text-secondary-gray">Don&apos;t have an account?</p>

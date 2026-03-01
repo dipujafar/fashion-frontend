@@ -26,101 +26,38 @@ import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 import { Textarea } from "@/components/ui/textarea";
+import { formSchema } from "./sign-up-form-schema";
+import { getFirstErrorMessage } from "@/utils/modifyFormError";
+import { toast } from "sonner";
+import { useCreateUserMutation } from "@/redux/api/authApi";
+import { formattedData } from "./utils";
+import { signUpHandler } from "@/utils/sign-up-handler-func";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  firstName: z
-    .string({ required_error: "First Name is required" })
-    .min(1, { message: "First Name is required" }),
-  lastName: z
-    .string({ required_error: "Last Name is required" })
-    .min(1, { message: "Last Name is required" }),
-  userName: z
-    .string({ required_error: "User Name is required" })
-    .min(1, { message: "User Name is required" }),
-  phoneNumber: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
-  description: z.string().min(1, "Description is required"),
-  email: z
-    .string({ required_error: "Email is required" })
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: "passwords must be at least 8 characters long" })
-    .max(64, { message: "passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
-  confirmPassword: z
-    .string({ required_error: "Confirm Password is required" })
-    .min(1, { message: "Confirm Password is required" }),
-  country: z.string().min(1, "Please select a country"),
-  streetAddress: z.string().min(5, "Street address is required"),
-  city: z.string().min(1, "Please select a city"),
-  state: z.string().min(1, "Please select a state"),
-  zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
 
-  socialMedia: z.array(
-    z.object({
-      instagram: z.string().optional(),
-      facebook: z.string().optional(),
-      x: z.string().optional(),
-      tiktok: z.string().optional(),
-    })
-  ),
-});
 
 const CelebritySignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agree, setAgree] = useState(false);
+  const [createAccount, { isLoading }] = useCreateUserMutation();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      country: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      description: "",
-    },
   });
 
   const { register, setValue, control } = form;
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "socialMedia",
-  });
-
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    const modifiedData = formattedData(data);
+    signUpHandler(modifiedData, createAccount, router);
   };
 
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "confirmPassword" || name === "password") {
-        if (value.confirmPassword && value.password !== value.confirmPassword) {
-          form.setError("confirmPassword", {
-            type: "manual",
-            message: "Passwords do not match",
-          });
-        } else {
-          form.clearErrors("confirmPassword");
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
+  const onError = (errors: any) => {
+    const firstErrorMessage = getFirstErrorMessage(errors);
+    toast.error(firstErrorMessage);
+  };
 
   return (
     <Card
@@ -144,7 +81,7 @@ const CelebritySignUpForm = () => {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, onError)}
             className="md:space-y-6 space-y-4"
           >
             <div className=" flex flex-col md:flex-row md:items-center  gap-4 ">
@@ -431,7 +368,7 @@ const CelebritySignUpForm = () => {
               </label>
             </div>
 
-            <CommonButton disabled={!agree} className="w-full">
+            <CommonButton loading={isLoading} disabled={!agree || isLoading} className="w-full">
               SIGN UP
             </CommonButton>
 

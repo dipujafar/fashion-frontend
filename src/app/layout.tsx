@@ -6,6 +6,8 @@ import Footer from "@/components/shared/Footer/Footer";
 import TopInfo from "@/components/shared/Navbar/TopInfo";
 import "react-pagination-bar/dist/index.css";
 import NextTopLoader from "nextjs-toploader";
+import Providers from "@/lib/provider/Providers";
+import { Toaster } from "sonner";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -30,32 +32,34 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${figtree.className}  antialiased`}>
-        <TopInfo></TopInfo>
-        <div className="sticky top-0 z-50 ">
-          <Navbar></Navbar>
-        </div>
+        <Providers>
+          <TopInfo></TopInfo>
+          <div className="sticky top-0 z-50 ">
+            <Navbar></Navbar>
+          </div>
 
-        <div className="min-h-[calc(100vh-140px)] md:pb-16 pb-8 ">
-          {children}
-        </div>
-        <div className="bg-[#F6F6F6] lg:py-14 py-8">
-          <Footer></Footer>
-        </div>
+          <div className="min-h-[calc(100vh-140px)] md:pb-16 pb-8 ">
+            {children}
+          </div>
+          <div className="bg-[#F6F6F6] lg:py-14 py-8">
+            <Footer></Footer>
+          </div>
 
           <NextTopLoader
-          color="#DEEEFF"
-          initialPosition={0.08}
-          crawlSpeed={200}
-          height={3}
-          crawl={true}
-          showSpinner={true}
-          easing="ease"
-          speed={200}
-          shadow="0 0 10px #232323,0 0 5px #EA5326"
-          zIndex={1600}
-          showAtBottom={false}
-        />
-
+            color="#DEEEFF"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={3}
+            crawl={true}
+            showSpinner={true}
+            easing="ease"
+            speed={200}
+            shadow="0 0 10px #232323,0 0 5px #EA5326"
+            zIndex={1600}
+            showAtBottom={false}
+          />
+          <Toaster richColors={true} position="top-center" />
+        </Providers >
         {/* <ScrollLoader></ScrollLoader> */}
       </body>
     </html>

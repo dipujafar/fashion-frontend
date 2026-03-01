@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff, Trash2, Upload, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -28,59 +28,16 @@ import tiktok from "@/assets/icons/tiktokIcon.png";
 import DonationTypeDialog from "./DonationTypeDialog";
 import { Label } from "@/components/ui/label";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
+import { formSchema } from "./sign-up-form-schema";
+import SignUpFormHeader from "@/components/shared/SignUpFormHeader";
+import { getFirstErrorMessage } from "@/utils/modifyFormError";
+import { toast } from "sonner";
+import { signUpHandler } from "@/utils/sign-up-handler-func";
+import { useCreateUserMutation } from "@/redux/api/authApi";
+import { useRouter } from "next/navigation";
+import { formatFormData } from "./utils";
 
-const formSchema = z.object({
-  firstName: z
-    .string({ required_error: "First Name is required" })
-    .min(1, { message: "First Name is required" }),
-  lastName: z
-    .string({ required_error: "Last Name is required" })
-    .min(1, { message: "Last Name is required" }),
-  userName: z
-    .string({ required_error: "Name is required" })
-    .min(1, { message: "Name is required" }),
-  businessEmail: z
-    .string({ required_error: "Official Email is required" })
-    .min(1, { message: "Official Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-  phoneNumber: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
-  businessTags: z
-    .array(z.string())
-    .min(1, { message: "At least one business tag is required" }),
-  socialMedia: z.object({
-    facebook: z.string().optional(),
-    x: z.string().optional(),
-    tiktok: z.string().optional(),
-    instagram: z.string().optional(),
-  }),
 
-  mission: z
-    .string({ required_error: "Mission is required" })
-    .min(1, { message: "Mission is required" }),
-  uploadDocument: z.any().optional(),
-  country: z.string().min(1, "Please select a country"),
-  streetAddress: z.string().min(5, "Street address is required"),
-  city: z.string().min(1, "Please select a city"),
-  state: z.string().min(1, "Please select a state"),
-  zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: "Passwords must be at least 8 characters long" })
-    .max(64, { message: "Passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
-  confirmPassword: z
-    .string({ required_error: "Confirm Password is required" })
-    .min(1, { message: "Confirm Password is required" }),
-});
 
 const CharityShopSignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -91,29 +48,11 @@ const CharityShopSignUpForm = () => {
   const [openSelectDonationTypeModal, setOpenSelectDonationTypeModal] =
     useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [createAccount, { isLoading }] = useCreateUserMutation();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      userName: "",
-      businessEmail: "",
-      phoneNumber: "",
-      businessTags: [],
-      socialMedia: {
-        facebook: "",
-        x: "",
-      },
-      mission: "",
-      country: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      password: "",
-      confirmPassword: "",
-    },
   });
 
   const { register, setValue, control } = form;
@@ -145,50 +84,29 @@ const CharityShopSignUpForm = () => {
   };
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    // open select donation type modal
-    setOpenSelectDonationTypeModal(true);
-    console.log(data);
+    // setOpenSelectDonationTypeModal(true);
+    const modifiedData = formatFormData(data);
+    signUpHandler(modifiedData, createAccount, router, data?.uploadDocument);
   };
 
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "confirmPassword" || name === "password") {
-        if (value.confirmPassword && value.password !== value.confirmPassword) {
-          form.setError("confirmPassword", {
-            type: "manual",
-            message: "Passwords do not match",
-          });
-        } else {
-          form.clearErrors("confirmPassword");
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
+  const onError = (errors: any) => {
+    const firstErrorMessage = getFirstErrorMessage(errors);
+    toast.error(firstErrorMessage);
+  };
 
   return (
     <>
       <Card
-        className="max-w-[742px] mx-auto shadow-none border-none"
+        className="max-w-[742px] mx-auto shadow-none border-none mt-5 xl:mt-10"
         style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
       >
         <CardHeader>
-          <div className="flex justify-between">
-            <div className="flex-1 flex justify-center items-center bg-primary-black text-primary-white px-2.5 py-3">
-              Sign Up
-            </div>
-            <Link
-              href={"/sign-in"}
-              className="flex-1 flex justify-center items-center px-2.5 py-3"
-            >
-              Sign In
-            </Link>
-          </div>
+          <SignUpFormHeader />
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit, onError)}
               className="md:space-y-6 space-y-4"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-4">
@@ -556,7 +474,7 @@ const CharityShopSignUpForm = () => {
                 </label>
               </div>
 
-              <CommonButton disabled={!agree} className="w-full">
+              <CommonButton loading={isLoading} disabled={!agree || isLoading} className="w-full">
                 SIGN UP
               </CommonButton>
 

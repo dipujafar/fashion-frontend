@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {  useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -25,83 +25,41 @@ import XIcon from "@/assets/icons/x-icon.png";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
+import { useCreateUserMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
+import formSchema from "./SignSchema";
+import { useRouter } from "next/navigation";
+import { signUpHandler } from "@/utils/sign-up-handler-func";
+import { getFirstErrorMessage } from "@/utils/modifyFormError";
+import SignUpFormHeader from "@/components/shared/SignUpFormHeader";
+import { formattedData } from "./utils.data";
 
-const formSchema = z.object({
-  firstName: z
-    .string({ required_error: "First Name is required" })
-    .min(1, { message: "First Name is required" }),
-  lastName: z
-    .string({ required_error: "Last Name is required" })
-    .min(1, { message: "Last Name is required" }),
-  userName: z
-    .string({ required_error: "User Name is required" })
-    .min(1, { message: "User Name is required" }),
-  phoneNumber: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
-  email: z
-    .string({ required_error: "Email is required" })
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: "passwords must be at least 8 characters long" })
-    .max(64, { message: "passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
-  confirmPassword: z
-    .string({ required_error: "Confirm Password is required" })
-    .min(1, { message: "Confirm Password is required" }),
-  country: z.string().min(1, "Please select a country"),
-  streetAddress: z.string().min(5, "Street address is required"),
-  city: z.string().min(1, "Please select a city"),
-  state: z.string().min(1, "Please select a state"),
-  zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
 
-  socialMedia: z.array(
-    z.object({
-      instagram: z.string().optional(),
-      facebook: z.string().optional(),
-      x: z.string().optional(),
-      tiktok: z.string().optional(),
-    })
-  ),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agree, setAgree] = useState(false);
+  const [createAccount, { isLoading }] = useCreateUserMutation();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      country: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipCode: "",
-    },
   });
 
   const { register, setValue, control } = form;
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const modifiedData = formattedData(data);
+    signUpHandler(modifiedData, createAccount, router);
   };
 
- 
+  const onError = (errors: any) => {
+    const firstErrorMessage = getFirstErrorMessage(errors);
+    toast.error(firstErrorMessage);
+  };
+
+
 
   return (
     <Card
@@ -109,23 +67,12 @@ const SignUpForm = () => {
       style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
     >
       <CardHeader>
-        <div className="flex justify-between">
-          <div className="flex-1 flex justify-center items-center bg-primary-black text-primary-white px-2.5 py-3">
-            Sign Up
-          </div>
-
-          <Link
-            href={"/sign-in"}
-            className="flex-1 flex justify-center items-center px-2.5 py-3"
-          >
-            Sign In
-          </Link>
-        </div>
+        <SignUpFormHeader />
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, onError)}
             className="md:space-y-6 space-y-4"
           >
             <div className=" flex flex-col md:flex-row md:items-center  gap-4 ">
@@ -392,7 +339,7 @@ const SignUpForm = () => {
               </label>
             </div>
 
-            <CommonButton disabled={!agree} className="w-full">
+            <CommonButton loading={isLoading} disabled={!agree || isLoading} className="w-full">
               SIGN UP
             </CommonButton>
 

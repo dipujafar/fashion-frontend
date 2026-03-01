@@ -2,16 +2,19 @@ import { ReactNode } from "react";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
 import AnimatedArrow from "../animatedArrows/AnimatedArrow";
+import LoadingSpin from "./loading-spin";
 
 const CommonButton = ({
   children,
   className,
   disabled = false,
+  loading = false,
   handlerFunction,
 }: {
   children: ReactNode;
   className?: string;
   disabled?: boolean;
+  loading?: boolean;
   handlerFunction?: () => void;
 }) => {
   return (
@@ -23,7 +26,7 @@ const CommonButton = ({
         className
       )}
     >
-      {children} <AnimatedArrow></AnimatedArrow>
+      {children} {loading ? <LoadingSpin color="white" /> : <AnimatedArrow></AnimatedArrow>}
     </Button>
   );
 };
