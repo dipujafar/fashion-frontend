@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import CommonButton from "@/components/ui/common-button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   InputOTP,
   InputOTPGroup,
@@ -34,6 +34,8 @@ const formSchema = z.object({
 const VerifyOtpForm = () => {
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const router = useRouter();
+  const status = useSearchParams().get("status");
+  const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,13 +46,31 @@ const VerifyOtpForm = () => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // console.log("Submitted Data:", data);
     // router.push("/set-new-password");
-    try {
-      await verifyOtp(data).unwrap();
-      toast.success("OTP verified successfully! Please login.");
-      sessionStorage.removeItem("verifyOtpToken");
-      router.push("/sign-in");
-    } catch (error: any) {
-      toast.error(error.data.message);
+
+    if (status === "forgot") {
+      try {
+        const res = await verifyOtp(data).unwrap();
+        if (res?.data?.accessToken) {
+          sessionStorage.setItem("resetPasswordToken", res?.data?.accessToken);
+          sessionStorage.removeItem("forgotPasswordToken");
+          toast.success("OTP verified successfully! Please reset your password.");
+          router.push("/set-new-password");
+        }
+      }
+      catch (error: any) {
+        toast.error(error.data.message);
+      }
+    }
+
+    else {
+      try {
+        await verifyOtp(data).unwrap();
+        toast.success("OTP verified successfully! Please login.");
+        sessionStorage.removeItem("verifyOtpToken");
+        router.push("/sign-in");
+      } catch (error: any) {
+        toast.error(error.data.message);
+      }
     }
   };
 

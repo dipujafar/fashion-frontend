@@ -15,64 +15,42 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import CommonButton from "@/components/ui/common-button";
+import { formSchema } from "./schema";
+import { getFirstErrorMessage } from "@/utils/modifyFormError";
+import { toast } from "sonner";
+import { useResetPasswordMutation } from "@/redux/api/authApi";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: " passwords must be at least 8 characters long" })
-    .max(64, { message: " passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
-  confirmPassword: z
-    .string({ required_error: "Password is required" })
-    .min(1, { message: "Password is required" })
-    .min(8, { message: " passwords must be at least 8 characters long" })
-    .max(64, { message: " passwords must be at most 64 characters long" })
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      {
-        message:
-          "password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
-      }
-    ),
-});
 
 const SetNewPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resetPass, { isLoading }] = useResetPasswordMutation();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      confirmPassword: "",
-      password: "",
-    },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const formattedData = {
+      newPassword: data.password,
+      confirmPassword: data.confirmPassword,
+    }
+    try {
+      const res = await resetPass(formattedData).unwrap();
+      sessionStorage.removeItem("resetPasswordToken");
+      toast.success("Password reset successfully! Please login with your new credentials.");
+      router.push("/sign-in");
+    } catch (error: any) {
+      toast.error(error.data.message);
+    }
   };
 
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "confirmPassword" || name === "password") {
-        if (value.confirmPassword && value.password !== value.confirmPassword) {
-          form.setError("confirmPassword", {
-            type: "manual",
-            message: "Passwords do not match",
-          });
-        } else {
-          form.clearErrors("confirmPassword");
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
+  const onError = (errors: any) => {
+    const firstErrorMessage = getFirstErrorMessage(errors);
+    toast.error(firstErrorMessage);
+  };
+
 
   return (
     <Card
@@ -82,7 +60,7 @@ const SetNewPasswordForm = () => {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, onError)}
             className="md:space-y-6 space-y-4"
           >
             <FormField
@@ -159,7 +137,7 @@ const SetNewPasswordForm = () => {
                 </FormItem>
               )}
             />
-            <CommonButton className="w-full">SIGN IN</CommonButton>
+            <CommonButton loading={isLoading} className="w-full">SIGN IN</CommonButton>
           </form>
         </Form>
       </CardContent>

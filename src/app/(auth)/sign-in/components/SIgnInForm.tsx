@@ -52,10 +52,6 @@ const SIgnInForm = () => {
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {

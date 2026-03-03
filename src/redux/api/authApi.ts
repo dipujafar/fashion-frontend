@@ -1,3 +1,4 @@
+import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -8,6 +9,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [tagTypes.user],
     }),
     verifyOtp: builder.mutation({
       query: (data) => ({
@@ -15,6 +17,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [tagTypes.user],
     }),
     login: builder.mutation({
       query: (data) => ({
@@ -22,8 +25,25 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [tagTypes.user],
+    }),
+    forgotPassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/reset-password",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.user],
     })
   }),
 });
 
-export const {useCreateUserMutation, useVerifyOtpMutation, useLoginMutation} = authApi;
+export const {useCreateUserMutation, useVerifyOtpMutation, useLoginMutation, useForgotPasswordMutation, useResetPasswordMutation} = authApi;

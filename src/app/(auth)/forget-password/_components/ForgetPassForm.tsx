@@ -14,6 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import CommonButton from "@/components/ui/common-button";
 import { useRouter } from "next/navigation";
+import { useForgotPasswordMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z
@@ -24,15 +26,23 @@ const formSchema = z.object({
 
 const ForgetPassForm = () => {
   const router = useRouter();
+  const [forgetPass, { isLoading }] = useForgotPasswordMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    router.push("/verify-otp");
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const res = await forgetPass(data).unwrap();
+      if (res?.data?.token) {
+        sessionStorage.setItem("forgotPasswordToken", res?.data?.token);
+        toast.success("Please verify your email with OTP, which has been sent to your email.");
+        router.push(`/verify-otp?status=forgot&email=${data?.email}`);
+      }
+    } catch (error: any) {
+      toast.error(error.data.message);
+    }
+
   };
 
   return (
@@ -64,7 +74,7 @@ const ForgetPassForm = () => {
               )}
             />
 
-            <CommonButton className="w-full">Send</CommonButton>
+            <CommonButton loading={isLoading} className="w-full">Send</CommonButton>
           </form>
         </Form>
       </CardContent>
