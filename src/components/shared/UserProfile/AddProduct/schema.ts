@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const productFormSchema = z.object({
-  title: z.string().min(2, {
-    message: "Product title must be at least 2 characters.",
+  title: z.string({ required_error: "Product title required." }).min(1, {
+    message: "Product title required.",
   }),
-  price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+  price: z.string({ required_error: "Price is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: "Price must be a valid positive number.",
   }),
   discountedPrice: z.string().refine(
@@ -14,12 +14,12 @@ export const productFormSchema = z.object({
     },
     {
       message: "Discount must be between 0 and 100.",
-    }
+    },
   ),
   // itemNumber: z.string().min(1, {
   //   message: "Item number is required.",
   // }),
-  category: z.string().min(1, {
+  categoryId: z.string().min(1, {
     message: "Please select a category.",
   }),
   tags: z.array(z.string()).min(1, {
@@ -31,12 +31,14 @@ export const productFormSchema = z.object({
   fabric: z.string().min(1, {
     message: "Fabric information is required.",
   }),
-  brand: z.string().min(1, {
+  brandId: z.string({ required_error: "Please select a brand." }).min(1, {
     message: "Please select a brand.",
   }),
-  availableSizes: z.string().min(1, {
-    message: "Please specify available sizes.",
-  }),
+  sizeId: z
+    .string({ required_error: "Please specify available sizes." })
+    .min(1, {
+      message: "Please specify available sizes.",
+    }),
   color: z.string().min(1, {
     message: "Please select colors.",
   }),
@@ -47,9 +49,9 @@ export const productFormSchema = z.object({
       donateToCharity: z.string().min(1, "Please select a charity"),
       donationAmount: z.preprocess(
         (val) => Number(val),
-        z.number().min(1).max(100)
+        z.number().min(1).max(100),
       ),
-    })
+    }),
   ),
 
   donationPrivacy: z.enum(["anonymous", "show-name"], {

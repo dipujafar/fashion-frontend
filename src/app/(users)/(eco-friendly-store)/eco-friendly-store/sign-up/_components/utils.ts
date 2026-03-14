@@ -7,6 +7,7 @@ export const formattedData = (data: z.infer<typeof formSchema>) => {
     password: data.password,
     fname: data.firstName,
     lname: data.lastName,
+    userName: data.userName,
     email: data.businessEmail,
     role: "ECO_FRIENDLY_STORE",
     business_tags: data.businessTags,

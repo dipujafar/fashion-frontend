@@ -6,19 +6,17 @@ export const formattedData = (data: z.infer<typeof formSchema>) => {
   return {
     fname: data.firstName,
     lname: data.lastName,
-    username: data.userName,
+    userName: data.userName,
     phone: data.phoneNumber,
     email: data.email,
     password: data.password,
     description: data.description,
     role: "CELEBRITY",
-
     country: data.country,
     state: data.state,
     city: data.city,
     address: data.streetAddress,
     zip_code: data.zipCode,
-
     instagram: social.instagram ?? "",
     facebook: social.facebook ?? "",
     twitter: social.x ?? "",

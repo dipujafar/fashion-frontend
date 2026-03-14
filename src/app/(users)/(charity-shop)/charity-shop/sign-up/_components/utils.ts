@@ -9,6 +9,7 @@ export const formatFormData = (data: FormData) => {
     password: data.password,
     fname: data.firstName,
     lname: data.lastName,
+    userName: data.userName,
     email: data.businessEmail,
     role: "CHARITY_SHOP",
     business_tags: data.businessTags,

@@ -3,7 +3,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useCallback } from "react";
-import { X, PlusCircle, Plus, ChevronsUpDown, Check } from "lucide-react";
+import { X, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -35,15 +35,19 @@ import {
   returnsPolicy,
   shippingDelivery,
 } from "./schema";
-import SelectDonationOption from "./SelectDonationOption";
 import { ImageUploadGuide } from "./ImageUploadGuide";
 import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
 import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
 import { useSearchParams } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import InputCharityDonationInput from "./InputCharityDonationInput";
+import { useGetCategoryBrandsQuery, useGetCategoryQuery, useGetCategorySizeQuery } from "@/redux/api/categoryApi";
+import CategorySelector, { Category } from "./Categories/CategorySelector";
+import SizeSelector from "./Size/Sizeselector";
+import BrandSelector from "./Brand/Brandselector";
+import { getFirstErrorMessage } from "@/utils/modifyFormError";
+import { toast } from "sonner";
+import { useGetCharitiesQuery } from "@/redux/api/userApi";
 
 
 
@@ -52,6 +56,22 @@ export default function AddProductForm() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
   const fromEditPage = useSearchParams().get("edit");
+  // ======================= category ===========================
+  const { data: categoriesData } = useGetCategoryQuery(undefined);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  // ======================= category size ===========================
+  const { data: sizeData } = useGetCategorySizeQuery(selectedCategory?.id, {
+    skip: !selectedCategory
+  });
+  // ======================= category brand ===========================
+  const { data: brandData } = useGetCategoryBrandsQuery(selectedCategory?.id, {
+    skip: !selectedCategory
+  });
+
+  // =============================== get charities =============================
+  const {data: charitiesData} = useGetCharitiesQuery(undefined);
+
+
 
 
 
@@ -116,17 +136,36 @@ export default function AddProductForm() {
     }
   };
 
+
+  // ====================================== set selected category data ============================
+  function handleCategorySelect(cat: Category) {
+    setSelectedCategory(cat);
+    form.setValue("categoryId", cat.id, { shouldValidate: true });
+  }
+  const categories = categoriesData?.data || [];
+
+  const sizes = sizeData?.data || [];
+  const brands = brandData?.data || [];
+
+
+  // ===================================== submitting error ===============================
+  const onError = (errors: any) => {
+    const firstErrorMessage = getFirstErrorMessage(errors);
+    toast.error(firstErrorMessage);
+  };
+
+
   return (
-    <div className="md:space-y-6 space-y-3">
+    <div className="md:space-y-6 space-y-3 max-w-5xl mx-auto">
       <Card className="py-0 border-none shadow-none">
         {fromEditPage && <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>}
         <CardContent className="px-0">
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit, onError)}
               className="md:space-y-6 space-y-3"
             >
-              {/* Product Images */}
+              {/* ===================================== Product Images ===============================*/}
               <div className="space-y-2 ">
                 <label className="text-base font-medium">Product Images</label>
                 <div
@@ -161,7 +200,7 @@ export default function AddProductForm() {
                       className={cn(
                         "aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border",
                         images?.length === 0 &&
-                        "col-span-2 md:col-span-4 2xl:col-span-5 aspect-video md:aspect-auto md:min-h-[300px]"
+                        "col-span-2 md:col-span-4 2xl:col-span-5 aspect-video md:aspect-auto md:min-h-[200px]"
                       )}
                     >
                       <input
@@ -191,7 +230,7 @@ export default function AddProductForm() {
                 <ImageUploadGuide />
               </div>
 
-              {/* Product Title */}
+              {/* ===================================== Product Title ================================ */}
               <FormField
                 control={form.control}
                 name="title"
@@ -210,7 +249,7 @@ export default function AddProductForm() {
                 )}
               />
 
-              {/* Price and Discount */}
+              {/* ========================================= Price and Discount ============================== */}
               <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
                 <FormField
                   control={form.control}
@@ -250,93 +289,65 @@ export default function AddProductForm() {
                 />
               </div>
 
-              {/* Product Details Section */}
+              {/* ========================================= Product Details Section  ==============================*/}
               <div className="space-y-4">
                 <h3 className="uppercase underline text-black/60 ">
                   Product Details
                 </h3>
 
-                {/* <FormField
-                  control={form.control}
-                  name="itemNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Item Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter item number"
-                          {...field}
-                          className="bg-[#f2f2f2] md:py-5"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
 
-                <div className="grid  grid-cols-2 md:gap-x-4 gap-x-2">
+                {/* ========================================== product category ================================ */}
+                <div>
                   <FormField
                     control={form.control}
-                    name="category"
+                    name="categoryId"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Category</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="woman">Woman</SelectItem>
-                            <SelectItem value="man">Man</SelectItem>
-                            <SelectItem value="kids">Kids</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="condition"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Condition</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select condition" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="new">New</SelectItem>
-                            <SelectItem value="like-new">Like New</SelectItem>
-                            <SelectItem value="3-months-used">
-                              3 Months Used
-                            </SelectItem>
-                            <SelectItem value="6-months-used">
-                              6 Months Used
-                            </SelectItem>
-                            <SelectItem value="1-year-used">
-                              1 Year Used
-                            </SelectItem>
-                            <SelectItem value="well-used">Well Used</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <FormControl>
+                          <CategorySelector
+                            categories={categories}
+                            value={selectedCategory}
+                            onSelect={handleCategorySelect}
+                            placeholder="Select category"
+                          />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
+
+                {/* ========================================= product brand and size ================================ */}
+                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4")}>
+                  <FormItem>
+                    <FormLabel>Size</FormLabel>
+                    <SizeSelector
+                      control={form.control}
+                      name="sizeId"
+                      sizes={sizes}
+                      selectedCategory={selectedCategory}  // null = disabled
+                      placeholder="Select size"
+                    />
+                  </FormItem>
+
+
+
+                  <FormItem>
+                    <FormLabel>Brand</FormLabel>
+                    <BrandSelector
+                      control={form.control}
+                      name="brandId"
+                      brands={brands}
+                      selectedCategory={selectedCategory}
+                      placeholder="Select brand"
+                    />
+                  </FormItem>
+
+
+                </div>
+
+
                 <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
                   <FormField
                     control={form.control}
@@ -374,66 +385,7 @@ export default function AddProductForm() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="brand"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Brand</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select brand" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="nike">Nike</SelectItem>
-                            <SelectItem value="adidas">Adidas</SelectItem>
-                            <SelectItem value="puma">Puma</SelectItem>
-                            <SelectItem value="zara">Zara</SelectItem>
-                            <SelectItem value="h&m">H&M</SelectItem>
-                            <SelectItem value="uniqlo">Uniqlo</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
-                  <FormField
-                    control={form.control}
-                    name="availableSizes"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center justify-between">
-                          Available Sizes
-                          <Link href="/product-size" className="cursor-pointer">
-                            <button
-                              type="button"
-                              className="text-sm text-blue-600 hover:text-blue-800"
-                            >
-                              Select Size Guide
-                            </button>
-                          </Link>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            readOnly
-                            placeholder="UK 10/ XL"
-                            {...field}
-                            className="bg-[#f2f2f2] md:py-5"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                   <FormField
                     control={form.control}
@@ -528,7 +480,46 @@ export default function AddProductForm() {
                   />
                 </div>
 
-                <InputCharityDonationInput form={form} fields={fields} append={append} remove={remove} />
+                {/* ======================================== condition input ============================================== */}
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="condition"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Condition</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                              <SelectValue placeholder="Select condition" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="new">New</SelectItem>
+                            <SelectItem value="like-new">Like New</SelectItem>
+                            <SelectItem value="3-months-used">
+                              3 Months Used
+                            </SelectItem>
+                            <SelectItem value="6-months-used">
+                              6 Months Used
+                            </SelectItem>
+                            <SelectItem value="1-year-used">
+                              1 Year Used
+                            </SelectItem>
+                            <SelectItem value="well-used">Well Used</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <InputCharityDonationInput charities={charitiesData?.data || []} form={form} fields={fields} append={append} remove={remove} />
 
 
                 {/* Donation Privacy */}
@@ -665,77 +656,7 @@ export default function AddProductForm() {
                   )}
                 />
 
-                {/* Returns Policy */}
-                {/* <FormField
-                  control={form.control}
-                  name="returnsPolicy"
-                  render={({ field }) => (
-                    <FormItem className="space-y-1">
-                      <FormLabel>Returns Policy</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-row space-x-6"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="returns-yes" />
-                            <label htmlFor="returns-yes" className="text-sm">
-                              Yes
-                            </label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="returns-no" />
-                            <label htmlFor="returns-no" className="text-sm">
-                              No
-                            </label>
-                          </div>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
-
-                {/* Duration Time */}
-                {/* <FormField
-                  control={form.control}
-                  name="durationTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Duration Time</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="e.g. Working time"
-                          {...field}
-                          className="bg-[#f2f2f2] md:py-5"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
-
-                {/* Return Description */}
-                {/* <FormField
-                  control={form.control}
-                  name="returnDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        For seller return responsibility description
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter return responsibility details..."
-                          className="flex min-h-[80px] bg-[#f2f2f2]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+                
 
                 {/* Allow Offers */}
                 <FormField
