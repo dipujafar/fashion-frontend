@@ -44,8 +44,6 @@ const VerifyOtpForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // console.log("Submitted Data:", data);
-    // router.push("/set-new-password");
 
     if (status === "forgot") {
       try {

@@ -1,3 +1,4 @@
+import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
 const productApi = baseApi.injectEndpoints({
@@ -8,8 +9,17 @@ const productApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [tagTypes.product],
+    }),
+    getProducts: builder.query({
+      query: (params) => ({
+        url: "/products",
+        method: "GET",
+        params,
+      }),
+      providesTags: [tagTypes.product],
     }),
   }),
 });
 
-export const { useCreateProductMutation } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery } = productApi;

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { PlusCircle, ChevronRight, Search, X, Check } from "lucide-react";
+import { PlusCircle, Search, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -159,7 +159,7 @@ function CharitySelect({
         <span className={selected ? "text-foreground" : "text-muted-foreground"}>
           {selected ? selected.userName : "Select charity"}
         </span>
-        <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+        <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
       </button>
 
       {open && (
@@ -226,22 +226,22 @@ export default function InputCharityDonationInput({
   return (
     <>
       {fields.map((field: any, index: number) => (
-        <div key={field.id} className="grid grid-cols-2 md:gap-4 gap-x-2">
+        <div key={field.id} className="grid md:grid-cols-2 md:gap-4 gap-x-2">
 
           {/* Charity Select */}
           <FormField
             control={form.control}
-            name={`charities.${index}.charityId`}
+            name={`donations.${index}.donateToCharity`}
             render={({ field }) => {
               // Collect all selected charity IDs across all rows
               const allSelected: string[] = form
                 .getValues("charities")
-                ?.map((c: any) => c.charityId)
+                ?.map((c: any) => c.donateToCharity)
                 .filter(Boolean) ?? [];
 
               return (
                 <FormItem>
-                  <FormLabel>
+                  <FormLabel className="flex">
                     Donate to charity
                     {index === 0 && (
                       <>
@@ -270,7 +270,7 @@ export default function InputCharityDonationInput({
           <div className="flex gap-2">
             <FormField
               control={form.control}
-              name={`charities.${index}.percent`}
+              name={`donations.${index}.donationAmount`}
               render={({ field }) => (
                 <FormItem className="flex-1 mt-2">
                   <FormLabel>Amount (%)</FormLabel>
@@ -306,7 +306,7 @@ export default function InputCharityDonationInput({
       <Button
         type="button"
         variant="secondary"
-        onClick={() => append({ charityId: "", percent: 0 })}
+        onClick={() => append({ donateToCharity: "", donationAmount: 0 })}
         className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer"
       >
         <PlusCircle /> Add More

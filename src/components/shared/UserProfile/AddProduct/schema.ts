@@ -59,22 +59,15 @@ export const productFormSchema = z.object({
   }),
   donateToCharity2: z.string().optional(),
   donationAmount2: z.string().optional(),
-  productDescription: z.string().min(20, {
-    message: "Product description must be at least 20 characters.",
+  productDescription: z.string().min(1, {
+    message: "Product description is required.",
   }),
-  deliveryPolicy: z.string().min(10, {
-    message: "Delivery policy must be at least 10 characters.",
+  shippingDelivery: z.string({ required_error: "Shipping & returns information is required." }).min(1, {
+    message: "Shipping & returns information is required.",
   }),
-  shippingDelivery: z.string().min(10, {
-    message: "Shipping & returns information must be at least 10 characters.",
+  returnsPolicy: z.string({ required_error: "Returns policy is required." }).min(1, {
+    message: "Returns policy is required.",
   }),
-  durationTime: z.string().min(1, {
-    message: "Duration time is required.",
-  }),
-  returnsPolicy: z.enum(["yes", "no"], {
-    required_error: "Please select returns policy.",
-  }),
-  returnDescription: z.string().optional(),
   allowOffers: z.boolean().default(false),
 });
 
@@ -95,14 +88,12 @@ export const productFormDefaultValues = () => {
     color: "",
     careInstructions: [],
     donationPrivacy: undefined,
-    donateToCharity2: "",
-    donationAmount2: "",
     productDescription: "",
     deliveryPolicy: "",
     shippingDelivery: "",
     donations: [{ donateToCharity: "", donationAmount: 0 }],
     durationTime: "",
-    returnsPolicy: undefined,
+    returnsPolicy: "0",
     returnDescription: "",
     allowOffers: false,
   };
@@ -148,10 +139,22 @@ export const shippingDelivery = [
 ];
 
 export const returnsPolicy = [
-  "Returns accepted – 3 days",
-  "Returns accepted – 7 days",
-  "Returns accepted – 14 days",
-  "No returns",
+  {
+    label: "Returns accepted – 3 days",
+    value: "3"
+  },
+  {
+    label: "Returns accepted – 7 days",
+    value:"7"
+  },
+  {
+    label: "Returns accepted – 14 days",
+    value: "14"
+  },
+  {
+    label: "No returns",
+    value:"0"
+  }
 ];
 
 export const careInstructionsOptions = [

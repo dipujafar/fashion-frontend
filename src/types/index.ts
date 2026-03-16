@@ -78,7 +78,6 @@ export interface TOfferProduct {
   images: string[];
 }
 
-
 export type TUserDetails = {
   _id: number;
   id: string;
@@ -93,3 +92,114 @@ export type TUserDetailsFeature = {
   title: string;
   description: string[];
 };
+
+// ======================================== integration --> real data ========================================================
+export interface IProductImage {
+  id: string;
+  url: string;
+  key: string;
+  productId: string;
+}
+
+export interface IBrand {
+  id: string;
+  name: string;
+  order: number;
+  categoryId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ISize {
+  id: string;
+  title: string;
+  order: number;
+  categoryId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICategory {
+  id: string;
+  name: string;
+  parentId: string | null;
+  sizeGuide: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ICondition = string;
+
+export type ICareInstruction = string;
+
+export interface IProduct {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  currency: string;
+  brandId: string;
+  sizeId: string;
+  categoryId: string;
+  catagory_hierarchy: string[];
+  condition: ICondition;
+  tags: string[];
+  meterials: string[];
+  color: string;
+  care_instructions: ICareInstruction[];
+  allow_offer: boolean;
+  return_window: number;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  images: IProductImage[];
+  brand: IBrand;
+  size: ISize;
+  category: ICategory;
+  user: IUser;
+}
+
+export type UserRole =
+  | "INDIVIDUAL_USER"
+  | "CHARITABLE_ORGANIZATION"
+  | "CHARITY_SHOP"
+  | "ECO_FRIENDLY_STORE"
+  | "CELEBRITY"
+  | "AMBASSADOR"
+  | "PROFESSIONAL_SELLER"
+  | "ASSISTED_SELLER"
+
+export interface IUserAuth {
+  role: UserRole;
+}
+
+export interface IUser {
+  id: string;
+  fname: string;
+  lname: string;
+  email: string;
+  userName: string;
+  phone: string;
+  description: string | null;
+  country: string;
+  state: string;
+  city: string;
+  address: string;
+  zip_code: string;
+  instagram: string | null;
+  facebook: string | null;
+  twitter: string | null;
+  tiktok: string | null;
+  website: string | null;
+  notification: boolean;
+  fcmToken: string | null;
+  mission: string | null;
+  business_tags: string[];
+  isOnline: boolean;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  auth: IUserAuth;
+  avgRating: number;
+  picture: string | null;
+}

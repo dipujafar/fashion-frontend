@@ -1,18 +1,26 @@
 "use client";
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { Pagination } from "react-pagination-bar";
 
-const PaginationSection = ({className}: {className?: string}) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pagePostsLimit = 9;
+const PaginationSection = ({ className,
+  total,
+  current,
+  pageSize
+}: {
+  className?: string,
+  total: number;
+  current: number;
+  pageSize?: number
+}) => {
+  const updateParams = useUpdateSearchParams();
   return (
     <div className={cn("mt-10 text-end", className)}>
       <Pagination
-        currentPage={currentPage}
-        itemsPerPage={pagePostsLimit}
-        onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-        totalItems={30}
+        currentPage={current}
+        itemsPerPage={pageSize || 9}
+        onPageChange={(pageNumber) => updateParams({ page: pageNumber.toString() })}
+        totalItems={total}
         pageNeighbours={1}
       />
     </div>

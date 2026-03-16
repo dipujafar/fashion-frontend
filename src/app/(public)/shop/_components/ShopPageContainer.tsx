@@ -8,12 +8,22 @@ import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import { useSearchParams } from "next/navigation";
 import { formatLabel } from "@/utils/formatText";
 import ProductFilterContainer from "./filter/ProductFilterContainer";
+import { useGetProductsQuery } from "@/redux/api/productApi";
 // import AllCategory from "./AllCategories";
 
 const ShopPageContainer = () => {
   const filterOptions = useSearchParams().get("category");
   const subCategory = useSearchParams().get("subCategory");
   const finalCategory = useSearchParams().get("finalCategory");
+
+  // ====================== set query params ===========================
+  const page = useSearchParams()?.get("page") || 1;
+  const limit = 50;
+  const queries: Record<string, string | number> = {};
+  if (page) queries.page = page;
+  if (limit) queries.limit = limit;
+
+  const { data: products, isLoading } = useGetProductsQuery(queries);
 
   return (
     <>
@@ -35,16 +45,7 @@ const ShopPageContainer = () => {
         </div>
 
         <div className=" grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4 xl:mt-8 mt-4">
-          {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
-            <Categories title="Category" data={collectionTypes}></Categories>
-            <Categories title="Material" data={materialData}></Categories>
-            <Categories title="BRANDS" data={brandsData}></Categories>
-            <Categories title="Size" data={sizeData}></Categories>
-            <Categories title="condition" data={conditionData}></Categories>
-            <PriceCategory></PriceCategory>
-            <ColorCategory></ColorCategory>
-            <Categories title="Discount" data={discountData}></Categories>
-          </div> */}
+
 
           <div className="2xl:col-span-5 xl:col-span-4 md:col-span-3 ">
             {/* =============================== categories ========================== */}
@@ -66,11 +67,11 @@ const ShopPageContainer = () => {
             </div>
 
             {/* ========================= all products ========================== */}
-            <AllProducts></AllProducts>
+            <AllProducts data={products?.data?.data} loading={isLoading}></AllProducts>
           </div>
         </div>
         {/* Pagination */}
-        <PaginationSection></PaginationSection>
+        <PaginationSection total={products?.data?.meta?.total} current={Number(page)} pageSize={Number(limit)}></PaginationSection>
       </div>
       <div className="xl:mt-8 mt-5 space-y-10">
         <DisplayProductSection

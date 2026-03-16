@@ -25,7 +25,7 @@ import CommonButton from "@/components/ui/common-button";
 import appleIcon from "@/assets/icons/apple.png";
 import googleIcon from "@/assets/icons/google.png";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
@@ -53,6 +53,7 @@ const SIgnInForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const callbackUrl = useSearchParams().get("callbackUrl");
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
@@ -65,7 +66,13 @@ const SIgnInForm = () => {
           })
         );
         toast.success("Login successful");
-        router.push(redirectUrl(res?.data?.user?.role));
+        if (callbackUrl)
+          router.replace(callbackUrl);
+        else if (res?.data?.user?.role)
+          router.replace(redirectUrl(res?.data?.user?.role));
+        else
+          router.replace("/");
+
       }
     } catch (error: any) {
       toast.error(error.data.message);

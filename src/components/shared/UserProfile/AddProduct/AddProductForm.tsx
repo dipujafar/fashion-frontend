@@ -48,6 +48,9 @@ import BrandSelector from "./Brand/Brandselector";
 import { getFirstErrorMessage } from "@/utils/modifyFormError";
 import { toast } from "sonner";
 import { useGetCharitiesQuery } from "@/redux/api/userApi";
+import { formattedData } from "./utils";
+import { useCreateProductMutation } from "@/redux/api/productApi";
+import LoadingSpin from "@/components/ui/loading-spin";
 
 
 
@@ -67,12 +70,10 @@ export default function AddProductForm() {
   const { data: brandData } = useGetCategoryBrandsQuery(selectedCategory?.id, {
     skip: !selectedCategory
   });
-
   // =============================== get charities =============================
-  const {data: charitiesData} = useGetCharitiesQuery(undefined);
-
-
-
+  const { data: charitiesData } = useGetCharitiesQuery(undefined);
+  // =============================== product api ==============================
+  const [uploadProduct, { isLoading }] = useCreateProductMutation();
 
 
   const form = useForm<ProductFormValues>({
@@ -85,10 +86,7 @@ export default function AddProductForm() {
     name: "donations",
   });
 
-  function onSubmit(data: ProductFormValues) {
-    console.log("Form submitted:", data);
-    // Handle form submission here
-  }
+
 
   const handleFileUpload = useCallback(
     (files: FileList | null) => {
@@ -143,16 +141,45 @@ export default function AddProductForm() {
     form.setValue("categoryId", cat.id, { shouldValidate: true });
   }
   const categories = categoriesData?.data || [];
-
   const sizes = sizeData?.data || [];
   const brands = brandData?.data || [];
 
 
   // ===================================== submitting error ===============================
   const onError = (errors: any) => {
+    console.log(errors);
     const firstErrorMessage = getFirstErrorMessage(errors);
     toast.error(firstErrorMessage);
   };
+
+  // ====================================== submitting form ===============================
+  async function onSubmit(data: ProductFormValues) {
+
+    console.log(images);
+
+
+    if (images?.length === 0) {
+      toast.error("Please upload at least one product image");
+    } else {
+      const formData = new FormData();
+
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
+      }
+      const formattedValues = formattedData(data);
+
+      formData.append("data", JSON.stringify(formattedValues));
+      try {
+        await uploadProduct(formData).unwrap();
+        toast.success("Product uploaded successfully!");
+      } catch (error: any) {
+        toast.error(error?.data?.message);
+      }
+    }
+
+
+    // Handle form submission here
+  }
 
 
   return (
@@ -575,24 +602,7 @@ export default function AddProductForm() {
                   )}
                 />
 
-                {/* Delivery Policy */}
-                {/* <FormField
-                  control={form.control}
-                  name="deliveryPolicy"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Delivery Policy</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="e.g. We deliver the product 5-7 days"
-                          className="flex min-h-[100px] bg-[#f2f2f2]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+
 
                 {/* Shipping & Returns */}
                 <FormField
@@ -644,8 +654,8 @@ export default function AddProductForm() {
                           </FormControl>
                           <SelectContent>
                             {returnsPolicy?.map((item, index) => (
-                              <SelectItem value={item} key={index}>
-                                {item}
+                              <SelectItem value={item?.value} key={index}>
+                                {item?.label}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -655,9 +665,6 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
-
-                
-
                 {/* Allow Offers */}
                 <FormField
                   control={form.control}
@@ -679,8 +686,8 @@ export default function AddProductForm() {
               </div>
 
               <div className="flex gap-4">
-                <Button type="submit" className="flex-1 group cursor-pointer">
-                  Submit <AnimatedArrow />
+                <Button disabled={isLoading} type="submit" className="flex-1 group cursor-pointer">
+                  Submit <AnimatedArrow /> {isLoading && <LoadingSpin />}
                 </Button>
               </div>
             </form>
