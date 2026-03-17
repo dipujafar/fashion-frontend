@@ -1,3 +1,4 @@
+"use client";
 import {
   MenubarContent,
   MenubarItem,
@@ -26,6 +27,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFormDialog";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
 
 const navLinksFotProfileIcon = [
   {
@@ -128,9 +131,11 @@ const navLinksFotProfileIcon = [
 
 export default function ProfileIcon() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    router.push("/sign-in");
+    dispatch(logout());
+    router.refresh();
   };
   return (
     <>

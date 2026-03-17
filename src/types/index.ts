@@ -137,6 +137,8 @@ export interface IProduct {
   title: string;
   description: string;
   price: number;
+  discountPct: number;
+  finalPrice: number;
   currency: string;
   brandId: string;
   sizeId: string;
@@ -156,6 +158,12 @@ export interface IProduct {
   brand: IBrand;
   size: ISize;
   category: ICategory;
+  _count: {
+    favourites: number;
+  };
+  favourites: {
+    id: string;
+  }[];
   user: IUser;
 }
 
@@ -167,7 +175,7 @@ export type UserRole =
   | "CELEBRITY"
   | "AMBASSADOR"
   | "PROFESSIONAL_SELLER"
-  | "ASSISTED_SELLER"
+  | "ASSISTED_SELLER";
 
 export interface IUserAuth {
   role: UserRole;
@@ -202,4 +210,19 @@ export interface IUser {
   auth: IUserAuth;
   avgRating: number;
   picture: string | null;
+}
+
+export interface ILoggedInUser {
+  exp: string;
+  iat: string;
+  role: UserRole;
+  userId: string;
+}
+
+export interface IWishListData {
+  id: string;
+  userId: string;
+  productId: string;
+  createdAt: string;
+  product: IProduct;
 }

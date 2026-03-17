@@ -1,12 +1,13 @@
-"use client";
+"use client";;
 import { Card, CardContent } from "@/components/ui/card";
 import CommonButton from "@/components/ui/common-button";
 import CustomAvatar from "@/components/ui/custom-avatar";
+import FavoriteIcon from "@/components/ui/favorite-icon";
 import { Rating } from "@/components/ui/rating";
+import { useAddFavoriteProductMutation } from "@/redux/api/favoriteProductApi";
 import { IProduct } from "@/types";
 import { userRoleMapper } from "@/utils/userRoleMapper";
-import { userTagColor } from "@/utils/userTagColor";
-import { Check, Heart, MapPin } from "lucide-react";
+import { Check} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,7 +22,6 @@ const PProductCard = ({
     ownProduct?: boolean;
     children?: ReactNode;
 }) => {
-    console.log(data?.images?.[0]?.url);
     const router = useRouter();
     return (
         <Card className="border-none shadow-none p-0">
@@ -75,10 +75,7 @@ const PProductCard = ({
                     )} */}
 
                     {/* ===================== favorite button ================ */}
-                    <div className="bg-primary-white absolute bottom-2 right-2 h-5 md:h-7 w-[50px] md:w-16 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm ">
-                        <Heart className="group-hover:fill-primary-red text-primary-red duration-500 md:size-[18px] size-4"></Heart>
-                        <p>12</p>
-                    </div>
+                    <FavoriteIcon id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavoriteIcon>
                 </div>
 
                 {/* ===================================== product details =============================== */}
@@ -101,7 +98,7 @@ const PProductCard = ({
                                 className="px-2 rounded text-primary-white md:text-sm text-[11px] md:font-bold uppercase"
                                 style={{ backgroundColor: userRoleMapper(data?.user?.auth?.role)?.color }}
                             >
-                                {userRoleMapper(data?.user?.auth?.role)?.label || "hee"}
+                                {userRoleMapper(data?.user?.auth?.role)?.label}
                             </div>
                         </div>
                     )}
@@ -111,7 +108,7 @@ const PProductCard = ({
                         {data?.title}
                     </p>
                     <h6 className="md:text-lg text-primary-black">{data?.size?.title}</h6>
-                    <h5 className="font-bold text-primary-black">${data?.price}</h5>
+                    <h5 className="font-bold text-primary-black">${data?.finalPrice?.toFixed(2)}</h5>
 
                     {/* ===================== product rating ================ */}
                     {!ownProduct && (

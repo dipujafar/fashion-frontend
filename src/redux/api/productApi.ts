@@ -17,7 +17,16 @@ const productApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
-      providesTags: [tagTypes.product],
+      providesTags: (result) => {
+        const items = result?.data?.data ?? result ?? [];
+        return [
+          ...items.map(({ id }: { id: string }) => ({
+            type: tagTypes.product,
+            id,
+          })),
+          { type: tagTypes.product, id: "LIST" },
+        ];
+      },
     }),
   }),
 });

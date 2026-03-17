@@ -1,3 +1,4 @@
+"use client";
 import { productData } from "@/app/(public)/wishlist/_components/data";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,17 +8,20 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { HeartIcon } from "@/icons";
+import { useGetFavoriteProductQuery } from "@/redux/api/favoriteProductApi";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function WishListDropDown() {
+  const { data: wishListData, isLoading } = useGetFavoriteProductQuery(undefined);
+
   return (
     <>
       <MenubarTrigger>
         <HeartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
+      <MenubarContent className="md:min-w-sm min-w-[300px] overflow-y-auto max-h-[calc(100vh-100px)]">
         {productData.map((product, idx: number) => (
           <div key={idx}>
             <MenubarItem className="cursor-pointer">

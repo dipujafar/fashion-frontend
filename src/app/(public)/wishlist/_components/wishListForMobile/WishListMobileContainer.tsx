@@ -1,26 +1,23 @@
 "use client";
 import React from "react";
-import ConfirmationPopover from "@/components/shared/popover/ConfirmationPopover";
-import { productData } from "../data";
 import { WishListCardForMobile } from "./WishListCardForMobile";
+import { IWishListData } from "@/types";
+import WishlistMobileSkeleton from "@/components/skeletons/WishlistMobileSkeleton";
+import Empty from "@/components/ui/empty";
 
-export default function WishListMobileContainer() {
-  const handleDelete = () => {
-    console.log("Deleted");
-  };
+export default function WishListMobileContainer({ data, loading, deleteWishListProduct }: { data: IWishListData[], loading: boolean, deleteWishListProduct: (id: string) => void }) {
+  if (loading) return <WishlistMobileSkeleton />
+  if (data?.length === 0) return <div className="min-h-[calc(100vh-450px)] flex-center"> <Empty message="No Favorite Product" /></div>
+
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="flex justify-between">
+    <div className="max-w-2xl mx-auto mt-2">
+      <div className="flex-between">
         <h1 className="text-xl font-medium text-muted-foreground">Wishlist</h1>
-        <ConfirmationPopover
-          title="Are you sure you want clear your wishlist?"
-          handleConfirm={handleDelete}
-        />
+        <p className="text-lg font-medium text-">{data?.length} Items</p>
       </div>
-      <p className="text-lg font-bold text-">2 Items</p>
-      <div className="space-y-4 mt-4">
-        {productData.map((product, index) => (
-          <WishListCardForMobile key={index} {...product} />
+      <div className="space-y-4 mt-2">
+        {data?.map((product: IWishListData) => (
+          <WishListCardForMobile key={product?.id} product={product} deleteWishListProduct={deleteWishListProduct} />
         ))}
       </div>
     </div>

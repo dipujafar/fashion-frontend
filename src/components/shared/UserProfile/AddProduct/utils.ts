@@ -17,6 +17,7 @@ export const formattedData = (data: z.infer<typeof productFormSchema>) => {
     title: data?.title,
     description: data?.productDescription,
     price: Number(data?.price),
+    discountPct: Number(data?.discountedPrice) || 0,
     currency: "USD",
     brandId: data?.brandId,
     sizeId: data?.sizeId,

@@ -39,7 +39,7 @@ import { ImageUploadGuide } from "./ImageUploadGuide";
 import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
 import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import InputCharityDonationInput from "./InputCharityDonationInput";
 import { useGetCategoryBrandsQuery, useGetCategoryQuery, useGetCategorySizeQuery } from "@/redux/api/categoryApi";
 import CategorySelector, { Category } from "./Categories/CategorySelector";
@@ -59,6 +59,7 @@ export default function AddProductForm() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
   const fromEditPage = useSearchParams().get("edit");
+  const router = useRouter();
   // ======================= category ===========================
   const { data: categoriesData } = useGetCategoryQuery(undefined);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -147,17 +148,12 @@ export default function AddProductForm() {
 
   // ===================================== submitting error ===============================
   const onError = (errors: any) => {
-    console.log(errors);
     const firstErrorMessage = getFirstErrorMessage(errors);
     toast.error(firstErrorMessage);
   };
 
   // ====================================== submitting form ===============================
   async function onSubmit(data: ProductFormValues) {
-
-    console.log(images);
-
-
     if (images?.length === 0) {
       toast.error("Please upload at least one product image");
     } else {
@@ -171,14 +167,13 @@ export default function AddProductForm() {
       formData.append("data", JSON.stringify(formattedValues));
       try {
         await uploadProduct(formData).unwrap();
+        form.reset();
         toast.success("Product uploaded successfully!");
+        // router.push("/")
       } catch (error: any) {
         toast.error(error?.data?.message);
       }
     }
-
-
-    // Handle form submission here
   }
 
 
@@ -301,7 +296,7 @@ export default function AddProductForm() {
                   name="discountedPrice"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Discounted Price (%)</FormLabel>
+                      <FormLabel>Discount (%)</FormLabel>
                       <FormControl>
                         <Input
                           type="number"

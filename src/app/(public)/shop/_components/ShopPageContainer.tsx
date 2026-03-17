@@ -9,7 +9,6 @@ import { useSearchParams } from "next/navigation";
 import { formatLabel } from "@/utils/formatText";
 import ProductFilterContainer from "./filter/ProductFilterContainer";
 import { useGetProductsQuery } from "@/redux/api/productApi";
-// import AllCategory from "./AllCategories";
 
 const ShopPageContainer = () => {
   const filterOptions = useSearchParams().get("category");
@@ -22,7 +21,6 @@ const ShopPageContainer = () => {
   const queries: Record<string, string | number> = {};
   if (page) queries.page = page;
   if (limit) queries.limit = limit;
-
   const { data: products, isLoading } = useGetProductsQuery(queries);
 
   return (
