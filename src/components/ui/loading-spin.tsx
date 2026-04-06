@@ -2,6 +2,8 @@ import { cn } from "@/lib/utils";
 
 const LoadingSpin = ({
   className,
+  size = 16,
+  color,
 }: {
   size?: number;
   className?: string;
@@ -11,8 +13,8 @@ const LoadingSpin = ({
     <svg
       className={cn("animate-spin", className)}
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
+      width={size || 16}
+      height={size || 16}
       viewBox="0 0 16 16"
     >
       <path

@@ -1,0 +1,21 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "dipu-dev",
+    "hridoy",
+    "hridoy-temp",
+    "main"
+  ],
+  "parent": {
+    "dipu-dev": "main",
+    "hridoy": "main",
+    "hridoy-temp": "hridoy",
+    "main": null
+  },
+  "order": [
+    "main",
+    "dipu-dev",
+    "hridoy",
+    "hridoy-temp"
+  ]
+}

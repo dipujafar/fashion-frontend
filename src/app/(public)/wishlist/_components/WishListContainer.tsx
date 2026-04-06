@@ -25,7 +25,7 @@ export default function WishListContainer() {
 
     return (
         <Container>
-            <div className=" md:hidden">
+            <div className="md:hidden">
                 <WishListMobileContainer data={wishListData?.data} loading={isLoading} deleteWishListProduct={deleteWishListProduct} />
             </div>
             <div className="hidden md:block">
