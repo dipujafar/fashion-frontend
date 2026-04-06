@@ -172,7 +172,7 @@ export default function SalesContributionsTable() {
           </div>
         </CardContent>
       </Card>
-      <PaginationSection className="mt-5" />
+      <PaginationSection total={500} current={1} className="mt-5" />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Skeleton } from "../ui/skeleton"
 
 function ProductsCardSkeleton() {
     return (
-        <div className="flex flex-col  rounded-xl overflow-hidden border border-border bg-card">
+        <div className="flex flex-col  rounded-md overflow-hidden border border-border bg-card">
             {/* Product Image */}
             <div className="relative w-full h-[250px]">
                 <Skeleton className="w-full h-full rounded-none" />

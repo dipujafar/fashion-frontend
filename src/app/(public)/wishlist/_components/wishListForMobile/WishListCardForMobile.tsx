@@ -1,83 +1,53 @@
-"use client";
-import { ShoppingCart, Trash2, X } from "lucide-react";
-import { AuthenticateIcon, CartIcon } from "@/icons";
+"use client";;
+import { ShoppingCart, Trash2 } from "lucide-react";
 import Image from "next/image";
 import ConfirmationPopover from "@/components/shared/popover/ConfirmationPopover";
+import { IWishListData } from "@/types";
+import moment from "moment";
+import { toast } from "sonner";
+import Link from "next/link";
 
-interface ProductCardProps {
-  name: string;
-  image: string;
-  price: number;
-  date: string;
-  color: string;
-  size: string;
-  features: string[];
-}
-
-export function WishListCardForMobile({
-  name,
-  image,
-  price,
-  date,
-  color,
-  size,
-  features,
-}: ProductCardProps) {
-  const handleDelete = () => {
-    console.log("Deleted");
+export function WishListCardForMobile({ product, deleteWishListProduct }: { product: IWishListData, deleteWishListProduct: (id: string) => void }) {
+  const handleDelete = async (id: string) => {
+    deleteWishListProduct(id);
   };
 
   return (
     <div className="border border-border rounded-lg p-2 bg-card space-y-1">
       {/* Features badges */}
       <div className="flex flex-col gap-y-0.5 max-w-[250px]">
-        {/* {features?.map((feature, idx) => (
-          <div
-            key={idx}
-            className="flex gap-x-1.5 justify-between bg-[#F3FFF9] px-1"
-          >
-            <div className="flex items-center gap-x-0.5">
-              <AuthenticateIcon className="size-2.5" />
-              <h5 className="text-[10px] text-[#00B047]">{feature}</h5>
-            </div>
-            <div className="flex items-center gap-x-0.5">
-              <p className="text-[10px] text-[#00B047]">$15.00</p>
-              <h5 className="text-xs bg-[#00B047]/20 text-[#00B047] rounded-full cursor-pointer">
-                <X className="size-3" />
-              </h5>
-            </div>
-          </div>
-        ))} */}
       </div>
 
       {/* Main content */}
       <div className="flex gap-2">
         {/* Product image */}
-        <div className="flex-shrink-0">
+        <Link href={`/shop/${product?.product?.id}`} className="flex-shrink-0">
           <Image
             width={100}
             height={100}
-            src={image || "/placeholder.svg"}
-            alt={name}
+            src={product?.product?.images?.[0]?.url}
+            alt={`${product?.product?.title} image`}
+            placeholder="blur"
+            blurDataURL={"/p-images/blurImage.jpg"}
             className="w-32 h-40 object-cover rounded"
           />
-        </div>
+        </Link>
 
         {/* Product details */}
         <div className="flex-1">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h3 className="text font-semibold text-foreground">{name}</h3>
-              <p className="text-sm text-muted-foreground">Size: {size}</p>
-              <p className="text-sm text-muted-foreground">Color: {color}</p>
+              <Link href={`/shop/${product?.product?.id}`} className="text font-semibold text-foreground">{product?.product?.title}</Link>
+              <p className="text-sm text-muted-foreground">Size: {product?.product?.size?.title || "N/A"}</p>
+              <p className="text-sm text-muted-foreground">Color: {product?.product?.color || "N/A"}</p>
             </div>
             <div className="flex gap-x-2 items-center">
               <div className="size-8 flex justify-center items-center rounded-full bg-gray-100 cursor-pointer">
                 <ShoppingCart className="size-4" />
               </div>
               <ConfirmationPopover
-                title="Are you sure you want to remove this product from your cart?"
-                handleConfirm={handleDelete}
+                title="Are you sure you want to remove this product from your wishlist?"
+                handleConfirm={() => handleDelete(product?.product?.id)}
               >
                 <button className="size-8 flex justify-center items-center rounded-full bg-red-100 cursor-pointer">
                   <Trash2 className="size-3" />
@@ -92,11 +62,11 @@ export function WishListCardForMobile({
           <div>
             <p className="text-sm text-muted-foreground">
               Price:
-              <span className="font-semibold"> ${price.toFixed(2)}</span>
+              <span className="font-semibold"> ${product?.product?.finalPrice?.toFixed(2)}</span>
             </p>
             <p className="text-sm text-muted-foreground">
               Date:
-              <span className="font-semibold"> ${date}</span>
+              <span className="font-semibold"> {moment(product?.createdAt).fromNow()}</span>
             </p>
           </div>
         </div>

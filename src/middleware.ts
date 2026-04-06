@@ -24,5 +24,6 @@ export const config = {
   matcher: [
     // "/user/:path*",
     "/sell-products",
+    "/wishlist"
   ],
 };

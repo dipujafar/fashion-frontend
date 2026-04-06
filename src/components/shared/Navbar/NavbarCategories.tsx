@@ -264,7 +264,7 @@ export default function MegaNavigation() {
       {/* ── Desktop Nav ─────────────────────────────────────────────────────── */}
       <div
         ref={navRef}
-        className="hidden md:block relative"
+        className="hidden md:block relative border-y "
         onMouseLeave={handleNavLeave}
       >
         {/* Top bar */}
@@ -314,7 +314,7 @@ export default function MegaNavigation() {
                   className="w-full flex items-center gap-3 px-4 py-2 text-base font-semibold text-gray-500 hover:text-black hover:bg-white transition-colors"
                 >
                   <Grid3X3 className="h-4 w-4" />
-                  <span>All {activeRoot.name}</span>
+                  <span>All</span>
                 </button>
 
                 <div className="mt-1 space-y-0.5 px-2">

@@ -154,7 +154,7 @@ export default function DirectDonationTable() {
           </div>
         </CardContent>
       </Card>
-      <PaginationSection className="mt-5" />
+      <PaginationSection total={10} current={1} className="mt-5" />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Container from "@/components/shared/Container";
 import React, { Suspense } from "react";
 import ShopPageContainer from "./_components/ShopPageContainer";
+import { ProductGridSkeleton } from "@/components/skeletons/ProductsCardSkeleton";
 
 export const metadata = {
   title: "Shop",
@@ -9,7 +10,7 @@ export const metadata = {
 
 const ShopPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Container><ProductGridSkeleton /></Container>}>
       <Container>
         <ShopPageContainer></ShopPageContainer>
       </Container>

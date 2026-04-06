@@ -46,7 +46,7 @@ const ProductsListContainer = () => {
         </div>
       </div>
       {/* Pagination */}
-      <PaginationSection></PaginationSection>
+      <PaginationSection total={30} current={1}></PaginationSection>
     </div>
   );
 };
