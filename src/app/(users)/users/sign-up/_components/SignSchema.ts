@@ -4,8 +4,10 @@ const formSchema = z.object({
     .string({ required_error: "First Name is required" })
     .min(1, { message: "First Name is required" }),
   lastName: z
-    .string({ required_error: "Last Name is required" })
-    .min(1, { message: "Last Name is required" }),
+    .string()
+    .trim()
+    .optional(),
+
   userName: z
     .string({ required_error: "User Name is required" })
     .min(1, { message: "User Name is required" }),
@@ -35,7 +37,7 @@ const formSchema = z.object({
   streetAddress: z.string({ required_error: "Street address is required" }).min(1, "Street address is required"),
   city: z.string().optional(),
   state: z.string({ required_error: "State is required" }),
-  zipCode: z.string({required_error: "Zip code is required"}).min(1, "Zip code is required"),
+  zipCode: z.string({ required_error: "Zip code is required" }).min(1, "Zip code is required"),
 
   socialMedia: z.array(
     z.object({

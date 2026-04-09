@@ -164,6 +164,7 @@ export interface IProduct {
   favourites: {
     id: string;
   }[];
+  donation_percent: number,
   user: IUser;
 }
 

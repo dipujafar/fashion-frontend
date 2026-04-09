@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
 import ProductImagesCarousel from "./carousel/ProductImagesCarousel";
-import { productDetails } from "@/data/dummyData.tsx";
 import { EmblaOptionsType } from "embla-carousel";
+import { IProduct } from "@/types";
 
 const OPTIONS: EmblaOptionsType = {};
 
-const ProductImages = () => {
+const ProductImages = ({ product }: { product : IProduct }) => {
   return (
     <div>
       <ProductImagesCarousel
-        slides={productDetails?.image}
         options={OPTIONS}
+        product={product}
       ></ProductImagesCarousel>
     </div>
   );

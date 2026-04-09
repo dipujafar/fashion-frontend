@@ -12,15 +12,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { user, token } = action.payload;
+      const { user, accessToken, refreshToken } = action.payload;
 
       state.user = user;
-      state.token = token;
+      state.token = accessToken;
 
       // Store token in Cookies for middleware authentication
-      Cookies.set("fashion-access-token", token, {
+      Cookies.set("fashion-access-token", accessToken, {
         path: "/",
         expires: 7,
+      });
+      Cookies.set("fashion-refresh-token", refreshToken, {
+        path: "/",
+        expires: 30,
       });
     },
 
@@ -30,6 +34,7 @@ const authSlice = createSlice({
 
       // Remove token from cookie
       Cookies.remove("fashion-access-token", { path: "/" });
+      Cookies.remove("fashion-refresh-token", { path: "/" });
     },
   },
 });

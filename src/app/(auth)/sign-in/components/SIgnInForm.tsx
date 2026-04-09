@@ -62,7 +62,8 @@ const SIgnInForm = () => {
         dispatch(
           setUser({
             user: jwtDecode(res?.data?.accessToken),
-            token: res?.data?.accessToken,
+            accessToken: res?.data?.accessToken,
+            refreshToken : res?.data?.refreshToken
           })
         );
         toast.success("Login successful");

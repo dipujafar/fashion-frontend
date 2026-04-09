@@ -2,19 +2,19 @@ import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import "./carousel.css";
 import Image from "next/image";
-import { TProductImage } from "@/types";
 import { CarouselThumbs } from "./CarouselThumbs";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { Heart } from "lucide-react";
+import { IProduct } from "@/types";
+import FavouritesWithServer from "../FavouritesWithServer";
 
 type PropType = {
-  slides: TProductImage[];
+  product : IProduct
   options?: any;
 };
 
-const ProductImagesCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props;
+const ProductImagesCarousel: React.FC<PropType> = ({product, options}) => {
+  const { images : slides } = product;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -61,10 +61,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
                   ></Image>
                 </Zoom>
                 {/* ===================== favorite button ================ */}
-                <div className="bg-primary-black absolute bottom-2 right-2 h-5 md:h-7 w-[50px] md:w-16 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm text-white ">
-                  <Heart className="group-hover:fill-primary-red text-primary-red duration-500 md:size-[18px] size-4"></Heart>
-                  <p>12</p>
-                </div>
+                <FavouritesWithServer id={product?.id} count={product?._count?.favourites} includedProduct={product?.favourites}></FavouritesWithServer>
               </div>
             </div>
           ))}
@@ -106,7 +103,7 @@ const ProductImagesCarousel: React.FC<PropType> = (props) => {
                 />
               ))}
               <div className="absolute inset-0 bg-primary-black/50">
-              {slides?.length - 1 > 3 && <span className="text-white text-sm font-semibold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">+{slides?.length - 3}</span>}
+                {slides?.length - 1 > 3 && <span className="text-white text-sm font-semibold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">+{slides?.length - 3}</span>}
               </div>
             </div>
           </div>
