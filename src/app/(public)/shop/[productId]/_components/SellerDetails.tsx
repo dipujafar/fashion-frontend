@@ -1,13 +1,16 @@
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import CommonButton from "@/components/ui/common-button";
+import CustomAvatar from "@/components/ui/custom-avatar";
 import { Rating } from "@/components/ui/rating";
 import { LocationIcon } from "@/icons";
+import { IUser } from "@/types";
+import { userRoleMapper } from "@/utils/userRoleMapper";
 import { userTagColor } from "@/utils/userTagColor";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const SellerDetails = () => {
+const SellerDetails = ({ user }: { user: IUser }) => {
   return (
     <div className=" max-w-lg">
       <div className=" flex justify-between gap-x-2 items-center md:mb-3 mb-2 ">
@@ -34,29 +37,27 @@ const SellerDetails = () => {
               className="flex items-center gap-x-2 group cursor-pointer"
             >
               <div className="relative size-12 rounded-full">
-                <Image
+                {/* <Image
                   src={"/userProfile1.png"}
                   alt="user_image"
                   width={1200}
                   height={1200}
                   className="size-12 rounded-full  "
-                ></Image>
+                ></Image> */}
+                <CustomAvatar image={user?.picture?.url || null} name={user?.fname}></CustomAvatar>
                 <div
                   className="rounded-full size-4 flex justify-center items-center absolute -top-1 right-1"
-                  style={{
-                    backgroundColor: userTagColor("Professional Seller"),
-                  }}
-                >
+                  style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }}>
                   <Check size={16} color="#fff"></Check>
                 </div>
               </div>
             </Link>
 
             <div
-              style={{ backgroundColor: userTagColor("Professional Seller") }}
+              style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }}
               className="px-3 rounded"
             >
-              <h6 className="text-primary-white">Professional Seller</h6>
+              <h6 className="text-primary-white"> {userRoleMapper(user?.auth?.role)?.label}</h6>
             </div>
           </div>
 
@@ -66,19 +67,18 @@ const SellerDetails = () => {
                 href="/celebrity/profile-preview"
                 className="flex items-center gap-x-2 group cursor-pointer"
               >
-                <h5 className="font-medium">@Sarah_Style</h5>
+                <h5 className="font-medium">{user?.fname}</h5>
               </Link>
               <div className="flex items-center gap-x-1">
-                <Rating rating={5} size={16}></Rating>
+                <Rating rating={user?.avgRating} size={16}></Rating>
                 <p className="text-primary-gray md:text-base text-sm">
-                  (5)
+                  ({user?.avgRating})
                 </p>
               </div>
             </div>
             <div className="flex gap-x-2 items-center">
               <LocationIcon />
-
-              <h6>Dublin, Ireland</h6>
+              <h6>{user?.address || "N/A"}</h6>
             </div>
           </div>
           <hr />

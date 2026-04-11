@@ -85,7 +85,7 @@ const PProductCard = ({
                         <div className="flex items-center gap-x-1 gap-y-1 justify-between">
                             <Link href={`/celebrity/profile-preview`}>
                                 <div className="relative">
-                                    <CustomAvatar image={data?.user?.picture} name={data?.user?.userName}></CustomAvatar>
+                                    <CustomAvatar image={data?.user?.picture?.url || null} name={data?.user?.fname}></CustomAvatar>
                                     <div
                                         className="rounded-full size-3 flex justify-center items-center absolute top-0 -right-1"
                                         style={{ backgroundColor: userRoleMapper(data?.user?.auth?.role)?.color }}

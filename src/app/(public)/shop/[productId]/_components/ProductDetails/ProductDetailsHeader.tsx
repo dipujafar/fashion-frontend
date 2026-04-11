@@ -1,8 +1,9 @@
 import { productDetails } from "@/data/dummyData.tsx";
 import { HeartIcon2, OfferIcon2 } from "@/icons";
+import { IProduct } from "@/types";
 import React from "react";
 
-export default function ProductDetailsHeader() {
+export default function ProductDetailsHeader({product}:{product : IProduct}) {
   return (
     <div className="xl:space-y-2 space-y-0.5">
       {/* visible only for mobile devices */}
@@ -10,7 +11,7 @@ export default function ProductDetailsHeader() {
         {productDetails?.tag}
       </h6>
       <h4 className="md:text-3xl text-xl text-[#262626] font-semibold">
-        {productDetails?.title}
+        {product?.title}
       </h4>
       <h6 className="bg-[#87CEEB] w-fit px-3 rounded-xs text-primary-white italic mb-2 hidden md:block ">
         {productDetails?.tag}
@@ -25,17 +26,17 @@ export default function ProductDetailsHeader() {
       </div>
 
       <div className="flex  flex-row-reverse justify-between md:flex-col md:justify-start ">
-        {productDetails?.discount && (
+        {product?.discountPct > 0 && (
           <div className="flex gap-x-6 items-center">
             <p className="line-through text-primary-gray text-lg">
-              {productDetails?.originalPrice}
+              {product?.price}
             </p>
             <div className="text-primary-red   rounded">
-              -{productDetails?.discount}
+              -{product?.discountPct}%
             </div>
           </div>
         )}
-        <h4 className="md:text-3xl text-xl">${productDetails?.price}</h4>
+        <h4 className="md:text-3xl text-xl">${product?.finalPrice}</h4>
       </div>
     </div>
   );

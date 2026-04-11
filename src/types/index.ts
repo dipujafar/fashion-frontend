@@ -143,7 +143,7 @@ export interface IProduct {
   brandId: string;
   sizeId: string;
   categoryId: string;
-  catagory_hierarchy: string[];
+  catagory_hierarchy: ICategory[];
   condition: ICondition;
   tags: string[];
   meterials: string[];
@@ -166,6 +166,16 @@ export interface IProduct {
   }[];
   donation_percent: number,
   user: IUser;
+  charities : ICharity[]
+}
+
+export interface ICharity {
+  "id": string,
+  "isAnonymous": boolean,
+  "productId": string,
+  "charityId": string,
+  "charity": IUser
+  "createdAt": Date
 }
 
 export type UserRole =
@@ -210,7 +220,7 @@ export interface IUser {
   updatedAt: string;
   auth: IUserAuth;
   avgRating: number;
-  picture: string | null;
+  picture: { key: string, url: string } | null;
 }
 
 export interface ILoggedInUser {

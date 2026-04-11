@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hooks";
 import { ILoggedInUser } from "@/types";
 import { Heart } from "lucide-react";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -29,6 +30,9 @@ function FavouritesWithServer({ id, count, includedProduct, className }: { id: s
                 }
             }
             catch (error: any) {
+                if (isRedirectError(error)) {
+                    throw error; // Let Next.js handle the redirect
+                }
                 toast.error(error?.data?.message);
             }
         }
@@ -40,7 +44,9 @@ function FavouritesWithServer({ id, count, includedProduct, className }: { id: s
                 }
             }
             catch (error: any) {
-                console.log(error)
+                if (isRedirectError(error)) {
+                    throw error; // Let Next.js handle the redirect
+                }
                 toast.error(error?.data?.message);
             }
         }

@@ -6,6 +6,7 @@ import SellerDetails from "../SellerDetails";
 import { CheckIcon, ReportIcon, ShareIcon } from "@/icons";
 import ProductDetailsHeader from "./ProductDetailsHeader";
 import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
+import { IProduct } from "@/types";
 
 const handleShare = () => {
   navigator.share({
@@ -14,12 +15,12 @@ const handleShare = () => {
   });
 };
 
-const ProductDetails = () => {
+const ProductDetails = ({ product }: { product: IProduct }) => {
   return (
-    <div className=" md:space-y-5 space-y-3">
+    <div className=" md:space-y-5 space-y-3 my-5">
       {/* --------- product header ---------- */}
       <div >
-        <ProductDetailsHeader />
+        <ProductDetailsHeader product={product} />
       </div>
 
       {/* --------- product details data ---------- */}
@@ -44,23 +45,30 @@ const ProductDetails = () => {
             </button>
           </div>
         </div>
-        <DisplayLargeDescriptionText />
+        <DisplayLargeDescriptionText data={product?.description} />
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Total Amount of charity:</h2>
-          <p className="text-green-600">{productDetails?.charity}%</p>
+          <p className="text-green-600">{product?.donation_percent}%</p>
         </div>
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Item Number:</h2>
           <p>{productDetails?.item_Number}</p>
-        </div>
+        </div> */}
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] ">Category :</h2>
-          <p>{productDetails?.category} / T-shirt</p>
+          <p>
+            {product?.catagory_hierarchy?.map((i, index) => (
+              <span key={i?.id}>
+                <Link href={`/shop?category=${i?.id}`} className="hover:underline duration-150">{i?.name}</Link>
+                {index !== product.catagory_hierarchy.length - 1 && " / "}
+              </span>
+            ))}
+          </p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 lg:items-center">
           <h2 className="w-[120px]  flex-shrink-0">Tags:</h2>
           <p className="flex flex-wrap gap-1 items-center ">
-            {productDetails?.tags?.map((tag,index) => (
+            {product?.tags?.map((tag, index) => (
               <span key={index} className="bg-black text-white px-1.5 rounded text-[15px]">
                 {tag}{" "}
               </span>
@@ -69,21 +77,21 @@ const ProductDetails = () => {
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Condition:</h2>
-          <p>{productDetails?.condition}</p>
+          <p>{product?.condition}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Fabric: </h2>
-          <p>{productDetails?.fabric}</p>
+          <p>{product?.meterials?.join(", ")}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Brands: </h2>
-          <p>{productDetails?.brands}</p>
+          <Link href={`/shop?brand=${product?.brand?.id}`} className="hover:underline">{product?.brand?.name}</Link>
         </div>
         {/* available sizes */}
         <div className="flex flex-col md:flex-row justify-between gap-x-2">
           <div className="flex md:gap-x-8 gap-x-4 items-center">
             <h2 className="w-[120px]">Available Size: </h2>
-            <p>{productDetails?.size}</p>
+            <Link href={`/shop?size=${product?.size?.id}`} className="hover:underline">{product?.size?.title}</Link>
           </div>
           <Link
             href="/product-size"
@@ -94,12 +102,12 @@ const ProductDetails = () => {
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Colour: </h2>
-          <p>Gray</p>
+          <p>{product?.color}</p>
         </div>
-        <div className="flex  md:gap-x-8 gap-x-4 ">
+        {/* <div className="flex  md:gap-x-8 gap-x-4 ">
           <h2 className="w-[120px] flex-shrink-0">Care Instruction: </h2>
           <p>{productDetails?.care_Instruction}</p>
-        </div>
+        </div> */}
         {/* =============== Shipping & Delivery =============== */}
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Shipping & Delivery:</h2>
@@ -108,7 +116,7 @@ const ProductDetails = () => {
         {/* =============== Returns Policy =============== */}
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Returns Policy:</h2>
-          <p>Returns accepted – 7 days </p>
+          <p>Returns accepted – {product?.return_window} days </p>
         </div>
         {/* ======== alert section ============= */}
         <div className="flex gap-x-2 bg-primary-green/10 px-2 py-1 w-fit rounded">
@@ -120,9 +128,9 @@ const ProductDetails = () => {
       </div>
 
       {/* ======================= all actions buttons ================ */}
-      <ActionButtons></ActionButtons>
+      <ActionButtons product={product}></ActionButtons>
       {/* ========================= seller details ========================= */}
-      <SellerDetails></SellerDetails>
+      <SellerDetails user={product?.user}></SellerDetails>
     </div>
   );
 };

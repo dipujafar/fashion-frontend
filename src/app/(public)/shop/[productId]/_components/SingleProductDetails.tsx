@@ -25,7 +25,7 @@ const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promis
           <ProductImages product={product?.data}></ProductImages>
         </div>
         <div className="flex-1">
-          <ProductDetails></ProductDetails>
+          <ProductDetails product={product?.data} />
         </div>
       </div>
       <ReviewContainer></ReviewContainer>
