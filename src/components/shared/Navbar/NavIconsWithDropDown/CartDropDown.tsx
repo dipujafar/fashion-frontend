@@ -9,6 +9,7 @@ import {
 import { CartIcon } from "@/icons";
 import { removeFromCart } from "@/redux/features/cart.slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { defaultImg } from "@/utils/defaultImg";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,10 +35,12 @@ export default function CartDropDown() {
               <Card className="p-4 hover:shadow-md transition-shadow w-full">
                 <div className="flex items-start gap-3">
                   <Image
-                    src={product?.image || ""}
-                    alt={product?.name}
+                    src={product?.product?.images[0]?.url || defaultImg?.product}
+                    alt={product?.product?.title}
                     width={1200}
                     height={1200}
+                    placeholder="blur"
+                    blurDataURL={defaultImg?.placeholderImg}
                     className="w-12 h-12 rounded-md object-cover"
                   />
 
@@ -45,7 +48,7 @@ export default function CartDropDown() {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                       <div className="flex-1 min-w-0">
                         <p className="text-lg break-words">
-                          {product.name}
+                          {product?.product?.title}
                         </p>
                         <span className="text-xs text-gray-500 whitespace-nowrap">
                           ${product?.price}

@@ -166,7 +166,7 @@ export interface IProduct {
   }[];
   donation_percent: number,
   user: IUser;
-  charities : ICharity[]
+  charities: ICharity[]
 }
 
 export interface ICharity {
@@ -221,6 +221,20 @@ export interface IUser {
   auth: IUserAuth;
   avgRating: number;
   picture: { key: string, url: string } | null;
+}
+
+export interface IBillingDetails {
+  country: string,
+  full_name: string,
+  address1: string,
+  address2 ?: string,
+  zip_code: string,
+  state: string,
+  city: string,
+
+  email : string | null
+
+  contact: string
 }
 
 export interface ILoggedInUser {

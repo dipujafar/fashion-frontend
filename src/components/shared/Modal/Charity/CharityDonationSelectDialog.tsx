@@ -55,9 +55,10 @@ export function CharityDonationSelectDialog({
   const totalDonation = (purchasePrice * donationPercentage) / 100;
 
   // Split total donation equally among selected charities
-  const perCharityAmount = selectedCharityIds.length > 0
-    ? totalDonation / charities.length  // fixed share based on total charities, not selected
-    : 0;
+  const perCharityAmount =
+    selectedCharityIds.length > 0
+      ? totalDonation / selectedCharityIds.length  // 👈 split among selected only
+      : 0;
 
   const finalTotal = totalDonation + additionalDonation;
 
@@ -85,14 +86,19 @@ export function CharityDonationSelectDialog({
 
     const prod = {
       id: product?.id,
-      name: product?.title,
       price: product?.finalPrice,
-      quantity: 1,
-      image: product?.images[0]?.url
+      quantity: 1
     }
+
+    const shipping_fee = 0;
+
+    const totalPrice = (product?.finalPrice * 1) + additionalDonation + shipping_fee
 
     // Final cart item with charities
     const cartItem: CartItem = {
+      total_price : totalPrice,
+      shipping_fee : 0,
+      product,
       ...prod,
       charities: cartCharities,
       donation_percent: donationPercentage,
