@@ -5,14 +5,11 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { IProduct } from "@/types";
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
-type TProps = {
-    _id: number,
-    image: string
-}
 
-const PreviewProduct = ({productData}:{productData: TProps[]}) => {
+const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
   return (
     <Carousel
       opts={{
@@ -32,11 +29,11 @@ const PreviewProduct = ({productData}:{productData: TProps[]}) => {
       <CarouselContent>
         {productData?.slice(0, 8)?.map((data) => (
           <CarouselItem
-            key={data?._id}
+            key={data?.id}
             className="basis-1/2  md:basis-1/3 xl:basis-1/5 "
           >
             <Link href={`/shop/${1}`}>
-              <ProductImageCard data={data}/>
+              <ProductImageCard data={{ image: data?.images[0]?.url }} />
             </Link>
           </CarouselItem>
         ))}

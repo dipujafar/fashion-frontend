@@ -3,17 +3,22 @@ import React from "react";
 import ProductDetails from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
 import ReviewContainer from "./review/ReviewContainer";
-import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
+// import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
 import CharityInfo from "./dialog/CharityInfo";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { CharityDonationFormDialog } from "@/components/shared/Modal/Charity/CharityDonationFormDialog";
 import { IProduct } from "@/types";
+import { notFound } from "next/navigation";
 
 const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promise<{ data: IProduct }> }) => {
 
   const product = await promiseDetails;
+
+  if (!product?.data) {
+    return notFound();
+  }
 
   return (
     <Container className="xl:space-y-8 lg:space-y-6 space-y-4">
@@ -53,7 +58,7 @@ const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promis
       </div>
 
       {/* <ProductDescription></ProductDescription> */}
-      <DisplayProductSection
+      {/* <DisplayProductSection
         title="Recently Viewed"
         data={recentlyViewedData}
       ></DisplayProductSection>
@@ -61,7 +66,7 @@ const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promis
       <DisplayProductSection
         title="You may also like"
         data={trendingProductData}
-      ></DisplayProductSection>
+      ></DisplayProductSection> */}
     </Container>
   );
 };

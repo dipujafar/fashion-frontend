@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import CommonButton from "@/components/ui/common-button";
 import { Rating } from "@/components/ui/rating";
-import { TProduct } from "@/types";
+import { IProduct, TProduct } from "@/types";
 import { userTagColor } from "@/utils/userTagColor";
 import { Check, Heart, MapPin } from "lucide-react";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const ProductCard = ({
   ownProduct,
   children,
 }: {
-  data: TProduct;
+  data: IProduct;
   ownProduct?: boolean;
   children?: ReactNode;
 }) => {

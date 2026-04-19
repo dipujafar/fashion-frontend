@@ -2,7 +2,7 @@ import { EnvConfig } from "@/config";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 
-export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = [], cache = "force-cache" }: { payload?: any, endPoint: string, method: string, tags?: string[], cache?: "force-cache" | "no-store" }) => {
+export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = [], revalidate, cache }: { payload?: any, endPoint: string, method: string, tags?: string[], revalidate?: number, cache?: "force-cache" | "no-store" }) => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("fashion-access-token")?.value;
     const refreshToken = cookieStore.get('fashion-refresh-token')?.value;
@@ -20,10 +20,13 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
                     ...(isJsonPayload ? { "Content-Type": "application/json" } : {}),
                 },
                 body: payload ? (isJsonPayload ? JSON.stringify(payload) : payload) : undefined,
-                cache: cache,
-                next: {
-                    tags
-                }
+                ...(cache ? { cache: cache } : {}),
+                ...((tags || revalidate) ? {
+                    next: {
+                        ...(tags ? { tags } : {}),
+                        ...(revalidate ? { revalidate } : {}),
+                    }
+                } : {}),
             }
         );
     };

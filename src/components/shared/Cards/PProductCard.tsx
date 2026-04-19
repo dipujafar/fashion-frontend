@@ -1,13 +1,12 @@
 "use client";;
+import FavouritesWithServer from "@/app/(public)/shop/[productId]/_components/FavouritesWithServer";
 import { Card, CardContent } from "@/components/ui/card";
 import CommonButton from "@/components/ui/common-button";
 import CustomAvatar from "@/components/ui/custom-avatar";
-import FavoriteIcon from "@/components/ui/favorite-icon";
 import { Rating } from "@/components/ui/rating";
-import { useAddFavoriteProductMutation } from "@/redux/api/favoriteProductApi";
 import { IProduct } from "@/types";
 import { userRoleMapper } from "@/utils/userRoleMapper";
-import { Check} from "lucide-react";
+import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -75,7 +74,8 @@ const PProductCard = ({
                     )} */}
 
                     {/* ===================== favorite button ================ */}
-                    <FavoriteIcon id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavoriteIcon>
+                    {/* <FavoriteIcon id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavoriteIcon> */}
+                    <FavouritesWithServer id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavouritesWithServer>
                 </div>
 
                 {/* ===================================== product details =============================== */}

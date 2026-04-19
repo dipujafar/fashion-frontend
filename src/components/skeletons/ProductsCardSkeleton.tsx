@@ -52,7 +52,7 @@ function ProductsCardSkeleton() {
 // Render a row of 5 skeletons
 export function ProductGridSkeleton({ className, length }: { className?: string, length?: number }) {
     return (
-        <div className={cn("grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4   2xl:grid-cols-5  gap-4 xl:gap-6", className)}>
+        <div className={cn("grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4  gap-4 xl:gap-6", className)}>
             {Array.from({ length: length || 15 }).map((_, i) => (
                 <ProductsCardSkeleton key={i} />
             ))}
