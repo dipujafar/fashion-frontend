@@ -53,8 +53,8 @@ function CharitySelect({
 
   const filtered = search.trim()
     ? available.filter((c) =>
-        c.userName.toLowerCase().includes(search.toLowerCase())
-      )
+      c.userName.toLowerCase().includes(search.toLowerCase())
+    )
     : available;
 
   function openPanel() {
@@ -127,15 +127,13 @@ function CharitySelect({
             <div
               key={charity.id}
               onClick={() => handleSelect(charity)}
-              className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${
-                isSelected ? "bg-muted" : ""
-              }`}
+              className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+                }`}
             >
               <span className="text-base text-foreground">{charity.userName}</span>
               <div
-                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${
-                  isSelected ? "border-primary" : "border-muted-foreground/40"
-                }`}
+                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${isSelected ? "border-primary" : "border-muted-foreground/40"
+                  }`}
               >
                 {isSelected && (
                   <div className="w-2.5 h-2.5 rounded-full bg-primary" />
@@ -226,7 +224,7 @@ export default function InputCharityDonationInput({
   return (
     <>
       {fields.map((field: any, index: number) => (
-        <div key={field.id} className="grid md:grid-cols-2 md:gap-4 gap-x-2">
+        <div key={field.id} className="flex flex-row gap-x-3 items-center">
 
           {/* Charity Select */}
           <FormField
@@ -240,8 +238,8 @@ export default function InputCharityDonationInput({
                 .filter(Boolean) ?? [];
 
               return (
-                <FormItem>
-                  <FormLabel className="flex">
+                <FormItem className="w-full">
+                  <FormLabel className="flex ">
                     Donate to charity
                     {index === 0 && (
                       <>
@@ -267,47 +265,26 @@ export default function InputCharityDonationInput({
           />
 
           {/* Donation Percent */}
-          <div className="flex gap-2">
-            <FormField
-              control={form.control}
-              name={`donations.${index}.donationAmount`}
-              render={({ field }) => (
-                <FormItem className="flex-1 mt-2">
-                  <FormLabel>Amount (%)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter Amount (%)"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                      className="bg-[#f2f2f2] md:py-5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          {index > 0 && (
+            <Button
+              type="button"
+              variant="destructive"
+              size="icon"
+              className="self-end -translate-y-1 cursor-pointer"
+              onClick={() => remove(index)}
+            >
+              ✕
+            </Button>
+          )}
 
-            {index > 0 && (
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                className="self-end -translate-y-1"
-                onClick={() => remove(index)}
-              >
-                ✕
-              </Button>
-            )}
-          </div>
         </div>
       ))}
 
       <Button
         type="button"
         variant="secondary"
-        onClick={() => append({ donateToCharity: "", donationAmount: 0 })}
-        className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer"
+        onClick={() => append({ donateToCharity: "" })}
+        className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer mt-3"
       >
         <PlusCircle /> Add More
       </Button>

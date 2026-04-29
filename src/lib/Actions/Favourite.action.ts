@@ -9,6 +9,7 @@ export const AddToFavourite = async ({ payload }: { payload: { "productId": stri
 
     revalidatePath(`/shop/${payload?.productId}`);
     revalidateTag(tags.products);
+    revalidateTag(tags.favourites);
 
     return res;
 }
@@ -19,6 +20,7 @@ export const DeleteToFavourite = async ({ payload }: { payload: { "productId": s
 
     revalidatePath(`/shop/${payload?.productId}`);
     revalidateTag(tags.products);
+    revalidateTag(tags.favourites);
 
     return res;
 }

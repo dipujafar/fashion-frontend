@@ -1,3 +1,4 @@
+"use client"
 import { productData } from "@/app/(public)/wishlist/_components/data";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

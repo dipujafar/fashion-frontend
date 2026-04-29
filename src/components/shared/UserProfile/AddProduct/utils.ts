@@ -3,13 +3,11 @@ import { z } from "zod";
 
 type Charity = {
   donateToCharity: string;
-  donationAmount: number;
 };
 
 export const formattedData = (data: z.infer<typeof productFormSchema>) => {
   const charities = data?.donations?.map((item: Charity) => ({
     charityId: item.donateToCharity,
-    percent: Number(item.donationAmount),
     isAnonymous: data?.donationPrivacy === "anonymous",
   }));
 

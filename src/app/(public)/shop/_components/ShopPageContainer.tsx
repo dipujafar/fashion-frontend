@@ -3,12 +3,16 @@ import ProductCategory from "./ProductCategory";
 import AllProducts from "./AllProducts";
 import { SmallDeviceFilter } from "./SmallDeviceFilter";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
+// import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
 import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
 import { useSearchParams } from "next/navigation";
 import { formatLabel } from "@/utils/formatText";
 import ProductFilterContainer from "./filter/ProductFilterContainer";
 import { useGetProductsQuery } from "@/redux/api/productApi";
+import Container from "@/components/shared/Container";
+import Link from "next/link";
+import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
+import RecentView from "@/components/modules/home/RecentView/RecentView";
 
 const ShopPageContainer = () => {
   const filterOptions = useSearchParams().get("category");
@@ -71,17 +75,34 @@ const ShopPageContainer = () => {
         {/* Pagination */}
         <PaginationSection total={products?.data?.meta?.total} current={Number(page)} pageSize={Number(limit)}></PaginationSection>
       </div>
-      <div className="xl:mt-8 mt-5 space-y-10">
-        <DisplayProductSection
-          title="Recently Viewed"
-          data={recentlyViewedData}
-        ></DisplayProductSection>
 
-        <DisplayProductSection
-          title="You may also like"
-          data={trendingProductData}
-        ></DisplayProductSection>
-      </div>
+      {/* ================Recent View==================== */}
+      {/* <Container>
+        <div>
+          <div className="flex justify-between items-center gap-x-4 mb-2 ">
+            <h4 className="section-name uppercase">{"Recently Viewed"}</h4>
+            {
+              <Link
+                href={"/shop"}
+                className="flex gap-x-2 items-center font-bold group "
+              >
+                <p>{"View All"} </p>
+                <AnimatedArrow size={20}></AnimatedArrow>
+              </Link>
+            }
+          </div>
+          <hr />
+
+          <RecentView />
+
+        </div>
+      </Container> */}
+
+      {/* <DisplayProductSection
+        title="You may also like"
+        data={trendingProductData}
+      ></DisplayProductSection> */}
+
     </>
   );
 };

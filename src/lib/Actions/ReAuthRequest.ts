@@ -33,6 +33,8 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
 
     let response = await makeRequest(accessToken);
 
+
+
     if (!response.ok && response.status === 401 && refreshToken) {
 
         const refreshResponse = await fetch(EnvConfig.serverBaseUrl + '/auth/refresh', {
@@ -43,8 +45,10 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
             body: JSON.stringify({ refreshToken }),
         });
 
+
         if (refreshResponse.ok) {
             const data = await refreshResponse.json();
+
             const newAccessToken = data?.data?.accessToken;
             const newRefreshToken = data?.data?.refreshToken;
 
@@ -69,8 +73,8 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
         } else {
 
             // Logout logic: remove cookies
-            cookieStore.delete('fashion-access-token');
-            cookieStore.delete('fashion-refresh-token');
+            // cookieStore.delete('fashion-access-token');
+            // cookieStore.delete('fashion-refresh-token');
             // Optionally, send redirect info to client
             // const errorData = await refreshResponse.json().catch(() => null);
 

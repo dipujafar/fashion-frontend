@@ -1,4 +1,3 @@
-"use client";
 import ProfileIcon from "./NavIconsWithDropDown/ProfileIcon";
 import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import NotificationIcon from "./NavIconsWithDropDown/NotificationIcon";
@@ -7,6 +6,7 @@ import CartDropDown from "./NavIconsWithDropDown/CartDropDown";
 import MessageDropDown from "./NavIconsWithDropDown/MessageDropDown";
 
 const SearchAndNavIcon = () => {
+  
   return (
     <Menubar className="border-none shadow-none">
       {/* <div>

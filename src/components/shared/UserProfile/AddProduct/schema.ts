@@ -47,12 +47,12 @@ export const productFormSchema = z.object({
   donations: z.array(
     z.object({
       donateToCharity: z.string().min(1, "Please select a charity"),
-      donationAmount: z.preprocess(
-        (val) => Number(val),
-        z.number().min(1).max(100),
-      ),
     }),
   ),
+
+  donation_percent: z.string({ required_error: "Donation Percent is required." }).min(1, {
+    message: "RDonation Percent is required.",
+  }),
 
   donationPrivacy: z.enum(["anonymous", "show-name"], {
     required_error: "Please select donation privacy preference.",
@@ -94,6 +94,7 @@ export const productFormDefaultValues = () => {
     donations: [{ donateToCharity: "", donationAmount: 0 }],
     durationTime: "",
     returnsPolicy: "0",
+    donation_percent : "5",
     returnDescription: "",
     allowOffers: false,
   };
@@ -145,7 +146,7 @@ export const returnsPolicy = [
   },
   {
     label: "Returns accepted – 7 days",
-    value:"7"
+    value: "7"
   },
   {
     label: "Returns accepted – 14 days",
@@ -153,7 +154,7 @@ export const returnsPolicy = [
   },
   {
     label: "No returns",
-    value:"0"
+    value: "0"
   }
 ];
 

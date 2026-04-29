@@ -223,6 +223,15 @@ export interface IUser {
   picture: { key: string, url: string } | null;
 }
 
+export interface IQuesAns {
+  id : string
+  questioner : IUser
+  question : string
+  answer : string | null
+  createdAt : Date
+  answeredAt : Date | null
+}
+
 export interface IBillingDetails {
   country: string,
   full_name: string,

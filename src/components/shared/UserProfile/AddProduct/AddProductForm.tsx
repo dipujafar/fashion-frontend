@@ -541,7 +541,40 @@ export default function AddProductForm() {
                   />
                 </div>
 
-                <InputCharityDonationInput charities={charitiesData?.data || []} form={form} fields={fields} append={append} remove={remove} />
+                <div className="my-8 space-y-3">
+                  <FormField
+                    control={form.control}
+                    name="donation_percent"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Donation Percent (%)</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                                <SelectValue placeholder="Select Donation Percent" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]?.map((item, index) => (
+                                <SelectItem value={item.toString()} key={index}>
+                                  {item}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <InputCharityDonationInput charities={charitiesData?.data || []} form={form} fields={fields} append={append} remove={remove} />
+
+                </div>
 
 
                 {/* Donation Privacy */}
@@ -596,8 +629,6 @@ export default function AddProductForm() {
                     </FormItem>
                   )}
                 />
-
-
 
                 {/* Shipping & Returns */}
                 <FormField

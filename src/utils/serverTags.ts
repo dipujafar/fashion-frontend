@@ -3,5 +3,6 @@ export const tags = {
     "recommended": "recommended",
     "trending": "trending",
     "recentView": "recentView",
-    "products": "products"
+    "products": "products",
+    "favourites" : "favourites"
 }
