@@ -239,7 +239,7 @@ export default function MegaNavigation() {
       setSelectedId(id);
       updateParams({
         path: "/shop",
-        params: { categoryId: id },
+        params: { category: id },
       });
       setActiveRootId(null);
       setHoveredL2Id(null);

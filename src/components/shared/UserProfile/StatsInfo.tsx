@@ -38,8 +38,8 @@ export default function StatsInfo({
   return (
     <>
       <Card
-        style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
-        className="w-full    py-2 md:py-4 "
+        // style={{ boxShadow: "1px 4px 10px 0px rgba(0, 0, 0, 0.15)" }}
+        className="w-full  border border-gray-200  py-2 md:py-4 "
       >
         <CardContent className="lg:px-6 px-3 space-y-2">
         {/* --------------------------- display tag for ambassador user role --------------------------- */}

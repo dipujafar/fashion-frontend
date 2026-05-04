@@ -4,5 +4,6 @@ export const tags = {
     "trending": "trending",
     "recentView": "recentView",
     "products": "products",
-    "favourites" : "favourites"
+    "favourites" : "favourites",
+    "category_hairerchy" : "category_hairerchy"
 }

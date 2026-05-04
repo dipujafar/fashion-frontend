@@ -3,12 +3,8 @@ import BlogsUpdate from "./BlogsUpdate";
 import ClothesSection from "./ClothesSection/ClothesSection";
 import FeatureProduct from "./FeatureProdut/FeatureProduct";
 import UserAvatar from "./UserAvatatTitle/UserAvatar";
-import Feedbacks from "./Feedbacks/Feedbacks";
 import EcoFriendlyCharityContainer from "./EcoFriendlyCharity/EcoFriendlyCharityContainer";
 import TrendingItem from "./TrendingItem/TrendingItem";
-import {
-  trendingProductData,
-} from "@/data/dummyData.tsx";
 import GetInTouch from "./GetInTouch";
 import HeroSection from "./hero/HeroSection";
 import Container from "@/components/shared/Container";

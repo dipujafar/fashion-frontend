@@ -32,7 +32,7 @@ const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
             key={data?.id}
             className="basis-1/2  md:basis-1/3 xl:basis-1/5 "
           >
-            <Link href={`/shop/${1}`}>
+            <Link href={`/shop/${data?.id}`}>
               <ProductImageCard data={{ image: data?.images[0]?.url }} />
             </Link>
           </CarouselItem>

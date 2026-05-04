@@ -329,7 +329,7 @@ export default function AddProductForm() {
                         <FormControl>
                           <CategorySelector
                             categories={categories}
-                            value={selectedCategory}
+                            value={selectedCategory?.id}
                             onSelect={handleCategorySelect}
                             placeholder="Select category"
                           />

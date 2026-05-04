@@ -19,8 +19,6 @@ const ReviewContainer = async ({ quesPromise, prodId }: { quesPromise: Promise<{
 
     const questions = await quesPromise;
 
-
-
     return (
         <div className='lg:space-y-8 space-y-5'>
             <div className={cn(" rounded-sm  space-y-4",)}>
@@ -28,12 +26,12 @@ const ReviewContainer = async ({ quesPromise, prodId }: { quesPromise: Promise<{
                 <div>
 
                     {/* ====================Submit Question============== */}
-                    <section>
+                    {!questions?.data?.isOwner && <section>
                         <h3>
                             Have a question that others might want to know? Add a public question.
                         </h3>
                         <SubmitYourReview prodId={prodId} />
-                    </section>
+                    </section>}
 
                     {/* -------------------- display previous questions ------------- */}
                     <div>
@@ -76,6 +74,7 @@ const ReviewContainer = async ({ quesPromise, prodId }: { quesPromise: Promise<{
                                 {comment?.answer && (
                                     <div className="mt-1 border-l-4 border-blue-400 pl-3 py-1">
                                         <p className="text-sm text-gray-700">{comment?.answer}</p>
+                                        {comment?.answeredAt && <span className='text-xs text-gray-600'>{moment(comment?.answeredAt).format("MM/DD/YYYY h:mm a")}</span>}
                                     </div>
                                 )}
                             </div>

@@ -35,7 +35,7 @@ export default function ChoiceBundleModal() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="bg-transparent text-black  cursor-pointer group hover:bg-[#e9f8f0] shadow-none">
+        <Button className=" cursor-pointer group  shadow-none">
           Create Bundle <AnimatedArrow />
         </Button>
       </DialogTrigger>
@@ -69,10 +69,10 @@ export default function ChoiceBundleModal() {
         >
           {" "}
           <Button
-            variant={"outline"}
+            // variant={"outline"}
             className="border-black mt-3 uppercase py-5 cursor-pointer w-full"
           >
-            Choose a bundle
+            Create a bundle
           </Button>
         </Link>
         <p className="text-lg font-medium text-center">Save on shipping fees</p>

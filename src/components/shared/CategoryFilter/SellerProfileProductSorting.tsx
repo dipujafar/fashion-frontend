@@ -25,7 +25,7 @@ export function SellerProfileProductSorting() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full justify-between bg-background hover:bg-accent border-none">
+        <Button variant="outline" className="w-full justify-between bg-background hover:bg-accent border-none shadow-none">
           <span className="flex items-center gap-2">
             <span className="text-muted-foreground">Sort by</span>
             <span className="font-medium">{selectedOption?.label}</span>

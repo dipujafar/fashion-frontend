@@ -221,27 +221,36 @@ export interface IUser {
   auth: IUserAuth;
   avgRating: number;
   picture: { key: string, url: string } | null;
+  followers: IFolow[]
+  following: IFolow[]
 }
 
 export interface IQuesAns {
-  id : string
-  questioner : IUser
-  question : string
-  answer : string | null
-  createdAt : Date
-  answeredAt : Date | null
+  id: string
+  questioner: IUser
+  question: string
+  answer: string | null
+  createdAt: Date
+  answeredAt: Date | null
+}
+
+export interface IFolow {
+  followerId: string,
+  followingId: string
+  follower: IUser
+  following: IUser
 }
 
 export interface IBillingDetails {
   country: string,
   full_name: string,
   address1: string,
-  address2 ?: string,
+  address2?: string,
   zip_code: string,
   state: string,
   city: string,
 
-  email : string | null
+  email: string | null
 
   contact: string
 }
@@ -259,4 +268,11 @@ export interface IWishListData {
   productId: string;
   createdAt: string;
   product: IProduct;
+}
+
+export interface IMeta {
+  total: number,
+  totalPage: number,
+  page: number,
+  limit: number,
 }

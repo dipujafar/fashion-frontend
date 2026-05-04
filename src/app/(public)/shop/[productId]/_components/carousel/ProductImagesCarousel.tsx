@@ -7,14 +7,15 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { IProduct } from "@/types";
 import FavouritesWithServer from "../FavouritesWithServer";
+import { defaultImg } from "@/utils/defaultImg";
 
 type PropType = {
-  product : IProduct
+  product: IProduct
   options?: any;
 };
 
-const ProductImagesCarousel: React.FC<PropType> = ({product, options}) => {
-  const { images : slides } = product;
+const ProductImagesCarousel: React.FC<PropType> = ({ product, options }) => {
+  const { images: slides } = product;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -49,16 +50,20 @@ const ProductImagesCarousel: React.FC<PropType> = ({product, options}) => {
         <div className="embla__container  ">
           {slides?.slice(0, 6)?.map((data, index) => (
             <div className="embla__slide rounded" key={index}>
-              <div className="relative md:h-[750px] h-[400px] md:max-h-[calc(100vh-350px)] ">
+              <div className="">
                 <Zoom>
-                  <Image
-                    src={data?.url}
-                    width={500}
-                    height={500}
-                    alt="product_image"
-                    quality={100}
-                    className="   object-cover w-full md:h-[750px] h-[400px] md:max-h-[calc(100vh-350px)] mx-auto"
-                  ></Image>
+                  <div className="relative h-100 md:h-[700px] w-full">
+                    <Image
+                      src={data?.url || defaultImg?.product}
+                      fill
+                      placeholder="blur"
+                      blurDataURL={defaultImg.placeholderImg}
+                      alt="product_image"
+                      quality={100}
+                      // className="object-cover w-full md:h-[750px] h-[400px] md:max-h-[calc(100vh-350px)] mx-auto"
+                      className="object-contain h-auto w-auto mx-auto"
+                    ></Image>
+                  </div>
                 </Zoom>
                 {/* ===================== favorite button ================ */}
                 <FavouritesWithServer id={product?.id} count={product?._count?.favourites} includedProduct={product?.favourites}></FavouritesWithServer>
@@ -70,7 +75,7 @@ const ProductImagesCarousel: React.FC<PropType> = ({product, options}) => {
 
       <div className="embla-thumbs">
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
-          <div className="embla-thumbs__container  gap-2 lg:grid grid-cols-4 mt-2 hidden ">
+          <div className="embla-thumbs__container gap-2 lg:grid grid-cols-4 mt-2 hidden ">
             {slides?.slice(0, 8)?.map((data, index) => (
               <CarouselThumbs
                 key={index}
