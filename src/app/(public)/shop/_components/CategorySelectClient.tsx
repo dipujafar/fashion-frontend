@@ -1,8 +1,9 @@
 "use client"
-import CategorySelector, { Category } from "@/components/shared/UserProfile/AddProduct/Categories/CategorySelector"
+import CategoryFilterSelector from "@/components/shared/UserProfile/AddProduct/Categories/CategoryFilterSelector";
+import { Category } from "@/components/shared/UserProfile/AddProduct/Categories/CategorySelector"
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
-function CategorySelectClient({ selectedCat, categories }: { selectedCat: string | undefined, categories: Category[] }) {
+function CategorySelectClient({ selectedCat, categories, className }: { selectedCat: string | undefined, categories: Category[], className ?: string }) {
   const updateparams = useUpdateSearchParams();
 
   const handleCategorySelect = (cat: Category) => {
@@ -10,12 +11,13 @@ function CategorySelectClient({ selectedCat, categories }: { selectedCat: string
   }
 
   return (
-    <div className="w-60">
-      <CategorySelector
+    <div className="max-w-60">
+      <CategoryFilterSelector
         categories={categories}
         value={selectedCat || ""}
         onSelect={handleCategorySelect}
         placeholder="Select category"
+        className={className}
       />
     </div>
   )

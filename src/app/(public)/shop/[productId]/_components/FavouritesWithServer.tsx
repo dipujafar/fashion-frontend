@@ -12,7 +12,7 @@ type IIncludedProduct = {
     id: string
 }
 
-function FavouritesWithServer({ id, count, includedProduct, className }: { id: string, count: number, includedProduct: IIncludedProduct[], className?: string }) {
+function FavouritesWithServer({ id, count, includedProduct, className, extraRevalidatePaths = [] }: { id: string, count: number, includedProduct: IIncludedProduct[], className?: string, extraRevalidatePaths?: string[] }) {
 
     const pathName = usePathname();
     const router = useRouter();
@@ -24,7 +24,7 @@ function FavouritesWithServer({ id, count, includedProduct, className }: { id: s
         }
         else if (includedProduct?.length > 0) {
             try {
-                const res = await DeleteToFavourite({ payload: { productId: id } });
+                const res = await DeleteToFavourite({ payload: { productId: id }, extraRevalidatePaths });
                 if (res?.error) {
                     toast.error(res?.error);
                 }
@@ -38,7 +38,7 @@ function FavouritesWithServer({ id, count, includedProduct, className }: { id: s
         }
         else {
             try {
-                const res = await AddToFavourite({ payload: { productId: id } });
+                const res = await AddToFavourite({ payload: { productId: id }, extraRevalidatePaths });
                 if (res?.error) {
                     toast.error(res?.error);
                 }

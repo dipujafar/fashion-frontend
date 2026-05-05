@@ -5,9 +5,7 @@ import { Rating } from "@/components/ui/rating";
 import { LocationIcon } from "@/icons";
 import { IUser } from "@/types";
 import { userRoleMapper } from "@/utils/userRoleMapper";
-import { userTagColor } from "@/utils/userTagColor";
 import { Check } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 const SellerDetails = ({ user }: { user: IUser }) => {
@@ -18,7 +16,7 @@ const SellerDetails = ({ user }: { user: IUser }) => {
           seller information
         </h4>
         <Link
-          href="/celebrity/profile-preview"
+          href={`/member/${user?.userName}`}
           className="flex items-center gap-x-2 group cursor-pointer"
         >
           <p className="font-medium">VIEW DETAILS</p>
@@ -33,7 +31,7 @@ const SellerDetails = ({ user }: { user: IUser }) => {
         <div className="space-y-2">
           <div className="flex-between gap-x-2 ">
             <Link
-              href="/celebrity/profile-preview"
+              href={`/member/${user?.userName}`}
               className="flex items-center gap-x-2 group cursor-pointer"
             >
               <div className="relative size-12 rounded-full">
@@ -44,7 +42,7 @@ const SellerDetails = ({ user }: { user: IUser }) => {
                   height={1200}
                   className="size-12 rounded-full  "
                 ></Image> */}
-                <CustomAvatar image={user?.picture?.url || null} name={user?.fname}></CustomAvatar>
+                <CustomAvatar image={user?.picture?.url || null} name={user?.userName}></CustomAvatar>
                 <div
                   className="rounded-full size-4 flex justify-center items-center absolute -top-1 right-1"
                   style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }}>
@@ -64,10 +62,10 @@ const SellerDetails = ({ user }: { user: IUser }) => {
           <div className="flex-between gap-x-2">
             <div>
               <Link
-                href="/celebrity/profile-preview"
+                href={`/member/${user?.userName}`}
                 className="flex items-center gap-x-2 group cursor-pointer"
               >
-                <h5 className="font-medium">{user?.fname}</h5>
+                <h5 className="font-medium">{user?.userName}</h5>
               </Link>
               <div className="flex items-center gap-x-1">
                 <Rating rating={user?.avgRating} size={16}></Rating>
@@ -78,7 +76,9 @@ const SellerDetails = ({ user }: { user: IUser }) => {
             </div>
             <div className="flex gap-x-2 items-center">
               <LocationIcon />
-              <h6>{user?.address || "N/A"}</h6>
+              <h6>{[user?.city, user?.state, user?.country]
+                .filter(Boolean)
+                .join(", ")}</h6>
             </div>
           </div>
           <hr />

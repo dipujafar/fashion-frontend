@@ -1,19 +1,53 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React from "react";
+import React, { Suspense } from "react";
 import ProductsListContainer from "../ProductsList/ProductsListContainer";
 import CustomerFeedbacks from "../CustomerFeedbacks";
 import { Switch } from "@/components/ui/switch";
 import CharitySupportCards from "../../Cards/CharitySupportCards";
 import AboutCharity from "../../Profile/AboutCharity";
 import ChoiceBundleModal from "../Modals/ChoiceBundleModal";
+import { GetProductsByMember } from "@/lib/services/Products";
+import { ProductGridSkeleton } from "@/components/skeletons/ProductsCardSkeleton";
 
-const ProfileFeatures = ({
+const ProfileFeatures = async ({
   userRole,
   preview,
+  userName,
+  searchParams: ssp
 }: {
   userRole: string;
   preview?: string;
+  userName: string;
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
+
+  const { category, page, sortBy: sort } = await ssp;
+
+  let sortBy = "createdAt";
+  let orderBy = "desc"
+
+  if (sort == "newest") {
+    orderBy = "desc"
+  } else if (sort == "-price") {
+    sortBy = "finalPrice";
+    orderBy = "asc"
+  }
+  else if (sort == "price") {
+    sortBy = "finalPrice";
+    orderBy = "desc"
+  }
+
+  const query: any = { page, sortBy, sortOrder: orderBy }
+
+  if (page) {
+    query.page = page
+  }
+  if (category) {
+    query.category = category
+  }
+
+  const prodPromise = GetProductsByMember({ query, userName });
+
   return (
     <div>
       <Tabs
@@ -25,7 +59,7 @@ const ProfileFeatures = ({
             ? "product_listing"
             : "product_listing"
         }
-        className="border-b border-b-gray-500"
+        className=""
       >
         <TabsList
           // style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
@@ -85,16 +119,22 @@ const ProfileFeatures = ({
           )}
         <TabsContent value="product_listing">
 
-          <div className="flex justify-between items-center border border-gray-200 rounded-md lg:py-4 py-2 px-5">
-            <div>
-              <p className="text-lg font-medium">Shop Bundles</p>
-              <p className="text-gray-600 text-sm">Get Discount</p>
-            </div>
-            <ChoiceBundleModal />
-          </div>
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <>
+              <div className="flex justify-between items-center border border-gray-200 rounded-md lg:py-4 py-2 px-5">
+                <div>
+                  <p className="text-lg font-medium">Shop Bundles</p>
+                  <p className="text-gray-600 text-sm">Get Discount</p>
+                </div>
+                <ChoiceBundleModal />
+              </div>
 
-          <ProductsListContainer />
+              <ProductsListContainer prodPromise={prodPromise} selectedCat={category} />
+            </>
+          </Suspense>
+
         </TabsContent>
+
         <TabsContent value="rating_review">
           <CustomerFeedbacks />
         </TabsContent>

@@ -5,6 +5,7 @@ import CommonButton from "@/components/ui/common-button";
 import CustomAvatar from "@/components/ui/custom-avatar";
 import { Rating } from "@/components/ui/rating";
 import { IProduct } from "@/types";
+import { defaultImg } from "@/utils/defaultImg";
 import { userRoleMapper } from "@/utils/userRoleMapper";
 import { Check } from "lucide-react";
 import Image from "next/image";
@@ -29,12 +30,12 @@ const PProductCard = ({
                 <div className="relative">
                     <div className="relative group">
                         <Image
-                            src={data?.images?.[0]?.url}
+                            src={data?.images?.[0]?.url || defaultImg?.product}
                             alt="product_image"
                             width={1200}
                             height={1200}
                             placeholder="blur"
-                            blurDataURL={"/p-images/blurImage.jpg"}
+                            blurDataURL={defaultImg?.placeholderImg}
                             className="lg:h-80 md:h-64 h-52 object-cover origin-center rounded cursor-pointer"
                         ></Image>
                         <div
@@ -83,9 +84,9 @@ const PProductCard = ({
                     {/* ===== user image and user type ======== */}
                     {!ownProduct && (
                         <div className="flex items-center gap-x-1 gap-y-1 justify-between">
-                            <Link href={`/celebrity/profile-preview`}>
+                            <Link href={`/member/${data?.user?.userName}`}>
                                 <div className="relative">
-                                    <CustomAvatar image={data?.user?.picture?.url || null} name={data?.user?.fname}></CustomAvatar>
+                                    <CustomAvatar image={data?.user?.picture?.url || null} name={data?.user?.userName}></CustomAvatar>
                                     <div
                                         className="rounded-full size-3 flex justify-center items-center absolute top-0 -right-1"
                                         style={{ backgroundColor: userRoleMapper(data?.user?.auth?.role)?.color }}
@@ -103,22 +104,25 @@ const PProductCard = ({
                         </div>
                     )}
 
-                    {/* ===================== product title ================ */}
-                    <p className="text-primary-gray md:text-base text-sm">
-                        {data?.title}
-                    </p>
-                    <h6 className="md:text-lg text-primary-black">{data?.size?.title}</h6>
-                    <h5 className="font-bold text-primary-black">${data?.finalPrice?.toFixed(2)}</h5>
+                    <Link href={`/shop/${data?.id}`} className="group">
 
-                    {/* ===================== product rating ================ */}
-                    {!ownProduct && (
-                        <div className="flex items-center gap-x-1">
-                            <Rating rating={data?.user?.avgRating} size={18}></Rating>
-                            <p className="text-primary-gray md:text-base text-sm">
-                                ({data?.user?.avgRating?.toFixed(1)})
-                            </p>
-                        </div>
-                    )}
+                        {/* ===================== product title ================ */}
+                        <p className="text-primary-gray md:text-base text-sm group-hover:underline underline-offset-1 duration-150">
+                            {data?.title}
+                        </p>
+                        <h6 className="md:text-lg text-primary-black">{data?.size?.title}</h6>
+                        <h5 className="font-bold text-primary-black">${data?.finalPrice?.toFixed(2)}</h5>
+
+                        {/* ===================== product rating ================ */}
+                        {!ownProduct && (
+                            <div className="flex items-center gap-x-1">
+                                <Rating rating={data?.user?.avgRating} size={18}></Rating>
+                                <p className="text-primary-gray md:text-base text-sm hover:no-underline">
+                                    ({data?.user?.avgRating?.toFixed(1)})
+                                </p>
+                            </div>
+                        )}
+                    </Link>
 
                     {/* ===================== location ================ */}
                     {/* {!ownProduct && (

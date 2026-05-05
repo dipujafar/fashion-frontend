@@ -1,52 +1,40 @@
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import AllUploadedProduct from "./AllUploadedProduct";
 import UserProfileProductFilter from "./UserProfileProductFilter";
+import { IMeta, IProduct } from "@/types";
+import ProductCard from "../../Cards/ProductCard";
+import Empty from "@/components/ui/empty";
+import GetCategoriesHairerchy from "@/lib/services/Categories";
 
-const ProductsListContainer = () => {
+const ProductsListContainer = async ({ prodPromise, selectedCat }: { prodPromise: Promise<{ data: { data: IProduct[], meta: IMeta } }>, selectedCat ?: string }) => {
+  
+  const result = await prodPromise;
+
+  const categoryPromise = GetCategoriesHairerchy();
+
   return (
     <div>
-      <div className="grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4">
-        {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
-            <div className="relative">
-            <Search
-              size={20}
-              color="#00000026"
-              className="absolute top-1/4 left-0.5"
-            />
-            <Input
-              className=" bg-[#F6F6F6] pl-6 py-5"
-              placeholder="Search any dress, price,..."
-            />
-          </div>
-          <Categories title="Category" data={categoryData}></Categories>
-          <Categories title="COLLECTION" data={collectionTypes}></Categories>
-        </div> */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 lg:gap-8 gap-4">
 
         <div className="2xl:col-span-5 xl:col-span-4 md:col-span-3 ">
-          {/* =============================== categories ========================== */}
-          {/* <div className="flex justify-between items-center xl:mb-8 mb-4 lg:hidden ">
-            <div className="relative">
-              <div className="absolute top-1/4 left-0.5 min-w-[250px]">
-                <Search size={20} color="#00000026" />
-              </div>
-              <Input
-                className=" bg-[#F6F6F6] pl-6 py-5"
-                placeholder="Search any dress, price,..."
-              />
-            </div>
-            <div className="lg:hidden block">
-              <SmallDeviceFilter></SmallDeviceFilter>
-            </div>
-          </div> */}
-          {/* ============================= display total items and option for product filter ========================== */}
-          <UserProfileProductFilter totalItems={10}/>
+          {/* =========== display total items and option for product filter ======== */}
+          <UserProfileProductFilter totalItems={result?.data?.meta?.total} selectedCat={selectedCat} catPromise={categoryPromise}/>
 
           {/* ========================= all products ========================== */}
-          <AllUploadedProduct></AllUploadedProduct>
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-4 xl:gap-6 ">
+            {result?.data?.data?.map((prod) => (
+              <ProductCard data={prod} key={prod?.id} ownProduct={true}></ProductCard>
+            ))}
+          </div>
+
+          {
+            result?.data?.data?.length <= 0 && <Empty message="No listings at the moment" />
+          }
+
         </div>
       </div>
+
       {/* Pagination */}
-      <PaginationSection total={30} current={1}></PaginationSection>
+      <PaginationSection total={result?.data?.meta?.total} current={1}></PaginationSection>
     </div>
   );
 };
