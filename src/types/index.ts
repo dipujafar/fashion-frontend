@@ -276,3 +276,20 @@ export interface IMeta {
   page: number,
   limit: number,
 }
+
+export interface ISelldonation {
+  id: string,
+  amount: number,
+  percent: number,
+  extra_money: number,
+  isAnonymous: boolean,
+  total_amount: number,
+  status: string,
+  createdAt: Date,
+  orderItemId: string,
+  charityId: string,
+  charity: IUser,
+  orderItem: {
+    product: IProduct
+  }
+}
