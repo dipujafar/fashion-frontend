@@ -36,12 +36,12 @@ const Donationlist = async ({ donationPromise }: { donationPromise: Promise<{ da
       >
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <Avatar className="h-10 w-10 flex-shrink-0">
-            <AvatarImage
-              src={campaign?.isAnonymous ? defaultImg?.empty_user : campaign?.charity?.picture?.url}
+            {!campaign?.isAnonymous && <AvatarImage
+              src={campaign?.charity?.picture?.url}
               alt={campaign?.charity.userName}
-            />
+            />}
             <AvatarFallback>
-              {campaign?.charity?.userName.charAt(0)}
+              {campaign?.isAnonymous ? "?" : campaign?.charity?.userName.charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">

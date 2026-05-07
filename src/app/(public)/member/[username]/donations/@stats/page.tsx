@@ -16,10 +16,10 @@ async function Statspage({ params }: { params: Promise<{ username: string }> }) 
 
   const { username } = await params;
 
-  const result = await GetMemberDonationStats({ username }) as {data : DonationSummary}
+  const result = await GetMemberDonationStats({ username }) as { data: DonationSummary };
 
   return (
-    <DonationStats stats={result?.data}/>
+    <DonationStats stats={result?.data} />
   )
 }
 
