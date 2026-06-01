@@ -4,7 +4,6 @@ import logo from "@/assets/images/common-image/logo.png";
 import Image from "next/image";
 import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
-import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
 

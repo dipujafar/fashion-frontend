@@ -72,7 +72,7 @@ export default function AddProductForm() {
     skip: !selectedCategory
   });
   // =============================== get charities =============================
-  const { data: charitiesData } = useGetCharitiesQuery(undefined);
+  const { data: charitiesData } = useGetCharitiesQuery();
   // =============================== product api ==============================
   const [uploadProduct, { isLoading }] = useCreateProductMutation();
 

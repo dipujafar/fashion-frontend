@@ -25,7 +25,7 @@ async function DonationStats({ stats }: { stats: DonationSummary }) {
             {/* Total Raised hero */}
             <section className="bg-card rounded-2xl border border-border p-5 mb-4">
                 <div className="flex items-baseline justify-between">
-                    <span className="text-base font-medium text-gray-800">Total Raised</span>
+                    <span className="text-base font-medium text-gray-800">Donations Made</span>
                     <span className="text-3xl font-semibold tracking-tight">${stats?.total.toFixed(1)}</span>
                 </div>
             </section>

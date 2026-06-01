@@ -200,6 +200,7 @@ export interface IUser {
   userName: string;
   phone: string;
   description: string | null;
+  bio : string | null;
   country: string;
   state: string;
   city: string;
@@ -223,6 +224,7 @@ export interface IUser {
   picture: { key: string, url: string } | null;
   followers: IFolow[]
   following: IFolow[]
+  charityGalleries : {id : string, url : string, caption : string}[]
 }
 
 export interface IQuesAns {
@@ -292,4 +294,37 @@ export interface ISelldonation {
   orderItem: {
     product: IProduct
   }
+}
+
+export interface IDirectDonation {
+  id: string
+
+  donorId: string | null
+  donor: IUser | null
+
+  charityId: string
+  charity: IUser
+
+  amount: number
+  currency: string
+
+  status: string
+
+  transactionId: string
+  paymentIntentId: string
+
+  // anonymous donation
+  isAnonymous: boolean
+
+  // donor message
+  message: string | null
+
+  donatedAt: Date | null
+}
+
+export interface ITreeDonation {
+  id: string
+
+  treeCredit: number,
+  createdAt: Date,
 }

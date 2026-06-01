@@ -41,3 +41,29 @@ export const GetMemberPurchaseDonations = async ({ username }: { username: strin
         throw err;
     }
 };
+
+export const GetDirectMoneyDonations = async ({ username }: { username: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/donations/direct/${username}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const GetTreeDonations = async ({ username }: { username: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/donations/tree/${username}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};

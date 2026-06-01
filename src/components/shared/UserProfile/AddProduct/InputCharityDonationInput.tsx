@@ -10,21 +10,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import SelectDonationOption from "./SelectDonationOption";
-import { cn } from "@/lib/utils";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-export interface CharityUser {
-  id: string;
-  userName: string;
-  fname: string;
-  lname: string;
-  email: string;
-  phone: string;
-  picture: string | null;
-}
+import { IUser } from "@/types";
 
 // ─── Charity Select ───────────────────────────────────────────────────────────
 
@@ -34,7 +21,7 @@ function CharitySelect({
   onChange,
   selectedIds = [],
 }: {
-  charities: CharityUser[];
+  charities: IUser[];
   value: string;
   onChange: (id: string) => void;
   selectedIds?: string[];
@@ -67,7 +54,7 @@ function CharitySelect({
     setSearch("");
   }
 
-  function handleSelect(charity: CharityUser) {
+  function handleSelect(charity: IUser) {
     onChange(charity.id);
     closePanel();
   }
@@ -130,7 +117,7 @@ function CharitySelect({
               className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
                 }`}
             >
-              <span className="text-base text-foreground">{charity.userName}</span>
+              <span className="text-base text-foreground">{charity.fname} {charity.lname}</span>
               <div
                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${isSelected ? "border-primary" : "border-muted-foreground/40"
                   }`}
@@ -219,7 +206,7 @@ export default function InputCharityDonationInput({
   fields: any[];
   append: (value: any) => void;
   remove: (index: number) => void;
-  charities: CharityUser[];
+  charities: IUser[];
 }) {
   return (
     <>

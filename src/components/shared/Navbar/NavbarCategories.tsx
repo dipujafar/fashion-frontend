@@ -14,18 +14,6 @@ interface Category {
   children: Category[];
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Recursively find a node by id */
-function findById(nodes: Category[], id: string): Category | null {
-  for (const node of nodes) {
-    if (node.id === id) return node;
-    const found = findById(node.children, id);
-    if (found) return found;
-  }
-  return null;
-}
-
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const COLLAPSE_THRESHOLD = 6;
@@ -36,20 +24,15 @@ const COLLAPSE_THRESHOLD = 6;
 function LeafItem({
   item,
   onSelect,
-  isSelected,
 }: {
   item: Category;
   onSelect: (id: string) => void;
-  isSelected: boolean;
 }) {
   return (
     <button
       onClick={() => onSelect(item.id)}
       className={cn(
-        "w-full text-left px-3 py-1.5 rounded text-sm transition-colors",
-        isSelected
-          ? "bg-black text-white font-medium"
-          : "text-gray-600 hover:text-black hover:bg-gray-50"
+        "w-full text-left px-3 py-2 cursor-pointer rounded transition-colors  text-gray-600 hover:text-black hover:bg-gray-50 hover:font-medium text-base",
       )}
     >
       {item.name}
@@ -64,45 +47,20 @@ function LeafItem({
 function CollapsibleLeafList({
   items,
   onSelect,
-  selectedId,
 }: {
   items: Category[];
   onSelect: (id: string) => void;
-  selectedId: string | null;
 }) {
-  const [expanded, setExpanded] = React.useState(false);
-  const needsCollapse = items.length > COLLAPSE_THRESHOLD;
-  const visible = needsCollapse && !expanded ? items.slice(0, COLLAPSE_THRESHOLD) : items;
-  const hiddenCount = items.length - COLLAPSE_THRESHOLD;
 
   return (
-    <div className="space-y-0.5">
-      {visible.map((item) => (
+    <div className={`grid grid-cols-2 max-w-xl`}>
+      {items.map((item) => (
         <LeafItem
           key={item.id}
           item={item}
           onSelect={onSelect}
-          isSelected={selectedId === item.id}
         />
       ))}
-      {needsCollapse && (
-        <button
-          onClick={() => setExpanded((p) => !p)}
-          className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-400 hover:text-black transition-colors"
-        >
-          {expanded ? (
-            <>
-              <ChevronDown className="h-3 w-3 rotate-180" />
-              See less
-            </>
-          ) : (
-            <>
-              <ChevronDown className="h-3 w-3" />
-              See {hiddenCount} more
-            </>
-          )}
-        </button>
-      )}
     </div>
   );
 }
@@ -111,17 +69,16 @@ function CollapsibleLeafList({
 function MobileAccordionItem({
   item,
   depth,
-  selectedId,
   onSelect,
 }: {
   item: Category;
   depth: number;
-  selectedId: string | null;
   onSelect: (id: string) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const [childrenExpanded, setChildrenExpanded] = React.useState(false);
-  const hasChildren = item.children.length > 0;
+  const canShowChildren = depth < 1;
+  const hasChildren = canShowChildren && item.children.length > 0;
   const needsCollapse = hasChildren && item.children.length > COLLAPSE_THRESHOLD;
   const visibleChildren =
     needsCollapse && !childrenExpanded
@@ -135,7 +92,7 @@ function MobileAccordionItem({
         className={cn(
           "flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors",
           depth === 0 ? "font-semibold text-sm" : "text-sm",
-          selectedId === item.id ? "bg-black text-white" : "hover:bg-gray-100"
+          "hover:bg-gray-100"
         )}
         style={{ paddingLeft: `${(depth + 1) * 12}px` }}
         onClick={() => {
@@ -164,7 +121,6 @@ function MobileAccordionItem({
               key={child.id}
               item={child}
               depth={depth + 1}
-              selectedId={selectedId}
               onSelect={onSelect}
             />
           ))}
@@ -209,9 +165,6 @@ export default function MegaNavigation() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [mobileRootId, setMobileRootId] = React.useState<string | null>(null);
 
-  // Selected id for search params
-  const [selectedId, setSelectedId] = React.useState<string | null>(null);
-
   const navRef = React.useRef<HTMLDivElement>(null);
 
   // Active root node
@@ -236,7 +189,6 @@ export default function MegaNavigation() {
   // Navigate – set last selected id in search params
   const handleSelect = React.useCallback(
     (id: string) => {
-      setSelectedId(id);
       updateParams({
         path: "/shop",
         params: { category: id },
@@ -361,7 +313,12 @@ export default function MegaNavigation() {
                       {activeL2.name}
                     </button>
 
-                    {activeL2.children.every((c) => c.children.length === 0) ? (
+                    <CollapsibleLeafList
+                      items={activeL2.children}
+                      onSelect={handleSelect}
+                    />
+
+                    {/* {activeL2.children.every((c) => c.children.length === 0) ? (
                       // All L3s are leaves — render as a single collapsible flat list
                       <CollapsibleLeafList
                         items={activeL2.children}
@@ -396,7 +353,8 @@ export default function MegaNavigation() {
                           )
                         )}
                       </div>
-                    )}
+                    )} */}
+
                   </div>
                 ) : (
                   activeL2 && (
@@ -479,7 +437,6 @@ export default function MegaNavigation() {
                     key={child.id}
                     item={child}
                     depth={0}
-                    selectedId={selectedId}
                     onSelect={handleSelect}
                   />
                 ))}

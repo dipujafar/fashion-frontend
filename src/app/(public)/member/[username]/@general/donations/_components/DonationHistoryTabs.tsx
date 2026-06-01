@@ -33,9 +33,9 @@ const DonationHistoryTabs = ({ defaultTab, username }: { defaultTab: string, use
                     {
                         defaultTab == "Sold" ? <SoldDonations username={username}/> :
                             defaultTab == "Bought" ? <BoughtDonations username={username}/> :
-                                defaultTab == "Direct" ? <DirectDonations /> :
+                                defaultTab == "Direct" ? <DirectDonations username={username}/> :
                                     defaultTab == "Clothing" ? <ClothDonations /> :
-                                        defaultTab == "Trees" ? <TreeDonations /> : <SoldDonations username={username}/>
+                                        defaultTab == "Trees" ? <TreeDonations username={username}/> : <SoldDonations username={username}/>
                     }
                 </TabsContent>
             })}

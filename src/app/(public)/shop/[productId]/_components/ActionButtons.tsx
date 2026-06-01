@@ -16,7 +16,6 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { selectIsInCart } from "@/redux/features/cart.slice";
 
 const ActionButtons = ({ product }: { product: IProduct }) => {
-  const [quality, setQuality] = useState<number>(1);
   const [showOpenOfferModal, setShowOpenOfferModal] = useState<boolean>(false);
   const [showOpenOpenCharityModal, setShowOpenOpenCharityModal] = useState<boolean>(false);
 

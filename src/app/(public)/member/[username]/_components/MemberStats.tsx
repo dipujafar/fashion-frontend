@@ -35,7 +35,7 @@ async function MemberStats({ statPromise, memberId }: {
 
             <div className="bg-slate-50 dark:bg-slate-900/50 border border-border rounded-lg p-4 text-center">
                 <p className="text-2xl md:text-3xl font-bold text-amber-500 mb-1">${data?.totalDonation.toFixed(2)}</p>
-                <p className="text-xs md:text-sm text-muted-foreground font-medium">Donations Raised. <Link href={`/member/${memberId}/donations`} className='font-semibold text-black underline underline-offset-1 cursor-pointer'>View</Link></p>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium">Donations Made. <Link href={`/member/${memberId}/donations`} className='font-semibold text-black underline underline-offset-1 cursor-pointer'>View</Link></p>
             </div>
 
         </div>

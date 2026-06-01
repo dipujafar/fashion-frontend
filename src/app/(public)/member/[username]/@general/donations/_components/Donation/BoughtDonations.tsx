@@ -8,6 +8,7 @@ import { ISelldonation } from '@/types';
 import { defaultImg } from '@/utils/defaultImg';
 import { LoaderCircle } from 'lucide-react';
 import moment from 'moment';
+import Link from 'next/link';
 import React, { Suspense } from 'react'
 
 async function BoughtDonations({ username }: { username: string }) {
@@ -35,18 +36,27 @@ const Donationlist = async ({ donationPromise }: { donationPromise: Promise<{ da
         className="flex items-center justify-between gap-4"
       >
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <Avatar className="h-10 w-10 flex-shrink-0">
-            {!campaign?.isAnonymous && <AvatarImage
-              src={campaign?.charity?.picture?.url}
-              alt={campaign?.charity.userName}
-            />}
-            <AvatarFallback>
-              {campaign?.isAnonymous ? "?" : campaign?.charity?.userName.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
+          
+          {campaign?.isAnonymous ? <Avatar className="h-10 w-10 flex-shrink-0">
+            <AvatarFallback>?</AvatarFallback>
+          </Avatar> : <Link href={`/member/${campaign?.charity?.userName}`} className="flex items-center gap-3">
+            <Avatar className="h-10 w-10 flex-shrink-0">
+              <AvatarImage
+                src={campaign?.charity?.picture?.url}
+                alt={campaign?.charity?.fname}
+              />
+              <AvatarFallback>
+                {campaign?.charity?.fname.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+
+          </Link>}
+
           <div className="flex-1 min-w-0">
             <p className="font-medium text-sm truncate">
-              {campaign?.isAnonymous ? "Anonymous" : campaign?.charity?.userName}
+              {campaign?.isAnonymous ? "Anonymous" : <Link href={`/member/${campaign?.charity?.userName}`} className="text-gray-900 hover:underline underline-offset-1">
+                {campaign?.charity?.fname} {campaign?.charity?.lname}
+              </Link>}
             </p>
             <p className="text-xs text-muted-foreground">
               ${campaign?.amount.toFixed(0)} <span className={cn("text-orange-700", (campaign?.extra_money < 0) && "hidden")}> • ${campaign?.extra_money.toFixed(0)}</span> • {moment(campaign?.createdAt).fromNow()} •{" "}

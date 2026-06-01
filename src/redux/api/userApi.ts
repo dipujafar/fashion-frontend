@@ -1,10 +1,10 @@
-import { IBillingDetails } from "@/types";
+import { IBillingDetails, IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getCharities: builder.query({
+        getCharities: builder.query<{ data: IUser[] }, void>({
             query: () => ({
                 url: "/users/charities",
                 method: "GET",
