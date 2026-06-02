@@ -1,25 +1,35 @@
 import { z } from "zod";
 const profileSchema = z.object({
-  firstName: z
-    .string({ required_error: "First Name is required" })
-    .min(1, { message: "First Name is required" }),
-  lastName: z
-    .string()
-    .trim()
-    .optional(),
+    firstName: z
+        .string({ required_error: "First Name is required" })
+        .min(1, { message: "First Name is required" }),
+    lastName: z
+        .string()
+        .trim()
+        .optional(),
 
-  phoneNumber: z
-    .string({ required_error: "Phone Number is required" })
-    .min(1, { message: "Phone Number is required" }),
+    phoneNumber: z
+        .string({ required_error: "Phone Number is required" })
+        .min(1, { message: "Phone Number is required" }),
 
-  country: z.string({ required_error: "Country is required" }).min(1, "Please select a country"),
-  streetAddress: z.string({ required_error: "Street address is required" }).min(1, "Street address is required"),
-  city: z.string().optional(),
-  state: z.string({ required_error: "State is required" }),
-  zipCode: z.string({ required_error: "Zip code is required" }).min(1, "Zip code is required"),
+    bio: z
+        .string()
+        .trim()
+        .optional(),
 
-  website: z.string().url({ message: "Please enter a valid URL" }).optional(),
-  vacationMode: z.boolean().optional(),
+    description: z
+        .string()
+        .trim()
+        .optional(),
+
+    country: z.string({ required_error: "Country is required" }).min(1, "Please select a country"),
+    streetAddress: z.string().optional(),
+    city: z.string({ required_error: "City is required" }).min(1, "Please select a city"),
+    state: z.string({ required_error: "State is required" }).min(1, "Please select a state"),
+    zipCode: z.string().optional(),
+
+    website: z.string().url({ message: "Please enter a valid URL" }).optional(),
+    vacationMode: z.boolean().optional(),
 });
 
 

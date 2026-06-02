@@ -7,7 +7,7 @@ import BillingAddressModal from './BillingAddressModal';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function BillingDetailsContainer() {
-    const { isLoading, isSuccess, data } = useDefaultBillingDetailsQuery();
+    const { isLoading, isSuccess, data } = useDefaultBillingDetailsQuery(undefined, { refetchOnMountOrArgChange: true });
     const [showEditAddress, setShowEditAddress] = useState<boolean>(false);
 
     // Build the location line from only the fields that exist,
@@ -22,10 +22,10 @@ function BillingDetailsContainer() {
     const locationLine = locationParts.join(", ");
 
     return (
-        <Card className="w-full border-none shadow-none py-0 mt-10">
+        <Card className="w-full border-none shadow-none py-0">
             <CardHeader className="px-0">
                 <CardTitle className="text-2xl font-semibold">
-                    Billing Address
+                    Shipping Address
                 </CardTitle>
             </CardHeader>
             <CardContent className="px-0">

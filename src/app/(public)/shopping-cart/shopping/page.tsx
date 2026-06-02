@@ -8,7 +8,9 @@ const ShoppingPage = () => {
     <div>
       <div className="hidden md:block">
         <ShoppingCartTable />
-        <BillingDetailsContainer />
+        <div className="mt-10">
+          <BillingDetailsContainer />
+        </div>
       </div>
       <div className="md:hidden">
         <ShoppingCartMobileContainer />

@@ -47,7 +47,7 @@ const SignUpForm = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const { register, setValue, control } = form;
+  const { register, setValue, control, formState: { errors, isSubmitting } } = form;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const modifiedData = formattedData(data);
@@ -236,6 +236,7 @@ const SignUpForm = () => {
                 control={control}
                 setValue={setValue}
                 register={register}
+                errors={errors}
               />
             </div>
 

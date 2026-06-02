@@ -14,6 +14,7 @@ export default function CountryStateCitySelector({
   userAddress,
   register,
   setValue,
+  errors,
 }: any) {
   const [allData, setAllData] = useState([]);
 
@@ -102,49 +103,38 @@ export default function CountryStateCitySelector({
               </Select>
             )}
           />
+          {errors?.country && <p className="text-red-500 text-sm">{errors?.country?.message}</p>}
         </div>
 
         <div>
           {selectedCountry ? (
             <>
-              {statesOfCountry?.length ? (
-                <Controller
-                  name="state"
-                  control={control}
-                  defaultValue={selectedState}
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={(stateName) => {
-                        field.onChange(stateName);
-                        setSelectedState(stateName);
-                      }}
-                      value={selectedState || ""}
-                    >
-                      <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
-                        <SelectValue placeholder="Select state" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {statesOfCountry?.map((state: any) => (
-                          <SelectItem key={state.name} value={state.name}>
-                            {state.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              ) : (
-                <Select>
-                  <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
-                    <SelectValue placeholder="Select State" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="no state found">
-                      No state found!
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
+              <Controller
+                name="state"
+                control={control}
+                defaultValue={selectedState}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={(stateName) => {
+                      field.onChange(stateName);
+                      setSelectedState(stateName);
+                    }}
+                    value={selectedState || ""}
+                  >
+                    <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statesOfCountry?.map((state: any) => (
+                        <SelectItem key={state.name} value={state.name}>
+                          {state.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors?.state && <p className="text-red-500 text-sm">{errors?.state?.message}</p>}
             </>
           ) : (
             <Select>
@@ -165,40 +155,28 @@ export default function CountryStateCitySelector({
                 defaultValue={selectedCity}
                 render={({ field }) => (
                   <>
-                    {citiesOfState?.length ? (
-                      <Select
-                        onValueChange={(cityName) => {
-                          field.onChange(cityName);
-                          setSelectedCity(cityName);
-                        }}
-                        value={selectedCity || ""}
-                      >
-                        <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
-                          <SelectValue placeholder="Select city" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {citiesOfState?.map((city: any) => (
-                            <SelectItem key={city.name} value={city.name}>
-                              {city.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
-                          <SelectValue placeholder="Select City" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="No city found">
-                            No city found
+                    <Select
+                      onValueChange={(cityName) => {
+                        field.onChange(cityName);
+                        setSelectedCity(cityName);
+                      }}
+                      value={selectedCity || ""}
+                    >
+                      <SelectTrigger className="py-5 bg-primary-light-gray w-full bg-[#F5F5F5]">
+                        <SelectValue placeholder="Select city" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {citiesOfState?.map((city: any) => (
+                          <SelectItem key={city.name} value={city.name}>
+                            {city.name}
                           </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </>
                 )}
               />
+              {errors?.city && <p className="text-red-500 text-sm">{errors?.city?.message}</p>}
             </>
           ) : (
             <Select>
@@ -209,31 +187,8 @@ export default function CountryStateCitySelector({
             </Select>
           )}
         </div>
-      </div>
 
-      <div className="grid w-full grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3">
-        {/* <div>
-          <Input
-            type="text"
-            defaultValue={userAddress?.area}
-            id="area"
-            placeholder="Type Area"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray"
-            {...register("area")}
-          />
-        </div>
-
-        <div>
-          <Input
-            defaultValue={userAddress?.house}
-            type="text"
-            id="house"
-            placeholder="Type House No"
-            className="outline-none focus:outline-none py-5 bg-primary-light-gray"
-            {...register("house")}
-          />
-        </div> */}
-        <div className="col-span-2">
+        <div className="col-span-1 lg:col-span-2">
           <Input
             defaultValue={userAddress?.streetAddress}
             type="text"
@@ -242,6 +197,7 @@ export default function CountryStateCitySelector({
             className="outline-none focus:outline-none py-5 bg-primary-light-gray  bg-[#F5F5F5]"
             {...register("streetAddress")}
           />
+          {errors?.streetAddress && <p className="text-red-500 text-sm">{errors?.streetAddress?.message}</p>}
         </div>
 
         <div>
@@ -253,7 +209,9 @@ export default function CountryStateCitySelector({
             className="outline-none focus:outline-none py-5 bg-primary-light-gray  bg-[#F5F5F5]"
             {...register("zipCode")}
           />
+          {errors?.zipCode && <p className="text-red-500 text-sm">{errors?.zipCode?.message}</p>}
         </div>
+
       </div>
     </div>
   );

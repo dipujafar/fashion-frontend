@@ -225,6 +225,7 @@ export interface IUser {
   followers: IFolow[]
   following: IFolow[]
   charityGalleries : {id : string, url : string, caption : string}[]
+  vacationMode : boolean
 }
 
 export interface IQuesAns {

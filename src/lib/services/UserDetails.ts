@@ -15,6 +15,19 @@ const GetUserDetails = async ({ userName }: { userName: string }) => {
 
 export default GetUserDetails;
 
+export const GetMyProfile = async () => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/users/my-profile`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
 export const GetCharityAbout = async ({ userName }: { userName: string }) => {
     try {
         const res = await serverQueryWithReauth({
