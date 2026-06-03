@@ -3,7 +3,7 @@ import React from 'react'
 
 function ShippingDetails() {
     return (
-        <div>
+        <div className='max-w-2xl'>
             <BillingDetailsContainer />
         </div>
     )

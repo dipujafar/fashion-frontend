@@ -559,8 +559,8 @@ export default function AddProductForm() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]?.map((item, index) => (
-                                <SelectItem value={item.toString()} key={index}>
+                              {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
+                                <SelectItem value={item.toString()} key={item}>
                                   {item}
                                 </SelectItem>
                               ))}

@@ -10,3 +10,12 @@ export const UpdateProfile = async ({ payload }: { payload: FormData }) => {
 
     return res;
 }
+
+export const UpdateBundleDiscounts = async ({ payload }: { payload: { enabled: boolean; tiers: { quantity: string; percent: string }[] } }) => {
+
+    const res = await serverQueryWithReauth({ payload, endPoint: "/users/bundle-discount", method: "PUT" });
+
+    revalidatePath(`/bundle-discount`);
+
+    return res;
+}

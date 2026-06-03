@@ -66,3 +66,16 @@ export const GetCharityStatsByUserName = async ({ userName }: { userName: string
         throw err;
     }
 };
+
+export const GetBundleDiscounts = async () => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/users/bundle-discount`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
