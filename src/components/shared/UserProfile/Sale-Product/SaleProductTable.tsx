@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -10,6 +9,11 @@ import { ReturnProductModal } from "../Modals/ReturnProductModal"
 import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import GetOrdersBySeller from "@/lib/services/Orders"
+import { IMeta, IOrder } from "@/types"
+import moment from "moment"
+import ItemsModal from "./ItemsModal"
+import { defaultImg } from "@/utils/defaultImg"
 
 interface SaleItem {
   id: string
@@ -105,12 +109,13 @@ const salesData: SaleItem[] = [
   },
 ]
 
-export default function SaleProductTable({ userRole }: { userRole?: string }) {
-  const [salesItems, setSalesItems] = useState<SaleItem[]>(salesData)
-  const [openRequestModal, setOpenRequestModal] = useState<boolean>(false)
-  const [statusFilter, setStatusFilter] = useState<"All" | "Sold" | "Return" | "In progress">("All")
+export default async function SaleProductTable() {
 
-  const filteredItems = salesItems.filter((item) => statusFilter === "All" || item.status === statusFilter)
+  const ordersResponse = await GetOrdersBySeller({ query: { page: "1", limit: "10" } }) as { data: { data: IOrder[], meta: IMeta } };
+
+  const orders = ordersResponse?.data?.data || [];
+
+  // console.log(orders[0]?.sellerGroups[0]?.orderItems[0]?.product?.images)
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -129,24 +134,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
 
   return (
     <div>
-      <div className="md:hidden mb-4 flex items-center gap-2">
-        <span className="text-sm font-medium">Filter:</span>
-        <Select
-          value={statusFilter}
-          onValueChange={(value) => setStatusFilter(value as "All" | "Sold" | "Return" | "In progress")}
-        >
-          <SelectTrigger className="w-32 h-9 text-xs">
-            <ArrowDownWideNarrow size={16} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All">All</SelectItem>
-            <SelectItem value="Sold">Sold</SelectItem>
-            <SelectItem value="Returned">Returned</SelectItem>
-            <SelectItem value="Return Request">Return Request</SelectItem>
-            <SelectItem value="In progress">In progress</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+
 
       <Card className="hidden md:block py-0">
         <CardContent className="p-0">
@@ -154,66 +142,48 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
             <Table>
               <TableHeader>
                 <TableRow className="bg-black hover:bg-black h-[50px]">
-                  <TableHead className="text-white font-medium text-center">Item Number</TableHead>
-                  <TableHead className="text-white font-medium">Product</TableHead>
+                  <TableHead className="text-white font-medium text-center">#Serial</TableHead>
+                  <TableHead className="text-white font-medium">Items</TableHead>
                   <TableHead className="text-white font-medium text-center">Buyer Name</TableHead>
-                  <TableHead className="text-white font-medium text-center">Size</TableHead>
-                  <TableHead className="text-white font-medium text-center">Condition</TableHead>
-                  <TableHead className="text-white font-medium text-center">Sale Price</TableHead>
-                  <TableHead className="text-white font-medium hidden sm:table-cell text-center">Sale Date</TableHead>
-                  <TableHead className="text-white font-medium">
-                    <div className="flex justify-center items-center md:space-x-1">
-                      <span>Status</span>
-                      <Select
-                        value={statusFilter}
-                        onValueChange={(value) => setStatusFilter(value as "All" | "Sold" | "Return" | "In progress")}
-                      >
-                        <SelectTrigger showIcon={false} className="w-20 h-6 text-xs text-white border-0">
-                          <ArrowDownWideNarrow color="#fff" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="All">All</SelectItem>
-                          <SelectItem value="Sold">Sold</SelectItem>
-                          <SelectItem value="Returned">Returned</SelectItem>
-                          <SelectItem value="Return Request">Return Request</SelectItem>
-                          <SelectItem value="In progress">In progress</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <TableHead className="text-white font-medium text-center">Total Price</TableHead>
+                  <TableHead className="text-white font-medium text-center">Order Date</TableHead>
+                  <TableHead className="text-white font-medium text-center">
+                    Status
+                  </TableHead>
+                  <TableHead className="text-white font-medium text-center">
+                    Action
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredItems.map((item) => (
-                  <TableRow key={item.id} className="hover:bg-gray-50 h-[50px]">
+                {orders.map((order, indx) => (
+                  <TableRow key={order?.id} className="hover:bg-gray-50 h-[50px]">
                     <TableCell className="font-medium text-center">
-                      <Link href={`/shop/2`} className="underline">
-                        {item.itemNumber}
-                      </Link>
+                      #{indx + 1}
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-x-2">
-                        <div className="w-12 h-12 relative rounded overflow-hidden">
-                          <Link href={`/shop/2`} className="text-base">
-                            <Image
-                              src={item.image || "/placeholder.svg"}
-                              alt={item.title}
-                              fill
-                              className="object-cover"
-                            />
-                          </Link>
-                        </div>
-                        <Link href={`/shop/2`} className="text-base">
-                          {item.title}
-                        </Link>
-                      </div>
+
+                      {order?.sellerGroups[0]?.items?.length > 0 ? <ItemsModal items={order?.sellerGroups[0]?.items} finalPrice={order?.sellerGroups[0]?.subtotal} action={<>
+                        {<div className='relative h-14 w-14 cursor-pointer'>
+                          <Image
+                            height={800}
+                            width={1000}
+                            src={order?.sellerGroups[0]?.items[0]?.product?.images[0]?.url || defaultImg?.product}
+                            placeholder='blur'
+                            blurDataURL={defaultImg?.placeholderImg}
+                            alt='item images' className='object-cover h-full w-full rounded' />
+                          <div className='bg-black/60 absolute top-0 left-0 h-full w-full flex justify-center items-center'>
+                            <p className='text-base text-white font-popin'>{order?.sellerGroups[0]?.items?.length}</p>
+                          </div>
+                        </div>}
+                      </>} /> : "N/A"}
+
+
                     </TableCell>
-                    <TableCell className="text-center">{item.buyerName}</TableCell>
-                    <TableCell className="text-center">UK 10</TableCell>
-                    <TableCell className="text-center">2 months used</TableCell>
-                    <TableCell className="font-medium text-center">${item.salePrice.toFixed(2)}</TableCell>
-                    <TableCell className="hidden sm:table-cell text-center">{item.saleDate}</TableCell>
-                    <TableCell className="text-center -translate-x-4">
+                    <TableCell className="text-center">{order?.user?.fname} {order?.user?.lname}</TableCell>
+                    <TableCell className="font-medium text-center">${order?.sellerGroups[0]?.subtotal?.toFixed(2)}</TableCell>
+                    <TableCell className="hidden sm:table-cell text-center">{moment(order?.createdAt).format("MM/DD/YYYY h:mm a")}</TableCell>
+                    {/* <TableCell className="text-center -translate-x-4">
                       {item?.status === "Return Request" ? (
                         <Badge
                           className={cn("cursor-pointer", getStatusBadgeVariant(item.status))}
@@ -226,7 +196,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
                       ) : (
                         <Badge className={cn(getStatusBadgeVariant(item.status))} >{item.status}</Badge>
                       )}
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
@@ -235,7 +205,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
         </CardContent>
       </Card>
 
-      <div className="md:hidden space-y-3">
+      {/* <div className="md:hidden space-y-3">
         {filteredItems.map((item) => (
           <Card key={item.id} className="p-4">
             <div className="space-y-3">
@@ -279,7 +249,7 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
                 {item?.status === "Return Request" ? (
                   <Badge
                     className={cn("cursor-pointer w-full justify-center", getStatusBadgeVariant(item.status))}
-                    onClick={() => setOpenRequestModal(true)}
+                  // onClick={() => setOpenRequestModal(true)}
                   >
                     {item.status}
                   </Badge>
@@ -292,10 +262,10 @@ export default function SaleProductTable({ userRole }: { userRole?: string }) {
             </div>
           </Card>
         ))}
-      </div>
+      </div> */}
 
-      <PaginationSection className="mt-5" />
-      <ReturnProductModal open={openRequestModal} setOpen={setOpenRequestModal} />
+      <PaginationSection className="mt-5" current={1} total={50} />
+      {/* <ReturnProductModal open={openRequestModal} setOpen={setOpenRequestModal} /> */}
     </div>
   )
 }

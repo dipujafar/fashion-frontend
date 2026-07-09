@@ -200,7 +200,7 @@ export interface IUser {
   userName: string;
   phone: string;
   description: string | null;
-  bio : string | null;
+  bio: string | null;
   country: string;
   state: string;
   city: string;
@@ -224,8 +224,8 @@ export interface IUser {
   picture: { key: string, url: string } | null;
   followers: IFolow[]
   following: IFolow[]
-  charityGalleries : {id : string, url : string, caption : string}[]
-  vacationMode : boolean
+  charityGalleries: { id: string, url: string, caption: string }[]
+  vacationMode: boolean
 }
 
 export interface IQuesAns {
@@ -328,4 +328,36 @@ export interface ITreeDonation {
 
   treeCredit: number,
   createdAt: Date,
+}
+
+export interface IOrder {
+  id: string,
+
+  userId: string,
+  user: IUser,
+
+  billingDetails: IBillingDetails,
+  sellerGroups: sellerGroup[],
+  createdAt: Date,
+}
+
+export interface sellerGroup {
+  orderId: string,
+  order: IOrder,
+
+  sellerId: string,
+  seller: IUser,
+
+  subtotal: number,
+
+  items: IOrderItem[]
+}
+
+export interface IOrderItem {
+  id: string,
+  productId: string,
+  product: IProduct,
+  quantity : number,
+  unitPrice  : number,
+  totalPrice : number,
 }

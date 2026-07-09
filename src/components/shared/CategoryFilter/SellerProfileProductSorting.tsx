@@ -40,7 +40,7 @@ export function SellerProfileProductSorting() {
           <ChevronDown className="h-4 w-4 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] p-0 rounded-none space-y-1">
+      <DropdownMenuContent className=" p-0 rounded-none space-y-1">
 
         {sortOptions.map((option) => (
           <DropdownMenuItem key={option.id} onClick={() => handleSelect(option.id)} className="p-0">
@@ -49,7 +49,7 @@ export function SellerProfileProductSorting() {
             >
               <span className="text-sm font-medium">{option.label}</span>
               <div className="relative">
-                <div className="w-4 h-4 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center">
+                <div className="w-4 h-4 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center ml-3">
                   {selectedSort === option.id && <div className="w-2 h-2 rounded-full bg-black" />}
                 </div>
               </div>
