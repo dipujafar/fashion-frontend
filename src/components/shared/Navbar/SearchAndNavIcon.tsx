@@ -6,7 +6,7 @@ import CartDropDown from "./NavIconsWithDropDown/CartDropDown";
 import MessageDropDown from "./NavIconsWithDropDown/MessageDropDown";
 
 const SearchAndNavIcon = () => {
-  
+
   return (
     <Menubar className="border-none shadow-none">
       {/* <div>

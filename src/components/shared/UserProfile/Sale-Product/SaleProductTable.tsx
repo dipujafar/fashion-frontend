@@ -1,113 +1,16 @@
-import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { ArrowDownWideNarrow } from "lucide-react"
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
-import { ReturnProductModal } from "../Modals/ReturnProductModal"
-import Link from "next/link"
 import Image from "next/image"
-import { cn } from "@/lib/utils"
 import GetOrdersBySeller from "@/lib/services/Orders"
-import { IMeta, IOrder } from "@/types"
+import { IMeta, IOrder, IsellerGroup, OrderStatus } from "@/types"
 import moment from "moment"
 import ItemsModal from "./ItemsModal"
 import { defaultImg } from "@/utils/defaultImg"
-
-interface SaleItem {
-  id: string
-  itemNumber: string
-  buyerName: string
-  saleDate: string
-  salePrice: number
-  status: "Sold" | "Returned" | "In Progress" | "Return Request"
-  image: string
-  title: string
-}
-
-const salesData: SaleItem[] = [
-  {
-    id: "1",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "Sold",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "2",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "Return Request",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "3",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "Returned",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "4",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "In Progress",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "5",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "Sold",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "6",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "In Progress",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "7",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "Returned",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-  {
-    id: "8",
-    itemNumber: "#A001",
-    buyerName: "Alice M",
-    saleDate: "Feb 10, 2025",
-    salePrice: 35.0,
-    status: "Return Request",
-    image: "/product_image_3.jpg",
-    title: "Tops Shirt",
-  },
-]
+import { OrderStatusFormat } from "@/utils/EnumFormater"
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import SellActions from "./SellActions"
 
 export default async function SaleProductTable() {
 
@@ -115,26 +18,8 @@ export default async function SaleProductTable() {
 
   const orders = ordersResponse?.data?.data || [];
 
-  // console.log(orders[0]?.sellerGroups[0]?.orderItems[0]?.product?.images)
-
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case "Sold":
-        return "bg-black"
-      case "Returned":
-        return "bg-red-600"
-      case "In Progress":
-        return "bg-gray-100 text-black"
-      case "Return Request":
-        return "bg-orange-600"
-      default:
-        return "bg-black"
-    }
-  }
-
   return (
     <div>
-
 
       <Card className="hidden md:block py-0">
         <CardContent className="p-0">
@@ -158,9 +43,11 @@ export default async function SaleProductTable() {
               <TableBody>
                 {orders.map((order, indx) => (
                   <TableRow key={order?.id} className="hover:bg-gray-50 h-[50px]">
+
                     <TableCell className="font-medium text-center">
                       #{indx + 1}
                     </TableCell>
+
                     <TableCell>
 
                       {order?.sellerGroups[0]?.items?.length > 0 ? <ItemsModal items={order?.sellerGroups[0]?.items} finalPrice={order?.sellerGroups[0]?.subtotal} action={<>
@@ -178,25 +65,26 @@ export default async function SaleProductTable() {
                         </div>}
                       </>} /> : "N/A"}
 
+                    </TableCell>
+
+                    <TableCell className="text-center">{order?.user?.fname} {order?.user?.lname}</TableCell>
+
+                    <TableCell className="font-medium text-center">${order?.sellerGroups[0]?.subtotal?.toFixed(2)}</TableCell>
+
+                    <TableCell className="hidden sm:table-cell text-center">{moment(order?.createdAt).format("MM/DD/YYYY h:mm a")}</TableCell>
+
+                    <TableCell className={cn("font-medium text-center")}>
+                      <Badge className={cn(OrderStatusFormat[order?.sellerGroups[0]?.status]?.color)}>
+                        {OrderStatusFormat[order?.sellerGroups[0]?.status]?.label}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell className="text-center -translate-x-4">
+
+                      <SellActions status={order?.sellerGroups[0]?.status} sellerGroupId={order?.sellerGroups[0]?.id} order={order} />
 
                     </TableCell>
-                    <TableCell className="text-center">{order?.user?.fname} {order?.user?.lname}</TableCell>
-                    <TableCell className="font-medium text-center">${order?.sellerGroups[0]?.subtotal?.toFixed(2)}</TableCell>
-                    <TableCell className="hidden sm:table-cell text-center">{moment(order?.createdAt).format("MM/DD/YYYY h:mm a")}</TableCell>
-                    {/* <TableCell className="text-center -translate-x-4">
-                      {item?.status === "Return Request" ? (
-                        <Badge
-                          className={cn("cursor-pointer", getStatusBadgeVariant(item.status))}
-                          onClick={() => setOpenRequestModal(true)}
-                        // variant={getStatusBadgeVariant(item.status)}
 
-                        >
-                          {item.status}
-                        </Badge>
-                      ) : (
-                        <Badge className={cn(getStatusBadgeVariant(item.status))} >{item.status}</Badge>
-                      )}
-                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

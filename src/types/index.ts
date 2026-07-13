@@ -337,11 +337,12 @@ export interface IOrder {
   user: IUser,
 
   billingDetails: IBillingDetails,
-  sellerGroups: sellerGroup[],
+  sellerGroups: IsellerGroup[],
   createdAt: Date,
 }
 
-export interface sellerGroup {
+export interface IsellerGroup {
+  id: string,
   orderId: string,
   order: IOrder,
 
@@ -350,6 +351,8 @@ export interface sellerGroup {
 
   subtotal: number,
 
+  status: OrderStatus,
+
   items: IOrderItem[]
 }
 
@@ -357,7 +360,16 @@ export interface IOrderItem {
   id: string,
   productId: string,
   product: IProduct,
-  quantity : number,
-  unitPrice  : number,
-  totalPrice : number,
+  quantity: number,
+  unitPrice: number,
+  totalPrice: number,
+}
+
+export enum OrderStatus {
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
 }

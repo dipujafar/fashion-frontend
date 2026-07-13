@@ -1,5 +1,5 @@
 "use server"
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { serverQueryWithReauth } from "./ReAuthRequest";
 
 export const FolowMemeber = async ({ payload }: { payload: { "memberId": string } }) => {
