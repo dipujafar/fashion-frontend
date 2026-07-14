@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -22,24 +22,39 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import { ChevronDown, Printer, Truck, MapPin, CheckCircle2, Eye, RefreshCw, X, Loader2 } from 'lucide-react'
+import { ChevronDown, Truck, MapPin, CheckCircle2, Eye, RefreshCw, X, Loader2, MessageCircleMore } from 'lucide-react'
 import { IOrder, OrderStatus } from "@/types"
 import { cn } from "@/lib/utils"
-import { CancelOrder, ConfirmOrder } from "@/lib/Actions/Order.action"
+import { CancelOrder, ConfirmOrder, MarkShipped } from "@/lib/Actions/Order.action"
 import { toast } from "sonner"
 import { isRedirectError } from "next/dist/client/components/redirect-error"
 import BillingDetailsView from "./BillingDetailsView"
+import CancelOrderForm, { CancelOrderFormValues } from "./CancelOrderForm"
+import CancelReasonView from "./CancelReasonView"
+
+type StatusAction = {
+    label: React.ReactNode;
+    icon: React.ReactNode;
+    action: () => void;
+    destructive?: boolean;
+};
+
+type DialogKey = "confirm" | "cancel" | "ship" | null;
 
 function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, sellerGroupId: string, order: IOrder }) {
 
-    const [confirmOpen, setConfirmOpen] = useState(false)
-    const [confirmLoading, setConfirmLoading] = useState(false)
+    const [openDialog, setOpenDialog] = useState<DialogKey>(null)
+    const [loadingAction, setLoadingAction] = useState<DialogKey>(null)
+    const isLoading = loadingAction !== null
 
-    const [cancelOpen, setCancelOpen] = useState(false)
-    const [cancelLoading, setCancelLoading] = useState(false)
+    // helper: only lets a dialog close/open when nothing is loading
+    const handleOpenChange = (key: Exclude<DialogKey, null>) => (next: boolean) => {
+        if (isLoading) return;
+        setOpenDialog(next ? key : null);
+    }
 
     const handleConfirmOrder = async () => {
-        setConfirmLoading(true)
+        setLoadingAction("confirm")
         try {
             const res = await ConfirmOrder({ payload: { sellerGroupId } });
             if (res?.error) {
@@ -47,7 +62,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
                 return;
             }
             toast.success("Order confirmed");
-            setConfirmOpen(false);
+            setOpenDialog(null);
         }
         catch (error: any) {
             if (isRedirectError(error)) {
@@ -56,20 +71,20 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
             toast.error(error?.data?.message);
         }
         finally {
-            setConfirmLoading(false)
+            setLoadingAction(null)
         }
     }
 
-    const handleCancelOrder = async () => {
-        setCancelLoading(true)
+    const handleCancelOrder = async (data: CancelOrderFormValues) => {
+        setLoadingAction("cancel")
         try {
-            const res = await CancelOrder({ payload: { sellerGroupId } });
+            const res = await CancelOrder({ payload: { sellerGroupId, ...data } });
             if (res?.error) {
                 toast.error(res?.error);
                 return;
             }
             toast.success("Order cancelled");
-            setCancelOpen(false);
+            setOpenDialog(null);
         }
         catch (error: any) {
             if (isRedirectError(error)) {
@@ -78,139 +93,163 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
             toast.error(error?.data?.message);
         }
         finally {
-            setCancelLoading(false)
+            setLoadingAction(null)
         }
     }
 
-    const getActionsForStatus = (status: OrderStatus) => {
+    const handleMarkShippedOrder = async () => {
+        setLoadingAction("ship")
+        try {
+            const res = await MarkShipped({ payload: { sellerGroupId } });
+            if (res?.error) {
+                toast.error(res?.error);
+                return;
+            }
+            toast.success("Order marked as shipped");
+            setOpenDialog(null);
+        }
+        catch (error: any) {
+            if (isRedirectError(error)) {
+                throw error;
+            }
+            toast.error(error?.data?.message);
+        }
+        finally {
+            setLoadingAction(null)
+        }
+    }
+
+    const getActionsForStatus = (status: OrderStatus): StatusAction[] => {
         switch (status) {
             case OrderStatus.PENDING:
                 return [
                     {
-                        label: <AlertDialog open={confirmOpen} onOpenChange={(next) => {
-                            if (confirmLoading) return;
-                            setConfirmOpen(next);
-                        }}>
+                        label: <AlertDialog open={openDialog === "confirm"} onOpenChange={handleOpenChange("confirm")}>
                             <AlertDialogTrigger className="cursor-pointer">
                                 Confirm Order
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure to confirm this order ?</AlertDialogTitle>
+                                    <AlertDialogTitle>Are you sure to <span className="text-green-500 underline-offset-2 underline">confirm</span> this order ?</AlertDialogTitle>
                                     <AlertDialogDescription>
                                         This action cannot be undone. Once you confirm the order, it will be processed and shipped to the buyer.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                    <AlertDialogCancel className="cursor-pointer" disabled={confirmLoading}>No</AlertDialogCancel>
+                                    <AlertDialogCancel className="cursor-pointer" disabled={isLoading}>No</AlertDialogCancel>
                                     <AlertDialogAction
                                         className="cursor-pointer"
-                                        disabled={confirmLoading}
+                                        disabled={isLoading}
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleConfirmOrder();
                                         }}
                                     >
-                                        {confirmLoading && <Loader2 className="animate-spin" size={16} />}
-                                        {confirmLoading ? "Confirming..." : "Yes, Confirm"}
+                                        {loadingAction === "confirm" && <Loader2 className="animate-spin" size={16} />}
+                                        {loadingAction === "confirm" ? "Confirming..." : "Yes, Confirm"}
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>,
                         icon: <CheckCircle2 size={16} />,
                         action: () => { },
+                        destructive: false,
                     },
                     {
                         label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
                         icon: <Truck size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                     {
-                        label: <AlertDialog open={cancelOpen} onOpenChange={(next) => {
-                            if (cancelLoading) return;
-                            setCancelOpen(next);
-                        }}>
+                        label: <AlertDialog open={openDialog === "cancel"} onOpenChange={handleOpenChange("cancel")}>
                             <AlertDialogTrigger className="cursor-pointer">
                                 Cancel Order
                             </AlertDialogTrigger>
                             <AlertDialogContent>
+
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure to cancel this order ?</AlertDialogTitle>
+                                    <AlertDialogTitle>Are you sure to <span className="text-red-600 underline underline-offset-2">cancel</span> this order ?</AlertDialogTitle>
                                     <AlertDialogDescription>
                                         This action cannot be undone. Once you cancel the order, it will be marked as cancelled and the buyer will be notified.
                                     </AlertDialogDescription>
+
                                 </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel className="cursor-pointer" disabled={cancelLoading}>No</AlertDialogCancel>
-                                    <AlertDialogAction
-                                        className="cursor-pointer"
-                                        disabled={cancelLoading}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleCancelOrder();
-                                        }}
-                                    >
-                                        {cancelLoading && <Loader2 className="animate-spin" size={16} />}
-                                        {cancelLoading ? "Cancelling..." : "Yes, Cancel"}
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
+
+                                <CancelOrderForm handleCancelOrder={handleCancelOrder} isLoading={isLoading} loadingAction={loadingAction} />
+
+
+
                             </AlertDialogContent>
                         </AlertDialog>,
                         icon: <X size={16} />,
-                        action: () => () => { },
+                        action: () => { },
                         destructive: true,
                     },
                 ]
             case OrderStatus.CONFIRMED:
                 return [
                     {
-                        label: 'Mark as Shipped',
-                        icon: <Truck size={16} />,
-                        action: () => { },
-                    },
-                    {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
-                        icon: <MapPin size={16} />,
-                        action: () => () => { },
-                    },
-                    {
-                        label: 'Print Shipping Label',
-                        icon: <Printer size={16} />,
-                        action: () => () => { },
-                    },
-                    {
-                        label: <AlertDialog open={cancelOpen} onOpenChange={(next) => {
-                            if (cancelLoading) return;
-                            setCancelOpen(next);
-                        }}>
+                        label: <AlertDialog open={openDialog === "ship"} onOpenChange={handleOpenChange("ship")}>
                             <AlertDialogTrigger className="cursor-pointer">
-                                Cancel Order
+                                Mark as Shipped
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure to cancel this order ?</AlertDialogTitle>
+                                    <AlertDialogTitle>Are you sure to mark this order as shipped ?</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        This action cannot be undone. Once you cancel the order, it will be marked as cancelled and the buyer will be notified.
+                                        This action cannot be undone. Once you mark the order as shipped, it will be updated in the system and the buyer will be notified.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                    <AlertDialogCancel className="cursor-pointer" disabled={cancelLoading}>No</AlertDialogCancel>
+                                    <AlertDialogCancel className="cursor-pointer" disabled={isLoading}>No</AlertDialogCancel>
                                     <AlertDialogAction
                                         className="cursor-pointer"
-                                        disabled={cancelLoading}
+                                        disabled={isLoading}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            handleCancelOrder();
+                                            handleMarkShippedOrder();
                                         }}
                                     >
-                                        {cancelLoading && <Loader2 className="animate-spin" size={16} />}
-                                        {cancelLoading ? "Cancelling..." : "Yes, Cancel"}
+                                        {loadingAction === "ship" && <Loader2 className="animate-spin" size={16} />}
+                                        {loadingAction === "ship" ? "Marking as Shipped..." : "Yes, Mark as Shipped"}
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>,
+                        icon: <Truck size={16} />,
+                        action: () => { },
+                        destructive: false,
+                    },
+                    {
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        icon: <MapPin size={16} />,
+                        action: () => { },
+                        destructive: false,
+                    },
+                    {
+                        label: <AlertDialog open={openDialog === "cancel"} onOpenChange={handleOpenChange("cancel")}>
+                            <AlertDialogTrigger className="cursor-pointer">
+                                Cancel Order
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you sure to <span className="text-red-600  underline underline-offset-2">cancel</span> this order ?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. Once you cancel the order, it will be marked as cancelled and the buyer will be notified.
+                                    </AlertDialogDescription>
+
+                                </AlertDialogHeader>
+
+                                <CancelOrderForm handleCancelOrder={handleCancelOrder} isLoading={isLoading} loadingAction={loadingAction} />
+
+
+
+                            </AlertDialogContent>
+                        </AlertDialog>,
                         icon: <X size={16} />,
-                        action: () => () => { },
+                        action: () => { },
                         destructive: true,
                     },
                 ]
@@ -219,12 +258,14 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
                     {
                         label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
                         icon: <MapPin size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                     {
                         label: 'Contact Buyer',
-                        icon: <Eye size={16} />,
-                        action: () => () => { },
+                        icon: <MessageCircleMore size={16} />,
+                        action: () => { },
+                        destructive: false,
                     },
                 ]
             case OrderStatus.DELIVERED:
@@ -232,25 +273,29 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
                     {
                         label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
                         icon: <MapPin size={16} />,
-                        action: () => () => { },
-                    },
-                    {
-                        label: 'Mark as Completed',
-                        icon: <CheckCircle2 size={16} />,
                         action: () => { },
+                        destructive: false,
                     },
+                    // {
+                    //     label: 'Mark as Completed',
+                    //     icon: <CheckCircle2 size={16} />,
+                    //     action: () => { },
+                    //     destructive: false,
+                    // },
                 ]
             case OrderStatus.COMPLETED:
                 return [
                     {
                         label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
                         icon: <MapPin size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                     {
                         label: 'View Invoice',
                         icon: <Eye size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                 ]
             case OrderStatus.CANCELLED:
@@ -258,17 +303,20 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
                     {
                         label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
                         icon: <MapPin size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                     {
-                        label: 'View Cancellation Reason',
+                        label: <CancelReasonView cancelReason={order?.sellerGroups[0]?.cancelReason} cancelReasonDetails={order?.sellerGroups[0]?.cancelReasonDetails} cancelledBy={order?.sellerGroups[0]?.cancelledBy} trigger="View Cancellation Reason" />,
                         icon: <Eye size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                     {
                         label: 'Relist Product',
                         icon: <RefreshCw size={16} />,
-                        action: () => () => { },
+                        action: () => { },
+                        destructive: false,
                     },
                 ]
             default:
@@ -279,7 +327,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
     return (
         <DropdownMenu>
 
-            <DropdownMenuTrigger >
+            <DropdownMenuTrigger>
                 <Button variant="outline" size={"sm"} className="cursor-pointer flex flex-row items-center gap-x-1">
                     Actions
                     <ChevronDown />
@@ -292,13 +340,13 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
 
                     {
                         getActionsForStatus(status)?.map((action, index) => {
-                            return <>
+                            return <React.Fragment key={index}>
                                 {action.destructive && <DropdownMenuSeparator />}
-                                <DropdownMenuItem key={index} onSelect={(e) => e.preventDefault()} className={cn("cursor-pointer", action.destructive && "text-red-600 hover:!text-red-600")}>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()} className={cn("cursor-pointer", action.destructive && "text-red-600 hover:!text-red-600")}>
                                     {action.icon}
                                     {action.label}
                                 </DropdownMenuItem>
-                            </>
+                            </React.Fragment>
                         })
                     }
 

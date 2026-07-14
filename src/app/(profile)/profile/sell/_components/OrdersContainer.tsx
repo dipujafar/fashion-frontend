@@ -9,7 +9,12 @@ import {
 } from "@/components/ui/tabs";
 
 
-const OrdersContainer = ({ defaultTab }: { defaultTab: string }) => {
+const OrdersContainer = ({ ssp }: { ssp: { [key: string]: string | undefined } }) => {
+
+    const { tab } = ssp;
+
+    const tabs = ["Orders", "Returns"];
+    const defaultTab = tab ? tabs.includes(tab) ? tab : "Orders" : "Orders";
 
     return (
         <Tabs
@@ -35,7 +40,7 @@ const OrdersContainer = ({ defaultTab }: { defaultTab: string }) => {
             {["Orders", "Returns"].map(item => {
                 return <TabsContent key={item} value={item}>
                     {
-                        defaultTab == "Orders" ? <SaleProductTable /> :
+                        defaultTab == "Orders" ? <SaleProductTable ssp={ssp}/> :
                             <>
                             </>
 

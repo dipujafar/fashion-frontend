@@ -19,3 +19,12 @@ export const ConfirmOrder = async ({ payload }: { payload: { "sellerGroupId": st
 
     return res;
 }
+
+export const MarkShipped = async ({ payload }: { payload: { "sellerGroupId": string } }) => {
+
+    const res = await serverQueryWithReauth({ payload, endPoint: `/orders/mark-shipped/${payload?.sellerGroupId}`, method: "PATCH" });
+
+    revalidatePath(`/profile/sell`);
+
+    return res;
+}

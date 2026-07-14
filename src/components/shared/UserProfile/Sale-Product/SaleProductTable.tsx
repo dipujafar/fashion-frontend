@@ -12,9 +12,31 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import SellActions from "./SellActions"
 
-export default async function SaleProductTable() {
+export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: string | undefined } }) {
 
-  const ordersResponse = await GetOrdersBySeller({ query: { page: "1", limit: "10" } }) as { data: { data: IOrder[], meta: IMeta } };
+  const { page, sortBy: sort } = ssp;
+
+  // let sortBy = "createdAt";
+  // let orderBy = "desc"
+
+  // if (sort == "newest") {
+  //   orderBy = "desc"
+  // } else if (sort == "-price") {
+  //   sortBy = "subtotal";
+  //   orderBy = "asc"
+  // }
+  // else if (sort == "price") {
+  //   sortBy = "subtotal";
+  //   orderBy = "desc"
+  // }
+
+  const query: any = { }
+
+  if (page) {
+    query.page = page
+  }
+
+  const ordersResponse = await GetOrdersBySeller({ query }) as { data: { data: IOrder[], meta: IMeta } };
 
   const orders = ordersResponse?.data?.data || [];
 

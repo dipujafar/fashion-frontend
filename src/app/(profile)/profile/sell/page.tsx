@@ -20,12 +20,9 @@ const saleState = [
 ];
 
 async function SellPage({ searchParams, params }: { searchParams: Promise<{ [key: string]: string | undefined }>, params: Promise<{ username: string }> }) {
-    const { tab } = await searchParams;
+    const ssp = await searchParams;
 
     const { username } = await params;
-
-    const tabs = ["Orders", "Returns"];
-    const activeTab = tab ? tabs.includes(tab) ? tab : "Orders" : "Orders";
 
     return (
         <div className="space-y-5">
@@ -49,7 +46,7 @@ async function SellPage({ searchParams, params }: { searchParams: Promise<{ [key
 
             <SaleStatsCard data={saleState} />
             {/* <SaleProductTable /> */}
-            <OrdersContainer defaultTab={activeTab} />
+            <OrdersContainer ssp={ssp}/>
         </div>
     )
 }
