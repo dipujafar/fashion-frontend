@@ -65,8 +65,7 @@ const ProductImagesCarousel: React.FC<PropType> = ({ product, options }) => {
                     ></Image>
                   </div>
                 </Zoom>
-                {/* ===================== favorite button ================ */}
-                <FavouritesWithServer id={product?.id} count={product?._count?.favourites} includedProduct={product?.favourites}></FavouritesWithServer>
+                
               </div>
             </div>
           ))}

@@ -6,7 +6,17 @@ import SellerDetails from "../SellerDetails";
 import { CheckIcon, ReportIcon, ShareIcon } from "@/icons";
 import ProductDetailsHeader from "./ProductDetailsHeader";
 import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
-import { IProduct } from "@/types";
+import { IProduct, IUser } from "@/types";
+
+export type IUserWithExtra = IUser & {
+  _count: {
+    products: number;
+  }
+};
+
+type IProductWithUser = Omit<IProduct, "user"> & {
+  user: IUserWithExtra;
+};
 
 const handleShare = () => {
   navigator.share({
@@ -15,41 +25,33 @@ const handleShare = () => {
   });
 };
 
-const ProductDetails = ({ product }: { product: IProduct }) => {
+const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   return (
-    <div className=" md:space-y-5 space-y-3 my-5">
+    <div className="my-5 space-y-3">
       {/* --------- product header ---------- */}
       <div >
         <ProductDetailsHeader product={product} />
       </div>
 
       {/* --------- product details data ---------- */}
-      <div className="space-y-3 ">
-        <div className="flex justify-between items-center gap-x-3  mb-2">
-          <h5 className="uppercase underline text-primary-gray">
-            product Details
-          </h5>
-          <div className="flex gap-x-2">
-            <button
-              className="size-10 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
-              style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
-              onClick={handleShare}
-            >
-              <ShareIcon className="size-5" />
-            </button>
-            <button
-              className="size-10 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
-              style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
-            >
-              <ReportIcon className="size-5" />
-            </button>
-          </div>
+      <div className="space-y-3">
+
+        <div>
+          <DisplayLargeDescriptionText data={product?.description} />
+
+          <p className="flex flex-wrap gap-2 items-center ">
+            {product?.tags?.map((tag, index) => (
+              <Link href={`/shop?search=${tag}`} key={index} className="text-black font-semibold hover:underline duration-150 text-lg">
+                #{tag}{" "}
+              </Link>
+            ))}
+          </p>
         </div>
-        <DisplayLargeDescriptionText data={product?.description} />
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Total Amount of charity:</h2>
+
+        {product?.donation_percent > 0 && <div className="flex md:gap-x-8 gap-x-4 items-center">
+          <h2 className="w-[120px]">Donation:</h2>
           <p className="text-green-600">{product?.donation_percent}%</p>
-        </div>
+        </div>}
         {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Item Number:</h2>
           <p>{productDetails?.item_Number}</p>
@@ -57,24 +59,10 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] ">Category :</h2>
           <p>
-            {product?.catagory_hierarchy?.map((i, index) => (
-              <span key={i?.id}>
-                <Link href={`/shop?category=${i?.id}`} className="hover:underline duration-150">{i?.name}</Link>
-                {index !== product.catagory_hierarchy.length - 1 && " / "}
-              </span>
-            ))}
+            <Link href={`/shop?category=${product?.category?.id}`} className="underline duration-150 font-medium text-black underline-offset-1">{product?.category?.name}</Link>
           </p>
         </div>
-        <div className="flex md:gap-x-8 gap-x-4 lg:items-center">
-          <h2 className="w-[120px]  flex-shrink-0">Tags:</h2>
-          <p className="flex flex-wrap gap-1 items-center ">
-            {product?.tags?.map((tag, index) => (
-              <span key={index} className="bg-black text-white px-1.5 rounded text-[15px]">
-                {tag}{" "}
-              </span>
-            ))}
-          </p>
-        </div>
+
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Condition:</h2>
           <p>{product?.condition}</p>

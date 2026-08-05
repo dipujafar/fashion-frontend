@@ -2,10 +2,20 @@ import React from "react";
 import ProductDetails from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
 
-import { IProduct } from "@/types";
+import { IProduct, IUser } from "@/types";
 import { notFound } from "next/navigation";
 
-const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promise<{ data: IProduct }> }) => {
+type IUserWithExtra = IUser & {
+  _count: {
+    products: number;
+  }
+};
+
+type IProductWithUser = Omit<IProduct, "user"> & {
+  user: IUserWithExtra;
+};
+
+const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promise<{ data: IProductWithUser }> }) => {
 
   const product = await promiseDetails;
 

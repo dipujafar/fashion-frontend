@@ -85,7 +85,7 @@ const SingleProductDetailsPage = async ({ params }: { params: Promise<{ productI
   return (
     <div>
 
-      <Container className="xl:space-y-8 lg:space-y-6 space-y-4">
+      <div className="xl:space-y-8 lg:space-y-6 space-y-4 max-w-[2000px] md:px-10 px-4 lg:max-w-4/5 xl:max-w-2/3 mx-auto">
 
         <Suspense fallback={<div>Loading...</div>}>
           <SingleProductDetails promiseDetails={detailPromise} />
@@ -129,7 +129,7 @@ const SingleProductDetailsPage = async ({ params }: { params: Promise<{ productI
         data={trendingProductData}
       ></DisplayProductSection> */}
 
-      </Container>
+      </div>
 
       {/* ==============Small device make offer================= */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 shadow-lg md:hidden">

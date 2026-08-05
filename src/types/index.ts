@@ -336,28 +336,17 @@ export interface IOrder {
   userId: string,
   user: IUser,
 
-  billingDetails: IBillingDetails,
-  sellerGroups: IsellerGroup[],
-  createdAt: Date,
-}
+  subtotal: number,
 
-export interface IsellerGroup {
-  id: string,
-  orderId: string,
-  order: IOrder,
+  items: IOrderItem[]
+
+  status: OrderStatus,
 
   sellerId: string,
   seller: IUser,
 
-  subtotal: number,
-
-  status: OrderStatus,
-
-  cancelledBy: CancelledBy | null
-  cancelReason: CancelReason | null
-  cancelReasonDetails: string | null
-
-  items: IOrderItem[]
+  billingDetails: IBillingDetails,
+  createdAt: Date,
 }
 
 enum CancelledBy {

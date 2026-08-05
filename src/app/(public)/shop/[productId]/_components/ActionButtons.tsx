@@ -73,47 +73,21 @@ const ActionButtons = ({ product }: { product: IProduct }) => {
       <div className="lg:space-y-8 space-y-4">
         {/* <h6 className="uppercase text-primary-gray underline">Quantity</h6> */}
         {/* =============== action buttons ================ */}
-        <div className="lg:space-y-3 space-y-2 max-w-lg grid grid-cols-2 md:gap-x-3 gap-x-2 ">
-          {/* =============== quantity &  add to cart  button ================ */}
-          <div className="flex items-center lg:gap-x-6 gap-x-4">
-            {/* <div className="border border-primary-gray/40 rounded-2xl flex   gap-x-2">
-              <button
-                className="size-10 text-xl cursor-pointer flex-center"
-                onClick={() => setQuality(quality + 1)}
-              >
-                <Plus size={20} color="#B0B0B0" />
-              </button>
-              <span className="size-10 text-xl  flex-center">{quality}</span>
-              <button
-                disabled={quality === 1}
-                className="size-10  cursor-pointer flex-center"
-                onClick={() => setQuality(quality - 1)}
-              >
-                <Minus size={20} color="#B0B0B0" />
-              </button>
-            </div> */}
-            <CommonButton handlerFunction={handleCharitySelect} className="flex-1" disabled={isInCart}>ADD TO CART</CommonButton>
-          </div>
+        <div className="lg:space-y-3 space-y-2 max-w-lg grid grid-cols-2 md:gap-x-3 gap-x-2 lg:w-2/3">
+
           {/* =============== buy now  button ================ */}
-          <CommonButton
-            handlerFunction={handleCharitySelect}
-            className="w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20 "
+          <Button
+            onClick={handleCharitySelect}
+            className="w-full rounded-none py-6 font-medium col-span-2 cursor-pointer"
+            variant={"default"}
           >
             Buy It Now
-          </CommonButton>
-
-          <Button onClick={addFavorite} className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20  group">
-            {product?.favourites?.length > 0 ? "Remove from Favourite" : "Add to Favourite"}
-            {/* <HeartIcon className="ml-2 size-5"></HeartIcon> */}
-            <Heart className={cn(" text-primary-red duration-500 md:size-[18px] size-4", product?.favourites?.length > 0 && "fill-primary-red")}></Heart>
           </Button>
 
-          <Button
-            onClick={() => setShowOpenOfferModal(true)}
-            className=" rounded  uppercase md:min-w-40 md:py-5 cursor-pointer w-full bg-primary-gray/10 text-primary-black hover:bg-primary-black/20  group"
-          >
-            make an offer <OfferIcon className="ml-2 size-5"></OfferIcon>
-          </Button>
+          <Button onClick={handleCharitySelect} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"} disabled={isInCart}>ADD TO CART</Button>
+
+          <Button onClick={() => setShowOpenOfferModal(true)} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
+
         </div>
       </div>
       <SendOfferModal
@@ -121,7 +95,7 @@ const ActionButtons = ({ product }: { product: IProduct }) => {
         setOpen={setShowOpenOfferModal}
       />
       <CharityDonationSelectDialog
-      product={product}
+        product={product}
         open={showOpenOpenCharityModal}
         onOpenChange={setShowOpenOpenCharityModal}
         purchasePrice={product?.finalPrice}

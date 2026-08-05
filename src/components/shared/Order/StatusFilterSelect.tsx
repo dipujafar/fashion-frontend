@@ -10,23 +10,16 @@ type SortOption = {
   label: string
 }
 
-const sortOptions: SortOption[] = [
-  { id: "newest", label: "Newest first" },
-  // { id: "relevance", label: "Relevance" },
-  { id: "price", label: "Price: high to low" },
-  { id: "-price", label: "Price: low to high" }
-]
-
-export function SellerProfileProductSorting() {
+export function StatusFilterSelect({ options, searchParamsKey, defaultValue, label }: { options: SortOption[], searchParamsKey: string, defaultValue: string, label: string }) {
   const searchParams = useSearchParams()
   const updateparams = useUpdateSearchParams();
 
-  const selectedSort = searchParams.get("sortBy") ?? "newest"
+  const selectedSort = searchParams.get(searchParamsKey) ?? defaultValue
 
-  const selectedOption = sortOptions.find((option) => option.id === selectedSort)
+  const selectedOption = options.find((option) => option.id === selectedSort)
 
-  const handleSelect = (sortBy: string) => {
-    updateparams({ sortBy })
+  const handleSelect = (value: string) => {
+    updateparams({ [searchParamsKey]: value })
   }
 
   return (
@@ -34,7 +27,7 @@ export function SellerProfileProductSorting() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="justify-between bg-transparent hover:bg-gray-50 duration-150 border-none shadow-none cursor-pointer">
           <span className="flex items-center gap-2">
-            <span className="text-muted-foreground">Sort by</span>
+            <span className="text-muted-foreground">{label}</span>
             <span className="font-medium">{selectedOption?.label}</span>
           </span>
           <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -42,7 +35,7 @@ export function SellerProfileProductSorting() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className=" p-0 rounded-none space-y-1">
 
-        {sortOptions.map((option) => (
+        {options.map((option) => (
           <DropdownMenuItem key={option.id} onClick={() => handleSelect(option.id)} className="p-0">
             <button
               className="w-full flex items-center justify-between p-3 hover:bg-accent transition-colors text-left cursor-pointer"
@@ -61,3 +54,6 @@ export function SellerProfileProductSorting() {
     </DropdownMenu>
   )
 }
+
+
+export default StatusFilterSelect

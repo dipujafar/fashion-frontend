@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import { ChevronDown, Truck, MapPin, CheckCircle2, Eye, RefreshCw, X, Loader2, MessageCircleMore } from 'lucide-react'
-import { IOrder, OrderStatus } from "@/types"
+import { IOrder, IsellerGroup, OrderStatus } from "@/types"
 import { cn } from "@/lib/utils"
 import { CancelOrder, ConfirmOrder, MarkShipped } from "@/lib/Actions/Order.action"
 import { toast } from "sonner"
@@ -41,7 +41,7 @@ type StatusAction = {
 
 type DialogKey = "confirm" | "cancel" | "ship" | null;
 
-function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, sellerGroupId: string, order: IOrder }) {
+function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, sellerGroupId: string, order: IsellerGroup }) {
 
     const [openDialog, setOpenDialog] = useState<DialogKey>(null)
     const [loadingAction, setLoadingAction] = useState<DialogKey>(null)
@@ -156,7 +156,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
                         destructive: false,
                     },
                     {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.order?.billingDetails} />,
                         icon: <Truck size={16} />,
                         action: () => { },
                         destructive: false,
@@ -222,7 +222,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
                         destructive: false,
                     },
                     {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.order?.billingDetails} />,
                         icon: <MapPin size={16} />,
                         action: () => { },
                         destructive: false,
@@ -256,7 +256,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
             case OrderStatus.SHIPPED:
                 return [
                     {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.order?.billingDetails} />,
                         icon: <MapPin size={16} />,
                         action: () => { },
                         destructive: false,
@@ -271,7 +271,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
             case OrderStatus.DELIVERED:
                 return [
                     {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.order?.billingDetails} />,
                         icon: <MapPin size={16} />,
                         action: () => { },
                         destructive: false,
@@ -286,7 +286,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
             case OrderStatus.COMPLETED:
                 return [
                     {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.order?.billingDetails} />,
                         icon: <MapPin size={16} />,
                         action: () => { },
                         destructive: false,
@@ -301,13 +301,13 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
             case OrderStatus.CANCELLED:
                 return [
                     {
-                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.billingDetails} />,
+                        label: <BillingDetailsView trigger="View Shipping Details" billingDetails={order?.order?.billingDetails} />,
                         icon: <MapPin size={16} />,
                         action: () => { },
                         destructive: false,
                     },
                     {
-                        label: <CancelReasonView cancelReason={order?.sellerGroups[0]?.cancelReason} cancelReasonDetails={order?.sellerGroups[0]?.cancelReasonDetails} cancelledBy={order?.sellerGroups[0]?.cancelledBy} trigger="View Cancellation Reason" />,
+                        label: <CancelReasonView cancelReason={order?.cancelReason} cancelReasonDetails={order?.cancelReasonDetails} cancelledBy={order?.cancelledBy} trigger="View Cancellation Reason" />,
                         icon: <Eye size={16} />,
                         action: () => { },
                         destructive: false,

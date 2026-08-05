@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
 import Image from "next/image"
 import GetOrdersBySeller from "@/lib/services/Orders"
-import { IMeta, IOrder, IsellerGroup, OrderStatus } from "@/types"
+import { IMeta, IOrder } from "@/types"
 import moment from "moment"
 import ItemsModal from "./ItemsModal"
 import { defaultImg } from "@/utils/defaultImg"
@@ -11,170 +11,128 @@ import { OrderStatusFormat } from "@/utils/EnumFormater"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import SellActions from "./SellActions"
+import Empty from "@/components/ui/empty"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: string | undefined } }) {
 
-  const { page, sortBy: sort } = ssp;
+  const { page, sortBy: sort, status } = ssp;
 
-  // let sortBy = "createdAt";
-  // let orderBy = "desc"
+  let sortBy = "createdAt";
+  let orderBy = "desc"
 
-  // if (sort == "newest") {
-  //   orderBy = "desc"
-  // } else if (sort == "-price") {
-  //   sortBy = "subtotal";
-  //   orderBy = "asc"
-  // }
-  // else if (sort == "price") {
-  //   sortBy = "subtotal";
-  //   orderBy = "desc"
-  // }
+  if (sort == "newest") {
+    orderBy = "desc"
+  } else if (sort == "-price") {
+    sortBy = "subtotal";
+    orderBy = "asc"
+  }
+  else if (sort == "price") {
+    sortBy = "subtotal";
+    orderBy = "desc"
+  }
 
-  const query: any = { }
+  const query: any = { sortBy, sortOrder: orderBy }
 
   if (page) {
     query.page = page
+  }
+  if (status && status !== "ALL") {
+    query.status = status
   }
 
   const ordersResponse = await GetOrdersBySeller({ query }) as { data: { data: IOrder[], meta: IMeta } };
 
   const orders = ordersResponse?.data?.data || [];
 
+  const meta = ordersResponse?.data?.meta || {};
+
   return (
     <div>
 
-      <Card className="hidden md:block py-0">
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-black hover:bg-black h-[50px]">
-                  <TableHead className="text-white font-medium text-center">#Serial</TableHead>
-                  <TableHead className="text-white font-medium">Items</TableHead>
-                  <TableHead className="text-white font-medium text-center">Buyer Name</TableHead>
-                  <TableHead className="text-white font-medium text-center">Total Price</TableHead>
-                  <TableHead className="text-white font-medium text-center">Order Date</TableHead>
-                  <TableHead className="text-white font-medium text-center">
-                    Status
-                  </TableHead>
-                  <TableHead className="text-white font-medium text-center">
-                    Action
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {orders.map((order, indx) => (
-                  <TableRow key={order?.id} className="hover:bg-gray-50 h-[50px]">
 
-                    <TableCell className="font-medium text-center">
-                      #{indx + 1}
-                    </TableCell>
+      <div className="overflow-x-auto">
+        <Table className="border border-gray-200">
+          <TableHeader>
+            <TableRow className="h-[50px]">
+              <TableHead className="font-medium text-center">#Serial</TableHead>
+              <TableHead className="font-medium">Items</TableHead>
+              <TableHead className="font-medium text-center">Buyer Name</TableHead>
+              <TableHead className="font-medium text-center">Total Price</TableHead>
+              <TableHead className="font-medium text-center">Order Date</TableHead>
+              <TableHead className="font-medium text-center">
+                Status
+              </TableHead>
+              <TableHead className="font-medium text-center">
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="">
+            {orders.map((order, indx) => (
 
-                    <TableCell>
+              <TableRow key={order?.id} className="hover:bg-gray-50 h-[50px]">
 
-                      {order?.sellerGroups[0]?.items?.length > 0 ? <ItemsModal items={order?.sellerGroups[0]?.items} finalPrice={order?.sellerGroups[0]?.subtotal} action={<>
-                        {<div className='relative h-14 w-14 cursor-pointer'>
-                          <Image
-                            height={800}
-                            width={1000}
-                            src={order?.sellerGroups[0]?.items[0]?.product?.images[0]?.url || defaultImg?.product}
-                            placeholder='blur'
-                            blurDataURL={defaultImg?.placeholderImg}
-                            alt='item images' className='object-cover h-full w-full rounded' />
-                          <div className='bg-black/60 absolute top-0 left-0 h-full w-full flex justify-center items-center'>
-                            <p className='text-base text-white font-popin'>{order?.sellerGroups[0]?.items?.length}</p>
-                          </div>
-                        </div>}
-                      </>} /> : "N/A"}
 
-                    </TableCell>
 
-                    <TableCell className="text-center">{order?.user?.fname} {order?.user?.lname}</TableCell>
 
-                    <TableCell className="font-medium text-center">${order?.sellerGroups[0]?.subtotal?.toFixed(2)}</TableCell>
 
-                    <TableCell className="hidden sm:table-cell text-center">{moment(order?.createdAt).format("MM/DD/YYYY h:mm a")}</TableCell>
+                <TableCell className="font-medium text-center">
+                  #{indx + 1}
+                </TableCell>
 
-                    <TableCell className={cn("font-medium text-center")}>
-                      <Badge className={cn(OrderStatusFormat[order?.sellerGroups[0]?.status]?.color)}>
-                        {OrderStatusFormat[order?.sellerGroups[0]?.status]?.label}
-                      </Badge>
-                    </TableCell>
+                <TableCell>
 
-                    <TableCell className="text-center -translate-x-4">
+                  {order?.items?.length > 0 ? <ItemsModal items={order?.items} finalPrice={order?.subtotal} action={<>
+                    {<div className='relative h-14 w-14 cursor-pointer'>
+                      <Image
+                        height={800}
+                        width={1000}
+                        src={order?.items[0]?.product?.images[0]?.url || defaultImg?.product}
+                        placeholder='blur'
+                        blurDataURL={defaultImg?.placeholderImg}
+                        alt='item images' className='object-cover h-full w-full rounded' />
+                      <div className='bg-black/60 absolute top-0 left-0 h-full w-full flex justify-center items-center'>
+                        <p className='text-base text-white font-popin'>{order?.items?.length}</p>
+                      </div>
+                    </div>}
+                  </>} /> : <></>}
 
-                      <SellActions status={order?.sellerGroups[0]?.status} sellerGroupId={order?.sellerGroups[0]?.id} order={order} />
+                </TableCell>
 
-                    </TableCell>
+                <TableCell className="text-center">{order?.user?.fname} {order?.user?.lname}</TableCell>
 
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                <TableCell className="font-medium text-center">${order?.subtotal?.toFixed(2)}</TableCell>
 
-      {/* <div className="md:hidden space-y-3">
-        {filteredItems.map((item) => (
-          <Card key={item.id} className="p-4">
-            <div className="space-y-3">
-              <div className="flex gap-3">
-                <div className="w-16 h-16 relative rounded overflow-hidden flex-shrink-0">
-                  <Link href={`/shop/2`}>
-                    <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="object-cover" />
-                  </Link>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <Link href={`/shop/2`} className="font-semibold text-sm hover:underline block truncate">
-                    {item.title}
-                  </Link>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Item: <span className="font-medium">{item.itemNumber}</span>
-                  </p>
-                  <p className="text-sm font-semibold text-gray-900 mt-1">${item.salePrice.toFixed(2)}</p>
-                </div>
-              </div>
+                <TableCell className="table-cell text-center">{moment(order?.createdAt).format("MM/DD/YYYY h:mm a")}</TableCell>
 
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div>
-                  <p className="text-gray-600">Buyer</p>
-                  <p className="font-medium">{item.buyerName}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Size</p>
-                  <p className="font-medium">UK 10</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Condition</p>
-                  <p className="font-medium">2 months used</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Sale Date</p>
-                  <p className="font-medium">{item.saleDate}</p>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t">
-                {item?.status === "Return Request" ? (
-                  <Badge
-                    className={cn("cursor-pointer w-full justify-center", getStatusBadgeVariant(item.status))}
-                  // onClick={() => setOpenRequestModal(true)}
-                  >
-                    {item.status}
+                <TableCell className={cn("font-medium text-center")}>
+                  <Badge className={cn(OrderStatusFormat[order?.status]?.color)}>
+                    {OrderStatusFormat[order?.status]?.label}
                   </Badge>
-                ) : (
-                  <Badge className={cn("w-full justify-center", getStatusBadgeVariant(item.status))}>
-                    {item.status}
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div> */}
+                </TableCell>
 
-      <PaginationSection className="mt-5" current={1} total={50} />
+
+
+                <TableCell className="text-center -translate-x-4">
+
+                  <SellActions status={order?.status} sellerGroupId={order?.id} order={order} />
+
+                </TableCell>
+
+
+              </TableRow>
+
+            ))}
+          </TableBody>
+        </Table>
+        {
+          orders?.length === 0 && <Empty message="No orders found" className="my-10" />
+        }
+      </div>
+
+
+      <PaginationSection className="mt-5" current={Number(page) || 1} total={meta?.total || 1} />
       {/* <ReturnProductModal open={openRequestModal} setOpen={setOpenRequestModal} /> */}
     </div>
   )
