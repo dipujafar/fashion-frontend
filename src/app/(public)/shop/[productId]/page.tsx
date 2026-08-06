@@ -2,7 +2,7 @@ import Container from "@/components/shared/Container";
 import React, { Suspense } from "react";
 import SingleProductDetails from "./_components/SingleProductDetails";
 import { Button } from "@/components/ui/button";
-import { MessageIcon } from "@/icons";
+import { MessageIcon, OfferIcon } from "@/icons";
 import GetProductDetails, { GetQuesAnsWithProdDetails } from "@/lib/services/ProductDetails";
 import { IProduct } from "@/types";
 import { EnvConfig } from "@/config";
@@ -135,10 +135,10 @@ const SingleProductDetailsPage = async ({ params }: { params: Promise<{ productI
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 shadow-lg md:hidden">
         <div className="max-w-6xl mx-auto flex items-center gap-3">
           <MessageIcon className="h-[40px] w-[60px]" />
-          <Button variant="outline" className="flex-1 bg-transparent h-[45px]">
-            Make an offer
-          </Button>
-          <Button className="flex-1 bg-black text-white h-[45px]">Buy now</Button>
+          <Button 
+          // onClick={() => setShowOpenOfferModal(true)}
+           className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
+          <Button className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Buy now</Button>
         </div>
       </div>
 

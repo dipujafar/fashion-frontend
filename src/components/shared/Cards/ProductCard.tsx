@@ -24,10 +24,6 @@ const ProductCard = ({
   children?: ReactNode;
 }) => {
 
-  const handleAddToCart = (e: any) => {
-    e.stopPropagation();
-  };
-
   const router = useRouter();
   return (
     <Card className="border-none shadow-none p-0">

@@ -1,78 +1,140 @@
-"use client"
-import { productData } from "@/app/(public)/wishlist/_components/data";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import CustomAvatar from "@/components/ui/custom-avatar";
+import Empty from "@/components/ui/empty";
 import {
   MenubarContent,
   MenubarItem,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { CartIcon } from "@/icons";
-import { removeFromCart } from "@/redux/features/cart.slice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import GetCartProds from "@/lib/services/Cartprods";
+import { ICartGroup } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
-import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import React, { Suspense } from "react";
+import DltCart from "./DltCart";
 
 export default function CartDropDown() {
 
-  const cart = useAppSelector(state => state?.cart);
-  const dispatch = useAppDispatch();
-
-  const handleDltTocart = (productId: string) => {
-    dispatch(removeFromCart(productId));
-  }
+  const cartPromise = GetCartProds();
 
   return (
     <>
-      <MenubarTrigger>
-        <CartIcon className="size-5 lg:size-6 " />
+      <MenubarTrigger className="cursor-pointer">
+        <CartIcon className="size-5 md:size-6 lg:size-8" />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
-        {cart?.items.map((product) => (
-          <div key={product?.id}>
-            <MenubarItem className="cursor-pointer">
-              <Card className="p-4 hover:shadow-md transition-shadow w-full">
-                <div className="flex items-start gap-3">
-                  <Image
-                    src={product?.product?.images[0]?.url || defaultImg?.product}
-                    alt={product?.product?.title}
-                    width={1200}
-                    height={1200}
-                    placeholder="blur"
-                    blurDataURL={defaultImg?.placeholderImg}
-                    className="w-12 h-12 rounded-md object-cover"
-                  />
+      <MenubarContent className="md:min-w-sm rounded-none">
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-lg break-words">
-                          {product?.product?.title}
-                        </p>
-                        <span className="text-xs text-gray-500 whitespace-nowrap">
-                          ${product?.price}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+        <div>
+          <p className="text-lg font-bold px-3 pt-2 pb-3">Shopping Cart</p>
+        </div>
 
-                  <button className="cursor-pointer" onClick={() => handleDltTocart(product?.id)}>
-                    <Trash className="size-5 text-red-500" />
-                  </button>
-                </div>
-              </Card>
-            </MenubarItem>
-          </div>
-        ))}
-        {cart?.items?.length <= 0 && <div className="py-10">
-          <Image src={"/empty-cart.png"} alt="empty-cart" className="h-28 w-auto mx-auto" height={500} width={500} />
-        </div>}
-        {cart?.items?.length > 0 && <Link href={"/shopping-cart/shopping"}>
-          <Button className="w-full mt-2">View All</Button>
-        </Link>}
+        <Suspense key={Date.now()} fallback={<div className="flex-center h-28">
+          <span className="loaderDark !w-10"> </span>
+        </div>}>
+          <CartProds cartPromise={cartPromise} />
+        </Suspense>
+
       </MenubarContent>
     </>
   );
+}
+
+const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGroup[] }> }) => {
+  const cartProds = await cartPromise;
+
+  const cart = cartProds?.data;
+
+  return <>
+    {
+      <div className="space-y-3 overflow-y-auto max-h-[450px]">
+        {
+          cartProds?.data?.map((cartGroup) => (
+            <MenubarItem key={cartGroup?.id} className="flex-none hover:!bg-none">
+
+              <div className="w-full">
+
+                <div className="flex flex-row items-center gap-x-3 mb-2">
+
+                  <Link
+                    href={`/member/${cartGroup?.seller?.userName}`}
+                    className="cursor-pointer"
+                  >
+                    <CustomAvatar image={cartGroup?.seller?.picture?.url || null} name={cartGroup?.seller?.userName} className="!size-10"></CustomAvatar>
+                  </Link>
+
+                  <div>
+                    <Link
+                      href={`/member/${cartGroup?.seller?.userName}`}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <p className="font-bold text-lg leading-4">{cartGroup?.seller?.userName}</p>
+                    </Link>
+                    <Link
+                      href={`/member/${cartGroup?.seller?.userName}`}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <p className="underline underline-offset-1 text-sm">{cartGroup?.seller?._count?.products} items for sale</p>
+                    </Link>
+
+
+                  </div>
+
+                </div>
+
+                <div className="space-y-2">
+                  {
+                    cartGroup?.items?.map((item) => (
+                      <React.Fragment key={item?.id}>
+                        <div className="flex flex-row gap-x-2 items-start">
+                          <Link
+                            href={`/shop/${item?.product?.id}`}
+                            className="cursor-pointer"
+                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28" />
+                          </Link>
+                          <div>
+                            <Link
+                              href={`/shop/${item?.product?.id}`}
+                              className="space-y-1"
+                            >
+                              <p className="text-lg line-clamp-1 text-gray-700">{item?.product?.title}</p>
+                              <p className="text-lg font-bold">${item?.product?.finalPrice?.toFixed(2)}</p>
+                              <p className="text-sm text-gray-700">${item?.product?.size?.title}</p>
+                            </Link>
+                            <DltCart cartItemId={item?.id} productId={item?.product?.id} />
+                          </div>
+                        </div>
+
+                      </React.Fragment>
+
+                    ))
+                  }
+                  <Link href={`/checkout/${cartGroup?.id}`}>
+                    <Button variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout</Button>
+                  </Link>
+                </div>
+              </div>
+
+            </MenubarItem>
+          ))
+        }
+      </div>
+    }
+
+    {cart?.length <= 0 && <div className="py-10">
+      <Image src={"/empty-cart.png"} alt="empty-cart" className="h-20 w-auto mx-auto" height={500} width={500} />
+      <p className="text-center text-gray-500">No items in cart</p>
+      <center>
+        <Link href={"/shop"}>
+          <Button variant={"default"} className="mt-2 mx-auto text-center rounded-none py-5 border-2 cursor-pointer font-semibold">Browse</Button>
+        </Link>
+      </center>
+    </div>}
+
+    {cart?.length > 0 && <Link href={"/shopping-cart"}>
+      <Button variant={"outline"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">View All</Button>
+    </Link>}
+  </>
+
 }

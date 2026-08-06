@@ -89,6 +89,10 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
     else if (!response.ok) {
         const errorData = await response.json().catch(() => null);
 
+        if (method.toUpperCase() == "GET") {
+            throw new Error(errorData?.message || "Request Failed, try again");
+        }
+
         console.log(errorData, "==========================errorData==========================");
 
         return { error: errorData?.message || "Request Failed, try again", redirect: null };

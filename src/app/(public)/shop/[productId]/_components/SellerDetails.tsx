@@ -1,16 +1,11 @@
-import CommonButton from "@/components/ui/common-button";
 import CustomAvatar from "@/components/ui/custom-avatar";
 import { Rating } from "@/components/ui/rating";
-import { LocationIcon } from "@/icons";
-import { IUser } from "@/types";
 import { userRoleMapper } from "@/utils/userRoleMapper";
 import Link from "next/link";
 import { IUserWithExtra } from "./ProductDetails/ProductDetails";
 import { Button } from "@/components/ui/button";
 
 const SellerDetails = ({ user }: { user: IUserWithExtra }) => {
-
-  console.log(user);
 
   return (
     <div className=" max-w-lg">

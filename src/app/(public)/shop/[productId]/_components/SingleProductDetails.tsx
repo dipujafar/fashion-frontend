@@ -13,6 +13,10 @@ type IUserWithExtra = IUser & {
 
 type IProductWithUser = Omit<IProduct, "user"> & {
   user: IUserWithExtra;
+  _count: {
+    cartItems: number;
+    favourites: number;
+  }
 };
 
 const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promise<{ data: IProductWithUser }> }) => {

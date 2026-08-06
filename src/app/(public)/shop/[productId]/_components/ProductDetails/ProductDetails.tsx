@@ -1,5 +1,4 @@
 "use client";
-import { productDetails } from "@/data/dummyData.tsx";
 import Link from "next/link";
 import ActionButtons from "../ActionButtons";
 import SellerDetails from "../SellerDetails";
@@ -14,20 +13,17 @@ export type IUserWithExtra = IUser & {
   }
 };
 
-type IProductWithUser = Omit<IProduct, "user"> & {
+export type IProductWithUser = Omit<IProduct, "user"> & {
   user: IUserWithExtra;
-};
-
-const handleShare = () => {
-  navigator.share({
-    title: productDetails?.title,
-    url: `/shop/${productDetails?._id}`,
-  });
+  _count : {
+    cartItems: number;
+    favourites: number;
+  }
 };
 
 const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   return (
-    <div className="my-5 space-y-3">
+    <div className="lg:my-5 space-y-3">
       {/* --------- product header ---------- */}
       <div >
         <ProductDetailsHeader product={product} />

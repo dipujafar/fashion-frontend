@@ -1,3 +1,5 @@
+import { IUserWithExtra } from "@/app/(public)/shop/[productId]/_components/ProductDetails/ProductDetails";
+
 export type TBlogsData = {
   _id: number;
   image: string;
@@ -167,6 +169,27 @@ export interface IProduct {
   donation_percent: number,
   user: IUser;
   charities: ICharity[]
+}
+
+export interface ICartGroup {
+  id: string,
+  userId: string,
+  sellerId: string,
+  seller: IUserWithExtra,
+  items: {
+    id : string,
+    productId: string,
+    product: IProduct,
+    extraDonation: number,
+    extraDonationAnonymous: boolean,
+    charities: {
+      id: string,
+      charityId: string,
+      charity: IUser,
+    }[]
+  }[],
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface ICharity {

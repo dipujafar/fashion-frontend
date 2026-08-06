@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -12,12 +12,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ICharity, IProduct } from "@/types";
-import { addToCart, CartCharity, CartItem } from "@/redux/features/cart.slice";
-import { useAppDispatch } from "@/redux/hooks";
+import { AddToCart } from "@/lib/Actions/Cart.action";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { tags } from "@/utils/serverTags";
 
 interface CharityDonationFormData {
   selectedCharities: string[];
   additionalDonation: number;
+  extraDonationAnonymous: boolean;
 }
 
 // Remove ICharityWithDetails entirely, ICharity is enough now
@@ -29,6 +31,7 @@ interface CharityDonationDialogProps {
   donationPercentage: number;
   product: IProduct;
   charities: ICharity[]; // ✅ use ICharity directly
+  buyMode: "cart" | "buy";
 }
 
 export function CharityDonationSelectDialog({
@@ -38,26 +41,31 @@ export function CharityDonationSelectDialog({
   donationPercentage,
   product,
   charities,
+  buyMode,
 }: CharityDonationDialogProps) {
   const [selectedCharityIds, setSelectedCharityIds] = useState<string[]>(
     charities.map((c) => c.charityId) // pre-select all by default
   );
   const [additionalDonation, setAdditionalDonation] = useState<number>(0);
-  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { handleSubmit } = useForm<CharityDonationFormData>({
+  const { handleSubmit, control, watch } = useForm<CharityDonationFormData>({
     defaultValues: {
       selectedCharities: charities.map((c) => c.charityId),
       additionalDonation: 0,
+      extraDonationAnonymous: false,
     },
   });
+
+  const extraDonationAnonymous = watch("extraDonationAnonymous");
 
   const totalDonation = (purchasePrice * donationPercentage) / 100;
 
   // Split total donation equally among selected charities
   const perCharityAmount =
     selectedCharityIds.length > 0
-      ? totalDonation / selectedCharityIds.length  // 👈 split among selected only
+      ? totalDonation / selectedCharityIds.length // 👈 split among selected only
       : 0;
 
   const finalTotal = totalDonation + additionalDonation;
@@ -70,52 +78,45 @@ export function CharityDonationSelectDialog({
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async (data: CharityDonationFormData) => {
+    setLoading(true);
+    setError(null);
+
     const selectedCharities = charities.filter((c) =>
       selectedCharityIds.includes(c.charityId)
     );
 
-    const cartCharities: CartCharity[] = selectedCharities.map((c) => ({
-      id: c.charityId,
-      name: c.isAnonymous
-        ? "Anonymous"
-        : c.charity.userName ?? `${c.charity.fname} ${c.charity.lname}`,
-      donationPercent: donationPercentage / charities.length,
-      donationAmount: perCharityAmount,
-    }));
-
-    const prod = {
-      id: product?.id,
-      price: product?.finalPrice,
-      quantity: 1
-    }
-
-    const shipping_fee = 0;
-
-    const totalPrice = (product?.finalPrice * 1) + additionalDonation + shipping_fee
-
-    // Final cart item with charities
-    const cartItem: CartItem = {
-      total_price : totalPrice,
-      shipping_fee : 0,
-      product,
-      ...prod,
-      charities: cartCharities,
-      donation_percent: donationPercentage,
-      extra_donation: additionalDonation,
-      total_donation: finalTotal,
+    const payload = {
+      productId: product?.id,
+      quantity: 1,
+      extraDonation: additionalDonation,
+      extraDonationAnonymous:
+        additionalDonation > 0 ? data.extraDonationAnonymous : false,
+      charities: selectedCharities.map((c) => ({ charityId: c.charityId })),
     };
 
-    dispatch(addToCart(cartItem));
-
-    onOpenChange(false);
+    try {
+      const res = await AddToCart({ payload, extraRevalidatePaths: [tags.carts] });
+      if (res?.error) {
+        setError(res?.error);
+        return; // keep dialog open so the user can see the error
+      }
+      onOpenChange(false);
+    } catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
+      setError(error?.data?.message || "An error occurred while adding to cart.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 gap-0 ">
+      <DialogContent className="p-0 gap-0 rounded-none">
         <DialogHeader className="p-6 pb-4">
-          <DialogTitle className="text-base font-normal text-muted-foreground">
+          <DialogTitle className="text-base font-medium text-gray-800">
             Which charities you want to add?
           </DialogTitle>
         </DialogHeader>
@@ -123,10 +124,10 @@ export function CharityDonationSelectDialog({
         <div className="px-6 space-y-4">
           {/* Purchase Info */}
           <div className="flex gap-2">
-            <div className="flex-1 bg-black text-white rounded-lg px-4 py-3 text-center text-sm font-medium">
+            <div className="flex-1 bg-black text-white rounded-4xl px-4 py-3 text-center text-sm font-medium">
               Purchase Price: ${purchasePrice}
             </div>
-            <div className="flex-1 bg-black text-white rounded-lg px-4 py-3 text-center text-sm font-medium">
+            <div className="flex-1 bg-black text-white rounded-4xl px-4 py-3 text-center text-sm font-medium">
               Total Donation ({donationPercentage}%): ${totalDonation.toFixed(2)}
             </div>
           </div>
@@ -158,7 +159,8 @@ export function CharityDonationSelectDialog({
                       {item.charity.userName ?? `${item.charity.fname} ${item.charity.lname}`}
                     </Label>
                     <span className="text-sm text-muted-foreground">
-                      ${selectedCharityIds.includes(item.charityId)
+                      $
+                      {selectedCharityIds.includes(item.charityId)
                         ? perCharityAmount.toFixed(2)
                         : "0.00"}
                     </span>
@@ -180,7 +182,7 @@ export function CharityDonationSelectDialog({
                 Add an additional donation? (Optional)
               </Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">
                   $
                 </span>
                 <Input
@@ -188,7 +190,7 @@ export function CharityDonationSelectDialog({
                   step="0.01"
                   min="0"
                   placeholder="0.00"
-                  className="pl-6 pr-10"
+                  className="pl-6 pr-10 rounded-md focus-visible:ring-0 focus:ring-0 focus:border-2 focus-visible:border-black text-lg md:text-base py-5 border-gray-400"
                   value={additionalDonation || ""}
                   onChange={(e) =>
                     setAdditionalDonation(parseFloat(e.target.value) || 0)
@@ -200,6 +202,32 @@ export function CharityDonationSelectDialog({
               </div>
             </div>
 
+            {/* Anonymous extra donation option — only relevant once they've entered an amount */}
+            {additionalDonation > 0 && (
+              <div className="flex items-center space-x-3">
+                <Controller
+                  name="extraDonationAnonymous"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      id="extraDonationAnonymous"
+                      checked={field.value}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked === true)
+                      }
+                      className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+                    />
+                  )}
+                />
+                <Label
+                  htmlFor="extraDonationAnonymous"
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  Make my additional donation anonymous
+                </Label>
+              </div>
+            )}
+
             {/* Total */}
             <div className="pt-2">
               <p className="text-sm font-medium">
@@ -207,14 +235,22 @@ export function CharityDonationSelectDialog({
               </p>
             </div>
 
+            {/* Error message */}
+            {error && (
+              <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+
             {/* Submit */}
             <div className="pt-2 pb-6">
               <Button
                 type="submit"
-                disabled={selectedCharityIds.length === 0}
-                className="w-full bg-black hover:bg-black/90 text-white py-3 rounded-lg font-medium"
+                disabled={(donationPercentage > 0 && selectedCharityIds.length === 0) || loading}
+                variant={"default"}
+                className="w-full py-6 font-medium rounded-none cursor-pointer"
               >
-                Continue to Checkout
+                {loading ? <span className="loader" /> : buyMode === "cart" ? "Save to Cart" : "Continue to Checkout"}
               </Button>
             </div>
           </form>

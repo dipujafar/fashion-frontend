@@ -10,10 +10,8 @@ import {
 } from "@/components/ui/menubar";
 import { HeartIcon } from "@/icons";
 import GetFavouriteProds from "@/lib/services/FavoriteProds";
-import { useGetFavoriteProductQuery } from "@/redux/api/favoriteProductApi";
-import { IProduct, IWishListData } from "@/types";
+import { IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
-import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -45,9 +43,6 @@ export default async function WishListDropDown() {
 
 const FavProds = async ({ favPromise }: { favPromise: Promise<{ data: { id: string, product: IProduct }[] }> }) => {
   const favoriteProds = await favPromise;
-
-
-
 
   return <>
     {favoriteProds?.data?.length === 0 ? <div className="h-[300px] flex-center">
