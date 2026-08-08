@@ -79,3 +79,16 @@ export const GetBundleDiscounts = async () => {
         throw err;
     }
 };
+
+export const GetUserBillingDetails = async () => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/users/billing-details`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};

@@ -45,9 +45,23 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
 
                         const totalExtraDonation = cartGroup?.items?.reduce((acc, item) => acc + (item?.extraDonation || 0), 0);
 
-                        const itemTotal = cartGroup?.items?.reduce((acc, item) => acc + (item?.product?.finalPrice || 0), 0) + totalExtraDonation;
+                        const itemTotal = cartGroup?.items?.reduce((acc, item) => acc + (item?.product?.finalPrice || 0), 0);
 
-                        const totalPrice = itemTotal + totalExtraDonation;
+                        // const totalPrice = itemTotal + totalExtraDonation;
+
+                        const itemCount = cartGroup?.items.length;
+
+                        const bundleDiscountTiers = cartGroup?.seller?.bundleDiscount?.tiers || [];
+
+                        const nearestTier = bundleDiscountTiers
+                            .filter(tier => itemCount >= (tier.itemCount ?? 0))
+                            .sort((a, b) => (b.itemCount ?? 0) - (a.itemCount ?? 0))[0] ?? null;
+
+                        const bundleDiscountPercent = nearestTier ? nearestTier.discountPercent : 0;
+
+                        const bundleDiscountAmount = (itemTotal * bundleDiscountPercent) / 100;
+
+                        const subTotal = itemTotal - bundleDiscountAmount + totalExtraDonation;
 
                         return <div key={cartGroup?.id} className="flex flex-col lg:flex-row items-center bg-white p-5 shadow-lg justify-start gap-3">
 
@@ -122,6 +136,17 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                     <span className="font-semibold text-neutral-900">Item(s)</span>
                                     <span className="font-bold text-neutral-900">${itemTotal.toFixed(2)}</span>
                                 </div>
+
+                                {bundleDiscountAmount > 0 && (
+                                    <div className="flex justify-between pb-3 ">
+                                        <p className="font-semibold text-neutral-900">Bundle Discount
+                                            <span className="bg-green-600/20 text-green-600 rounded px-1 py-0.5 ml-1 text-sm">
+                                                {bundleDiscountPercent}%
+                                            </span> :</p>
+                                        <p className="font-medium text-green-600">-${bundleDiscountAmount?.toFixed(2)}</p>
+                                    </div>
+                                )}
+
                                 <div className="flex justify-between items-center pb-3 ">
                                     <span className="font-semibold text-neutral-900">Extra Donation</span>
                                     <span className="font-bold text-neutral-900">${totalExtraDonation.toFixed(2)}</span>
@@ -130,7 +155,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
 
                                 <div className="flex justify-between items-center py-3 border-t border-neutral-200">
                                     <span className="font-bold text-neutral-900">Total</span>
-                                    <span className="font-bold text-neutral-900">${totalPrice.toFixed(2)}</span>
+                                    <span className="font-bold text-neutral-900">${subTotal.toFixed(2)}</span>
                                 </div>
 
                                 <Link href={`/checkout/${cartGroup?.id}`}>

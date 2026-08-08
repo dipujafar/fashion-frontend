@@ -10,12 +10,18 @@ import { IProduct, IUser } from "@/types";
 export type IUserWithExtra = IUser & {
   _count: {
     products: number;
-  }
+  },
+  bundleDiscount: {
+    tiers: {
+      itemCount: number;
+      discountPercent: number;
+    }[]
+  } | null;
 };
 
 export type IProductWithUser = Omit<IProduct, "user"> & {
   user: IUserWithExtra;
-  _count : {
+  _count: {
     cartItems: number;
     favourites: number;
   }

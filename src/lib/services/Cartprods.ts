@@ -15,7 +15,7 @@ const GetCartProds = async () => {
     }
 };
 
-const getCheckoutItems = async (cartGroupId: string) => {
+export const getCheckoutItems = async (cartGroupId: string) => {
     try {
         const res = await serverQueryWithReauth({
             endPoint: `/carts/${cartGroupId}`,
@@ -28,6 +28,18 @@ const getCheckoutItems = async (cartGroupId: string) => {
     }
 };
 
-export { getCheckoutItems };
+export const getCartSummary = async ({ cartGroupId }: { cartGroupId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/checkout/${cartGroupId}/summary`,
+            method: "GET",
+            cache: "no-store",
+            tags: [tags.cart_summary]
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
 
 export default GetCartProds;

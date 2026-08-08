@@ -36,3 +36,30 @@ export const DeleteFromCart = async ({ payload, extraRevalidatePaths = [] }: { p
 
     return res;
 }
+
+export const updateTreeGiftToCheckout = async (payload: { treeGiftCount: number, cartGroupId: string }) => {
+
+    const res = await serverQueryWithReauth({
+        endPoint: `/carts/checkout/tree-gift-cost`,
+        method: "PUT",
+        payload,
+        cache: "no-store",
+        tags: [tags.cart_summary]
+    });
+    revalidateTag(tags.cart_summary);
+    return res;
+}
+
+export const updateAuthenticationCostCheckout = async (payload: { allowAuthentication: boolean, cartGroupId: string }) => {
+
+    const res = await serverQueryWithReauth({
+        endPoint: `/carts/checkout/authentication-cost`,
+        method: "PUT",
+        payload,
+        cache: "no-store",
+        tags: [tags.cart_summary]
+    });
+    revalidateTag(tags.cart_summary);
+    return res;
+
+}

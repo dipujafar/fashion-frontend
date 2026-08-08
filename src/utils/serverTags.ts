@@ -7,5 +7,6 @@ export const tags = {
     "orders": "orders",
     "favourites" : "favourites",
     "carts" : "carts",
-    "category_hairerchy" : "category_hairerchy"
+    "category_hairerchy" : "category_hairerchy",
+    "cart_summary": "cart_summary"
 }

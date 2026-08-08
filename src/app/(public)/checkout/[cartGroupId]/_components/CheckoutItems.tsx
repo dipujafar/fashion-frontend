@@ -11,13 +11,13 @@ async function CheckoutItems({ cartGroupId }: { cartGroupId: string }) {
     const cartPromise = getCheckoutItems(cartGroupId);
 
     return (
-        <div>
+        <>
             <Suspense fallback={<div className="flex-center h-40 bg-white">
                 <span className="loaderDark !w-12"> </span>
             </div>}>
                 <CartProds cartPromise={cartPromise} />
             </Suspense>
-        </div>
+        </>
     )
 }
 
@@ -76,7 +76,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                                             <p className="text-sm font-bold">+ {item?.extraDonation?.toFixed(2)} (extra donation)</p>
                                                         )}
                                                     </div>
-                                                    <p className="text-sm text-gray-700">${item?.product?.size?.title}</p>
+                                                    <p className="text-sm text-gray-700">{item?.product?.size?.title}</p>
                                                 </Link>
 
                                             </div>

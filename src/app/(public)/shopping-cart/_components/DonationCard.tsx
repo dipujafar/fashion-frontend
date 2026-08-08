@@ -6,21 +6,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Gift, RotateCcw, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addToGiftTree, selectFullCart } from "@/redux/features/cart.slice";
+import { updateTreeGiftToCheckout } from "@/lib/Actions/Cart.action";
+import { toast } from "sonner";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
-export default function DonationCard() {
+export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartGroupId: string, defaultCostAmount: number }) {
   const [selectedAmount, setSelectedAmount] = useState(5);
   const [customAmount, setCustomAmount] = useState("");
   const [isCustomSelected, setIsCustomSelected] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const presetAmounts = [1, 5, 20, 50];
   const pricePerTree = 4;
   const pathName = usePathname();
 
-  const dispatch = useAppDispatch();
-  const cart = useAppSelector(selectFullCart);
-  const isGifted = cart.tree_gift.tree_count > 0;
+  const isGifted = defaultCostAmount > 0;
 
   const treeCount = isCustomSelected
     ? (customAmount === "" ? 0 : parseInt(customAmount))
@@ -50,45 +51,67 @@ export default function DonationCard() {
     setSelectedAmount(5);
   };
 
-  const handleGiftTrees = () => {
+  const handleGiftTrees = async () => {
     if (treeCount < 0) return;
 
-    dispatch(
-      addToGiftTree({
-        tree_count: treeCount,
-        gift_amount: treeCount * pricePerTree,
-      })
-    );
+    setIsLoading(true);
+
+    try {
+      const res = await updateTreeGiftToCheckout({ treeGiftCount: treeCount, cartGroupId });
+      if (res?.error) {
+        toast.error(res?.error || "Something went wrong, try again");
+      }
+    }
+    catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
+      toast.error(error?.data?.message || "Something went wrong, try again");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleClearTrees = () => {
-    dispatch(addToGiftTree({
-      tree_count: 0,
-      gift_amount: 0 * pricePerTree,
-    }));
+  const handleClearTrees = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await updateTreeGiftToCheckout({ treeGiftCount: 0, cartGroupId });
+      if (res?.error) {
+        toast.error(res?.error || "Something went wrong, try again");
+      }
+    }
+    catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
+      toast.error(error?.data?.message || "Something went wrong, try again");
+    } finally {
+      setIsLoading(false);
+    }
     handleReset();
   };
 
-  const isPreset = presetAmounts.includes(cart.tree_gift.tree_count);
+  const isPreset = presetAmounts.includes(defaultCostAmount);
 
   // sync state when gifted trees are loaded (e.g. on page refresh or re-render)
   useEffect(() => {
     if (isGifted) {
       if (isPreset) {
-        setSelectedAmount(cart.tree_gift.tree_count);
+        setSelectedAmount(defaultCostAmount);
         setIsCustomSelected(false);
         setCustomAmount("");
       } else {
-        setCustomAmount(String(cart.tree_gift.tree_count));
+        setCustomAmount(String(defaultCostAmount / 4));
         setIsCustomSelected(true);
       }
     }
-  }, [cart.tree_gift.tree_count]);
+  }, [defaultCostAmount]);
 
   return (
     <div className={cn(pathName === `/shopping-cart/billing-address` && "hidden")}>
-      <Card className="w-full py-2 px-2">
-        <CardContent className="p-6 space-y-6">
+      <Card className="w-full rounded-none">
+        <CardContent className="space-y-3">
 
           {/* Header */}
           <div>
@@ -98,26 +121,21 @@ export default function DonationCard() {
             {isGifted && (
               <div className="flex items-center justify-between mt-1">
                 <p className="text-sm text-green-600">
-                  ✓ {cart.tree_gift.tree_count} trees gifted (${cart.tree_gift.gift_amount.toFixed(2)})
+                  ✓ {Math.round(defaultCostAmount / 4)} trees gifted (${(defaultCostAmount).toFixed(2)})
                 </p>
-
               </div>
             )}
           </div>
 
           {/* Preset Amount Buttons */}
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex flex-row gap-2 flex-wrap">
             {presetAmounts.map((amount) => (
               <Button
                 key={amount}
-                variant={
-                  selectedAmount === amount && !isCustomSelected
-                    ? "default"
-                    : "outline"
-                }
-                className={`h-12 text-base font-medium ${selectedAmount === amount && !isCustomSelected
-                  ? "bg-black text-white hover:bg-black/90"
-                  : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                variant={"outline"}
+                className={`h-12 px-5 text-base font-medium cursor-pointer ${selectedAmount === amount && !isCustomSelected
+                  ? "border-2 border-primary-black bg-primary-black/10 text-primary-black"
+                  : ""
                   }`}
                 onClick={() => handlePresetClick(amount)}
               >
@@ -127,7 +145,7 @@ export default function DonationCard() {
           </div>
 
           {/* Custom Tree Count */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="text-base font-medium text-gray-900">
               Custom Tree
             </h3>
@@ -137,7 +155,8 @@ export default function DonationCard() {
                 placeholder="Enter number of trees"
                 value={customAmount}
                 onChange={(e) => handleCustomAmountChange(e.target.value)}
-                className="h-12 text-base bg-gray-100 border-gray-200 pr-12"
+                className="h-10 pr-12 rounded-md focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-black text-base md:text-base py-5 border-gray-400"
+                min={0}
               />
               <Button
                 variant="ghost"
@@ -166,12 +185,10 @@ export default function DonationCard() {
               size="sm"
               onClick={handleGiftTrees}
               disabled={treeCount < 0}
-              className="flex-1 h-12 bg-black text-white hover:bg-black/90 text-base font-medium disabled:opacity-50 cursor-pointer"
+              className="flex-1 py-5 bg-black text-white hover:bg-black/90 text-sm font-medium disabled:opacity-50 cursor-pointer rounded-none"
             >
               <Gift className="mr-2 h-5 w-5" />
-              {isGifted
-                ? `UPDATE TREES GIFT`
-                : "GIFT TREES"}
+              {isLoading ? <span className="loader" /> : isGifted ? `UPDATE TREES GIFT` : "GIFT TREES"}
             </Button>
 
             {isGifted && (
@@ -179,7 +196,7 @@ export default function DonationCard() {
                 size="sm"
                 variant="outline"
                 onClick={handleClearTrees}
-                className="h-12 px-4 border-red-200 text-red-500 hover:bg-red-50 hover:text-red-700"
+                className="py-5 px-4 border-red-200 text-red-500 hover:bg-red-50 hover:text-red-700 cursor-pointer rounded-md"
               >
                 <X className="h-5 w-5" />
               </Button>
