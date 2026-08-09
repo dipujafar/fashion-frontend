@@ -28,7 +28,7 @@ const PhoneInput = React.forwardRef(
       <RPNInput.default
         //@ts-ignore
         ref={ref}
-        className={cn("flex", className)}
+        className={cn("flex cursor-pointer", className)}
         flagComponent={FlagComponent}
         countrySelectComponent={CountrySelect}
         inputComponent={InputComponent}
@@ -44,7 +44,7 @@ PhoneInput.displayName = "PhoneInput";
 const InputComponent = React.forwardRef(({ className, ...props }, ref) => (
   <Input
     className={cn(
-      "rounded rounded-s-none border border-primary-black/10 w-full md:py-5  focus-visible:outline-none focus-visible:ring-0 bg-[#F5F5F5] ",
+      "bg-white border-[#e1e1e1] md:py-5 rounded rounded-l-none shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3",
       className
     )}
     {...props}
@@ -84,20 +84,20 @@ const CountrySelect = ({ disabled = false, value, onChange, options }) => {
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <PopoverContent align="start" className="w-[300px] p-0">
         <Command>
           <CommandList>
             <ScrollArea className="h-72">
               <CommandInput placeholder="Search country..." />
               <CommandEmpty>No country found.</CommandEmpty>
-              <CommandGroup>
+              <CommandGroup className="p-0">
                 {options
                   //@ts-ignore
                   .filter((x) => x.value)
                   //@ts-ignore
                   .map((option) => (
                     <CommandItem
-                      className="gap-2"
+                      className="gap-2 cursor-pointer rounded-none py-2"
                       key={option.value}
                       onSelect={() => handleSelect(option.value)}
                     >

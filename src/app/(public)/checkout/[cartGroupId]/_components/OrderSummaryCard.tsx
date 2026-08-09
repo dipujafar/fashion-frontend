@@ -159,7 +159,7 @@ const SummaryOverview = async ({ summeryPromise, cartGroupId }: { summeryPromise
         size="sm"
         // onClick={handleGiftTrees}
         // disabled={treeCount < 0}
-        className="flex-1 py-6 cursor-pointer rounded-none w-full font-semibold text-lg">
+        className="flex-1 py-6 cursor-pointer rounded-none w-full font-semibold text-lg bg-green-600 hover:bg-green-500 duration-200 transition-colors">
 
         {!isLoading ? <span className="loader" /> : "Proceed to Payment"}
 
