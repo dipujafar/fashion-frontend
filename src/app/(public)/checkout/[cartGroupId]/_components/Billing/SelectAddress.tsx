@@ -17,89 +17,127 @@ import {
     ComboboxItem,
     ComboboxList,
 } from "@/components/ui/combobox"
+import { countries } from "@/utils/constant";
 
-interface PlacePrediction {
-    description: string;
-    place_id: string;
+function buildDisplayName(place: google.maps.places.PlaceResult): string {
+    const name = place.name || "";
+    const components = place.address_components || [];
+
+    const route = components.find(c => c.types.includes("route"))?.long_name;
+    const area = components.find(c =>
+        c.types.includes("sublocality") || c.types.includes("neighborhood")
+    )?.long_name;
+
+    return [name, route, area]
+        .filter(Boolean)
+        .filter((val, idx, arr) => arr.indexOf(val) === idx)
+        .join(", ");
 }
 
-function SelectAddress({ control, setValue }: any) {
-    const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
-    const [inputValue, setInputValue] = useState("");
+function SelectAddress({
 
+    control,
+    setValue,
+}: any) {
+    const [options, setOptions] = useState<{ value: string; label: string; placeId: string }[]>([]);
+
+    // AutocompleteService — for fetching suggestions (text only, no geometry)
     const autocompleteServiceRef = useRef<google.maps.places.AutocompleteService | null>(null);
+
+    // PlacesService — for fetching full place details (geometry, components, etc.)
     const placesServiceRef = useRef<google.maps.places.PlacesService | null>(null);
-    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Initialize Google services once the script/API is available
-    useEffect(() => {
-        if (typeof window !== "undefined" && window.google?.maps?.places) {
-            autocompleteServiceRef.current = new window.google.maps.places.AutocompleteService();
-            // PlacesService needs a DOM node or map instance; a detached div works for details lookups
-            placesServiceRef.current = new window.google.maps.places.PlacesService(
-                document.createElement("div")
-            );
+    // We need a dummy DOM node for PlacesService
+    const dummyDivRef = useRef<HTMLDivElement | null>(null);
+
+    // Lazily initialize both services
+    const getServices = () => {
+        if (!autocompleteServiceRef.current) {
+            autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
         }
-    }, []);
+        if (!placesServiceRef.current) {
+            if (!dummyDivRef.current) {
+                dummyDivRef.current = document.createElement("div");
+            }
+            placesServiceRef.current = new google.maps.places.PlacesService(dummyDivRef.current);
+        }
+    };
 
-    const fetchPredictions = (input: string) => {
-        if (!input || !autocompleteServiceRef.current) {
-            setPredictions([]);
+    // Called on every keystroke — fetch autocomplete predictions
+    const handleSearch = (value: string) => {
+        if (!value || value.length < 2) {
+            setOptions([]);
             return;
         }
-        autocompleteServiceRef.current.getPlacePredictions(
-            { input },
-            (results, status) => {
-                if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
-                    setPredictions(
-                        results.map((r) => ({
-                            description: r.description,
-                            place_id: r.place_id,
-                        }))
-                    );
-                } else {
-                    setPredictions([]);
+
+        getServices();
+
+        autocompleteServiceRef.current!.getPlacePredictions(
+            {
+                input: value,
+                // componentRestrictions: { country: "us" } // Restrict to a specific country if needed
+            },
+            (predictions, status) => {
+                if (
+                    status !== google.maps.places.PlacesServiceStatus.OK ||
+                    !predictions
+                ) {
+                    setOptions([]);
+                    return;
                 }
+
+                setOptions(
+                    predictions.map((p) => ({
+                        value: p.description,           // shown in input after select
+                        label: p.description,           // shown in dropdown
+                        placeId: p.place_id,
+                    }))
+                );
             }
         );
+        setValue("streetAddress", value);
     };
 
-    const handleInputChange = (value: string) => {
-        setInputValue(value);
-        if (debounceRef.current) clearTimeout(debounceRef.current);
-        debounceRef.current = setTimeout(() => fetchPredictions(value), 250);
-    };
+    // Called when user clicks a suggestion
+    const handleSelect = (placeId: string) => {
+        getServices();
 
-    const handleSelectPlace = (placeId: string, description: string, fieldOnChange: (v: string) => void) => {
-        fieldOnChange(description);
-        setInputValue(description);
-
-        if (!placesServiceRef.current) return;
-
-        placesServiceRef.current.getDetails(
+        placesServiceRef.current!.getDetails(
             {
-                placeId,
-                fields: ["formatted_address", "geometry", "address_components"],
+                placeId: placeId,
+                fields: ["name", "geometry", "address_components", "formatted_address"],
             },
             (place, status) => {
-                if (status !== window.google.maps.places.PlacesServiceStatus.OK || !place) return;
+                if (
+                    status !== google.maps.places.PlacesServiceStatus.OK ||
+                    !place?.geometry?.location
+                ) return;
 
-                const components = place.address_components ?? [];
-                const getComponent = (type: string) =>
-                    components.find((c) => c.types.includes(type))?.long_name ?? "";
+                const getAddressComponent = (components: google.maps.GeocoderAddressComponent[], type: string, allowShortNames = false) => {
+                    const comp = components.find(c => c.types.includes(type));
+                    return comp ? (allowShortNames ? comp?.short_name : comp?.long_name) : "";
+                };
 
-                setValue("city", getComponent("locality"));
-                setValue("state", getComponent("administrative_area_level_1"));
-                setValue("zipCode", getComponent("postal_code"));
-                setValue("country", getComponent("country"));
+                const city = getAddressComponent(place.address_components || [], "locality") ?? getAddressComponent(place.address_components || [], "administrative_area_level_2");
+                const state = getAddressComponent(place.address_components || [], "administrative_area_level_1");
+                const zip = getAddressComponent(place.address_components || [], "postal_code");
+
+                const countryCode = getAddressComponent(place.address_components || [], "country", true);
+
+                setValue("streetAddress", buildDisplayName(place));
+                setValue("city", city);
+                setValue("state", state);
+                setValue("zipCode", zip);
+
+                const selectedCountry = countries.find(
+                    (country) => country.code === countryCode
+                );
+
+                setValue("country", selectedCountry?.name || "");
+                setValue("countryCode", selectedCountry?.code || "");
             }
         );
     };
-
-    const comboboxItems = useMemo(
-        () => predictions.map((p) => ({ name: p.description, code: p.place_id })),
-        [predictions]
-    );
 
     return (
         <FormField
@@ -110,33 +148,29 @@ function SelectAddress({ control, setValue }: any) {
                     <FormLabel>Street Address</FormLabel>
                     <FormControl>
                         <Combobox
-                            items={comboboxItems}
+                            items={options}
                             value={field.value || ""}
-                            onValueChange={(description) => {
-                                setInputValue(description);
-                                const match = predictions.find((p) => p.description === description);
-                                if (match) {
-                                    handleSelectPlace(match.place_id, match.description, field.onChange);
-                                } else {
-                                    field.onChange(description ?? "");
-                                    handleInputChange(description ?? "");
-                                }
+                            onValueChange={(placeId) => {
+                                handleSelect(placeId);
+                            }}
+                            onInputValueChange={(searchTerm) => {
+                                handleSearch(searchTerm);
                             }}
                         >
                             <ComboboxInput
                                 placeholder="Enter your address"
-                                className="bg-white border-[#e1e1e1] md:py-5 rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black text-lg md:text-base py-5"
+                                className="bg-white border-[#e1e1e1] md:py-5 rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 focus:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black text-lg md:text-base py-5"
                             />
                             <ComboboxContent className="rounded-none p-0">
                                 <ComboboxEmpty>No addresses found.</ComboboxEmpty>
                                 <ComboboxList className="max-h-[300px] overflow-y-auto">
-                                    {(item: { name: string; code: string }) => (
+                                    {(item: { value: string; label: string; placeId: string }) => (
                                         <ComboboxItem
-                                            key={item.code}
-                                            value={item.name}
+                                            key={item?.placeId}
+                                            value={item?.placeId}
                                             className="cursor-pointer py-2.5 rounded-none hover:bg-zinc-100 border-b border-b-gray-200"
                                         >
-                                            {item.name}
+                                            {item?.label}
                                         </ComboboxItem>
                                     )}
                                 </ComboboxList>

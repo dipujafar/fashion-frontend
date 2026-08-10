@@ -2,6 +2,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { serverQueryWithReauth } from "./ReAuthRequest";
 import { tags } from "@/utils/serverTags";
+import { IBillingDetails } from "@/types";
 
 export const AddToCart = async ({ payload, extraRevalidatePaths = [] }: { payload: { productId: string, quantity: number, extraDonation: number, extraDonationAnonymous: boolean, charities: { charityId: string }[] }, extraRevalidatePaths?: string[] }) => {
 
@@ -62,4 +63,18 @@ export const updateAuthenticationCostCheckout = async (payload: { allowAuthentic
     revalidateTag(tags.cart_summary);
     return res;
 
+}
+
+export const updateShippingDetails = async (payload: IBillingDetails) => {
+
+    const res = await serverQueryWithReauth({
+        endPoint: `/users/billing-details`,
+        method: "PUT",
+        payload,
+        cache: "no-store",
+        tags: [tags.cart_summary]
+    });
+    revalidateTag(tags.cart_summary);
+    revalidateTag(tags.shipping_rates);
+    return res;
 }

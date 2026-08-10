@@ -16,7 +16,7 @@ async function CheckoutPage({ params }: { params: Promise<{ cartGroupId: string 
                     <div className='space-y-5'>
                         <CheckoutItems cartGroupId={cartGroupId} />
                         <BillingDetailsServer />
-                        <CourierServices />
+                        <CourierServices cartGroupId={cartGroupId}/>
                     </div>
 
                     <OrderSummaryCard cartGroupId={cartGroupId} />

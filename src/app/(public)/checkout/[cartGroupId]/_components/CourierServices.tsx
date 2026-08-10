@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { Truck } from 'lucide-react';
+import { getCheckoutShippingRates } from '@/lib/services/Cartprods';
+import { ICourierServiceRates } from '@/types';
+import CourierServiceCards from './CourierServiceCards';
 
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-
-function CourierServices() {
+function CourierServices({ cartGroupId }: { cartGroupId: string }) {
+    const shipingsPromise = getCheckoutShippingRates({ cartGroupId });
     return (
         <Card className=" hover:border hover:border-primary-color/50 duration-300 text-black h-fit rounded-none gap-3">
             <CardHeader className="mb-0">
@@ -24,45 +24,11 @@ function CourierServices() {
             </CardHeader>
             <CardContent className="pt-0">
 
-                <div className="">
-                    <RadioGroup defaultValue="r1" className="grid grid-cols-3 gap-3">
-                        <Label htmlFor="r1" className="border border-gray-300 rounded p-5 flex flex-col items-start cursor-pointer hover:bg-zinc-50 has-[[data-state=checked]]:border-primary">
-                            <div className="flex justify-between items-center gap-3 w-full">
-                                <Truck />
-                                <RadioGroupItem value="r1" id="r1" />
-                            </div>
-                            <p className="text-lg font-bold text-primary-black">$25.00</p>
-                            <p className="text-primary-black">Pathao Courier</p>
-                        </Label>
-
-                        <Label htmlFor="r2" className="border border-gray-200 rounded p-5 flex flex-col items-start cursor-pointer hover:bg-zinc-50 has-[[data-state=checked]]:border-primary">
-                            <div className="flex justify-between items-center gap-3 w-full">
-                                <Truck />
-                                <RadioGroupItem value="r2" id="r2" />
-                            </div>
-                            <p className="text-lg font-bold text-primary-black">$25.00</p>
-                            <p className="text-primary-black">Pathao Courier</p>
-                        </Label>
-
-                        <Label htmlFor="r3" className="border border-gray-200 rounded p-5 flex flex-col items-start cursor-pointer hover:bg-zinc-50 has-[[data-state=checked]]:border-primary">
-                            <div className="flex justify-between items-center gap-3 w-full">
-                                <Truck />
-                                <RadioGroupItem value="r3" id="r3" />
-                            </div>
-                            <p className="text-lg font-bold text-primary-black">$25.00</p>
-                            <p className="text-primary-black">Pathao Courier</p>
-                        </Label>
-
-                        <Label htmlFor="r4" className="border border-gray-200 rounded p-5 flex flex-col items-start cursor-pointer hover:bg-zinc-50 has-[[data-state=checked]]:border-primary">
-                            <div className="flex justify-between items-center gap-3 w-full">
-                                <Truck />
-                                <RadioGroupItem value="r4" id="r4" />
-                            </div>
-                            <p className="text-lg font-bold text-primary-black">$25.00</p>
-                            <p className="text-primary-black">Pathao Courier</p>
-                        </Label>
-                    </RadioGroup>
-                </div>
+                <Suspense fallback={<div className="flex-center h-40 bg-white">
+                    <span className="loaderDark !w-10"> </span>
+                </div>}>
+                    <ShippingServices shippingPromise={shipingsPromise} cartGroupId={cartGroupId} />
+                </Suspense>
 
             </CardContent>
 
@@ -70,4 +36,23 @@ function CourierServices() {
     )
 }
 
-export default CourierServices
+export default CourierServices;
+
+const ShippingServices = async ({ shippingPromise, cartGroupId }: { shippingPromise: Promise<{ data?: { rates: ICourierServiceRates[] } | null }>; cartGroupId: string }) => {
+
+    const data = await shippingPromise;
+
+    if (!data?.data?.rates) {
+        return (
+            <div className="flex-center h-28 bg-white">
+                <p className="text-gray-500">Make sure to enter your shipping details.</p>
+            </div>
+        )
+    }
+
+    return (
+        <div className="">
+            <CourierServiceCards rates={data?.data?.rates} cartGroupId={cartGroupId} />
+        </div>
+    )
+}

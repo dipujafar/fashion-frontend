@@ -8,9 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import BillingAddressForm from "./BillingAddressForm";
 import { IBillingDetails } from "@/types";
-import { useRef } from "react";
-
-// Remove ICharityWithDetails entirely, ICharity is enough now
 
 interface Props {
     open: boolean;
@@ -29,12 +26,12 @@ function BillingAddressModal({
             <DialogContent className="p-0 gap-0 rounded-none">
                 <DialogHeader className="p-6 pb-4 border-b border-gray-200">
                     <DialogTitle className="text-lg font-semibold text-center">
-                        Add Address
+                        Shiping Details
                     </DialogTitle>
                 </DialogHeader>
 
                 <div className="px-6 space-y-4 py-5">
-                    <BillingAddressForm defaultValue={defaultValue} />
+                    <BillingAddressForm defaultValue={defaultValue} onOpenChange={onOpenChange} />
                 </div>
             </DialogContent>
         </Dialog>

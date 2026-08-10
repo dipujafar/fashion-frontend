@@ -177,7 +177,7 @@ export interface ICartGroup {
   sellerId: string,
   seller: IUserWithExtra,
   items: {
-    id : string,
+    id: string,
     productId: string,
     product: IProduct,
     extraDonation: number,
@@ -269,6 +269,7 @@ export interface IFolow {
 
 export interface IBillingDetails {
   country: string,
+  countryCode: string,
   full_name: string,
   address1: string,
   address2?: string,
@@ -352,6 +353,15 @@ export interface ITreeDonation {
   treeCredit: number,
   createdAt: Date,
 }
+
+export interface ICourierServiceRates {
+  shipment_charge_total: number,
+  min_delivery_time: number,
+  max_delivery_time: number,
+  courier_service: { name: string, logo: string, id: string }
+}[]
+
+export type OrderSummeryType = { itemTotal: number, otherTotal: number, total: number, serviceFeeCost: number, treeGiftCost: number, authenticationCost: number, bundleDiscountPercent: number, bundleDiscountAmount: number, totalExtraDonation: number }
 
 export interface IOrder {
   id: string,

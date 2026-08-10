@@ -2,6 +2,13 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { serverQueryWithReauth } from "./ReAuthRequest";
 
+export const makeOrder = async ({ payload }: { payload: { "cartGroupId": string, shipmentServiceId : string } }) => {
+
+    const res = await serverQueryWithReauth({ payload, endPoint: `/orders`, method: "POST" });
+
+    return res;
+}
+
 export const CancelOrder = async ({ payload }: { payload: { "sellerGroupId": string } }) => {
 
     const res = await serverQueryWithReauth({ payload, endPoint: `/orders/cancel/${payload?.sellerGroupId}`, method: "PATCH" });

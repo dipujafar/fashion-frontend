@@ -1,10 +1,9 @@
 "use client";
-import { OfferIcon } from "@/icons";
+import { OfferIcon, OfferIcon2 } from "@/icons";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import SendOfferModal from "@/components/shared/Modal/SendOfferModal";
 import { CharityDonationSelectDialog } from "@/components/shared/Modal/Charity/CharityDonationSelectDialog";
-import { toast } from "sonner";
 import { IProductWithUser } from "./ProductDetails/ProductDetails";
 import { Check } from "lucide-react";
 
@@ -21,33 +20,26 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
     setShowOpenOpenCharityModal(true);
   };
 
-  const handleBuy = () => {
-    setBuyMode("buy");
-    setShowOpenOpenCharityModal(true);
-  }
-
   return (
     <>
       <div className="lg:space-y-8 space-y-4">
         {/* <h6 className="uppercase text-primary-gray underline">Quantity</h6> */}
         {/* =============== action buttons ================ */}
-        <div className="lg:space-y-3 space-y-2 max-w-lg grid grid-cols-2 md:gap-x-3 gap-x-2 2xl:w-2/3">
+        <div className="lg:space-y-3 space-y-2 max-w-lg md:gap-x-3 gap-x-2 2xl:w-2/3">
 
           {/* =============== buy now  button ================ */}
           <Button
-            onClick={handleBuy}
+            onClick={() => setShowOpenOfferModal(true)}
             className="w-full rounded-none py-6 font-medium col-span-2 cursor-pointer"
             variant={"default"}
           >
-            Buy It Now
+            Make an offer <OfferIcon2 className="size-5 text-white"></OfferIcon2>
           </Button>
 
           {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5">
             <Check />
             <p className="text-lg font-medium">Added</p>
-          </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"} disabled={isInCart}>ADD TO CART</Button>}
-
-          <Button onClick={() => setShowOpenOfferModal(true)} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
+          </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer w-full" variant={"outline"} disabled={isInCart}>ADD TO CART</Button>}
 
         </div>
       </div>

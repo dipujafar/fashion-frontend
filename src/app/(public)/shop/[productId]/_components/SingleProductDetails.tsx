@@ -8,7 +8,13 @@ import { notFound } from "next/navigation";
 type IUserWithExtra = IUser & {
   _count: {
     products: number;
-  }
+  },
+  bundleDiscount: {
+    tiers: {
+      itemCount: number;
+      discountPercent: number;
+    }[]
+  } | null;
 };
 
 type IProductWithUser = Omit<IProduct, "user"> & {

@@ -43,3 +43,17 @@ export const getCartSummary = async ({ cartGroupId }: { cartGroupId: string }) =
 };
 
 export default GetCartProds;
+
+export const getCheckoutShippingRates = async ({ cartGroupId }: { cartGroupId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/checkout/${cartGroupId}/shipping-rates`,
+            method: "GET",
+            cache: "no-store",
+            tags: [tags.shipping_rates]
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
