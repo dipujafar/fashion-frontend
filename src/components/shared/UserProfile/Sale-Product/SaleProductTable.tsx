@@ -73,17 +73,13 @@ export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: 
 
               <TableRow key={order?.id} className="hover:bg-gray-50 h-[50px]">
 
-
-
-
-
                 <TableCell className="font-medium text-center">
                   #{indx + 1}
                 </TableCell>
 
                 <TableCell>
 
-                  {order?.items?.length > 0 ? <ItemsModal items={order?.items} finalPrice={order?.subtotal} action={<>
+                  {order?.items?.length > 0 ? <ItemsModal items={order?.items} finalPrice={order?.sellerItemsTotal} action={<>
                     {<div className='relative h-14 w-14 cursor-pointer'>
                       <Image
                         height={800}
@@ -100,9 +96,9 @@ export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: 
 
                 </TableCell>
 
-                <TableCell className="text-center">{order?.user?.fname} {order?.user?.lname}</TableCell>
+                <TableCell className="text-center">{order?.buyer?.fname} {order?.buyer?.lname}</TableCell>
 
-                <TableCell className="font-medium text-center">${order?.subtotal?.toFixed(2)}</TableCell>
+                <TableCell className="font-medium text-center">${order?.sellerItemsTotal?.toFixed(2)}</TableCell>
 
                 <TableCell className="table-cell text-center">{moment(order?.createdAt).format("MM/DD/YYYY h:mm a")}</TableCell>
 

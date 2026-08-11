@@ -366,10 +366,15 @@ export type OrderSummeryType = { itemTotal: number, otherTotal: number, total: n
 export interface IOrder {
   id: string,
 
-  userId: string,
-  user: IUser,
+  buyerId: string,
+  buyer: IUser,
 
-  subtotal: number,
+  itemsTotal: number,
+  totalPrice: number,
+  totalDeliveryCost: number,
+
+  sellerTotal: number,
+  sellerItemsTotal: number,
 
   items: IOrderItem[]
 

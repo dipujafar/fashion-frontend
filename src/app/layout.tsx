@@ -38,7 +38,9 @@ export default function RootLayout({
             <Navbar></Navbar>
           </div>
 
-          <div className="min-h-[calc(100vh-140px)] md:pb-16 pb-8 bg-[#F6F6F6]">
+          <div className="min-h-[calc(100vh-140px)] md:pb-16 pb-8 
+          
+          ">
             {children}
           </div>
           <div className="bg-[#F6F6F6] lg:py-14 py-8">

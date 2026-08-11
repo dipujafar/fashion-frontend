@@ -1,4 +1,4 @@
-import BillingDetailsContainer from '@/app/(public)/shopping-cart/shopping/_components/Billing/BillingDetailsContainer'
+import BillingDetailsContainer from '@/app/(public)/checkout/[cartGroupId]/_components/Billing/BillingDetailsContainer'
 import React from 'react'
 
 function ShippingDetails() {

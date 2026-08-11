@@ -1,21 +1,9 @@
-import HistoryTab from "@/app/(public)/member/[username]/@general/donations/_components/HistoryTab";
 import { SellerProfileProductSorting } from "@/components/shared/CategoryFilter/SellerProfileProductSorting";
 import StatusFilterSelect from "@/components/shared/Order/StatusFilterSelect";
 import SaleProductTable from "@/components/shared/UserProfile/Sale-Product/SaleProductTable";
-import {
-    Tabs,
-    TabsList,
-    TabsTrigger,
-    TabsContent,
-} from "@/components/ui/tabs";
 
 
 const OrdersContainer = ({ ssp }: { ssp: { [key: string]: string | undefined } }) => {
-
-    const { tab } = ssp;
-
-    const tabs = ["Orders", "Returns"];
-    const defaultTab = tab ? tabs.includes(tab) ? tab : "Orders" : "Orders";
 
     return (
         <>

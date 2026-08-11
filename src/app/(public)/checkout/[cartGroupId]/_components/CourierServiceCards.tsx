@@ -15,19 +15,16 @@ function CourierServiceCards({ rates, cartGroupId }: { rates: ICourierServiceRat
   const selectedcartShipment = carts?.carts?.find((cart) => cart?.cartGroupId === cartGroupId)?.shipment;
 
   return (
-    <RadioGroup defaultValue={selectedcartShipment?.serviceId || ""} onValueChange={(serviceId) => {
-      const rate = rates?.find((rate) => rate?.courier_service?.id === serviceId);
-      if (rate) {
-        dispatch(addShipmentToCart({
-          cartGroupId, shipment: {
-            serviceId: rate?.courier_service?.id,
-            shipment_charge_total: rate?.shipment_charge_total,
-          }
-        }))
-      }
-    }} className="grid grid-cols-2 gap-3">
+    <RadioGroup defaultValue={selectedcartShipment?.serviceId || ""} className="grid grid-cols-2 gap-3">
       {rates?.map((rate) => (
-        <Label key={rate?.courier_service?.id} htmlFor={rate?.courier_service?.id} className="border border-gray-300 rounded p-5 flex flex-col items-start cursor-pointer hover:bg-zinc-50 has-[[data-state=checked]]:border-primary">
+        <Label key={rate?.courier_service?.id} onClick={() => {
+          dispatch(addShipmentToCart({
+            cartGroupId, shipment: {
+              serviceId: rate?.courier_service?.id,
+              shipment_charge_total: rate?.shipment_charge_total,
+            }
+          }))
+        }} htmlFor={rate?.courier_service?.id} className="border border-gray-300 rounded p-5 flex flex-col items-start cursor-pointer hover:bg-zinc-50 has-[[data-state=checked]]:border-primary">
           <div className="flex justify-between items-center gap-3 w-full">
             <Image src={rate?.courier_service?.logo} alt={rate?.courier_service?.name} width={100} height={100} className='h-8 w-auto object-cover' />
             <RadioGroupItem value={rate?.courier_service?.id} id={rate?.courier_service?.id} />
@@ -35,7 +32,7 @@ function CourierServiceCards({ rates, cartGroupId }: { rates: ICourierServiceRat
           <p className="text-lg font-bold text-primary-black">${rate?.shipment_charge_total?.toFixed(2)}</p>
           <p className="text-primary-black">{rate?.courier_service?.name}</p>
           <p className="text-sm text-gray-600">
-            Delivered within {rate?.min_delivery_time} - {rate?.max_delivery_time} days
+            Delivery within {rate?.min_delivery_time} - {rate?.max_delivery_time} days
           </p>
         </Label>
       ))}
