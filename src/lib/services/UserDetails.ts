@@ -83,7 +83,7 @@ export const GetBundleDiscounts = async () => {
 export const GetUserBillingDetails = async () => {
     try {
         const res = await serverQueryWithReauth({
-            endPoint: `/users/billing-details`,
+            endPoint: `/users/addresses`,
             method: "GET",
             cache: "no-store"
         });

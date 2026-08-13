@@ -267,6 +267,11 @@ export interface IFolow {
   following: IUser
 }
 
+export interface Addresses{
+  buyingAddress: IBillingDetails | null,
+  sellingAddress: IBillingDetails | null
+}
+
 export interface IBillingDetails {
   country: string,
   countryCode: string,
@@ -355,7 +360,7 @@ export interface ITreeDonation {
 }
 
 export interface ICourierServiceRates {
-  shipment_charge_total: number,
+  total_charge: number,
   min_delivery_time: number,
   max_delivery_time: number,
   courier_service: { name: string, logo: string, id: string }

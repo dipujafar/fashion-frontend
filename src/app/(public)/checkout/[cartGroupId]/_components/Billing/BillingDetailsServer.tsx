@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GetUserBillingDetails } from '@/lib/services/UserDetails';
 import EditBillingDetails from './EditBillingDetails';
-import { IBillingDetails } from '@/types';
+import { Addresses, IBillingDetails } from '@/types';
 
 function BillingDetailsServer() {
 
@@ -30,7 +30,7 @@ function BillingDetailsServer() {
 
 export default BillingDetailsServer;
 
-const BillingDetails = async ({ detailsPromise }: { detailsPromise: Promise<{ data: IBillingDetails | null }> }) => {
+const BillingDetails = async ({ detailsPromise }: { detailsPromise: Promise<{ data: Addresses }> }) => {
     const data = await detailsPromise;
 
     return (

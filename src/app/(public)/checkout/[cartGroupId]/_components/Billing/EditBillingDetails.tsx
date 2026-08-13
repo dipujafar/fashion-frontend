@@ -1,11 +1,17 @@
 "use client"
-import { IBillingDetails } from '@/types';
+import { Addresses, IBillingDetails } from '@/types';
 import { Pencil } from 'lucide-react';
 import React, { useState } from 'react'
 import BillingAddressModal from './BillingAddressModal';
 
-function EditBillingDetails({ data }: { data: { data: IBillingDetails | null } }) {
+function EditBillingDetails({ data: address }: { data: { data: Addresses } }) {
     const [showEditAddress, setShowEditAddress] = useState<boolean>(false);
+
+    const buyingAddress = address?.data?.buyingAddress
+
+    const data = {
+        data: buyingAddress || null
+    }
 
     const locationParts = [
         data?.data?.zip_code,

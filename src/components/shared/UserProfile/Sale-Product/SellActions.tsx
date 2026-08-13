@@ -22,7 +22,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import { ChevronDown, Truck, MapPin, CheckCircle2, Eye, RefreshCw, X, Loader2, MessageCircleMore } from 'lucide-react'
+import { ChevronDown, Truck, MapPin, CheckCircle2, Eye, RefreshCw, X, Loader2, MessageCircleMore, EllipsisVertical, CircleX } from 'lucide-react'
 import { IOrder, IsellerGroup, OrderStatus } from "@/types"
 import { cn } from "@/lib/utils"
 import { CancelOrder, ConfirmOrder, MarkShipped } from "@/lib/Actions/Order.action"
@@ -182,7 +182,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
 
                             </AlertDialogContent>
                         </AlertDialog>,
-                        icon: <X size={16} />,
+                        icon: <CircleX size={16} className="text-destructive" />,
                         action: () => { },
                         destructive: true,
                     },
@@ -248,7 +248,7 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
 
                             </AlertDialogContent>
                         </AlertDialog>,
-                        icon: <X size={16} />,
+                        icon: <CircleX size={16} className="text-destructive" />,
                         action: () => { },
                         destructive: true,
                     },
@@ -327,22 +327,21 @@ function SellActions({ status, sellerGroupId, order }: { status: OrderStatus, se
     return (
         <DropdownMenu>
 
-            <DropdownMenuTrigger>
-                <Button variant="outline" size={"sm"} className="cursor-pointer flex flex-row items-center gap-x-1">
-                    Actions
-                    <ChevronDown />
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size={"sm"} className="cursor-pointer flex flex-row items-center gap-x-1 shadow-none">
+                    <EllipsisVertical />
                 </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="w-40" align="start">
+            <DropdownMenuContent className="w-40 rounded-none p-0" align="end">
 
                 <DropdownMenuGroup>
 
                     {
                         getActionsForStatus(status)?.map((action, index) => {
                             return <React.Fragment key={index}>
-                                {action.destructive && <DropdownMenuSeparator />}
-                                <DropdownMenuItem onSelect={(e) => e.preventDefault()} className={cn("cursor-pointer", action.destructive && "text-red-600 hover:!text-red-600")}>
+                                {action.destructive && <DropdownMenuSeparator className="my-0" />}
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()} className={cn("cursor-pointer p-2 rounded-none", action.destructive && "text-red-600 hover:!text-red-600")}>
                                     {action.icon}
                                     {action.label}
                                 </DropdownMenuItem>
