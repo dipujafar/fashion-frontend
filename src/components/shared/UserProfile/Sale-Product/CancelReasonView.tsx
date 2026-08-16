@@ -8,17 +8,18 @@ import {
 } from "@/components/ui/dialog"
 import { User, MessageSquareText, XCircle, FileText } from "lucide-react"
 import { CancelReasonFormat } from "@/utils/EnumFormater"
+import { CancelReason } from "@/types"
 
 
 interface CancelReasonModalProps {
-    cancelReason?: string | null
+    cancelReason?: CancelReason | null
     cancelReasonDetails?: string | null
     cancelledBy?: string | null
 
     trigger: React.ReactNode
 }
 
-function getCancelReasonLabel(cancelReason?: string | null, cancelledBy?: string | null) {
+function getCancelReasonLabel(cancelReason?: CancelReason | null, cancelledBy?: string | null) {
     if (!cancelReason) return null
 
     return CancelReasonFormat[cancelReason]?.label ?? cancelReason
@@ -66,7 +67,7 @@ function CancelReasonView({
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-x-2">
-                        <XCircle  size={18} />
+                        <XCircle size={18} />
                         Cancel Reason
                     </DialogTitle>
                     <DialogDescription>

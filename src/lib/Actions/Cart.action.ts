@@ -65,16 +65,32 @@ export const updateAuthenticationCostCheckout = async (payload: { allowAuthentic
 
 }
 
-export const updateShippingDetails = async (payload: IBillingDetails) => {
+export const updateShippingDetails = async (payload: IBillingDetails, cartGroupId ?: string) => {
 
     const res = await serverQueryWithReauth({
-        endPoint: `/users/billing-details`,
+        endPoint: `/users/buying-details`,
         method: "PUT",
         payload,
         cache: "no-store",
-        tags: [tags.cart_summary]
     });
     revalidateTag(tags.cart_summary);
     revalidateTag(tags.shipping_rates);
+    revalidatePath(`/profile/address`);
+    if(cartGroupId){
+        revalidatePath(`/checkout/${cartGroupId}`);
+    }
+    return res;
+}
+
+export const updateSellingDetails = async (payload: IBillingDetails, tags?: string[]) => {
+
+    const res = await serverQueryWithReauth({
+        endPoint: `/users/selling-address`,
+        method: "PUT",
+        payload,
+        cache: "no-store",
+        tags
+    });
+    revalidatePath(`/profile/address`);
     return res;
 }

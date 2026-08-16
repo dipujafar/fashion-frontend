@@ -1,12 +1,10 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
 import Image from "next/image"
 import GetOrdersBySeller from "@/lib/services/Orders"
 import { IMeta, IOrder } from "@/types"
 import moment from "moment"
-import ItemsModal from "./ItemsModal"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { defaultImg } from "@/utils/defaultImg"
-import { OrderStatusFormat } from "@/utils/EnumFormater"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import SellActions from "./SellActions"
@@ -25,12 +23,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { getOrderStatusFormat } from "@/utils/EnumFormater"
+import CancelReasonView from "./CancelReasonView"
 
 export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: string | undefined } }) {
 
@@ -109,13 +107,33 @@ export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: 
                       <div className="flex-1 space-y-0.5 flex flex-row items-start gap-x-3">
 
                         <div className="space-y-0.5">
-                          <p className="text-base text-gray-800 font-medium">{item?.product?.title}</p>
-                          <p className="text-sm text-muted-foreground">
+
+                          <p className={cn("text-base text-gray-800 font-medium", item?.isCancelled ? "line-through" : "")}>
+                            <Link href={`/shop/${item.product?.id}`}>
+                              {item?.product?.title}
+                            </Link>
+                          </p>
+                          <p className={cn("text-sm text-muted-foreground", item?.isCancelled ? "line-through" : "")}>
                             Size <span className="font-semibold text-foreground">{item.product?.size?.title}</span>
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className={cn("text-sm text-muted-foreground", item?.isCancelled ? "line-through" : "")}>
                             Price <span className="font-semibold text-foreground">${item.product?.finalPrice}</span>
                           </p>
+                          {
+                            item?.isCancelled ? <Badge variant={"outline"} className={"font-semibold rounded-none bg-red-500/10 text-red-500"}>
+                              Cancelled
+                            </Badge> : item?.isBuyerRequestCancel ? <CancelReasonView trigger={<Tooltip>
+                              <TooltipTrigger>
+                                <Badge variant={"outline"} className={"rounded-none text-orange-500 border-orange-500 text-xs"}>
+                                  Cancel Requested
+                                </Badge>
+                              </TooltipTrigger>
+
+                              <TooltipContent className="rounded-none" side="top">
+                                <p className="text-xs">Click for view reason</p>
+                              </TooltipContent>
+                            </Tooltip>} cancelReason={item?.cancelReason} cancelReasonDetails={item?.cancelReasonDetails} /> : <></>
+                          }
                         </div>
 
                         <DropdownMenu>
@@ -151,9 +169,18 @@ export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: 
               <div className="space-y-2 lg:space-y-3 min-w-80 order-1 md:order-2 pb-5 md:pb-0">
 
                 <div className="flex flex-row justify-between items-center">
-                  <Badge variant={"outline"} className={cn(OrderStatusFormat[order?.status]?.color, "font-semibold")}>
-                    {OrderStatusFormat[order?.status]?.label}
-                  </Badge>
+
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge variant={["CANCELLED", "COMPLETED"].includes(order?.status) ? "destructive" : "outline"} className={cn(getOrderStatusFormat(order?.status, order?.currentShipTo, order?.authStatus)?.color, "font-semibold rounded-none")}>
+                        {getOrderStatusFormat(order?.status, order?.currentShipTo, order?.authStatus)?.label}
+                      </Badge>
+                    </TooltipTrigger>
+
+                    <TooltipContent className="rounded-none" side="top">
+                      <p className="text-xs">{getOrderStatusFormat(order?.status, order?.currentShipTo, order?.authStatus)?.details}</p>
+                    </TooltipContent>
+                  </Tooltip>
 
                   <div className="flex flex-row items-center gap-x-2">
                     <Button

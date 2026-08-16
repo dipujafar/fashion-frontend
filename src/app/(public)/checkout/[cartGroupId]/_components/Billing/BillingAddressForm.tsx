@@ -1,10 +1,7 @@
 "use client";
-
 import { useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -45,7 +42,18 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 
-export default function BillingAddressForm({ defaultValue, onOpenChange }: { defaultValue: IBillingDetails | null; onOpenChange: (open: boolean) => void }) {
+export default function BillingAddressForm(
+  { defaultValue,
+    onOpenChange,
+    updateAddressFn = async (data: any) => {
+      await updateShippingDetails(data);
+    }
+  }
+    : {
+      defaultValue: IBillingDetails | null;
+      onOpenChange: (open: boolean) => void,
+      updateAddressFn?: (data: any) => Promise<void>
+    }) {
   // const [handleUpdate, { isLoading }] = useUpdateBillingDetailsMutation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,8 +91,8 @@ export default function BillingAddressForm({ defaultValue, onOpenChange }: { def
         email: data?.email
       }
 
-      await updateShippingDetails(body);
-      toast.success("Billing details updated successfully")
+      await updateAddressFn(body);
+      toast.success("Address updated successfully")
       dispatch(clearCart());
       onOpenChange(false);
     } catch (error: any) {

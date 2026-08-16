@@ -9,5 +9,6 @@ export const tags = {
     "carts" : "carts",
     "category_hairerchy" : "category_hairerchy",
     "cart_summary": "cart_summary",
-    "shipping_rates": "shipping_rates"
+    "shipping_rates": "shipping_rates",
+    "address": "address",
 }

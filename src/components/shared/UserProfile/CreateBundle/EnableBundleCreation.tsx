@@ -6,19 +6,19 @@ import { z } from "zod";
 import { Plus, Trash2, Package, Percent, Tag } from "lucide-react";
 
 import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+
+import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-  InputGroupText,
 } from "@/components/ui/input-group"
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import {
   Form,
@@ -42,6 +42,7 @@ import { Label } from "@/components/ui/label";
 import { UpdateBundleDiscounts } from "@/lib/Actions/Profile.action";
 import { toast } from "sonner";
 import LoadingSpin from "@/components/ui/loading-spin";
+import { cn } from "@/lib/utils";
 
 // ─── Schema ────────────────────────────────────────────────────────────────
 
@@ -105,8 +106,8 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
         className="max-w-2xl space-y-4 md:p-6"
       >
         {/* ── Enable toggle ── */}
-        <Card>
-          <CardContent className="flex items-center justify-between">
+        <Card className="rounded-none shadow-none border border-border">
+          <CardContent className="flex items-center justify-between rounded-none">
             <Label htmlFor="enabled-switch" className="text-lg font-medium cursor-pointer">
               Enable bundle discounts
             </Label>
@@ -138,7 +139,7 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
 
         {/* ── Tiers panel ── */}
         {enabled && (
-          <Card>
+          <Card className="rounded-none border border-border shadow-none">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
                 <Tag className="h-4 w-4 text-primary text-base" />
@@ -172,7 +173,7 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <FormControl>
-                          <InputGroup>
+                          <InputGroup className="border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 focus:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !text-base">
                             <InputGroupInput
                               id={`tier-quantity-${index}`}
                               {...field}
@@ -180,8 +181,7 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
                               type="number"
                               min={1}
                               aria-invalid={!!fieldState.error}
-
-                              className={fieldState.error ? "border-destructive focus-visible:ring-destructive" : ""}
+                              className={cn("", fieldState.error ? "border-destructive focus-visible:ring-destructive" : "")}
                             />
                             <InputGroupAddon align="inline-start">
                               <Package className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -197,35 +197,11 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
                   />
 
                   {/* Percent */}
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name={`tiers.${index}.percent`}
                     render={({ field }) => (
                       <FormItem>
-                        {/* <FormControl>
-                          <div className="flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 focus-within:ring-2 focus-within:ring-ring">
-                            <Percent className="h-4 w-4 shrink-0 text-muted-foreground" />
-                            <Input
-                              type="number"
-                              min={1}
-                              max={99}
-                              placeholder="e.g. 10"
-                              className="h-auto border-0 bg-transparent p-0 text-sm shadow-none focus-visible:ring-0"
-                              {...field}
-                              onChange={(e) =>
-                                field.onChange(
-                                  e.target.value === ""
-                                    ? undefined
-                                    : Number(e.target.value)
-                                )
-                              }
-                            />
-                            <span className="shrink-0 text-xs text-muted-foreground">
-                              % off
-                            </span>
-                          </div>
-                        </FormControl> */}
-
                         <FormControl>
                           <Select
                             onValueChange={field.onChange}
@@ -245,10 +221,50 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
                             </SelectContent>
                           </Select>
                         </FormControl>
-
                         <FormMessage className="text-xs" />
                       </FormItem>
                     )}
+                  /> */}
+
+                  <FormField
+                    control={form.control}
+                    name={`tiers.${index}.percent`}
+                    render={({ field }) => {
+
+                      return <FormItem>
+                        {/* <FormLabel>Country</FormLabel> */}
+                        <FormControl>
+                          <Combobox
+                            items={Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => ({
+                              value: item.toString(),
+                              label: `${item}% off`
+                            }))}
+                            value={field.value?.toString()}
+                            onValueChange={(percent) => {
+                              field.onChange(percent || "");
+                            }}
+                          >
+                            <ComboboxInput placeholder="Select a percent" className={"bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 focus:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black text-lg md:text-base"} />
+                            <ComboboxContent className="rounded-none p-0">
+                              <ComboboxEmpty>No items found.</ComboboxEmpty>
+                              <ComboboxList className={"p-0"}>
+                                {(percent) => (
+                                  <ComboboxItem
+                                    key={`${percent?.label}`}
+                                    value={percent?.value}
+                                    className="cursor-pointer py-2.5 rounded-none hover:bg-zinc-100 border-b border-b-gray-200"
+                                  >
+                                    {percent?.label}
+                                  </ComboboxItem>
+                                )}
+                              </ComboboxList>
+                            </ComboboxContent>
+                          </Combobox>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    }
+                    }
                   />
 
                   {/* Remove */}
@@ -286,8 +302,8 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
 
         )}
 
-        <Button type='submit' className="ml-auto cursor-pointer flex flex-row items-center gap-2 disabled:cursor-not-allowed" disabled={isLoading}>
-          Save Changes {isLoading && <LoadingSpin color="white" />}
+        <Button type='submit' variant={"default"} className="ml-auto cursor-pointer flex flex-row items-center gap-2 disabled:cursor-not-allowed rounded-none" disabled={isLoading}>
+          {isLoading ? <span className="loader" /> : "Save Changes"}
         </Button>
 
       </form>

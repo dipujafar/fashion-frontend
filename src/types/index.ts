@@ -267,7 +267,7 @@ export interface IFolow {
   following: IUser
 }
 
-export interface Addresses{
+export interface Addresses {
   buyingAddress: IBillingDetails | null,
   sellingAddress: IBillingDetails | null
 }
@@ -383,7 +383,9 @@ export interface IOrder {
 
   items: IOrderItem[]
 
-  status: OrderStatus,
+  status: OrderStatus
+  currentShipTo: CurrentShipTo
+  authStatus: OrderAuthStatus
 
   sellerId: string,
   seller: IUser,
@@ -392,10 +394,31 @@ export interface IOrder {
   createdAt: Date,
 }
 
-enum CancelledBy {
-  SELLER = "SELLER",
-  BUYER = "BUYER",
-  SYSTEM = "SYSTEM"
+export enum CurrentShipTo {
+  AUTHENTICATION_CENTER = "AUTHENTICATION_CENTER",
+  BUYER = "BUYER"
+}
+
+export enum OrderStatus {
+  PENDING = "PENDING",
+  SHIPPED = "SHIPPED",
+  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
+  DELIVERED = "DELIVERED",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+}
+
+export enum OrderAuthStatus {
+  NOT_STARTED = "NOT_STARTED",
+  ITEM_RECEIVED = "ITEM_RECEIVED",
+  IN_PROGRESS = "IN_PROGRESS",
+  RESPONDED = "RESPONDED",
+}
+
+export enum OrderAuthResult {
+  NOT_PROCESSED = "NOT_PROCESSED",
+  PASSED = "PASSED",
+  FAILED = "FAILED"
 }
 
 export interface IOrderItem {
@@ -405,20 +428,27 @@ export interface IOrderItem {
   quantity: number,
   unitPrice: number,
   totalPrice: number,
+  isBuyerRequestCancel: boolean,
+  authResult: OrderAuthResult,
+  isCancelled: boolean,
+
+  cancelledBy: CancelledBy
+  cancelReason: CancelReason
+  cancelReasonDetails: string | null
+  // for attach photo or videos as reason
+  cancelEvidence: { url: string, key: string }[]
+
 }
 
-export enum OrderStatus {
-  PENDING = "PENDING",
-  CONFIRMED = "CONFIRMED",
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-  COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
+export enum CancelledBy {
+    SELLER = "SELLER",
+    BUYER = "BUYER",
+    SYSTEM = "SYSTEM"
 }
 
 // types.ts (or wherever OrderStatus is defined)
 
-enum CancelReason {
+export enum CancelReason {
   CHANGED_MIND = "CHANGED_MIND",
   FOUND_BETTER_PRICE = "FOUND_BETTER_PRICE",
   ORDERED_BY_MISTAKE = "ORDERED_BY_MISTAKE",

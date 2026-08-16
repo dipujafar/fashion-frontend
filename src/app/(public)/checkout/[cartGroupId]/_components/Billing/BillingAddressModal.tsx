@@ -12,13 +12,17 @@ import { IBillingDetails } from "@/types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    defaultValue: IBillingDetails | null
+    defaultValue: IBillingDetails | null;
+    title?: string;
+    updateAddressFn?: (data: any) => Promise<void>
 }
 
 function BillingAddressModal({
     open,
     onOpenChange,
-    defaultValue
+    defaultValue,
+    title = "Shipping Details",
+    updateAddressFn
 }: Props) {
 
     return (
@@ -26,12 +30,12 @@ function BillingAddressModal({
             <DialogContent className="p-0 gap-0 rounded-none">
                 <DialogHeader className="p-6 pb-4 border-b border-gray-200">
                     <DialogTitle className="text-lg font-semibold text-center">
-                        Shiping Details
+                        {title}
                     </DialogTitle>
                 </DialogHeader>
 
                 <div className="px-6 space-y-4 py-5">
-                    <BillingAddressForm defaultValue={defaultValue} onOpenChange={onOpenChange} />
+                    <BillingAddressForm defaultValue={defaultValue} onOpenChange={onOpenChange} updateAddressFn={updateAddressFn} />
                 </div>
             </DialogContent>
         </Dialog>

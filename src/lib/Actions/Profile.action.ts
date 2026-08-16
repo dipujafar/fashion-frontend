@@ -15,7 +15,7 @@ export const UpdateBundleDiscounts = async ({ payload }: { payload: { enabled: b
 
     const res = await serverQueryWithReauth({ payload, endPoint: "/users/bundle-discount", method: "PUT" });
 
-    revalidatePath(`/bundle-discount`);
+    revalidatePath(`/profile/sell/bundle-discount`);
 
     return res;
 }
