@@ -35,3 +35,12 @@ export const MarkShipped = async ({ payload }: { payload: { "sellerGroupId": str
 
     return res;
 }
+
+export const GetLebel = async ({ payload }: { payload: { "orderId": string } }) => {
+
+    const res = await serverQueryWithReauth({ payload, endPoint: `/orders/shipping-label/${payload?.orderId}`, method: "POST" });
+
+    revalidatePath(`/profile/sell/orders`);
+
+    return res;
+}
