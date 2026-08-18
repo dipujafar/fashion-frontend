@@ -35,7 +35,7 @@ const formSchema = z.object({
         .min(1, { message: "Reason is required" }),
     reason_details: z
         .string()
-        .optional(),
+        .min(5, { message: "Write some details explaination" }),
 });
 
 export type CancelOrderFormValues = z.infer<typeof formSchema>;
@@ -160,10 +160,10 @@ const CancelOrderForm = ({
                     name="reason_details"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Additional details (optional)</FormLabel>
+                            <FormLabel>Additional details</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Add any extra context..."
+                                    placeholder="Write some details explaination for canceling this order"
                                     className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black"
                                     {...field}
                                     onKeyDown={(e) => {

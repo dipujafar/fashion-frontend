@@ -1,12 +1,11 @@
 "use client"
-import { IOrder } from '@/types'
+import { IOrder, OrderStatus } from '@/types'
 import React, { useState } from 'react'
 import moment from "moment"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { defaultImg } from "@/utils/defaultImg"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import SellActions from "./SellActions"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 import {
@@ -28,15 +27,16 @@ import CancelOrderForm from './CancelOrderForm';
 
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
-    AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { CancelOrderItems } from '@/lib/Actions/Order.action';
+import { toast } from 'sonner';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
+import SellActions from './SellActions';
 
 function SellItem({ order }: { order: IOrder }) {
 
@@ -64,7 +64,7 @@ function SellItem({ order }: { order: IOrder }) {
         setSelectedItemIds(newSelected)
     }
 
-    const handleCancelSelectedItems = async () => {
+    const handleCancelSelectedItems = async (payload: { reason: string; reason_details?: string }, evidenceFiles: File[]) => {
         if (selectedItemIds.size === 0) return
 
         try {
@@ -72,13 +72,33 @@ function SellItem({ order }: { order: IOrder }) {
 
             const itemIds = Array.from(selectedItemIds)
 
-            // TODO: replace with your real API call, e.g.:
-            // await CancelOrderItems({ orderId: order.id, itemIds })
-            console.log("Cancelling items:", { orderId: order.id, itemIds })
+            const data = {
+                cancelReason: payload.reason,
+                cancelReasonDescription: payload.reason_details,
+                orderId: order.id,
+                itemIds,
+            }
+
+            const formData = new FormData()
+            formData.append("data", JSON.stringify(data))
+
+            evidenceFiles.forEach((file) => {
+                formData.append("evidences", file);
+            });
+
+            const res = await CancelOrderItems({ payload: formData });
+
+            if (res?.error) {
+                toast.error(res?.error || "Failed to cancel selected items. Please try again.");
+                return;
+            }
 
             setSelectedItemIds(new Set())
-        } catch (error) {
-            console.error("Failed to cancel items", error)
+        } catch (error: any) {
+            if (isRedirectError(error)) {
+                throw error;
+            }
+            toast.error(error?.message || "Failed to cancel selected items. Please try again.")
         } finally {
             setIsCancelling(false)
         }
@@ -108,7 +128,7 @@ function SellItem({ order }: { order: IOrder }) {
                                 >
                                     <Trash2 className="size-4 mr-1" />
                                     {isCancelling
-                                        ? "Cancelling..."
+                                        ? <span className="loader" />
                                         : `Cancel Item${selectedItemIds.size > 1 ? "s" : ""} (${selectedItemIds.size})`}
                                 </Button>
                             </AlertDialogTrigger>
@@ -120,12 +140,10 @@ function SellItem({ order }: { order: IOrder }) {
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
 
-                                <CancelOrderForm isLoading={isCancelling} handleCancelOrder={() => { }} />
+                                <CancelOrderForm isLoading={isCancelling} handleCancelOrder={(data, evidenceFiles) => handleCancelSelectedItems(data, evidenceFiles)} />
 
                             </AlertDialogContent>
                         </AlertDialog>
-
-
 
                     </div>
                 )}
@@ -134,15 +152,15 @@ function SellItem({ order }: { order: IOrder }) {
                     {order?.items.map((item) => (
                         <li key={item.id} className="flex gap-4">
 
-                            <Checkbox
-                                id={`row-${order.id}-checkbox`}
-                                name={`row-${order.id}-checkbox`}
-                                checked={selectedItemIds.has(order.id)}
+                            {!item?.isCancelled && <Checkbox
+                                id={`row-${item.id}-checkbox`}
+                                name={`row-${item.id}-checkbox`}
+                                checked={selectedItemIds.has(item.id)}
                                 className='cursor-pointer rounded-none border-gray-300'
                                 onCheckedChange={(checked) =>
-                                    handleSelectRow(order.id, checked === true)
+                                    handleSelectRow(item.id, checked === true)
                                 }
-                            />
+                            />}
 
                             <Link href={`/shop/${item.product?.id}`}>
                                 <Image
@@ -169,20 +187,35 @@ function SellItem({ order }: { order: IOrder }) {
                                     <p className={cn("text-sm text-muted-foreground", item?.isCancelled ? "line-through" : "")}>
                                         Price <span className="font-semibold text-foreground">${item.product?.finalPrice}</span>
                                     </p>
+
+
+
                                     {
-                                        item?.isCancelled ? <Badge variant={"outline"} className={"font-semibold rounded-none bg-red-500/10 text-red-500"}>
-                                            Cancelled
-                                        </Badge> : item?.isBuyerRequestCancel ? <CancelReasonView trigger={<Tooltip>
-                                            <TooltipTrigger>
-                                                <Badge variant={"outline"} className={"rounded-none text-orange-500 border-orange-500 text-xs"}>
-                                                    Cancel Requested
+                                        item?.isCancelled ? <CancelReasonView trigger={<Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Badge variant={"outline"} className={"font-semibold rounded-none bg-red-500/10 text-red-500 cursor-pointer"}>
+                                                    Cancelled
                                                 </Badge>
                                             </TooltipTrigger>
 
                                             <TooltipContent className="rounded-none" side="top">
                                                 <p className="text-xs">Click for view reason</p>
                                             </TooltipContent>
-                                        </Tooltip>} cancelReason={item?.cancelReason} cancelReasonDetails={item?.cancelReasonDetails} /> : <></>
+                                        </Tooltip>} cancelReason={item?.cancelReason} cancelReasonDetails={item?.cancelReasonDetails} cancelEvidences={item?.cancelEvidences} />
+
+                                            :
+
+                                            item?.isBuyerRequestCancel ? <CancelReasonView trigger={<Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Badge variant={"outline"} className={"rounded-none text-orange-500 border-orange-500 text-xs"}>
+                                                        Cancel Requested
+                                                    </Badge>
+                                                </TooltipTrigger>
+
+                                                <TooltipContent className="rounded-none" side="top">
+                                                    <p className="text-xs">Click for view reason</p>
+                                                </TooltipContent>
+                                            </Tooltip>} cancelReason={item?.cancelReason} cancelReasonDetails={item?.cancelReasonDetails} cancelEvidences={item?.cancelEvidences} /> : <></>
                                     }
                                 </div>
                             </div>
@@ -218,7 +251,7 @@ function SellItem({ order }: { order: IOrder }) {
                             <MessageCircle className="size-5 text-muted-foreground" />
                         </Button>
 
-                        <SellActions status={order.status} sellerGroupId={order.id} order={order} />
+                        {order?.status === OrderStatus.CANCELLED && <SellActions order={order} />}
                     </div>
                 </div>
 
@@ -253,8 +286,6 @@ function SellItem({ order }: { order: IOrder }) {
                                     {locationLine && (
                                         <p className='text-gray-600 text-sm'>{locationLine}</p>
                                     )}
-
-
                                 </>
                             )}
                         </div>
@@ -262,7 +293,7 @@ function SellItem({ order }: { order: IOrder }) {
 
                 </Collapsible>
 
-                <GetLabel ordeId={order?.id} />
+                {order?.status !== "CANCELLED" && <GetLabel ordeId={order?.id} />}
 
             </div>
         </div>

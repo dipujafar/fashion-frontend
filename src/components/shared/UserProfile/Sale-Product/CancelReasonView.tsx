@@ -1,15 +1,14 @@
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { User, MessageSquareText, XCircle, FileText } from "lucide-react"
 import { CancelReasonFormat } from "@/utils/EnumFormater"
 import { CancelReason } from "@/types"
-
+import Image from "next/image"
+import { defaultImg } from "@/utils/defaultImg"
 
 interface CancelReasonModalProps {
     cancelReason?: CancelReason | null
@@ -17,87 +16,91 @@ interface CancelReasonModalProps {
     cancelledBy?: string | null
 
     trigger: React.ReactNode
+    cancelEvidences: { key: string; url: string; id: string }[]
 }
 
-function getCancelReasonLabel(cancelReason?: CancelReason | null, cancelledBy?: string | null) {
+function getCancelReasonLabel(cancelReason?: CancelReason | null) {
     if (!cancelReason) return null
-
     return CancelReasonFormat[cancelReason]?.label ?? cancelReason
-}
-
-function DetailRow({
-    icon,
-    label,
-    value,
-}: {
-    icon: React.ReactNode
-    label: string
-    value?: string | null
-}) {
-    if (!value) return <></>
-    return (
-        <div className="flex items-start gap-x-3 py-2">
-            <div className="mt-0.5 text-muted-foreground">{icon}</div>
-            <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">{label}</span>
-                <span className="text-sm font-medium">{value}</span>
-            </div>
-        </div>
-    )
 }
 
 function CancelReasonView({
     cancelReason,
     cancelReasonDetails,
-    cancelledBy,
     trigger,
+    cancelEvidences,
 }: CancelReasonModalProps) {
-
-    const reasonLabel = getCancelReasonLabel(cancelReason, cancelledBy)
-    const cancelledByLabel = cancelledBy
-        ? cancelledBy.charAt(0) + cancelledBy.slice(1).toLowerCase()
-        : null
+    const reasonLabel = getCancelReasonLabel(cancelReason)
 
     return (
         <Dialog>
-            <DialogTrigger asChild={typeof trigger !== "string"} className="cursor-pointer text-left">
+            <DialogTrigger className="cursor-pointer text-left">
                 {trigger}
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-x-2">
-                        <XCircle size={18} />
-                        Cancel Reason
-                    </DialogTitle>
-                    <DialogDescription>
-                        Reason for canceling this order.
-                    </DialogDescription>
+            <DialogContent className="rounded-none">
+                <DialogHeader className="border-b border-slate-100 pb-4">
+                    <DialogTitle className="text-center text-base">Cancel Reason</DialogTitle>
                 </DialogHeader>
 
-                <div className="flex flex-col divide-y">
-                    <DetailRow
-                        icon={<User size={16} />}
-                        label="Cancelled by"
-                        value={cancelledByLabel}
-                    />
-                    <DetailRow
-                        icon={<MessageSquareText size={16} />}
-                        label="Reason"
-                        value={reasonLabel}
-                    />
-                    <DetailRow
-                        icon={<MessageSquareText size={16} />}
-                        label="Additional details"
-                        value={cancelReasonDetails}
-                    />
+                <div className="flex flex-col gap-y-6">
+                    {/* Reason */}
+                    {reasonLabel && (
+                        <div className="flex flex-col gap-y-2.5">
+                            <span className="text-sm font-semibold text-primary-black">
+                                Reason
+                            </span>
+                            <span className="self-start rounded-md bg-destructive/5 px-4 py-1.5 text-sm font-semibold text-destructive border border-destructive/10">
+                                {reasonLabel}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Reason Details */}
+                    {cancelReasonDetails && (
+                        <div className="flex flex-col gap-y-2.5">
+                            <span className="text-sm font-semibold text-primary-black">
+                                Reason Details
+                            </span>
+                            <div className="rounded border border-slate-200 bg-zinc-50 px-4 py-3.5">
+                                <p className="text-sm leading-relaxed text-slate-800">
+                                    {cancelReasonDetails}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Evidence Photo */}
+                    {cancelEvidences?.length > 0 && (
+                        <div className="flex flex-col gap-y-2.5">
+                            <span className="text-sm font-semibold text-primary-black">
+                                Evidence Photo
+                            </span>
+                            <div className="grid grid-cols-2 gap-3">
+                                {cancelEvidences.map((evidence) => (
+                                    <Image
+                                        src={evidence?.url || defaultImg?.placeholderImg}
+                                        key={evidence?.id}
+                                        placeholder="blur"
+                                        blurDataURL={defaultImg?.placeholderImg}
+                                        height={1000}
+                                        width={1000}
+                                        alt="Cancellation evidence"
+                                        className="h-40 w-40 object-cover"
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {!cancelReason && !cancelReasonDetails && cancelEvidences?.length === 0 && (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                            No cancellation reason was provided.
+                        </p>
+                    )}
                 </div>
 
-                {!cancelReason && (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                        No cancellation reason was provided.
-                    </p>
-                )}
+
             </DialogContent>
         </Dialog>
     )

@@ -436,7 +436,7 @@ export interface IOrderItem {
   cancelReason: CancelReason
   cancelReasonDetails: string | null
   // for attach photo or videos as reason
-  cancelEvidence: { url: string, key: string }[]
+  cancelEvidences: { url: string, key: string, id : string }[]
 
 }
 
