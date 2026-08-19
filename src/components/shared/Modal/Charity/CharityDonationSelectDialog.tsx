@@ -106,7 +106,7 @@ export function CharityDonationSelectDialog({
       if (isRedirectError(error)) {
         throw error; // Let Next.js handle the redirect
       }
-      setError(error?.data?.message || "An error occurred while adding to cart.");
+      setError(error?.message || "An error occurred while adding to cart.");
     } finally {
       setLoading(false);
     }

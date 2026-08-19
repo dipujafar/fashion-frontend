@@ -19,19 +19,11 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import { RefreshCw, EllipsisVertical, CircleX } from 'lucide-react'
+import { RefreshCw, EllipsisVertical } from 'lucide-react'
 import { IOrder, OrderStatus } from "@/types"
-import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { isRedirectError } from "next/dist/client/components/redirect-error"
 import CancelOrderForm, { CancelOrderFormValues } from "./CancelOrderForm"
-
-type StatusAction = {
-    label: React.ReactNode;
-    icon: React.ReactNode;
-    action: () => void;
-    destructive?: boolean;
-};
 
 type DialogKey = "confirm" | "cancel" | "ship" | null;
 

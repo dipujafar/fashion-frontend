@@ -1,53 +1,24 @@
-"use client"
-import {
-    Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table";
+import React from 'react'
+import SellReturnContainer from '@/components/shared/UserProfile/PurchaseReturn/PurchaseReturnContainer';
 
-import {
-    Collapsible, CollapsibleContent, CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-
-
-
-export default function LinksTable() {
-    const links = [{ id: 1, name: "Link 1", link: "https://example.com", viewCount: 100 }, { id: 2, name: "Link 2", link: "https://example.com", viewCount: 200 }] // these are link objects, we'll get there later
+async function SellerReturnsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+    const ssp = await searchParams;
 
     return (
-        <div className="w-full sm:p-4">
-            <h2 className="p-4">All links</h2>
-            <div className="rounded-md sm:border">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="font-medium">Name</TableHead>
-                            <TableHead className="font-medium">Link</TableHead>
-                            <TableHead className="font-medium">Views</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {links ? (
-                            links.map((link) => (
-                                <Collapsible key={link.id} asChild>
-                                    <>
-                                        <TableRow>
-                                            <TableCell>{link.name}</TableCell>
-                                            <TableCell>{link.id}</TableCell>
-                                            <TableCell>{link.viewCount}
-                                                <CollapsibleTrigger asChild>
-                                                    <div>{link.viewCount}</div>
-                                                </CollapsibleTrigger>
-                                            </TableCell>
-                                        </TableRow>
-                                        <CollapsibleContent asChild>
-                                            gghjghj
-                                        </CollapsibleContent>
-                                    </>
-                                </Collapsible>
-                            ))
-                        ) : null}
-                    </TableBody>
-                </Table>
+        <div className="space-y-5">
+
+            <div className='mt-5'>
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-foreground">Sell Returns</h2>
+                </div>
+                <p className="mt-1 text-sm text-gray-600">
+                    Track every return for your selling products and manage them efficiently.
+                </p>
             </div>
+
+            <SellReturnContainer ssp={ssp} />
         </div>
-    );
+    )
 }
+
+export default SellerReturnsPage

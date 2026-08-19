@@ -23,6 +23,7 @@ import { useState } from "react";
 import { updateShippingDetails } from "@/lib/Actions/Cart.action";
 import { useAppDispatch } from "@/redux/hooks";
 import { clearCart } from "@/redux/features/cart.slice";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const GOOGLE_MAPS_API_KEY = EnvConfig.MAP_KEY!
 
@@ -96,6 +97,9 @@ export default function BillingAddressForm(
       dispatch(clearCart());
       onOpenChange(false);
     } catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
       setError(error?.message || "Something went wrong, try again");
     } finally {
       setIsLoading(false);

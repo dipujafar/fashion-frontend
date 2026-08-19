@@ -1,11 +1,11 @@
 import { serverQueryWithReauth } from "../Actions/ReAuthRequest";
 
-const GetOrdersBySeller = async ({ query }: { query: { [key: string]: string } }) => {
+const GetReturnsBySeller = async ({ query }: { query: { [key: string]: string } }) => {
     try {
         const queryString = query ? `?${new URLSearchParams(query).toString()}` : "";
 
         const res = await serverQueryWithReauth({
-            endPoint: `/orders/by-seller${queryString}`,
+            endPoint: `/returns/by-seller${queryString}`,
             method: "GET",
             cache: "no-store"
         });
@@ -15,12 +15,12 @@ const GetOrdersBySeller = async ({ query }: { query: { [key: string]: string } }
     }
 };
 
-export const GetOrdersByBuyer = async ({ query }: { query: { [key: string]: string } }) => {
+export const GetReturnsByBuyer = async ({ query }: { query: { [key: string]: string } }) => {
     try {
         const queryString = query ? `?${new URLSearchParams(query).toString()}` : "";
 
         const res = await serverQueryWithReauth({
-            endPoint: `/orders/by-buyer${queryString}`,
+            endPoint: `/returns/by-buyer${queryString}`,
             method: "GET",
             cache: "no-store"
         });
@@ -30,4 +30,4 @@ export const GetOrdersByBuyer = async ({ query }: { query: { [key: string]: stri
     }
 };
 
-export default GetOrdersBySeller;
+export default GetReturnsBySeller;

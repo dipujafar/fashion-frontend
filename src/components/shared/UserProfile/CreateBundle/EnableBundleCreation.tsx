@@ -41,8 +41,8 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { UpdateBundleDiscounts } from "@/lib/Actions/Profile.action";
 import { toast } from "sonner";
-import LoadingSpin from "@/components/ui/loading-spin";
 import { cn } from "@/lib/utils";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 // ─── Schema ────────────────────────────────────────────────────────────────
 
@@ -94,8 +94,11 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
     try {
       await UpdateBundleDiscounts({ payload: values });
       toast.success("Bundle discounts updated successfully!");
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Failed to update bundle discounts. Please try again.");
+    } catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
+      toast.error(error?.message || "Failed to update bundle discounts. Please try again.");
     }
   }
 
@@ -195,36 +198,6 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
                       </FormItem>
                     )}
                   />
-
-                  {/* Percent */}
-                  {/* <FormField
-                    control={form.control}
-                    name={`tiers.${index}.percent`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value?.toString()}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="w-full cursor-pointer">
-                                <SelectValue placeholder="Select Donation Percent" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
-                                <SelectItem value={item.toString()} key={item}>
-                                  {item}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
-                    )}
-                  /> */}
 
                   <FormField
                     control={form.control}

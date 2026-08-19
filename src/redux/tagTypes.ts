@@ -3,8 +3,9 @@ export const tagTypes = {
   product: "product",
   category: "category",
   favorite: "favorite",
-  user_billing : "user_billing",
-  orders : "orders"
+  user_billing: "user_billing",
+  orders: "orders",
+  notification: "notification"
 };
 
 export const tagTypesList = [
@@ -13,5 +14,6 @@ export const tagTypesList = [
   tagTypes.category,
   tagTypes.favorite,
   tagTypes.user_billing,
-  tagTypes.orders
+  tagTypes.orders,
+  tagTypes.notification
 ];

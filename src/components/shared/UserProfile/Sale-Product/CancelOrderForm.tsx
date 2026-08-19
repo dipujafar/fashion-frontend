@@ -28,6 +28,7 @@ import {
 
 import { AlertDialogAction, AlertDialogCancel, AlertDialogFooter } from "@/components/ui/alert-dialog";
 import { SellerCancelReason } from "@/types";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const formSchema = z.object({
     reason: z
@@ -104,7 +105,10 @@ const CancelOrderForm = ({
         try {
             handleCancelOrder(data, evidenceFiles);
         } catch (error: any) {
-            toast.error(error?.data?.message ?? "Something went wrong");
+            if (isRedirectError(error)) {
+                throw error; // Let Next.js handle the redirect
+            }
+            toast.error(error?.message ?? "Something went wrong");
         }
     };
 

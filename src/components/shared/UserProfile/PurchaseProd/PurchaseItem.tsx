@@ -17,12 +17,8 @@ import {
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { getOrderStatusFormat } from "@/utils/EnumFormater"
-import CancelReasonView from "./CancelReasonView"
-import GetLabel from "./GetLabel"
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
-import CancelOrderForm from './CancelOrderForm';
-
 import {
     AlertDialog,
     AlertDialogContent,
@@ -31,13 +27,13 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { CancelOrderItems } from '@/lib/Actions/Order.action';
+import { RequestCancelItem } from '@/lib/Actions/Order.action';
 import { toast } from 'sonner';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
-import SellActions from './SellActions';
-import ApproveDeclinecancelReq from './ApproveDeclinecancelReq';
+import CancelReasonView from '../Sale-Product/CancelReasonView';
+import CancelOrderForm from '../Sale-Product/CancelOrderForm';
 
-function SellItem({ order }: { order: IOrder }) {
+function PurchaseItem({ order }: { order: IOrder }) {
 
     const [selectedItemIds, setSelectedItemIds] = useState<Set<string>>(new Set());
     const [isCancelling, setIsCancelling] = useState(false)
@@ -63,7 +59,7 @@ function SellItem({ order }: { order: IOrder }) {
         setSelectedItemIds(newSelected)
     }
 
-    const handleCancelSelectedItems = async (payload: { reason: string; reason_details?: string }, evidenceFiles: File[]) => {
+    const handleReqCancelSelectedItems = async (payload: { reason: string; reason_details?: string }, evidenceFiles: File[]) => {
         if (selectedItemIds.size === 0) return
 
         try {
@@ -85,7 +81,7 @@ function SellItem({ order }: { order: IOrder }) {
                 formData.append("evidences", file);
             });
 
-            const res = await CancelOrderItems({ payload: formData });
+            const res = await RequestCancelItem({ payload: formData });
 
             if (res?.error) {
                 toast.error(res?.error || "Failed to cancel selected items. Please try again.");
@@ -110,7 +106,7 @@ function SellItem({ order }: { order: IOrder }) {
             <div className="order-2 md:order-1 flex-1">
 
                 <div className="text-sm">
-                    <p className="text-primary-black text-base font-medium">USD ${order?.itemsTotal.toFixed(2)}</p>
+                    <p className="text-primary-black text-base font-medium">USD ${order?.totalPrice.toFixed(2)}</p>
                 </div>
 
                 {selectedItemIds.size > 0 && (
@@ -128,7 +124,7 @@ function SellItem({ order }: { order: IOrder }) {
                                     <Trash2 className="size-4 mr-1" />
                                     {isCancelling
                                         ? <span className="loader" />
-                                        : `Cancel Item${selectedItemIds.size > 1 ? "s" : ""} (${selectedItemIds.size})`}
+                                        : `Req. Cancel Item${selectedItemIds.size > 1 ? "s" : ""} (${selectedItemIds.size})`}
                                 </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent className='rounded-none'>
@@ -139,7 +135,7 @@ function SellItem({ order }: { order: IOrder }) {
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
 
-                                <CancelOrderForm isLoading={isCancelling} handleCancelOrder={(data, evidenceFiles) => handleCancelSelectedItems(data, evidenceFiles)} />
+                                <CancelOrderForm isLoading={isCancelling} handleCancelOrder={(data, evidenceFiles) => handleReqCancelSelectedItems(data, evidenceFiles)} />
 
                             </AlertDialogContent>
                         </AlertDialog>
@@ -151,7 +147,7 @@ function SellItem({ order }: { order: IOrder }) {
                     {order?.items.map((item) => (
                         <li key={item.id} className="flex gap-4">
 
-                            {!item?.isCancelled && <Checkbox
+                            {(!item?.isCancelled && item?.buyerRequestCancel == "NOT_REQUESTED") && <Checkbox
                                 id={`row-${item.id}-checkbox`}
                                 name={`row-${item.id}-checkbox`}
                                 checked={selectedItemIds.has(item.id)}
@@ -202,7 +198,7 @@ function SellItem({ order }: { order: IOrder }) {
 
                                             :
 
-                                            item?.buyerRequestCancel == "REQUESTED" ? <ApproveDeclinecancelReq trigger={<Tooltip>
+                                            item?.buyerRequestCancel == "REQUESTED" ? <CancelReasonView trigger={<Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Badge variant={"outline"} className={"rounded-none text-orange-500 border-orange-500 text-xs cursor-pointer"}>
                                                         Cancel Requested
@@ -212,7 +208,7 @@ function SellItem({ order }: { order: IOrder }) {
                                                 <TooltipContent className="rounded-none" side="top">
                                                     <p className="text-xs">Click for view reason</p>
                                                 </TooltipContent>
-                                            </Tooltip>} cancelReason={item?.cancelReason} cancelReasonDetails={item?.cancelReasonDetails} cancelEvidences={item?.cancelEvidences} itemId={item?.id} />
+                                            </Tooltip>} cancelReason={item?.cancelReason} cancelReasonDetails={item?.cancelReasonDetails} cancelEvidences={item?.cancelEvidences} />
 
                                                 :
 
@@ -258,7 +254,7 @@ function SellItem({ order }: { order: IOrder }) {
                             <MessageCircle className="size-5 text-muted-foreground" />
                         </Button>
 
-                        {order?.status === OrderStatus.CANCELLED && <SellActions order={order} />}
+                        {/* {order?.status === OrderStatus.CANCELLED && <SellActions order={order} />} */}
                     </div>
                 </div>
 
@@ -300,11 +296,9 @@ function SellItem({ order }: { order: IOrder }) {
 
                 </Collapsible>
 
-                {order?.status !== "CANCELLED" && <GetLabel ordeId={order?.id} />}
-
             </div>
         </div>
     )
 }
 
-export default SellItem
+export default PurchaseItem

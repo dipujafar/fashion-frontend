@@ -251,6 +251,15 @@ export interface IUser {
   vacationMode: boolean
 }
 
+export interface INotification {
+  id: string
+  title: string,
+  message: string,
+  "isRead": boolean,
+  "createdAt": string,
+  "updatedAt": string,
+}
+
 export interface IQuesAns {
   id: string
   questioner: IUser
@@ -421,6 +430,13 @@ export enum OrderAuthResult {
   FAILED = "FAILED"
 }
 
+enum BuyerRequestCancelStatus {
+  NOT_REQUESTED = "NOT_REQUESTED",
+  REQUESTED = "REQUESTED",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED"
+}
+
 export interface IOrderItem {
   id: string,
   productId: string,
@@ -428,7 +444,7 @@ export interface IOrderItem {
   quantity: number,
   unitPrice: number,
   totalPrice: number,
-  isBuyerRequestCancel: boolean,
+  buyerRequestCancel: BuyerRequestCancelStatus,
   authResult: OrderAuthResult,
   isCancelled: boolean,
 
@@ -436,14 +452,14 @@ export interface IOrderItem {
   cancelReason: CancelReason
   cancelReasonDetails: string | null
   // for attach photo or videos as reason
-  cancelEvidences: { url: string, key: string, id : string }[]
+  cancelEvidences: { url: string, key: string, id: string }[]
 
 }
 
 export enum CancelledBy {
-    SELLER = "SELLER",
-    BUYER = "BUYER",
-    SYSTEM = "SYSTEM"
+  SELLER = "SELLER",
+  BUYER = "BUYER",
+  SYSTEM = "SYSTEM"
 }
 
 // types.ts (or wherever OrderStatus is defined)

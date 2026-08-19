@@ -22,14 +22,21 @@ const profileSchema = z.object({
         .trim()
         .optional(),
 
-    country: z.string({ required_error: "Country is required" }).min(1, "Please select a country"),
-    streetAddress: z.string().optional(),
-    city: z.string({ required_error: "City is required" }).min(1, "Please select a city"),
-    state: z.string({ required_error: "State is required" }).min(1, "Please select a state"),
-    zipCode: z.string().optional(),
+    userName: z
+        .string()
+        .trim()
+        .optional(),
 
-    website: z.string().url({ message: "Please enter a valid URL" }).optional(),
-    vacationMode: z.boolean().optional(),
+    email: z
+        .string()
+        .trim()
+        .optional(),
+
+    website: z
+        .string()
+        .url({ message: "Please enter a valid URL" })
+        .optional()
+        .or(z.literal("")),
 });
 
 

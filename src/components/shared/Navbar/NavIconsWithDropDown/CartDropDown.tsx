@@ -22,12 +22,12 @@ export default function CartDropDown() {
   return (
     <>
       <MenubarTrigger className="cursor-pointer">
-        <CartIcon className="size-5 md:size-6 lg:size-8" />
+        <CartIcon className="size-5 lg:size-7" />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm rounded-none">
+      <MenubarContent className="min-w-xs rounded-none">
 
-        <div>
-          <p className="text-lg font-bold px-3 pt-2 pb-3">Shopping Cart</p>
+        <div className="border-b border-gray-200">
+          <p className="text-base font-medium px-3 pt-2 pb-3 text-center">Shopping Cart</p>
         </div>
 
         <Suspense key={Date.now()} fallback={<div className="flex-center h-28">
@@ -107,7 +107,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                         </div>
 
                       </React.Fragment>
-
+                      
                     ))
                   }
                   <Link href={`/checkout/${cartGroup?.id}`}>
@@ -123,8 +123,8 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
     }
 
     {cart?.length <= 0 && <div className="py-10">
-      <Image src={"/empty-cart.png"} alt="empty-cart" className="h-20 w-auto mx-auto" height={500} width={500} />
-      <p className="text-center text-gray-500">No items in cart</p>
+      <Image src={"/empty_cart.gif"} alt="empty-cart" className="h-24 w-auto mx-auto" height={500} width={500} />
+      <p className="text-center text-gray-500 text-sm mt-1">No items in cart</p>
       <center>
         <Link href={"/shop"}>
           <Button variant={"default"} className="mt-2 mx-auto text-center rounded-none py-5 border-2 cursor-pointer font-semibold">Browse</Button>

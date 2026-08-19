@@ -18,12 +18,12 @@ const OrdersContainer = ({ ssp }: { ssp: { [key: string]: string | undefined } }
                         label: "Pending"
                     },
                     {
-                        id: "CONFIRMED",
-                        label: "Confirmed"
-                    },
-                    {
                         id: "SHIPPED",
                         label: "Shipped"
+                    },
+                    {
+                        id: "OUT_FOR_DELIVERY",
+                        label: "Out for Delivery"
                     },
                     {
                         id: "DELIVERED",
