@@ -1,3 +1,4 @@
+import { IMeta, IProduct } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -28,7 +29,16 @@ const productApi = baseApi.injectEndpoints({
         ];
       },
     }),
+
+    productsGetByMember: builder.mutation<{ data: { data: IProduct[], meta: IMeta } }, { userName: string, params: {} }>({
+      query: ({ params, userName }) => ({
+        url: `/products/member/${userName}`,
+        method: "GET",
+        params,
+      }),
+    }),
+
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation } = productApi;

@@ -1,40 +1,65 @@
-import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import UserProfileProductFilter from "./UserProfileProductFilter";
+"use client"
 import { IMeta, IProduct } from "@/types";
 import ProductCard from "../../Cards/ProductCard";
-import Empty from "@/components/ui/empty";
-import GetCategoriesHairerchy from "@/lib/services/Categories";
+import { useProductsGetByMemberMutation } from "@/redux/api/productApi";
+import { useRef } from "react";
+import useLazyLoad from "@/hooks/useLazyLoad";
+import UserProfileProductFilter from "./UserProfileProductFilter";
 
-const ProductsListContainer = async ({ prodPromise, selectedCat }: { prodPromise: Promise<{ data: { data: IProduct[], meta: IMeta } }>, selectedCat ?: string }) => {
-  
-  const result = await prodPromise;
+const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { query: { [key: string]: string | undefined }, userName: string, initialData: IProduct[], initialMeta: IMeta }) => {
 
-  const categoryPromise = GetCategoriesHairerchy();
+  const [loadFavoriteProds, { isLoading }] = useProductsGetByMemberMutation();
+  const triggerRef = useRef(null);
+
+  const loadNextPage = async (page: number) => {
+    try {
+
+      query.page = page.toString();
+
+      const res = await loadFavoriteProds({ params: query, userName }).unwrap();
+      const data = res?.data?.data || [];
+      const meta = res?.data?.meta;
+
+      // No meta or no data back -> treat as end of list
+      const hasMore = meta ? meta.page < meta.totalPage : data.length > 0;
+
+      return { data, hasMore };
+    } catch (error) {
+      return { data: [], hasMore: false };
+    }
+  }
+
+  const { data, hasMore } = useLazyLoad<IProduct>({
+    triggerRef,
+    onGrabData: loadNextPage,
+    options: {},
+    initialData: initialData,
+    initialPage: initialMeta?.page ? initialMeta.page + 1 : 2,
+    initialHasMore: initialMeta ? initialMeta?.page < initialMeta?.totalPage : true
+  });
 
   return (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 lg:gap-8 gap-4">
 
-        <div className="2xl:col-span-5 xl:col-span-4 md:col-span-3 ">
-          {/* =========== display total items and option for product filter ======== */}
-          <UserProfileProductFilter totalItems={result?.data?.meta?.total} selectedCat={selectedCat} catPromise={categoryPromise}/>
+      {/* =========== display total items and option for product filter ======== */}
+      < UserProfileProductFilter selectedCat={query?.category} />
 
-          {/* ========================= all products ========================== */}
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-4 xl:gap-6 ">
-            {result?.data?.data?.map((prod) => (
-              <ProductCard data={prod} key={prod?.id} ownProduct={true}></ProductCard>
-            ))}
-          </div>
+      {/* ========================= all products ========================== */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+        {data?.map((prod) => (
+          <ProductCard data={prod} key={prod?.id} ownProduct={true}></ProductCard>
+        ))}
 
-          {
-            result?.data?.data?.length <= 0 && <Empty message="No listings at the moment" />
-          }
+        {hasMore && <div ref={triggerRef} style={{ height: 1 }} />}
 
-        </div>
       </div>
 
-      {/* Pagination */}
-      <PaginationSection total={result?.data?.meta?.total} current={1}></PaginationSection>
+      {
+        isLoading && hasMore && <div className="flex-center h-28 lg:h-40">
+          <span className="loaderDark !w-10"> </span>
+        </div>
+      }
+
     </div>
   );
 };

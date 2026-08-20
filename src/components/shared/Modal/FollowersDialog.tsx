@@ -15,10 +15,11 @@ interface FollowersDialogProps {
   setOpen: (open: boolean) => void
   type: string
   folowers: IFolow[]
-  folowings: IFolow[]
+  folowings: IFolow[],
+  userName: string
 }
 
-export function FollowersDialog({ open, setOpen, type, folowers, folowings }: FollowersDialogProps) {
+export function FollowersDialog({ open, setOpen, type, folowers, folowings, userName }: FollowersDialogProps) {
   const [searchQuery, setSearchQuery] = useState("")
 
   const filterFollowers = (data: IFolow[]) => {
@@ -85,9 +86,9 @@ export function FollowersDialog({ open, setOpen, type, folowers, folowings }: Fo
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="min-w-fit p-0">
-        <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="text-lg font-semibold">Activities</DialogTitle>
+      <DialogContent className="min-w-fit p-0 rounded-none">
+        <DialogHeader className="border-b py-4">
+          <DialogTitle className="text-lg font-semibold capitalize text-center">{userName}</DialogTitle>
         </DialogHeader>
 
         <div className="px-6">
@@ -97,7 +98,7 @@ export function FollowersDialog({ open, setOpen, type, folowers, folowings }: Fo
               placeholder="Search users..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-8 bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-black !text-base !py-5"
             />
           </div>
         </div>
@@ -107,12 +108,14 @@ export function FollowersDialog({ open, setOpen, type, folowers, folowings }: Fo
             <TabsTrigger
               value="followers"
               className="text-sm data-[state=active]:bg-black data-[state=active]:text-white"
+
             >
               {folowers?.length ?? 0} Followers
             </TabsTrigger>
             <TabsTrigger
               value="following"
               className="text-sm data-[state=active]:bg-black data-[state=active]:text-white"
+
             >
               {folowings?.length ?? 0} Following
             </TabsTrigger>

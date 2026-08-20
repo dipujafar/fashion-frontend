@@ -18,7 +18,7 @@ function FolowUnFolow({ isFolow, memberId }: { isFolow: boolean, memberId: strin
             if (isRedirectError(error)) {
                 throw error; // Let Next.js handle the redirect
             }
-            toast.error(error?.data?.message);
+            toast.error(error?.message);
         }
     }
 
@@ -33,16 +33,16 @@ function FolowUnFolow({ isFolow, memberId }: { isFolow: boolean, memberId: strin
             if (isRedirectError(error)) {
                 throw error; // Let Next.js handle the redirect
             }
-            toast.error(error?.data?.message);
+            toast.error(error?.message);
         }
     }
 
     return (
         <>
             {
-                isFolow ? <Button variant={'outline'} onClick={handleUnFolow} className="font-semibold px-6 cursor-pointer">
+                isFolow ? <Button variant={'outline'} onClick={handleUnFolow} className="font-semibold px-6 cursor-pointer rounded-none w-full md:w-1/2 lg:w-auto">
                     Following
-                </Button> : <Button onClick={handleFolow} className=" text-white font-semibold px-6 cursor-pointer">
+                </Button> : <Button onClick={handleFolow} className=" text-white font-semibold px-6 cursor-pointer rounded-none w-full md:w-1/2 lg:w-auto">
                     Follow
                 </Button>
             }

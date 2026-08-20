@@ -3,21 +3,16 @@ import { FollowersDialog } from '@/components/shared/Modal/FollowersDialog';
 import { IFolow } from '@/types';
 import React, { useState } from 'react'
 
-function FolowerListFolowingList({ folowers, folowings }: { folowers: IFolow[], folowings: IFolow[] }) {
-    const [type, setType] = useState("");
+function FolowerListFolowingList({ folowers, folowings, type, actionBtn, userName }: { folowers: IFolow[], folowings: IFolow[], type: string, actionBtn: React.ReactNode, userName: string }) {
+
     const [openFollowers, setOpenFollowers] = useState(false);
 
     return (
         <>
 
-            <p className="text-foreground font-medium">
-                <span onClick={() => setOpenFollowers(true)} className="underline underline-offset-1 font-semibold cursor-pointer">{folowers?.length} followers</span>
-                {', '}
-                <span onClick={() => {
-                    setOpenFollowers(true);
-                    setType("following");
-                }} className="underline underline-offset-1 font-semibold cursor-pointer">{folowings?.length} following</span>
-            </p>
+            <div className='cursor-pointer' onClick={() => setOpenFollowers(true)}>
+                {actionBtn}
+            </div>
 
             <FollowersDialog
                 open={openFollowers}
@@ -25,9 +20,11 @@ function FolowerListFolowingList({ folowers, folowings }: { folowers: IFolow[], 
                 type={type}
                 folowers={folowers}
                 folowings={folowings}
+                userName={userName}
             />
         </>
     )
 }
 
-export default FolowerListFolowingList
+export default FolowerListFolowingList;
+

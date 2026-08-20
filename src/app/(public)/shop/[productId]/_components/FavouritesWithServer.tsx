@@ -4,6 +4,7 @@ import { AddToFavourite, DeleteToFavourite } from "@/lib/Actions/Favourite.actio
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { useState } from "react";
 import { toast } from "sonner";
 
 type IIncludedProduct = {
@@ -12,7 +13,10 @@ type IIncludedProduct = {
 
 function FavouritesWithServer({ id, count, includedProduct, className, extraRevalidatePaths = [] }: { id: string, count: number, includedProduct: IIncludedProduct[], className?: string, extraRevalidatePaths?: string[] }) {
 
+    const [isFavourited, setIsFavourited] = useState<boolean>(includedProduct?.length > 0);
+
     const addFavorite = async () => {
+        setIsFavourited(prev => !prev);
         if (includedProduct?.length > 0) {
             try {
                 const res = await DeleteToFavourite({ payload: { productId: id }, extraRevalidatePaths });
@@ -24,7 +28,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                 if (isRedirectError(error)) {
                     throw error; // Let Next.js handle the redirect
                 }
-                toast.error(error?.data?.message);
+                toast.error(error?.message);
             }
         }
         else {
@@ -38,16 +42,15 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                 if (isRedirectError(error)) {
                     throw error; // Let Next.js handle the redirect
                 }
-                toast.error(error?.data?.message);
+                toast.error(error?.message);
             }
         }
-
     }
 
     return (
         <Tooltip>
-            <TooltipTrigger><button onClick={addFavorite} className={cn("bg-primary-white py-1.5 px-2.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm", className)}>
-                <Heart className={cn(" text-primary-red duration-500 md:size-[18px] size-4", includedProduct?.length > 0 && "fill-primary-red")}></Heart>
+            <TooltipTrigger asChild><button onClick={addFavorite} className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm", className)}>
+                <Heart className={cn(" text-primary-red duration-500 md:size-[18px] size-4", isFavourited && "fill-primary-red")}></Heart>
                 {count > 0 && <p className="text-sm">{count}</p>}
             </button>
             </TooltipTrigger>

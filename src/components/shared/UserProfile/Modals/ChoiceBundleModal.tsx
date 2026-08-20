@@ -31,15 +31,17 @@ const bundleData = [
 ];
 
 export default function ChoiceBundleModal() {
+
   const [selectItem, setSelectItem] = useState(0);
+
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className=" cursor-pointer group  shadow-none">
-          Create Bundle <AnimatedArrow />
+        <Button className="cursor-pointer group shadow-none rounded-none">
+          Create Bundle
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="rounded-none">
         <DialogHeader>
           <DialogTitle className=" text-2xl text-center text-[#1F2937]">
             Bundle Discount
@@ -70,7 +72,7 @@ export default function ChoiceBundleModal() {
           {" "}
           <Button
             // variant={"outline"}
-            className="border-black mt-3 uppercase py-5 cursor-pointer w-full"
+            className="rounded-none w-full py-6 cursor-pointer border-black mt-3 uppercase"
           >
             Create a bundle
           </Button>

@@ -51,7 +51,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
       <div className="space-y-3 overflow-y-auto max-h-[450px]">
         {
           cartProds?.data?.map((cartGroup) => (
-            <MenubarItem key={cartGroup?.id} className="flex-none hover:!bg-none">
+            <MenubarItem key={cartGroup?.id} className="flex-none focus:bg-transparent">
 
               <div className="w-full">
 
@@ -96,18 +96,18 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                           <div>
                             <Link
                               href={`/shop/${item?.product?.id}`}
-                              className="space-y-1"
+                              className="space-y-0.5"
                             >
-                              <p className="text-lg line-clamp-1 text-gray-700">{item?.product?.title}</p>
+                              <p className="text-base font-medium line-clamp-1 text-gray-800">{item?.product?.title}</p>
                               <p className="text-lg font-bold">${item?.product?.finalPrice?.toFixed(2)}</p>
-                              <p className="text-sm text-gray-700">${item?.product?.size?.title}</p>
+                              <p className="text-sm text-gray-800">${item?.product?.size?.title}</p>
                             </Link>
                             <DltCart cartItemId={item?.id} productId={item?.product?.id} />
                           </div>
                         </div>
 
                       </React.Fragment>
-                      
+
                     ))
                   }
                   <Link href={`/checkout/${cartGroup?.id}`}>
@@ -123,7 +123,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
     }
 
     {cart?.length <= 0 && <div className="py-10">
-      <Image src={"/empty_cart.gif"} alt="empty-cart" className="h-24 w-auto mx-auto" height={500} width={500} />
+      <Image src={"/empty_cart.gif"} unoptimized alt="empty-cart" className="h-24 w-auto mx-auto" height={500} width={500} />
       <p className="text-center text-gray-500 text-sm mt-1">No items in cart</p>
       <center>
         <Link href={"/shop"}>

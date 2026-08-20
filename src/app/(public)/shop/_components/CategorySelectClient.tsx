@@ -3,7 +3,7 @@ import CategoryFilterSelector from "@/components/shared/UserProfile/AddProduct/C
 import { Category } from "@/components/shared/UserProfile/AddProduct/Categories/CategorySelector"
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
-function CategorySelectClient({ selectedCat, categories, className }: { selectedCat: string | undefined, categories: Category[], className ?: string }) {
+function CategorySelectClient({ selectedCat, categories, className }: { selectedCat: string | undefined, categories: Category[], className?: string }) {
   const updateparams = useUpdateSearchParams();
 
   const handleCategorySelect = (cat: Category) => {

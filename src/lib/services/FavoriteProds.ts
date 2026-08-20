@@ -1,4 +1,3 @@
-import { tags } from "@/utils/serverTags";
 import { serverQueryWithReauth } from "../Actions/ReAuthRequest";
 
 const GetFavouriteProds = async () => {
@@ -6,7 +5,6 @@ const GetFavouriteProds = async () => {
         const res = await serverQueryWithReauth({
             endPoint: `/favourites`,
             method: "GET",
-            tags: [tags.favourites],
             cache: "no-store"
         });
         return res;

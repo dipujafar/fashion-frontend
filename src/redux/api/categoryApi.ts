@@ -1,9 +1,11 @@
+import { ICategory } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+import { Category } from "@/components/shared/UserProfile/AddProduct/Categories/CategoryFilterSelector";
 
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCategory: builder.query({
+    getCategory: builder.query<{ data: Category[] }, void>({
       query: () => ({
         url: "/category",
         method: "GET",

@@ -6,7 +6,7 @@ const NotificationApi = baseApi.injectEndpoints({
 
     endpoints: (builder) => ({
 
-        notifications: builder.query<{ data: { data: INotification[], meta: IMeta } }, {}>({
+        notifications: builder.query<{ data: { data: INotification[], meta: IMeta, unReadCount : number } }, {}>({
             query: (query) => ({
                 url: '/notifications',
                 params: query

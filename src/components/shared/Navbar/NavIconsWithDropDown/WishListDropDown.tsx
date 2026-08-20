@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/menubar";
 import { HeartIcon } from "@/icons";
 import GetFavouriteProds from "@/lib/services/FavoriteProds";
-import { IProduct } from "@/types";
+import { IMeta, IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,21 +18,22 @@ import { Suspense } from "react";
 import DltToFavourite from "./DltToFavourite";
 
 export default async function WishListDropDown() {
-  // const { data: wishListData, isLoading } = useGetFavoriteProductQuery(undefined);
-
-  // console.log(wishListData?.data);
 
   const favPromise = GetFavouriteProds();
 
   return (
     <>
-      <MenubarTrigger>
+      <MenubarTrigger className="cursor-pointer">
         <HeartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm min-w-[300px] overflow-y-auto max-h-[calc(100vh-100px)]">
+      <MenubarContent className="rounded-none min-w-xs">
 
-        <Suspense fallback={<div className="flex-center h-[300px]">
-          <LoadingSpin color="black" size={50} />
+        <div className="border-b border-gray-200 py-2 px-3">
+          <p className="text-base font-medium text-center">Favourites</p>
+        </div>
+
+        <Suspense fallback={<div className="flex-center h-28">
+          <span className="loaderDark !w-10"> </span>
         </div>}>
           <FavProds favPromise={favPromise} />
         </Suspense>
@@ -41,17 +42,18 @@ export default async function WishListDropDown() {
   );
 };
 
-const FavProds = async ({ favPromise }: { favPromise: Promise<{ data: { id: string, product: IProduct }[] }> }) => {
+const FavProds = async ({ favPromise }: { favPromise: Promise<{ data: { data: { id: string, product: IProduct }[], meta: IMeta } }> }) => {
   const favoriteProds = await favPromise;
 
-  return <>
-    {favoriteProds?.data?.length === 0 ? <div className="h-[300px] flex-center">
-      <Empty message="No Favorite Product" />
-    </div> :
-      favoriteProds?.data?.map((product, idx: number) => (
-        <div key={idx}>
-          <MenubarItem className="cursor-pointer">
-            <Card className="p-4 hover:shadow-md transition-shadow w-full">
+  return <div>
+    <div className="overflow-y-auto max-h-[450px] space-y-2 mt-2 px-1">
+      {favoriteProds?.data?.data?.length === 0 ? <div className="py-10 space-y-2">
+        <Image src={"/Heart.gif"} unoptimized alt="empty-cart" className="h-12 w-auto mx-auto" height={500} width={500} />
+        <p className="text-center text-gray-500 text-sm">No products in favourites</p>
+      </div> :
+        favoriteProds?.data?.data?.map((product, idx: number) => (
+          <div key={product?.id}>
+            <Card className="p-2 shadow-none rounded cursor-pointer w-full">
               <div className="flex items-start gap-3">
                 <Image
                   src={product?.product?.images?.[0]?.url || defaultImg.product}
@@ -60,16 +62,22 @@ const FavProds = async ({ favPromise }: { favPromise: Promise<{ data: { id: stri
                   height={1200}
                   placeholder="blur"
                   blurDataURL={defaultImg.placeholderImg}
-                  className="w-12 h-12 rounded-md object-cover"
+                  className="w-16 h-16 rounded object-cover"
                 />
 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-lg break-words">
+                    <div className="flex-1">
+                      <p className="text-base break-words font-medium text-gray-800">
                         {product?.product?.title}
                       </p>
-                      <span className="text-xs text-gray-500 whitespace-nowrap">
+
+                      <p className="text-sm font-semibold">
+                        {product?.product?.size?.title}
+                      </p>
+
+
+                      <span className="text-sm whitespace-nowrap">
                         ${product?.product?.finalPrice}
                       </span>
                     </div>
@@ -79,12 +87,13 @@ const FavProds = async ({ favPromise }: { favPromise: Promise<{ data: { id: stri
                 <DltToFavourite prodId={product?.product?.id} />
               </div>
             </Card>
-          </MenubarItem>
-        </div>
-      ))}
-    {favoriteProds?.data?.length > 0 && <Link href={"/wishlist"}>
-      <Button className="w-full mt-2">View All</Button>
+          </div>
+        ))}
+    </div>
+
+    {favoriteProds?.data?.data?.length > 0 && <Link href={"/favourites"}>
+      <Button variant={"default"} className="w-full mt-2 rounded-none py-4 border-2 border-primary-black cursor-pointer font-medium">View All</Button>
     </Link>}
-  </>
+  </div>
 
 }

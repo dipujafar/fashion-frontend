@@ -4,9 +4,11 @@ import NotificationContainer from "./_components/NotificationContainer";
 
 const NotificationPage = () => {
   return (
-    <Container>
-      <NotificationContainer />
-    </Container>
+    <div className="">
+      <Container className="pt-5">
+        <NotificationContainer />
+      </Container>
+    </div>
   );
 };
 

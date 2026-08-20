@@ -10,7 +10,6 @@ export const AddToCart = async ({ payload, extraRevalidatePaths = [] }: { payloa
 
     revalidatePath(`/shop/${payload?.productId}`);
     revalidatePath(`/shopping-cart`);
-    revalidateTag(tags.carts);
 
     if (extraRevalidatePaths.length > 0) {
         for (let path of extraRevalidatePaths) {
@@ -27,7 +26,6 @@ export const DeleteFromCart = async ({ payload, extraRevalidatePaths = [] }: { p
 
     revalidatePath(`/shop/${payload?.productId}`);
     revalidatePath(`/shopping-cart`);
-    revalidateTag(tags.carts);
 
     if (extraRevalidatePaths.length > 0) {
         for (let path of extraRevalidatePaths) {
