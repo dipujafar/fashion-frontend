@@ -172,7 +172,7 @@ export default function CategoryFilterSelector({
 
       {/* Search bar */}
       <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-        <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2.5 py-2">
           <Search className="w-4 h-4 text-muted-foreground shrink-0" />
           <input
             ref={isMobile ? undefined : searchRef}
@@ -278,7 +278,7 @@ export default function CategoryFilterSelector({
             <div className="absolute inset-0 bg-black/50" />
             {/* Dialog box */}
             <div
-              className="relative w-full max-w-sm bg-background rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+              className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
               style={{ maxHeight: "80dvh" }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -289,7 +289,7 @@ export default function CategoryFilterSelector({
           {/* ── DESKTOP: dropdown ── */}
           <div
             ref={panelRef}
-            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border rounded-xl shadow-lg overflow-hidden"
+            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border shadow-lg overflow-hidden"
             style={{ maxHeight: 440 }}
           >
             {innerContent(false)}
@@ -338,7 +338,7 @@ function DrillRow({ cat, isSelected, onSelect, onDrill }: DrillRowProps) {
   return (
     <div
       onClick={() => (hasChildren ? onDrill?.() : onSelect())}
-      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
         }`}
     >
       <span className="flex-1 text-foreground">{cat.name}</span>
@@ -399,7 +399,7 @@ function SearchResultRow({ cat, isSelected, onSelect, onDrill }: SearchResultRow
 function RadioCircle({ selected }: { selected: boolean }) {
   return (
     <div
-      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selected ? "border-primary" : "border-muted-foreground/40"
+      className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${selected ? "border-primary" : "border-muted-foreground/40"
         }`}
     >
       {selected && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}

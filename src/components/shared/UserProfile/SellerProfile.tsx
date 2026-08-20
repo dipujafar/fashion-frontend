@@ -11,9 +11,7 @@ import FolowUnFolow from '@/app/(public)/member/[username]/_components/FolowUnFo
 type User = { data: { user: IUser, review: { _avg: { rating: number }, _count: { id: number } }, isfolowing: boolean, totalDonation: number } }
 
 
-export default async function SellerProfile({ userPromise }: { userPromise: User }) {
-
-  const user = await userPromise;
+export default async function SellerProfile({ user }: { user: User }) {
 
   const userData = user?.data?.user;
 
