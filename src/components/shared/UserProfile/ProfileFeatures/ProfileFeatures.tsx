@@ -1,6 +1,5 @@
 import React from "react";
 import ProductsListContainer from "../ProductsList/ProductsListContainer";
-import ChoiceBundleModal from "../Modals/ChoiceBundleModal";
 import { GetProductsByMember } from "@/lib/services/Products";
 
 const ProfileFeatures = async ({
@@ -39,19 +38,9 @@ const ProfileFeatures = async ({
   const prodData = await GetProductsByMember({ query, userName });
 
   return (
-    <>
-      <div className="flex justify-between items-center border border-gray-200 rounded-md lg:py-4 py-2 px-5">
-        <div>
-          <p className="text-lg font-medium">Shop Bundles</p>
-          <p className="text-gray-600 text-sm">Get Discount</p>
-        </div>
-        <ChoiceBundleModal />
-      </div>
-
-      <div className="mt-8">
-        <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} />
-      </div>
-    </>
+    <div >
+      <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} />
+    </div>
   );
 };
 

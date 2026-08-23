@@ -1,4 +1,4 @@
-import { IBillingDetails, IUser } from "@/types";
+import { IBandleTier, IBillingDetails, IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -25,8 +25,16 @@ const userApi = baseApi.injectEndpoints({
                 body: payload
             }),
             invalidatesTags: [tagTypes.user_billing],
-        })
+        }),
+
+        sellerBundleTiers: builder.query<{ data: { tiers: IBandleTier[] } }, { username: string }>({
+            query: ({ username }) => ({
+                url: `/users/bundle-discount-tiers/${username}`,
+                method: "GET",
+            }),
+        }),
+
     }),
 })
 
-export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation } = userApi;
+export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery } = userApi;

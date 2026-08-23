@@ -1,5 +1,3 @@
-"use client";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,29 +8,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { IBandleTier } from "@/types";
 import Link from "next/link";
-import { useState } from "react";
-const bundleData = [
-  {
-    id: 1,
-    item: 2,
-    discount: 5,
-  },
-  {
-    id: 2,
-    item: 5,
-    discount: 10,
-  },
-  {
-    id: 3,
-    item: 10,
-    discount: 15,
-  },
-];
 
-export default function ChoiceBundleModal() {
-
-  const [selectItem, setSelectItem] = useState(0);
+export default function ChoiceBundleModal({ tiers }: { tiers: IBandleTier[] }) {
 
   return (
     <Dialog>
@@ -52,16 +31,15 @@ export default function ChoiceBundleModal() {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-y-4">
-          {bundleData?.map((bundle) => (
+          {tiers?.map((tier) => (
             <div
-              onClick={() => setSelectItem(bundle?.item)}
-              key={bundle?.id}
+              key={tier?.id}
               className={cn(
                 "flex justify-between items-center border border-black rounded-xl bg-gray-50 py-3 px-5"
               )}
             >
-              <span className="text-lg">{bundle.item} Items</span>
-              <span className="text-lg">{bundle.discount}%</span>
+              <span className="text-lg">{tier?.itemCount} Items</span>
+              <span className="text-lg">{tier?.discountPercent}%</span>
             </div>
           ))}
         </div>

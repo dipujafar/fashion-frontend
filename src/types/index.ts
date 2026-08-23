@@ -8,16 +8,6 @@ export type TBlogsData = {
   description: string;
 };
 
-export type TUser = {
-  _id: string;
-  name: string;
-  bio: string;
-  type: string;
-  image: string;
-  coverImage: string;
-  bestOn?: string;
-};
-
 export type TProduct = {
   _id: number;
   image: string;
@@ -201,15 +191,17 @@ export interface ICharity {
   "createdAt": Date
 }
 
-export type UserRole =
-  | "INDIVIDUAL_USER"
-  | "CHARITABLE_ORGANIZATION"
-  | "CHARITY_SHOP"
-  | "ECO_FRIENDLY_STORE"
-  | "CELEBRITY"
-  | "AMBASSADOR"
-  | "PROFESSIONAL_SELLER"
-  | "ASSISTED_SELLER";
+export enum UserRole {
+  ADMIN = "ADMIN",
+  INDIVIDUAL_USER = "INDIVIDUAL_USER",
+  CHARITABLE_ORGANIZATION = "CHARITABLE_ORGANIZATION",
+  CHARITY_SHOP = "CHARITY_SHOP",
+  ECO_FRIENDLY_STORE = "ECO_FRIENDLY_STORE",
+  CELEBRITY = "CELEBRITY",
+  AMBASSADOR = "AMBASSADOR",
+  PROFESSIONAL_SELLER = "PROFESSIONAL_SELLER",
+  ASSISTED_SELLER = "ASSISTED_SELLER"
+}
 
 export interface IUserAuth {
   role: UserRole;
@@ -503,4 +495,25 @@ export enum SellerCancelReason {
   DAMAGED_INVENTORY = "DAMAGED_INVENTORY",
   PAYMENT_NOT_VERIFIED = "PAYMENT_NOT_VERIFIED",
   OTHER = "OTHER",
+}
+
+export interface IReview {
+  id: string
+  orderId: string
+  fromUserId: string | null
+  toUserId: string
+  rating: number
+  comment: string | null       // optional manual comment
+
+  createdAt: Date
+
+  order: IOrder
+  fromUser: IUser
+  toUser: IUser
+}
+
+export interface IBandleTier {
+  id: string;
+  itemCount: number;
+  discountPercent: number;
 }

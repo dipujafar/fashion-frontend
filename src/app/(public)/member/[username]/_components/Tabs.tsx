@@ -4,23 +4,37 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 
 
-function Tabs({ userName }: { userName: string }) {
-
+function Tabs({ userName, isCharityShop }: { userName: string, isCharityShop: boolean }) {
 
     const tabList = [
         {
+            id: 1,
             name: "Product Listing",
             href: `/member/${userName}`
         },
         {
+            id: 2,
             name: "Charity Support",
             href: `/member/${userName}/charity-support`
         },
         {
+            id: 3,
             name: "Reviews",
             href: `/member/${userName}/reviews`
         }
     ]
+
+    if (isCharityShop) {
+
+        //remove the charity support
+        tabList.splice(1, 1);
+
+        tabList.unshift({
+            id: 0,
+            name: "Overview",
+            href: `/member/${userName}/overview`
+        });
+    }
 
     const pathname = usePathname();
 

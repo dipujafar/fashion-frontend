@@ -7,11 +7,13 @@ import moment from 'moment'
 import { userRoleMapper } from '@/utils/userRoleMapper'
 import Link from 'next/link';
 import FolowUnFolow from '@/app/(public)/member/[username]/_components/FolowUnFolow';
+import { CharityDonationFormDialog } from '../Modal/Charity/CharityDonationFormDialog';
+import { Button } from '@/components/ui/button';
 
 type User = { data: { user: IUser, review: { _avg: { rating: number }, _count: { id: number } }, isfolowing: boolean, totalDonation: number } }
 
 
-export default async function SellerProfile({ user }: { user: User }) {
+export default async function SellerProfile({ user, isCharity }: { user: User, isCharity: boolean }) {
 
   const userData = user?.data?.user;
 
@@ -91,7 +93,16 @@ export default async function SellerProfile({ user }: { user: User }) {
           </div>
         </div>
 
-        <FolowUnFolow isFolow={user?.data?.isfolowing} memberId={userData?.id} />
+        <div className="w-full flex flex-col justify-start lg:justify-end items-start lg:items-end gap-y-3">
+          <FolowUnFolow isFolow={user?.data?.isfolowing} memberId={userData?.id} />
+          <div className='lg:w-auto w-full'>
+            <CharityDonationFormDialog>
+              <Button className=" text-white font-semibold px-6 cursor-pointer rounded-none w-full md:w-1/2 lg:w-28 bg-green-600 hover:bg-green-700 duration-200 transition-colors">
+                Donate
+              </Button>
+            </CharityDonationFormDialog>
+          </div>
+        </div>
       </div>
 
       {/* Bio Section */}

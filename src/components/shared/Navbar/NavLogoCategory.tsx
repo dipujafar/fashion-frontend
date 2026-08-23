@@ -7,23 +7,6 @@ import SearchAndNavIcon from "./SearchAndNavIcon";
 import { Search } from "lucide-react";
 import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
 
-// const category = [
-//   {
-//     id: 1,
-//     label: "Womans",
-//     href: "/shop/#",
-//   },
-//   {
-//     id: 2,
-//     label: "Mens",
-//     href: "/shop/#",
-//   },
-//   {
-//     id: 3,
-//     label: "Kids",
-//     href: "/shop/#",
-//   },
-// ];
 
 const NavLogoCategory = () => {
   return (

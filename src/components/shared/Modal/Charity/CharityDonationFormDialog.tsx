@@ -118,7 +118,7 @@ export function CharityDonationFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="w-auto">
         {children ? (
           <div>{children}</div>
         ) : (
@@ -128,7 +128,7 @@ export function CharityDonationFormDialog({
         )}
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md p-0 gap-0">
+      <DialogContent className="sm:max-w-md p-0 gap-0 rounded-none">
         <DialogHeader className="p-6 pb-4">
           <div className="space-y-1">
             <DialogTitle className="text-base font-medium text-foreground">
