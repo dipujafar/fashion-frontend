@@ -222,7 +222,7 @@ function SizeSelectorInner({
                     >
                         <div className="absolute inset-0 bg-black/50" />
                         <div
-                            className="relative w-full max-w-sm bg-background rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+                            className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
                             style={{ maxHeight: "80dvh" }}
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -246,7 +246,7 @@ function SizeSelectorInner({
                     {/* ── DESKTOP: dropdown ── */}
                     <div
                         ref={panelRef}
-                        className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[200px] bg-background border border-border rounded-xl shadow-lg overflow-hidden"
+                        className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[200px] bg-background border border-border shadow-lg overflow-hidden"
                     >
                         {searchBar}
                         {listContent}

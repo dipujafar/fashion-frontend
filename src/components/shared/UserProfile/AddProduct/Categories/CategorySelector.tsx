@@ -169,7 +169,7 @@ export default function CategorySelector({
 
       {/* Search bar */}
       <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-        <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5">
+        <div className="flex items-center gap-2 bg-muted rounded px-3 py-2.5">
           <Search className="w-4 h-4 text-muted-foreground shrink-0" />
           <input
             ref={isMobile ? undefined : searchRef}
@@ -244,7 +244,7 @@ export default function CategorySelector({
       <button
         type="button"
         onClick={openPanel}
-        className="flex items-center justify-between w-full bg-[#f2f2f2] rounded-md px-3 md:py-3 py-2 text-sm text-left focus:outline-none focus:ring-2 focus:ring-ring"
+        className="flex items-center justify-between w-full rounded px-3 md:py-3 py-2 text-sm text-left focus:outline-none border border-gray-200 focus:border-primary-black cursor-pointer"
       >
         <span className={value ? "text-foreground" : "text-muted-foreground"}>
           {selectedCategory?.name ?? placeholder}
@@ -263,7 +263,7 @@ export default function CategorySelector({
             <div className="absolute inset-0 bg-black/50" />
             {/* Dialog box — centered */}
             <div
-              className="relative w-full max-w-sm bg-background rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+              className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
               style={{ maxHeight: "80dvh" }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -274,7 +274,7 @@ export default function CategorySelector({
           {/* ── DESKTOP: dropdown ── */}
           <div
             ref={panelRef}
-            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border rounded-xl shadow-lg overflow-hidden"
+            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border shadow-lg overflow-hidden"
             style={{ maxHeight: 440 }}
           >
             {innerContent(false)}

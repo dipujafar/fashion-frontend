@@ -3,7 +3,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useCallback } from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
@@ -51,12 +50,13 @@ import { useGetCharitiesQuery } from "@/redux/api/userApi";
 import { formattedData } from "./utils";
 import { useCreateProductMutation } from "@/redux/api/productApi";
 import LoadingSpin from "@/components/ui/loading-spin";
+import Image from "next/image";
 
-
+const MAX_PHOTOS = 8;
+const INPUT_ID = "photo-uploader-input";
 
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
   const fromEditPage = useSearchParams().get("edit");
   const router = useRouter();
@@ -89,51 +89,25 @@ export default function AddProductForm() {
 
 
 
-  const handleFileUpload = useCallback(
-    (files: FileList | null) => {
-      if (!files) return;
-
-      const newFiles = Array.from(files).slice(0, 8 - images.length);
-      const newPreviews: string[] = [];
-
-      newFiles.forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const result = e.target?.result as string;
-            newPreviews.push(result);
-            if (newPreviews.length === newFiles.length) {
-              setImages((prev) => [...prev, ...newFiles]);
-              setImagePreviews((prev) => [...prev, ...newPreviews]);
-            }
-          };
-          reader.readAsDataURL(file);
-        }
+  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const incoming = Array.from(e.target.files || []).filter(
+      (f) => f.type === "image/jpeg" || f.type === "image/png"
+    );
+    if (incoming.length > 0) {
+      setImages((prev) => {
+        const room = MAX_PHOTOS - prev.length;
+        return [...prev, ...incoming.slice(0, Math.max(room, 0))];
       });
-    },
-    [images.length]
-  );
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      handleFileUpload(e.dataTransfer.files);
-    },
-    [handleFileUpload]
-  );
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-  }, []);
-
-  const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
-    // Clean up object URL to prevent memory leaks
-    if (imagePreviews[index].startsWith("blob:")) {
-      URL.revokeObjectURL(imagePreviews[index]);
     }
+    // allow re-selecting the same file again later
+    e.target.value = "";
   };
+
+  const removeFile = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const boxes = Array.from({ length: 8 });
 
 
   // ====================================== set selected category data ============================
@@ -178,548 +152,546 @@ export default function AddProductForm() {
 
 
   return (
-    <div className="md:space-y-6 space-y-3 max-w-5xl mx-auto">
-      <Card className="py-0 border-none shadow-none">
-        {fromEditPage && <h1 className="text-lg font-medium">Edit <Link href={"/individual-user/dashboard/uploaded-products-list/resell"} className="underline">158420</Link> item details for resell</h1>}
-        <CardContent className="px-0">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit, onError)}
-              className="md:space-y-6 space-y-3"
-            >
-              {/* ===================================== Product Images ===============================*/}
-              <div className="space-y-2 ">
-                <label className="text-base font-medium">Product Images</label>
-                <div
-                  className={cn(
-                    "grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 md:gap-4 gap-2 border-2 rounded border-dashed",
-                    images?.length === 0 && " justify-center"
-                  )}
-                >
-                  {imagePreviews?.map((preview, index) => (
-                    <div key={index} className="relative group">
-                      <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
-                        <img
-                          src={preview || "/placeholder.svg"}
-                          alt={`Product ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+    <div className="md:space-y-6 space-y-3 max-w-2xl mx-auto">
+      <h3 className="text-2xl lg:text-3xl font-bold mt-3 md:mt-4 lg:mt-5 py-3 lg:py-4 border-b border-gray-200 text-gray-800">List An Item</h3>
 
-                  {images?.length < 8 && (
-                    <div
-                      onDrop={handleDrop}
-                      onDragOver={handleDragOver}
-                      className={cn(
-                        "aspect-square  border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-gray-400 transition-colors cursor-pointer relative border",
-                        images?.length === 0 &&
-                        "col-span-2 md:col-span-4 2xl:col-span-5 aspect-video md:aspect-auto md:min-h-[200px]"
-                      )}
-                    >
-                      <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={(e) => handleFileUpload(e.target.files)}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      />
-                      <Button className="group">
-                        <Plus className="h-6 w-6  group-hover:animate-spin" /> Upload
-                      </Button>
-
-                      <span className="text-xs text-gray-500 text-center px-2 hidden md:block">
-                        Drop images or click to upload
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {images.length > 0 && (
-                  <div className="text-sm text-gray-600">
-                    {images.length} of 8 images uploaded
-                  </div>
-                )}
-
-                <ImageUploadGuide />
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit, onError)}
+          className="md:space-y-10 space-y-6"
+        >
+          {/* ===================================== Product Images ===============================*/}
+          <div className="">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-3">
+              <div>
+                <h2 className="text-lg lg:text-2xl font-bold text-gray-900">Photos</h2>
+                <p className="text-sm md:text-base mt-1 text-gray-500">Add up to 8 photos in JPEG or PNG format.</p>
               </div>
+              <ImageUploadGuide />
+            </div>
 
-              {/* ===================================== Product Title ================================ */}
+            <input
+              id={INPUT_ID}
+              type="file"
+              accept="image/jpeg,image/png"
+              multiple
+              className="hidden"
+              onChange={handleFiles}
+            />
+
+            <div className="mt-6 grid grid-cols-3 md:grid-cols-4 gap-4">
+              {boxes.map((_, i) => {
+                const file = images[i];
+
+                if (file) {
+                  return (
+                    <div
+                      key={i}
+                      className="group relative aspect-square rounded-lg border border-dashed border-gray-300 overflow-hidden"
+                    >
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt="Product photo"
+                        className="w-full h-full object-cover"
+                        height={500}
+                        width={500}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeFile(i)}
+                        className="absolute top-1.5 right-1.5 bg-black/60 text-white rounded-full w-5 h-5 flex items-center justify-center transition-opacity cursor-pointer"
+                        aria-label="Remove photo"
+                      >
+                        <X size={12} strokeWidth={2.5} />
+                      </button>
+                    </div>
+                  );
+                }
+
+                const isFull = images.length >= 8;
+
+                return (
+                  <label
+                    key={i}
+                    htmlFor={isFull ? undefined : INPUT_ID}
+                    className={`aspect-square rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-gray-400 transition-colors ${isFull
+                      ? "opacity-40 cursor-not-allowed"
+                      : "cursor-pointer hover:border-gray-400 hover:bg-gray-50 hover:text-gray-500"
+                      }`}
+                  >
+                    <Camera size={22} strokeWidth={1.75} />
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ===================================== Product Title ================================ */}
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-gray-900">Product Title</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter product title"
+                    {...field}
+                    className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Product Description */}
+          <FormField
+            control={form.control}
+            name="productDescription"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-gray-900">Product Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="e.g. This tops is very smooth and fit..."
+                    className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base px-3"
+                    {...field}
+                    rows={5}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* ========================================= Product Details Section  ==============================*/}
+          <div className="space-y-4">
+            <h3 className="text-lg lg:text-2xl font-bold text-gray-900">
+              Product Info
+            </h3>
+
+
+            {/* ========================================== product category ================================ */}
+            <div>
               <FormField
                 control={form.control}
-                name="title"
+                name="categoryId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Title</FormLabel>
+                    <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Enter product title"
-                        {...field}
-                        className="bg-[#f2f2f2] md:py-5"
+                      <CategorySelector
+                        categories={categories}
+                        value={selectedCategory?.id}
+                        onSelect={handleCategorySelect}
+                        placeholder="Select category"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
 
-              {/* ========================================= Price and Discount ============================== */}
-              <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
-                <FormField
+            {/* ========================================= product brand and size ================================ */}
+            <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4")}>
+              <FormItem>
+                <FormLabel>Size</FormLabel>
+                <SizeSelector
                   control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Price ($)</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter product price"
-                          {...field}
-                          className="bg-[#f2f2f2] md:py-5"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  name="sizeId"
+                  sizes={sizes}
+                  selectedCategory={selectedCategory}  // null = disabled
+                  placeholder="Select size"
                 />
+              </FormItem>
 
-                <FormField
+              <FormItem>
+                <FormLabel>Brand</FormLabel>
+                <BrandSelector
                   control={form.control}
-                  name="discountedPrice"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Discount (%)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="Enter discounted price in %"
-                          {...field}
-                          className="bg-[#f2f2f2] md:py-5"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  name="brandId"
+                  brands={brands}
+                  selectedCategory={selectedCategory}
+                  placeholder="Select brand"
                 />
-              </div>
+              </FormItem>
 
-              {/* ========================================= Product Details Section  ==============================*/}
-              <div className="space-y-4">
-                <h3 className="uppercase underline text-black/60 ">
-                  Product Details
-                </h3>
+            </div>
 
 
-                {/* ========================================== product category ================================ */}
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="categoryId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <FormControl>
-                          <CategorySelector
-                            categories={categories}
-                            value={selectedCategory?.id}
-                            onSelect={handleCategorySelect}
-                            placeholder="Select category"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* ========================================= product brand and size ================================ */}
-                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4")}>
+            <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Size</FormLabel>
-                    <SizeSelector
-                      control={form.control}
-                      name="sizeId"
-                      sizes={sizes}
-                      selectedCategory={selectedCategory}  // null = disabled
-                      placeholder="Select size"
-                    />
+                    <FormLabel>Tags</FormLabel>
+                    <FormControl>
+                      <TagInput
+                        value={field.value || []}
+                        onChange={field.onChange}
+                        placeholder="Type and press Enter..."
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
-
-
-
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="fabric"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Brand</FormLabel>
-                    <BrandSelector
-                      control={form.control}
-                      name="brandId"
-                      brands={brands}
-                      selectedCategory={selectedCategory}
-                      placeholder="Select brand"
-                    />
+                    <FormLabel>Fabric</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter fabric"
+                        {...field}
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
+                )}
+              />
+            </div>
 
 
-                </div>
-
-
-                <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
-                  <FormField
-                    control={form.control}
-                    name="tags"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tags</FormLabel>
-                        <FormControl>
-                          <TagInput
-                            value={field.value || []}
-                            onChange={field.onChange}
-                            placeholder="Type and press Enter..."
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="fabric"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Fabric</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter fabric"
-                            {...field}
-                            className="bg-[#f2f2f2] md:py-5"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-
-                <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-                  <FormField
-                    control={form.control}
-                    name="color"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Color</FormLabel>
-                        <Select
-                          onValueChange={(value) => {
-                            if (value === "custom") {
-                              setShowCustomPicker(true);
-                            } else {
-                              setShowCustomPicker(false);
-                              field.onChange(value);
-                            }
-                          }}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select a color" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="max-h-[400px]">
-                            {colors.map((color) => (
-                              <SelectItem key={color.name} value={color.name}>
-                                <div className="flex items-center gap-2">
-                                  <div
-                                    className="size-5 rounded-full border border-border "
-                                    style={{
-                                      background:
-                                        color.name === "Multi"
-                                          ? "linear-gradient(90deg, #FF0000, #00FF00, #0000FF)"
-                                          : color.hex,
-                                      border:
-                                        color.name === "White" ||
-                                          color.name === "Clear"
-                                          ? "1px solid #e5e5e5"
-                                          : "none",
-                                    }}
-                                  />
-                                  <span className="text-lg">{color.name}</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                            <SelectItem value="custom">
-                              <div className="flex items-center gap-2">
-                                <div className="size-5 rounded-full border border-border bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" />
-                                <span className="text-lg">
-                                  Select Custom Color
-                                </span>
-                              </div>
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-
-                        {showCustomPicker && (
-                          <div className="mt-2 md:space-y-2 space-y-1">
-                            <FormControl>
-                              <Input
-                                type="color"
-                                {...field}
-                                className="bg-[#f2f2f2] h-12 cursor-pointer"
-                                onChange={(e) => {
-                                  field.onChange(e.target.value);
+            <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+              <FormField
+                control={form.control}
+                name="color"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Color</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        if (value === "custom") {
+                          setShowCustomPicker(true);
+                        } else {
+                          setShowCustomPicker(false);
+                          field.onChange(value);
+                        }
+                      }}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full">
+                          <SelectValue placeholder="Select a color" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="max-h-[400px]">
+                        {colors.map((color) => (
+                          <SelectItem key={color.name} value={color.name}>
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="size-5 rounded-full border border-border "
+                                style={{
+                                  background:
+                                    color.name === "Multi"
+                                      ? "linear-gradient(90deg, #FF0000, #00FF00, #0000FF)"
+                                      : color.hex,
+                                  border:
+                                    color.name === "White" ||
+                                      color.name === "Clear"
+                                      ? "1px solid #e5e5e5"
+                                      : "none",
                                 }}
                               />
-                            </FormControl>
-                            <p className="text-sm text-muted-foreground">
-                              Selected: {field.value || "None"}
-                            </p>
+                              <span className="text-lg">{color.name}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="custom">
+                          <div className="flex items-center gap-2">
+                            <div className="size-5 rounded-full border border-border bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500" />
+                            <span className="text-lg">
+                              Select Custom Color
+                            </span>
                           </div>
-                        )}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="careInstructions"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Care Instructions</FormLabel>
-                        <FormControl className="border border-blue-500 w-full">
-                          <CareInstructionsField field={field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* ======================================== condition input ============================================== */}
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="condition"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Condition</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select condition" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="new">New</SelectItem>
-                            <SelectItem value="like-new">Like New</SelectItem>
-                            <SelectItem value="3-months-used">
-                              3 Months Used
-                            </SelectItem>
-                            <SelectItem value="6-months-used">
-                              6 Months Used
-                            </SelectItem>
-                            <SelectItem value="1-year-used">
-                              1 Year Used
-                            </SelectItem>
-                            <SelectItem value="well-used">Well Used</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="my-8 space-y-3">
-                  <FormField
-                    control={form.control}
-                    name="donation_percent"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Donation Percent (%)</FormLabel>
+                    {showCustomPicker && (
+                      <div className="mt-2 md:space-y-2 space-y-1">
                         <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                                <SelectValue placeholder="Select Donation Percent" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
-                                <SelectItem value={item.toString()} key={item}>
-                                  {item}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <Input
+                            type="color"
+                            {...field}
+                            className="bg-[#f2f2f2] h-12 cursor-pointer"
+                            onChange={(e) => {
+                              field.onChange(e.target.value);
+                            }}
+                          />
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <InputCharityDonationInput charities={charitiesData?.data || []} form={form} fields={fields} append={append} remove={remove} />
-
-                </div>
-
-
-                {/* Donation Privacy */}
-                <FormField
-                  control={form.control}
-                  name="donationPrivacy"
-                  render={({ field }) => (
-                    <FormItem className="md:space-y-3 space-y-1">
-                      <FormLabel>
-                        Donation Privacy: Would you like to remain anonymous?
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col md:space-y-1"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="anonymous" id="anonymous" />
-                            <label htmlFor="anonymous" className="text-sm">
-                              Yes, keep my donation anonymous
-                            </label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="show-name" id="show-name" />
-                            <label htmlFor="show-name" className="text-sm">
-                              No, show my name
-                            </label>
-                          </div>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Product Description */}
-                <FormField
-                  control={form.control}
-                  name="productDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="e.g. This tops is very smooth and fit..."
-                          className="flex min-h-[120px] bg-[#f2f2f2] "
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Shipping & Returns */}
-                <FormField
-                  control={form.control}
-                  name="shippingDelivery"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Shipping & Delivery</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select Shipping & Delivery" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {shippingDelivery?.map((item, index) => (
-                              <SelectItem value={item} key={index}>
-                                {item}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Returns Policy */}
-                <FormField
-                  control={form.control}
-                  name="returnsPolicy"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Returns Policy</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                              <SelectValue placeholder="Select Returns Policy" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {returnsPolicy?.map((item, index) => (
-                              <SelectItem value={item?.value} key={index}>
-                                {item?.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Allow Offers */}
-                <FormField
-                  control={form.control}
-                  name="allowOffers"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-1 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Allow buyers to make an offer</FormLabel>
+                        <p className="text-sm text-muted-foreground">
+                          Selected: {field.value || "None"}
+                        </p>
                       </div>
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    )}
 
-              <div className="flex gap-4">
-                <Button disabled={isLoading} type="submit" className="flex-1 group cursor-pointer">
-                  Submit <AnimatedArrow /> {isLoading && <LoadingSpin />}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="careInstructions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Care Instructions</FormLabel>
+                    <FormControl className="border border-blue-500 w-full">
+                      <CareInstructionsField field={field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* ======================================== condition input ============================================== */}
+            <div>
+              <FormField
+                control={form.control}
+                name="condition"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Condition</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full">
+                          <SelectValue placeholder="Select condition" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="new">New</SelectItem>
+                        <SelectItem value="like-new">Like New</SelectItem>
+                        <SelectItem value="3-months-used">
+                          3 Months Used
+                        </SelectItem>
+                        <SelectItem value="6-months-used">
+                          6 Months Used
+                        </SelectItem>
+                        <SelectItem value="1-year-used">
+                          1 Year Used
+                        </SelectItem>
+                        <SelectItem value="well-used">Well Used</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="my-8 space-y-3">
+              <FormField
+                control={form.control}
+                name="donation_percent"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Donation Percent (%)</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                            <SelectValue placeholder="Select Donation Percent" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
+                            <SelectItem value={item.toString()} key={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <InputCharityDonationInput charities={charitiesData?.data || []} form={form} fields={fields} append={append} remove={remove} />
+
+            </div>
+
+
+            {/* Donation Privacy */}
+            <FormField
+              control={form.control}
+              name="donationPrivacy"
+              render={({ field }) => (
+                <FormItem className="md:space-y-3 space-y-1">
+                  <FormLabel>
+                    Donation Privacy: Would you like to remain anonymous?
+                  </FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col md:space-y-1"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="anonymous" id="anonymous" />
+                        <label htmlFor="anonymous" className="text-sm">
+                          Yes, keep my donation anonymous
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="show-name" id="show-name" />
+                        <label htmlFor="show-name" className="text-sm">
+                          No, show my name
+                        </label>
+                      </div>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Shipping & Returns */}
+            <FormField
+              control={form.control}
+              name="shippingDelivery"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Shipping & Delivery</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                          <SelectValue placeholder="Select Shipping & Delivery" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {shippingDelivery?.map((item, index) => (
+                          <SelectItem value={item} key={index}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Returns Policy */}
+            <FormField
+              control={form.control}
+              name="returnsPolicy"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Returns Policy</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                          <SelectValue placeholder="Select Returns Policy" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {returnsPolicy?.map((item, index) => (
+                          <SelectItem value={item?.value} key={index}>
+                            {item?.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Allow Offers */}
+            <FormField
+              control={form.control}
+              name="allowOffers"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-1 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Allow buyers to make an offer</FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* ========================================= Price and Discount ============================== */}
+          <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Price ($)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter product price"
+                      {...field}
+                      className="bg-[#f2f2f2] md:py-5"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="discountedPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Discount (%)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter discounted price in %"
+                      {...field}
+                      className="bg-[#f2f2f2] md:py-5"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex gap-4">
+            <Button disabled={isLoading} type="submit" className="flex-1 group cursor-pointer">
+              Submit <AnimatedArrow /> {isLoading && <LoadingSpin />}
+            </Button>
+          </div>
+        </form>
+      </Form>
+
+
     </div>
   );
 }

@@ -84,11 +84,11 @@ export function ImageUploadGuide() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="bg-black/80 py-1 px-2 rounded text-white flex gap-x-2 cursor-pointer">
-          <CaptureIcon />
+        <div className="bg-black/80 py-1 px-2 rounded text-white flex items-center gap-x-2 cursor-pointer">
+          <CaptureIcon className="size-5" />
           <p className="text-sm md:text-base">
-            Grab your buyer's attention - highlight your products with great
-            photos.{" "}
+            {/* Grab your buyer's attention - highlight your products with great
+            photos.{" "} */}
             <span className="underline ml-1 font-medium text-green-400">
               Upload Guide
             </span>
