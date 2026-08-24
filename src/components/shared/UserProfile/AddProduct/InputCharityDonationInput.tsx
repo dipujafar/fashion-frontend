@@ -228,14 +228,7 @@ export default function InputCharityDonationInput({
                 <FormItem className="w-full">
                   <FormLabel className="flex ">
                     Donate to charity
-                    {index === 0 && (
-                      <>
-                        <span className="text-xs">
-                          {" "}(Minimum 5% donation required){" "}
-                        </span>
-                        <SelectDonationOption />
-                      </>
-                    )}
+                    
                   </FormLabel>
                   <FormControl>
                     <CharitySelect

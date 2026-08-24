@@ -23,7 +23,7 @@ export default function middleware(req: any) {
 export const config = {
   matcher: [
     "/profile/:path*",
-    "/sell-products",
+    // "/sell-products",
     "/wishlist"
   ],
 };

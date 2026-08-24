@@ -153,7 +153,7 @@ export default function AddProductForm() {
 
   return (
     <div className="md:space-y-6 space-y-3 max-w-2xl mx-auto">
-      <h3 className="text-2xl lg:text-3xl font-bold mt-3 md:mt-4 lg:mt-5 py-3 lg:py-4 border-b border-gray-200 text-gray-800">List An Item</h3>
+      <h2 className="text-2xl lg:text-3xl font-bold mt-3 md:mt-4 lg:mt-5 py-3 lg:py-4 border-b border-gray-200 text-gray-800">List An Item</h2>
 
       <Form {...form}>
         <form
@@ -164,7 +164,7 @@ export default function AddProductForm() {
           <div className="">
             <div className="flex flex-col md:flex-row justify-between items-start gap-3">
               <div>
-                <h2 className="text-lg lg:text-2xl font-bold text-gray-900">Photos</h2>
+                <p className="text-lg lg:text-2xl font-bold text-gray-900">Photos</p>
                 <p className="text-sm md:text-base mt-1 text-gray-500">Add up to 8 photos in JPEG or PNG format.</p>
               </div>
               <ImageUploadGuide />
@@ -267,9 +267,9 @@ export default function AddProductForm() {
 
           {/* ========================================= Product Details Section  ==============================*/}
           <div className="space-y-4">
-            <h3 className="text-lg lg:text-2xl font-bold text-gray-900">
+            <p className="text-lg lg:text-2xl font-bold text-gray-900">
               Product Info
-            </h3>
+            </p>
 
 
             {/* ========================================== product category ================================ */}
@@ -492,7 +492,25 @@ export default function AddProductForm() {
               />
             </div>
 
-            <div className="my-8 space-y-3">
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <p className="text-lg lg:text-2xl font-bold text-gray-900">
+                Donation
+              </p>
+
+
+              <>
+                <span className="text-xs">
+                  (Minimum 5% donation required)
+                </span>
+                {/* <SelectDonationOption /> */}
+              </>
+
+            </div>
+
+            <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5">
               <FormField
                 control={form.control}
                 name="donation_percent"
@@ -505,13 +523,13 @@ export default function AddProductForm() {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
+                          <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer">
                             <SelectValue placeholder="Select Donation Percent" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="rounded-none p-0">
                           {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
-                            <SelectItem value={item.toString()} key={item}>
+                            <SelectItem value={item.toString()} key={item} className="rounded-none cursor-pointer">
                               {item}
                             </SelectItem>
                           ))}
@@ -562,85 +580,6 @@ export default function AddProductForm() {
               )}
             />
 
-            {/* Shipping & Returns */}
-            <FormField
-              control={form.control}
-              name="shippingDelivery"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Shipping & Delivery</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                          <SelectValue placeholder="Select Shipping & Delivery" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {shippingDelivery?.map((item, index) => (
-                          <SelectItem value={item} key={index}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Returns Policy */}
-            <FormField
-              control={form.control}
-              name="returnsPolicy"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Returns Policy</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-[#f2f2f2] md:py-5 w-full">
-                          <SelectValue placeholder="Select Returns Policy" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {returnsPolicy?.map((item, index) => (
-                          <SelectItem value={item?.value} key={index}>
-                            {item?.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* Allow Offers */}
-            <FormField
-              control={form.control}
-              name="allowOffers"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-1 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Allow buyers to make an offer</FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
           </div>
 
           {/* ========================================= Price and Discount ============================== */}
