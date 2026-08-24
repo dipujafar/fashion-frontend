@@ -22,7 +22,7 @@ const ProductCard = ({
       <CardContent className="md:space-y-4 space-y-2 p-0">
         {/* ===================================== product image =============================== */}
         <div className="relative">
-          <div className="relative">
+          <Link href={`/shop/${data?.id}`} className="group">
             <Image
               src={data?.images?.[0]?.url || defaultImg?.product}
               alt="product_image"
@@ -32,7 +32,7 @@ const ProductCard = ({
               blurDataURL={defaultImg?.placeholderImg}
               className="h-52 md:h-60 lg:h-64 object-cover origin-center rounded cursor-pointer"
             ></Image>
-          </div>
+          </Link>
 
           {/* ===================== favorite button ================ */}
           {!ownProduct && <div className="absolute top-2 right-2">

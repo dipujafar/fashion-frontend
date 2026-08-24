@@ -13,7 +13,7 @@ import DltCart from '@/components/shared/Navbar/NavIconsWithDropDown/DltCart';
 function ShopingCart() {
     const cartPromise = GetCartProds();
     return (
-        <div className='bg-[#F6F6F6]'>
+        <div className=''>
             <Container className="max-w-6xl text-gray-800">
                 <h3 className='text-xl md:text-2xl font-semibold py-3 md:py-5'>Shoping Cart</h3>
 
@@ -171,8 +171,8 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
         }
 
         {cart?.length <= 0 && <div className="py-8">
-            <Image src={"/empty-cart.png"} alt="empty-cart" className="h-28 w-auto mx-auto" height={500} width={500} />
-            <p className="text-center text-gray-500">No items in cart</p>
+            <Image src={"/emty-box.png"} alt="empty-cart" className="h-28 w-auto mx-auto" height={500} width={500} />
+            <p className="text-center text-gray-700">No items in cart</p>
             <center>
                 <Link href={"/shop"}>
                     <Button variant={"default"} className="mt-2 mx-auto text-center rounded-none py-5 border-2 cursor-pointer font-semibold">Browse</Button>

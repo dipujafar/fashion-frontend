@@ -13,6 +13,7 @@ import Link from "next/link";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import RecentView from "@/components/modules/home/RecentView/RecentView";
 import RecommendedProds from "@/components/modules/home/Recommended/Recommended";
+import BrandSelect from "./_components/BrandSelect";
 
 export const metadata = {
   title: "Shop",
@@ -44,8 +45,6 @@ const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: s
 
         {/* ----------------------------------------- show filter option ------------------------------------- */}
 
-
-
         <Suspense fallback={<div className="flex flex-row gap-x-2 items-center">
           <Skeleton className="h-5 w-20" />
           <Skeleton className="h-5 w-30" />
@@ -56,55 +55,20 @@ const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: s
         </Suspense>
 
         {/* ------------------------------------------------------------------------------------------------ */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex flex-row gap-x-4 items-center mt-5">
 
           {/* <ProductFilterContainer /> */}
-          <Suspense fallback={<Skeleton className="h-12 w-60" />}>
+          <Suspense fallback={<Skeleton className="h-8 w-28" />}>
             <CategorySelector selectedCat={category} catpromise={categoryPromise} />
           </Suspense>
+
+          <BrandSelect />
 
         </div>
 
         <Suspense fallback={<ProductGridSkeleton />}>
           <ShopPageContainer prodsPromise={prodsPromise} />
         </Suspense>
-
-        {/* ================Recent View==================== */}
-        <div>
-          <div className="flex justify-between items-center gap-x-4 mb-2 ">
-            <h4 className="section-name uppercase">{"Recently Viewed"}</h4>
-            {
-              <Link
-                href={"/shop"}
-                className="flex gap-x-2 items-center font-bold group "
-              >
-                <p>{"View All"} </p>
-                <AnimatedArrow size={20}></AnimatedArrow>
-              </Link>
-            }
-          </div>
-          <hr />
-          <RecentView />
-        </div>
-
-        {/* ==================Recommende============= */}
-        <div className="mt-8">
-          <div className="flex justify-between items-center gap-x-4 mb-2 ">
-            <h4 className="section-name uppercase">{"You may also like"}</h4>
-            {
-              <Link
-                href={"/shop"}
-                className="flex gap-x-2 items-center font-bold group "
-              >
-                <p>{"View All"} </p>
-                <AnimatedArrow size={20}></AnimatedArrow>
-              </Link>
-            }
-          </div>
-          <hr />
-
-          <RecommendedProds />
-        </div>
 
 
       </div>

@@ -172,7 +172,7 @@ export default function CategoryFilterSelector({
 
       {/* Search bar */}
       <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2.5 py-2">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2 py-1.5">
           <Search className="w-4 h-4 text-muted-foreground shrink-0" />
           <input
             ref={isMobile ? undefined : searchRef}
@@ -180,10 +180,10 @@ export default function CategoryFilterSelector({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Find a category"
-            className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+            className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           {search && (
-            <button type="button" onClick={() => setSearch("")}>
+            <button type="button" onClick={() => setSearch("")} className="cursor-pointer">
               <X className="w-4 h-4 text-muted-foreground" />
             </button>
           )}
@@ -192,7 +192,7 @@ export default function CategoryFilterSelector({
 
       {/* Desktop back/title */}
       {!isMobile && !search && (
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border shrink-0">
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-border shrink-0">
           {stack.length > 0 && (
             <button
               type="button"
@@ -259,10 +259,11 @@ export default function CategoryFilterSelector({
       <button
         type="button"
         onClick={openPanel}
-        className={cn("flex items-center gap-x-2 justify-between w-full bg-[#f2f2f2] rounded-md px-3 md:py-3 py-2 text-sm text-left focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer", className)}
+        className={cn("flex items-center gap-x-2 justify-between min-w-28 bg-white rounded px-2.5 h-8 text-sm text-left focus:outline-none cursor-pointer border hover:bg-zinc-50 border-gray-300", selectedCategory?.name ? "border-gray-700" : "", className)}
       >
-        <span className={value ? "text-foreground" : "text-muted-foreground"}>
-          {selectedCategory?.name ?? placeholder}
+        <span className={cn("text-foreground", selectedCategory?.name ? "font-semibold" : "")}>
+          {/* {selectedCategory?.name ?? placeholder} */}
+          {placeholder}
         </span>
         <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
       </button>
@@ -289,7 +290,7 @@ export default function CategoryFilterSelector({
           {/* ── DESKTOP: dropdown ── */}
           <div
             ref={panelRef}
-            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border shadow-lg overflow-hidden"
+            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border shadow overflow-hidden"
             style={{ maxHeight: 440 }}
           >
             {innerContent(false)}
@@ -338,7 +339,7 @@ function DrillRow({ cat, isSelected, onSelect, onDrill }: DrillRowProps) {
   return (
     <div
       onClick={() => (hasChildren ? onDrill?.() : onSelect())}
-      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+      className={`flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
         }`}
     >
       <span className="flex-1 text-foreground">{cat.name}</span>

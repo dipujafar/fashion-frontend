@@ -89,21 +89,22 @@ function AddressCard({
                 <p className="mt-4 text-sm text-muted-foreground">
                     No {kind.toLowerCase()} address saved yet.
                 </p>
-                <Button
+
+                <AddNewAddress defaultdata={address} actionBtn={<Button
                     type="button"
                     variant={"outline"}
                     size={"sm"}
                     className="mt-4 rounded-none cursor-pointer"
                 >
                     + Add {kind.toLowerCase()} address
-                </Button>
+                </Button>} />
             </section>
         );
     }
 
     return (
         <section className="rounded border border-gray-200 p-5">
-            
+
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <span
@@ -118,7 +119,7 @@ function AddressCard({
             </div>
 
             <div className="mt-4 space-y-1">
-                
+
                 <p className="text-sm text-muted-foreground">{address?.address1}</p>
                 {address?.address2 && (
                     <p className="text-sm text-muted-foreground">{address.address2}</p>

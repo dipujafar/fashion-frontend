@@ -5,6 +5,7 @@ import Container from '@/components/shared/Container';
 import SellerProfile from '@/components/shared/UserProfile/SellerProfile';
 import Tabs from '../_components/Tabs';
 import { UserRole } from '@/types';
+import CharityProfile from '../_components/CharityProfile';
 
 async function MemberLayout({
     params,
@@ -26,10 +27,6 @@ async function MemberLayout({
     // const isCharity = true
     const isCharityShop = user?.data?.user?.auth?.role === UserRole.CHARITY_SHOP;
 
-    if (isCharity) {
-        redirect(`/charity/${username}`);
-    }
-
     return (
         <>
             <div className='space-y-5'>
@@ -37,16 +34,20 @@ async function MemberLayout({
                 <Container>
 
                     <div className="space-y-5 lg:space-y-8">
-                        <SellerProfile user={user} isCharity={isCharity || isCharityShop} />
+                        <SellerProfile user={user} isCharity={isCharity} isCharityShop={isCharityShop} />
                     </div>
 
-                    <div className='mt-5 lg:mt-8'>
-                        <Tabs userName={username} isCharityShop={true} />
-                    </div>
+                    {
+                        !isCharity ? <>
+                            <div className='mt-5 lg:mt-8'>
+                                <Tabs userName={username} isCharityShop={isCharityShop} />
+                            </div>
 
-                    <div className='mt-5 lg:mt-8'>
-                        {children}
-                    </div>
+                            <div className='mt-5 lg:mt-8'>
+                                {children}
+                            </div>
+                        </> : <CharityProfile userName={username} />
+                    }
 
                 </Container>
 

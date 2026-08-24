@@ -16,7 +16,7 @@ function CategorySelectClient({ selectedCat, categories, className }: { selected
         categories={categories}
         value={selectedCat || ""}
         onSelect={handleCategorySelect}
-        placeholder="Select category"
+        placeholder="Category"
         className={className}
       />
     </div>

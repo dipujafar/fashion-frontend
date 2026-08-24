@@ -2,7 +2,7 @@ export const profileRouts = [
     {
         id: 1,
         title: "Purchase",
-        rout: "/profile",
+        rout: "/profile/purchase",
         routs: [
             {
                 id: 1,

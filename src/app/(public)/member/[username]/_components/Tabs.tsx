@@ -43,7 +43,7 @@ function Tabs({ userName, isCharityShop }: { userName: string, isCharityShop: bo
             {tabList.map((tab) => (
                 <Link href={tab.href} key={tab.href}>
                     <button
-                        className={`hover:bg-gray-50 duration-200 rounded-none text-xs md:text-sm lg:text-base px-3 lg:px-3.5 py-3 font-medium cursor-pointer border-b-2 ${pathname === tab.href ? 'border-black' : 'border-transparent'}`}>
+                        className={`hover:bg-gray-50 duration-200 rounded-none text-sm lg:text-base px-3 lg:px-3.5 py-3 font-medium cursor-pointer border-b-2 ${pathname === tab.href ? 'border-black' : 'border-transparent'}`}>
                         {tab.name}
                     </button>
                 </Link>

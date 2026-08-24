@@ -5,7 +5,8 @@ export const tagTypes = {
   favorite: "favorite",
   user_billing: "user_billing",
   orders: "orders",
-  notification: "notification"
+  notification: "notification",
+  brand: "brand",
 };
 
 export const tagTypesList = [
@@ -15,5 +16,6 @@ export const tagTypesList = [
   tagTypes.favorite,
   tagTypes.user_billing,
   tagTypes.orders,
-  tagTypes.notification
+  tagTypes.notification,
+  tagTypes.brand,
 ];

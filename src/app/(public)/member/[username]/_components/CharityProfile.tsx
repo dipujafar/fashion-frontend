@@ -1,138 +1,168 @@
-import {
-    MapPin,
-    Users,
-    Heart,
-    DollarSign,
-    BadgeCheck,
-    Globe,
-    UserPlus,
-    Clock,
-    ImageIcon,
-} from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { IUser } from "@/types";
-import { userRoleMapper } from "@/utils/userRoleMapper";
-import FolowUnFolow from "./FolowUnFolow";
-import { Button } from "@/components/ui/button";
-import { notFound } from 'next/navigation'
-import Link from "next/link";
-import { CharityDonationFormDialog } from "@/components/shared/Modal/Charity/CharityDonationFormDialog";
-import FolowerListFolowingList from "./FolowerListFolowingList";
-import moment from "moment";
-import Image from "next/image";
+import { CharityDonationFormDialog } from '@/components/shared/Modal/Charity/CharityDonationFormDialog';
+import { GetCharityAbout } from '@/lib/services/UserDetails'
+import { IUser } from '@/types';
+import { defaultImg } from '@/utils/defaultImg';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import React, { Suspense } from 'react'
 
-// const gallery = [
-//   { src: g1, caption: "Reforestation drive — 2,400 trees planted" },
-//   { src: g2, caption: "Coastal cleanup — 3 tons of debris removed" },
-//   { src: g3, caption: "Solar microgrids for rural villages" },
-//   { src: g4, caption: "Seedlings for the next generation" },
-// ];
+function CharityProfile({ userName }: { userName: string }) {
 
-async function CharityProfile({ userPromise }: { userPromise: Promise<{ data: { user: IUser, review: { _avg: { rating: number }, _count: { id: number } }, isfolowing: boolean } }> }) {
+    const user = GetCharityAbout({ userName: userName });
+
+    return (
+        <div className='mt-7 md:mt-8 lg:mt-10'>
+            <Suspense fallback={<div className="flex-center h-28 lg:h-40">
+                <span className="loaderDark !w-10"> </span>
+            </div>}>
+                <div className="grid grid-cols-1 gap-8 md:gap-12 lg:gap-16 lg:grid-cols-12">
+                    <CharityDetails userPromise={user} />
+                </div>
+            </Suspense>
+        </div>
+    )
+}
+
+export default CharityProfile;
+
+const CharityDetails = async ({ userPromise }: { userPromise: Promise<{ data: IUser }> }) => {
 
     const user = await userPromise;
 
-    const userData = user?.data?.user;
-
-    if (!userData) {
+    if (!user?.data) {
         return notFound()
     }
 
     return (
-
-        <div className="mt-5">
-            {/* Header */}
-            <section className="grid gap-5 lg:gap-10 md:grid-cols-[auto_1fr] md:items-center">
-
-                <div className="relative mx-auto md:mx-0">
-                    <Avatar className="h-36 w-36 flex-shrink-0 shadow-sm">
-                        <AvatarImage src={userData?.picture?.url} className='bg-card object-cover ring-4 ring-card shadow' />
-                        <AvatarFallback className='text-3xl capitalize font-medium'>{userData?.userName.slice(0, 2)}</AvatarFallback>
-                    </Avatar>
-                    <span className="absolute bottom-1 right-1 grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground ring-4 ring-background">
-                        <BadgeCheck className="h-5 w-5" />
-                    </span>
-                </div>
-
-                <div className="text-center md:text-left">
-                    <span className="inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.07em] text-white" style={{ backgroundColor: userRoleMapper(user?.data?.user?.auth?.role)?.color }}>
-                        {/* <Sparkles className="h-3 w-3 text-primary" />  */}
-                        {userRoleMapper(user?.data?.user?.auth?.role)?.label}
-                    </span>
-
-                    <h1
-                        className="text-3xl md:text-4xl font-semibold text-foreground mt-2">
-                        {userData?.fname} {userData?.lname}
-                    </h1>
-
-                    {/* <p className="mt-2 text-base text-foreground md:text-lg">
-                        "Small acts. Living planet."
-                    </p> */}
-
-                    {
-                        userData?.bio && <p className="mt-2 text-base text-foreground md:text-lg">
-                            {userData?.bio}
+        <>
+            {/* Left: About & Bio */}
+            <div className="lg:col-span-7 sapce-y-5 lg:space-y-8">
+                <section>
+                    <h2 className="text-xl font-semibold text-foreground mb-2">
+                        About us
+                    </h2>
+                    <div className="space-y-6 text-base leading-relaxed text-text-main/80">
+                        <p>
+                            {user?.data?.description}
                         </p>
-                    }
-
-                    <div className="mt-4 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-
-
-                        <CharityDonationFormDialog>
-                            <Button
-                                className="inline-flex items-center gap-2 rounded-full !px-5 text-sm font-semibold text-primary-foreground bg-green-700 hover:bg-green-700/80 duration-200 transition-colors cursor-pointer"
-                            >
-                                <Heart className="h-4 w-4 fill-current" /> Donate now
-                            </Button>
-                        </CharityDonationFormDialog>
-
-                        <FolowUnFolow isFolow={user?.data?.isfolowing} memberId={user?.data?.user?.id} />
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <div className="grid md:grid-cols-2 gap-8 mt-8">
-
-                {/* About Section */}
-                <div className="space-y-2 lg:space-y-2.5">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-foreground">OVERVIEW:</h2>
-
-                    <div className="space-y-2.5 lg:space-y-3">
-                        <div className="flex gap-3 items-start">
-                            <MapPin className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                            <p className="text-foreground font-medium">
-                                {[userData?.city, userData?.state, userData?.country]
-                                    .filter(Boolean)
-                                    .join(", ")}
-                            </p>
-                        </div>
-
-                        <div className="flex gap-3 items-start">
-                            <Clock className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                            <p className="text-foreground font-medium">
-                                Member since, {moment(userData?.createdAt).format('MMMM YYYY')}
-                            </p>
-                        </div>
-
-                        <div className="flex gap-3 items-start">
-                            <Globe className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                            <Link href={userData?.website || "#"} target="_blank" className="text-foreground font-medium">
-                                {userData?.website || "N/A"}
-                            </Link>
-                        </div>
-
-                        <div className="flex gap-3 items-start">
-                            <Users className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                            <FolowerListFolowingList folowers={userData?.followers} folowings={userData?.following} />
-                        </div>
+                {/* Gallery */}
+                {user?.data?.charityGalleries.length > 0 && <section>
+                    <h2 className="text-xl font-semibold text-foreground">Gallery</h2>
+                    <p className="mt-1 text-sm text-gray-700">
+                        Moments from our recent programmes on the ground.
+                    </p>
+                    <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3">
+                        {user?.data?.charityGalleries?.map((image) => (
+                            <Image
+                                src={image.url || defaultImg?.placeholderImg}
+                                key={image?.id}
+                                alt={image?.caption || `Gallery Image`}
+                                placeholder='blur'
+                                blurDataURL={defaultImg?.placeholderImg}
+                                width={1024}
+                                height={768}
+                                className="aspect-4/3 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                        ))}
                     </div>
-                </div>
+                </section>}
             </div>
 
-            {/* =============Charity Stats and Gallery can be added here======================== */}
+            {/* Right: Links & Contact */}
+            <aside className="lg:col-span-4 lg:col-start-9">
+                <div className="space-y-8 md:space-y-10 lg:space-y-12 border-t border-gray-200 pt-5 md:pt-8">
 
-        </div>
-    );
+                    <div className="rounded-2xl bg-[#0f172a] text-white p-5">
+                        <p className="text-[10px] uppercase tracking-wider text-gray-300 mb-1 font-semibold">Ready to give?</p>
+                        <p className="text-lg font-bold mb-1 leading-tight" style={{ textWrap: "pretty" }}>100% goes to this charity</p>
+                        <p className="text-[12.5px] text-white mb-4 leading-relaxed">FASHION doesn't take a cut. Donate directly from this page.</p>
+
+                        <CharityDonationFormDialog>
+                            <button className="block text-center w-full bg-[#f59e0b] hover:bg-[#d97706] text-[#0f172a] font-bold py-2.5 rounded-xl text-sm cursor-pointer">
+                                Make your donation
+                            </button>
+                        </CharityDonationFormDialog>
+                    </div>
+
+                    <div>
+                        <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-4">
+                            Connect
+                        </h2>
+                        <ul className="space-y-4">
+                            {user?.data?.website && <li>
+                                <Link
+                                    href={user?.data?.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center justify-between text-base font-medium hover:text-brand transition-colors"
+                                >
+                                    <span>Website</span>
+                                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                        → {new URL(user?.data?.website).hostname}
+                                    </span>
+                                </Link>
+                            </li>}
+                            {user?.data?.facebook && <li>
+                                <Link
+                                    href={user?.data?.facebook}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center justify-between text-base font-medium hover:text-brand transition-colors"
+                                >
+                                    <span>Facebook</span>
+                                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                        → {new URL(user?.data?.facebook).hostname}
+                                    </span>
+                                </Link>
+                            </li>}
+                            {user?.data?.instagram && <li>
+                                <Link
+                                    href={user?.data?.instagram}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center justify-between text-base font-medium hover:text-brand transition-colors"
+                                >
+                                    <span>Instagram</span>
+                                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                        → {new URL(user?.data?.instagram).hostname}
+                                    </span>
+                                </Link>
+                            </li>}
+                            {user?.data?.twitter && <li>
+                                <Link
+                                    href={user?.data?.twitter}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center justify-between text-lg font-medium hover:text-brand transition-colors"
+                                >
+                                    <span>Twitter</span>
+                                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                        → {new URL(user?.data?.twitter).hostname}
+                                    </span>
+                                </Link>
+                            </li>}
+                        </ul>
+                    </div>
+
+                    {user?.data?.support_email && <div>
+                        <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-4">
+                            Inquiries
+                        </h2>
+                        <Link
+                            href={`mailto:${user?.data?.support_email}`}
+                            className="text-lg font-medium border-b border-black/10 pb-1 hover:border-brand transition-colors"
+                        >
+                            {user?.data?.support_email}
+                        </Link>
+                    </div>}
+
+                </div>
+            </aside>
+        </>
+    )
+
 }
-
-export default CharityProfile;

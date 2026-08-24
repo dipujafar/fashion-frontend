@@ -17,11 +17,6 @@ const ShopPageContainer = async ({ prodsPromise }: { prodsPromise: Promise<{ dat
           <div>
             {/* <CategoryFilter /> */}
             <div className="flex justify-between items-center xl:mb-8 mb-4 ">
-              {/* <div className="flex gap-x-2 items-center justify-center">
-                      <RecommendedCategory></RecommendedCategory>
-                      <UserTypeCategory></UserTypeCategory>
-                    </div> */}
-
               {/* ===================================search for item ================================= */}
               <div />
 

@@ -11,9 +11,9 @@ async function SellerProducts({ params, searchParams }: { params: Promise<{ user
   const ssp = await searchParams;
 
   return (
-    <div className='space-y-8'>
+    <div className='space-y-5 lg:space-y-8'>
 
-    <SellerBundleTiers userName={username} />
+      <SellerBundleTiers userName={username} />
 
       <Suspense key={Date.now()} fallback={<ProductGridSkeleton />}>
         <ProfileFeatures userName={username} searchParams={ssp} />

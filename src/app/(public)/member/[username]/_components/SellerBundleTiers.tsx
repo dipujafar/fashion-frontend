@@ -13,10 +13,10 @@ function SellerBundleTiers({ userName }: { userName: string }) {
     }
 
     return (
-        (isSuccess && data?.data?.tiers.length > 0) && <div className="flex justify-between items-center border border-gray-200 rounded-md lg:py-4 py-2 px-5">
+        (isSuccess && data?.data?.tiers.length > 0) && <div className="flex justify-between items-center border border-gray-200 rounded lg:py-4 py-2.5 px-3">
             <div>
-                <p className="text-lg font-medium">Shop Bundles</p>
-                <p className="text-gray-600 text-sm">Get Discount</p>
+                <p className="text-base lg:text-lg font-semibold">Shop Bundles</p>
+                <p className="text-gray-600 text-xs md:text-sm">Get Discount</p>
             </div>
             <ChoiceBundleModal tiers={data?.data?.tiers || []} />
         </div>

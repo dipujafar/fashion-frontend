@@ -110,7 +110,7 @@ const useLazyLoad = <T,>({
         }
     };
 
-    const handleEntry = debounce(_handleEntry, LOAD_DELAY_MS);
+    const handleEntry = debounce(_handleEntry, state.currentPage === 1 ? 0 : LOAD_DELAY_MS);
 
     const onIntersect = useCallback(
         (entries: IntersectionObserverEntry[]) => {

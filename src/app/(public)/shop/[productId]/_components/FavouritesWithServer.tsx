@@ -14,6 +14,7 @@ type IIncludedProduct = {
 function FavouritesWithServer({ id, count, includedProduct, className, extraRevalidatePaths = [] }: { id: string, count: number, includedProduct: IIncludedProduct[], className?: string, extraRevalidatePaths?: string[] }) {
 
     const [isFavourited, setIsFavourited] = useState<boolean>(includedProduct?.length > 0);
+    const [favouriteCount, setFavouriteCount] = useState<number>(count || 0);
 
     const addFavorite = async () => {
         setIsFavourited(prev => !prev);
@@ -23,6 +24,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                 if (res?.error) {
                     toast.error(res?.error);
                 }
+                setFavouriteCount(prev => prev - 1);
             }
             catch (error: any) {
                 if (isRedirectError(error)) {
@@ -37,6 +39,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                 if (res?.error) {
                     toast.error(res?.error);
                 }
+                setFavouriteCount(prev => prev + 1);
             }
             catch (error: any) {
                 if (isRedirectError(error)) {
@@ -51,7 +54,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
         <Tooltip>
             <TooltipTrigger asChild><button onClick={addFavorite} className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm", className)}>
                 <Heart className={cn(" text-primary-red duration-500 md:size-[18px] size-4", isFavourited && "fill-primary-red")}></Heart>
-                {count > 0 && <p className="text-sm">{count}</p>}
+                {favouriteCount > 0 && <p className="text-sm">{favouriteCount}</p>}
             </button>
             </TooltipTrigger>
 
