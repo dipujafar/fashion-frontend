@@ -94,7 +94,7 @@ export const productFormDefaultValues = () => {
     donations: [{ donateToCharity: "", donationAmount: 0 }],
     durationTime: "",
     returnsPolicy: "0",
-    donation_percent : "5",
+    donation_percent: "5",
     returnDescription: "",
     allowOffers: false,
   };
@@ -131,6 +131,15 @@ export const colors = [
   { name: "Beige", hex: "#F5F5DC" },
   { name: "Pink", hex: "#FFC0CB" },
   { name: "Purple", hex: "#800080" },
+];
+
+export const conditionOptions = [
+  { value: "new", label: "New", description: "Brand new, unused, and in perfect condition." },
+  { value: "like-new", label: "Like New", description: "Gently used, well-maintained, and in excellent condition." },
+  { value: "3-months-used", label: "3 Months Used", description: "Has been used for approximately 3 months." },
+  { value: "6-months-used", label: "6 Months Used", description: "Has been used for approximately 6 months." },
+  { value: "1-year-used", label: "1 Year Used", description: "Has been used for approximately 1 year." },
+  { value: "well-used", label: "Well Used", description: "Has been used extensively but is still in good condition." },
 ];
 
 export const shippingDelivery = [

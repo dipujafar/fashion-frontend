@@ -4,7 +4,6 @@ import ProductCard from "../../Cards/ProductCard";
 import { useProductsGetByMemberMutation } from "@/redux/api/productApi";
 import { useRef } from "react";
 import useLazyLoad from "@/hooks/useLazyLoad";
-import UserProfileProductFilter from "./UserProfileProductFilter";
 import Image from "next/image";
 
 const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { query: { [key: string]: string | undefined }, userName: string, initialData: IProduct[], initialMeta: IMeta }) => {
@@ -42,9 +41,6 @@ const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { 
   return (
     <div>
 
-      {/* =========== display total items and option for product filter ======== */}
-      < UserProfileProductFilter selectedCat={query?.category} />
-
       {
         data?.length === 0 && !isLoading && <div className="py-20 md:py-24 lg:py-28">
           <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
@@ -59,7 +55,6 @@ const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { 
         ))}
 
         {hasMore && <div ref={triggerRef} style={{ height: 1 }} />}
-
       </div>
 
       {

@@ -21,9 +21,13 @@ export interface ISize {
   id: string;
   title: string;
   order: number;
-  categoryId: string;
   createdAt: string;
   updatedAt: string;
+  "UK": string
+  "US": string
+  "EU": string
+  "parentId": string | null
+  "children": ISize[]
 }
 
 export interface ICategory {
@@ -33,6 +37,7 @@ export interface ICategory {
   sizeGuide: string | null;
   createdAt: string;
   updatedAt: string;
+  children: ICategory[];
 }
 
 export type ICondition = string;
@@ -141,7 +146,7 @@ export interface IUser {
   twitter: string | null;
   tiktok: string | null;
   website: string | null;
-  support_email : string | null;
+  support_email: string | null;
   notification: boolean;
   fcmToken: string | null;
   mission: string | null;

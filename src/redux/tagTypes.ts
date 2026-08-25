@@ -7,6 +7,7 @@ export const tagTypes = {
   orders: "orders",
   notification: "notification",
   brand: "brand",
+  size: "size",
 };
 
 export const tagTypesList = [
@@ -18,4 +19,5 @@ export const tagTypesList = [
   tagTypes.orders,
   tagTypes.notification,
   tagTypes.brand,
+  tagTypes.size,
 ];
