@@ -1,16 +1,22 @@
-import { ICategory } from "@/types";
+import { IBrand, ICategory, ISize } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
-import { Category } from "@/components/shared/UserProfile/AddProduct/Categories/CategoryFilterSelector";
 
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCategory: builder.query<{ data: Category[] }, void>({
+    getCategory: builder.query<{ data: ICategory[] }, void>({
       query: () => ({
         url: "/category",
         method: "GET",
       }),
       providesTags: [tagTypes.category],
+    }),
+    getCategoryparentChain: builder.query<{ data: ICategory[] }, {}>({
+      query: (query) => ({
+        url: `/category/parent`,
+        method: "GET",
+        params: query,
+      }),
     }),
     getCategorySize: builder.query({
       query: (id) => ({
@@ -25,8 +31,21 @@ const categoryApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: [tagTypes.category],
+    }),
+    filteredAttributes: builder.query<{
+      data: {
+        category: ICategory | null,
+        sizeList: ISize[],
+        brandList: IBrand[]
+      }
+    }, {}>({
+      query: (query) => ({
+        url: `/category/filtered-attributes`,
+        method: "GET",
+        params: query,
+      }),
     })
   }),
 });
 
-export const { useGetCategoryQuery, useGetCategorySizeQuery, useGetCategoryBrandsQuery } = categoryApi;
+export const { useGetCategoryQuery, useGetCategorySizeQuery, useGetCategoryBrandsQuery, useFilteredAttributesQuery, useGetCategoryparentChainQuery } = categoryApi;

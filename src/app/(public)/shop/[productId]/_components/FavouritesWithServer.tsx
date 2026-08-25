@@ -18,7 +18,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
 
     const addFavorite = async () => {
         setIsFavourited(prev => !prev);
-        if (includedProduct?.length > 0) {
+        if (isFavourited) {
             try {
                 const res = await DeleteToFavourite({ payload: { productId: id }, extraRevalidatePaths });
                 if (res?.error) {

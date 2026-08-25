@@ -15,10 +15,11 @@ export interface Category {
 
 interface CategorySelectorProps {
   categories: Category[];
-  onSelect: (category: Category) => void;
+  onSelect: (category: Category | null) => void;
   value?: string | null;
   placeholder?: string;
-  className?: string
+  className?: string,
+  isLoading?: boolean;
 }
 
 interface FlatCategory extends Category {
@@ -45,6 +46,9 @@ function findAncestors(
   targetId: string,
   path: Category[] = []
 ): Category[] | null {
+
+  // console.log(cats, path);
+
   for (const cat of cats) {
     if (cat.id === targetId) return path;
     if (cat.children?.length) {
@@ -62,6 +66,7 @@ export default function CategoryFilterSelector({
   onSelect,
   value,
   placeholder = "Select category",
+  isLoading,
   className
 }: CategorySelectorProps) {
   const [open, setOpen] = useState(false);
@@ -72,8 +77,7 @@ export default function CategoryFilterSelector({
   const searchRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const currentLevel: Category[] =
-    stack.length === 0 ? categories : stack[stack.length - 1].children;
+  const currentLevel: Category[] = stack.length === 0 ? categories : stack[stack.length - 1].children;
 
   const allFlat = flattenCategories(categories);
   const selectedCategory = allFlat.find((c) => c.id === value) ?? null;
@@ -84,8 +88,10 @@ export default function CategoryFilterSelector({
     : [];
 
   // The parent category at the current drill level (top of stack)
-  const parentCategory: Category | null =
-    stack.length > 0 ? stack[stack.length - 1] : null;
+  const parentCategory: Category | null = stack.length > 0 ? stack[stack.length - 1] : null;
+
+  // Whether "All Categories" (i.e. no filter) is the active selection
+  const isAllSelected = value === null || value === undefined || value === "";
 
   function openPanel() {
     if (value) {
@@ -104,7 +110,7 @@ export default function CategoryFilterSelector({
     setStack([]);
   }
 
-  function handleSelect(cat: Category) {
+  function handleSelect(cat: Category | null) {
     onSelect(cat);
     closePanel();
   }
@@ -137,13 +143,16 @@ export default function CategoryFilterSelector({
     return () => document.removeEventListener("mousedown", handle);
   }, [open]);
 
-  const title =
-    stack.length === 0 ? "Category" : stack[stack.length - 1].name;
+  const title = stack.length === 0 ? "Category" : stack[stack.length - 1].name;
 
   // ── Shared inner content ──────────────────────────────────────────────────
 
   const innerContent = (isMobile: boolean) => (
     <div className="flex flex-col h-full">
+
+      {isLoading && <div className="flex-center h-24 lg:h-32">
+        <span className="loaderDark !w-10"> </span>
+      </div>}
 
       {/* Mobile header */}
       {isMobile && (
@@ -197,7 +206,7 @@ export default function CategoryFilterSelector({
             <button
               type="button"
               onClick={goBack}
-              className="p-1 rounded hover:bg-muted transition-colors"
+              className="p-1 rounded hover:bg-muted transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
@@ -229,9 +238,17 @@ export default function CategoryFilterSelector({
             {/* "All <Parent>" row — shown whenever we're inside a drill level */}
             {parentCategory && (
               <AllRow
-                parent={parentCategory}
+                label={`All ${parentCategory.name}`}
                 isSelected={value === parentCategory.id}
                 onSelect={() => handleSelect(parentCategory)}
+              />
+            )}
+
+            {!parentCategory && (
+              <AllRow
+                label="All"
+                isSelected={isAllSelected}
+                onSelect={() => handleSelect(null)}
               />
             )}
 
@@ -272,7 +289,7 @@ export default function CategoryFilterSelector({
         <>
           {/* ── MOBILE: centered dialog ── */}
           <div
-            className="md:hidden fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="md:hidden fixed inset-0 z-10 flex items-center justify-center p-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Backdrop */}
@@ -290,7 +307,7 @@ export default function CategoryFilterSelector({
           {/* ── DESKTOP: dropdown ── */}
           <div
             ref={panelRef}
-            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border shadow overflow-hidden"
+            className="hidden md:flex md:flex-col absolute z-10 mt-1 w-full min-w-[280px] bg-background border border-border shadow-md overflow-hidden"
             style={{ maxHeight: 440 }}
           >
             {innerContent(false)}
@@ -304,20 +321,20 @@ export default function CategoryFilterSelector({
 // ─── All row ──────────────────────────────────────────────────────────────────
 
 interface AllRowProps {
-  parent: Category;
+  label: string;
   isSelected: boolean;
   onSelect: () => void;
 }
 
-function AllRow({ parent, isSelected, onSelect }: AllRowProps) {
+function AllRow({ label, isSelected, onSelect }: AllRowProps) {
   return (
     <div
       onClick={onSelect}
-      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 ${isSelected ? "bg-muted" : ""
+      className={`flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 ${isSelected ? "bg-muted" : ""
         }`}
     >
       <span className="flex-1 text-muted-foreground italic">
-        All {parent.name}
+        {label}
       </span>
       <RadioCircle selected={isSelected} />
     </div>
@@ -399,11 +416,12 @@ function SearchResultRow({ cat, isSelected, onSelect, onDrill }: SearchResultRow
 
 function RadioCircle({ selected }: { selected: boolean }) {
   return (
-    <div
-      className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${selected ? "border-primary" : "border-muted-foreground/40"
-        }`}
-    >
-      {selected && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
-    </div>
+    selected ? (
+      <div className="w-4 h-4 rounded-full bg-black flex items-center justify-center shrink-0">
+        <div className="w-2 h-2 rounded-full bg-white" />
+      </div>
+    ) : (
+      <div className="w-4 h-4 rounded-full border-2 border-gray-400 shrink-0" />
+    )
   );
 }

@@ -30,6 +30,14 @@ const productApi = baseApi.injectEndpoints({
       },
     }),
 
+    getProductList: builder.mutation<{ data: { data: IProduct[], meta: IMeta } }, {}>({
+      query: (params) => ({
+        url: "/products",
+        method: "GET",
+        params,
+      }),
+    }),
+
     productsGetByMember: builder.mutation<{ data: { data: IProduct[], meta: IMeta } }, { userName: string, params: {} }>({
       query: ({ params, userName }) => ({
         url: `/products/member/${userName}`,
@@ -41,4 +49,4 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation } = productApi;

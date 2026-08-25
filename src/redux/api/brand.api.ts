@@ -9,7 +9,7 @@ const brandApi = baseApi.injectEndpoints({
       query: (query) => ({
         url: "/brands",
         method: "GET",
-        query
+        params: query,
       }),
       providesTags: [tagTypes.brand],
     }),

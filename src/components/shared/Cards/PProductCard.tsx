@@ -5,7 +5,6 @@ import { IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 const PProductCard = ({
