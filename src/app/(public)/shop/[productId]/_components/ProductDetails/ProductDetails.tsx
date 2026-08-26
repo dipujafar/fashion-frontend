@@ -29,7 +29,7 @@ export type IProductWithUser = Omit<IProduct, "user"> & {
 
 const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   return (
-    <div className="lg:my-5 space-y-3">
+    <div className="lg:my-5 space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
       <div >
         <ProductDetailsHeader product={product} />
@@ -40,7 +40,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
 
         <div>
           <DisplayLargeDescriptionText data={product?.description} />
-
+          
           <p className="flex flex-wrap gap-2 items-center ">
             {product?.tags?.map((tag, index) => (
               <Link href={`/shop?search=${tag}`} key={index} className="text-black font-semibold hover:underline duration-150 text-lg">
@@ -48,6 +48,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
               </Link>
             ))}
           </p>
+
         </div>
 
         {product?.donation_percent > 0 && <div className="flex md:gap-x-8 gap-x-4 items-center">

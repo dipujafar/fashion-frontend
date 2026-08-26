@@ -10,8 +10,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import SelectDonationOption from "./SelectDonationOption";
 import { IUser } from "@/types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // ─── Charity Select ───────────────────────────────────────────────────────────
 
@@ -40,6 +40,8 @@ function CharitySelect({
 
   const filtered = search.trim()
     ? available.filter((c) =>
+      c.fname.toLowerCase().includes(search.toLowerCase()) ||
+      c.lname.toLowerCase().includes(search.toLowerCase()) ||
       c.userName.toLowerCase().includes(search.toLowerCase())
     )
     : available;
@@ -80,7 +82,7 @@ function CharitySelect({
 
   const searchBar = (withRef = false) => (
     <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-      <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5">
+      <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2 py-2 focus-within:border-primary-black">
         <Search className="w-4 h-4 text-muted-foreground shrink-0" />
         <input
           ref={withRef ? searchRef : undefined}
@@ -88,7 +90,7 @@ function CharitySelect({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search charities..."
-          className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+          className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
         />
         {search && (
           <button type="button" onClick={() => setSearch("")}>
@@ -114,10 +116,16 @@ function CharitySelect({
             <div
               key={charity.id}
               onClick={() => handleSelect(charity)}
-              className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+              className={`flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
                 }`}
             >
-              <span className="text-base text-foreground">{charity.fname} {charity.lname}</span>
+              <div className="flex flex-row gap-x-2 items-center">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={charity.picture?.url} className='bg-card object-cover ring-4 ring-card' />
+                  <AvatarFallback className='text-sm capitalize font-medium'>{charity.fname.slice(0, 1)}</AvatarFallback>
+                </Avatar>
+                <span className="text-base text-foreground">{charity.fname} {charity.lname}</span>
+              </div>
               <div
                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${isSelected ? "border-primary" : "border-muted-foreground/40"
                   }`}
@@ -139,7 +147,7 @@ function CharitySelect({
       <button
         type="button"
         onClick={openPanel}
-        className="flex items-center justify-between w-full bg-[#f2f2f2] rounded-md px-3 md:py-3 py-2 text-base text-left focus:outline-none focus:ring-2 focus:ring-ring"
+        className="flex items-center justify-between w-full rounded px-3 md:py-2.5 py-2 text-sm text-left focus:outline-none border border-gray-200 focus:border-primary-black cursor-pointer"
       >
         <span className={selected ? "text-foreground" : "text-muted-foreground"}>
           {selected ? selected.userName : "Select charity"}
@@ -156,7 +164,7 @@ function CharitySelect({
           >
             <div className="absolute inset-0 bg-black/50" />
             <div
-              className="relative w-full max-w-sm bg-background rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+              className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
               style={{ maxHeight: "80dvh" }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -182,7 +190,7 @@ function CharitySelect({
           {/* ── DESKTOP: dropdown ── */}
           <div
             ref={panelRef}
-            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full bg-background border border-border rounded-xl shadow-lg overflow-hidden"
+            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full bg-background border border-border shadow-lg overflow-hidden"
           >
             {searchBar(true)}
             {listContent}
@@ -227,15 +235,7 @@ export default function InputCharityDonationInput({
               return (
                 <FormItem className="w-full">
                   <FormLabel className="flex ">
-                    Donate to charity
-                    {index === 0 && (
-                      <>
-                        <span className="text-xs">
-                          {" "}(Minimum 5% donation required){" "}
-                        </span>
-                        <SelectDonationOption />
-                      </>
-                    )}
+                    Charity
                   </FormLabel>
                   <FormControl>
                     <CharitySelect
@@ -255,9 +255,9 @@ export default function InputCharityDonationInput({
           {index > 0 && (
             <Button
               type="button"
-              variant="destructive"
+              variant="default"
               size="icon"
-              className="self-end -translate-y-1 cursor-pointer"
+              className="cursor-pointer bg-destructive/10 text-destructive hover:bg-destructive/20 border border-destructive/30 rounded"
               onClick={() => remove(index)}
             >
               ✕
@@ -267,14 +267,16 @@ export default function InputCharityDonationInput({
         </div>
       ))}
 
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() => append({ donateToCharity: "" })}
-        className="font-medium rounded-none border-b-2 border-r-2 border-black cursor-pointer mt-3"
-      >
-        <PlusCircle /> Add More
-      </Button>
+      <div className="col-span-1 lg:col-span-2">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => append({ donateToCharity: "" })}
+          className="border-primary-black w-auto rounded cursor-pointer"
+        >
+          <PlusCircle /> Add More
+        </Button>
+      </div>
     </>
   );
 }

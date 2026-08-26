@@ -50,10 +50,10 @@ const SellerDetails = ({ user }: { user: IUserWithExtra }) => {
               </div>
             </div>
 
-            <div
+            {/* <div
               style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }} className="px-2 rounded inline-block">
               <h6 className="text-primary-white text-sm"> {userRoleMapper(user?.auth?.role)?.label}</h6>
-            </div>
+            </div> */}
 
           </div>
 

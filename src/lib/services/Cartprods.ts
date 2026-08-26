@@ -57,3 +57,16 @@ export const getCheckoutShippingRates = async ({ cartGroupId }: { cartGroupId: s
         throw err;
     }
 };
+
+export const getBundleItemsBySeller = async (cartGroupId: string) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/${cartGroupId}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};

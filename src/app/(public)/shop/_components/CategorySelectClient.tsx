@@ -48,7 +48,7 @@ export const SelectCatBypath = ({ categoryId }: { categoryId?: string }) => {
     <Skeleton className="h-5 w-20" />
   </div>
 
-  return <div className="mt-5 space-x-2 text-black/70 mb-5">
+  return <div className="space-x-2 text-black/70">
     {data?.data?.map((cat, index) => (
       <span key={cat.id}>
         <button onClick={() => handleCategorySelect(cat)} className="text-gray-950 last:text-gray-700 underline underline-offset-2 cursor-pointer last:cursor-default last:no-underline">{cat?.name}</button>

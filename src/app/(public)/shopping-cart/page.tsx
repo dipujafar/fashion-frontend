@@ -63,6 +63,8 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
 
                         const subTotal = itemTotal - bundleDiscountAmount + totalExtraDonation;
 
+                        const haveAnyStockoutItems = cartGroup?.items?.some(item => item?.product?.stock < 1);
+
                         return <div key={cartGroup?.id} className="flex flex-col lg:flex-row items-center bg-white p-5 shadow-lg justify-start gap-3">
 
                             <div className="w-full lg:w-3/5">
@@ -102,14 +104,22 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                                 <div className="flex flex-row gap-x-2 items-start">
                                                     <Link
                                                         href={`/shop/${item?.product?.id}`}
-                                                        className="cursor-pointer"
-                                                    ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28" />
+                                                        className="cursor-pointer">
+                                                        <div className='relative'>
+                                                            <Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28 object-cover" />
+
+                                                            {item?.product?.stock < 1 && <div className="h-full w-full flex justify-center items-center absolute bottom-0 left-0">
+                                                                <span className=" text-white text-[10px] py-0.5 w-full flex items-center justify-center bg-destructive">
+                                                                    STOCK OUT
+                                                                </span>
+                                                            </div>}
+
+                                                        </div>
                                                     </Link>
                                                     <div>
                                                         <Link
                                                             href={`/shop/${item?.product?.id}`}
-                                                            className="space-y-1"
-                                                        >
+                                                            className="space-y-1">
                                                             <p className="text-lg line-clamp-1 text-gray-700">{item?.product?.title}</p>
                                                             <div className='flex flex-row items-center gap-x-2'>
                                                                 <p className="text-lg font-bold">${item?.product?.finalPrice?.toFixed(2)}</p>
@@ -158,9 +168,17 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                     <span className="font-bold text-neutral-900">${subTotal.toFixed(2)}</span>
                                 </div>
 
-                                <Link href={`/checkout/${cartGroup?.id}`}>
-                                    <Button variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout {cartGroup?.items.length} items</Button>
-                                </Link>
+                                {haveAnyStockoutItems && (
+                                    <p className="text-sm text-destructive mb-3">
+                                        Some items in your cart are out of stock. Remove them to proceed with checkout.
+                                    </p>
+                                )}
+
+                                {!haveAnyStockoutItems ? (
+                                    <Link href={`/checkout/${cartGroup?.id}`}>
+                                        <Button variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout {cartGroup?.items.length} items</Button>
+                                    </Link>
+                                ) : <Button disabled variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout {cartGroup?.items.length} items</Button>}
                             </div>
 
 

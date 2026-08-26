@@ -78,7 +78,8 @@ export interface IProduct {
   }[];
   donation_percent: number,
   user: IUser;
-  charities: ICharity[]
+  charities: ICharity[],
+  stock: number,
 }
 
 export interface ICartGroup {

@@ -1,9 +1,9 @@
 "use client";
 import * as React from "react";
-import { ChevronRight, ChevronDown, X, Menu, Grid3X3 } from "lucide-react";
+import { ChevronRight, ChevronDown, X, Grid3X3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useUpdateSearchParamsWithRedirect } from "@/hooks/useUpdateSearchParamsWithRedirct";
 import { useGetCategoryQuery } from "@/redux/api/categoryApi";
+import Link from "next/link";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -18,25 +18,28 @@ interface Category {
 
 const COLLAPSE_THRESHOLD = 6;
 
+const categoryHref = (id: string) => `/shop?category=${id}`;
+
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 /** Leaf item – no children */
 function LeafItem({
   item,
-  onSelect,
+  onNavigate,
 }: {
   item: Category;
-  onSelect: (id: string) => void;
+  onNavigate: () => void;
 }) {
   return (
-    <button
-      onClick={() => onSelect(item.id)}
+    <Link
+      href={categoryHref(item.id)}
+      onClick={onNavigate}
       className={cn(
-        "w-full text-left px-3 py-2 cursor-pointer rounded transition-colors  text-gray-600 hover:text-black hover:bg-gray-50 hover:font-medium text-base",
+        "block w-full text-left px-3 py-2 cursor-pointer rounded transition-colors text-gray-600 hover:text-black hover:bg-gray-50 hover:font-medium text-base",
       )}
     >
       {item.name}
-    </button>
+    </Link>
   );
 }
 
@@ -46,10 +49,10 @@ function LeafItem({
  */
 function CollapsibleLeafList({
   items,
-  onSelect,
+  onNavigate,
 }: {
   items: Category[];
-  onSelect: (id: string) => void;
+  onNavigate: () => void;
 }) {
 
   return (
@@ -58,7 +61,7 @@ function CollapsibleLeafList({
         <LeafItem
           key={item.id}
           item={item}
-          onSelect={onSelect}
+          onNavigate={onNavigate}
         />
       ))}
     </div>
@@ -69,11 +72,11 @@ function CollapsibleLeafList({
 function MobileAccordionItem({
   item,
   depth,
-  onSelect,
+  onNavigate,
 }: {
   item: Category;
   depth: number;
-  onSelect: (id: string) => void;
+  onNavigate: () => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const [childrenExpanded, setChildrenExpanded] = React.useState(false);
@@ -86,33 +89,39 @@ function MobileAccordionItem({
       : item.children;
   const hiddenCount = item.children.length - COLLAPSE_THRESHOLD;
 
+  const rowClassName = cn(
+    "flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors",
+    depth === 0 ? "font-semibold text-sm" : "text-sm",
+    "hover:bg-gray-100"
+  );
+  const rowStyle = { paddingLeft: `${(depth + 1) * 12}px` };
+
   return (
     <div>
-      <div
-        className={cn(
-          "flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors",
-          depth === 0 ? "font-semibold text-sm" : "text-sm",
-          "hover:bg-gray-100"
-        )}
-        style={{ paddingLeft: `${(depth + 1) * 12}px` }}
-        onClick={() => {
-          if (hasChildren) {
-            setOpen((p) => !p);
-          } else {
-            onSelect(item.id);
-          }
-        }}
-      >
-        <span>{item.name}</span>
-        {hasChildren && (
+      {hasChildren ? (
+        <div
+          className={rowClassName}
+          style={rowStyle}
+          onClick={() => setOpen((p) => !p)}
+        >
+          <span>{item.name}</span>
           <ChevronDown
             className={cn(
               "h-4 w-4 transition-transform flex-shrink-0",
               open && "rotate-180"
             )}
           />
-        )}
-      </div>
+        </div>
+      ) : (
+        <Link
+          href={categoryHref(item.id)}
+          onClick={onNavigate}
+          className={rowClassName}
+          style={rowStyle}
+        >
+          <span>{item.name}</span>
+        </Link>
+      )}
 
       {hasChildren && open && (
         <div className="mt-0.5 space-y-0.5">
@@ -121,7 +130,7 @@ function MobileAccordionItem({
               key={child.id}
               item={child}
               depth={depth + 1}
-              onSelect={onSelect}
+              onNavigate={onNavigate}
             />
           ))}
           {needsCollapse && (
@@ -155,8 +164,6 @@ export default function MegaNavigation() {
   const { data: categoryData } = useGetCategoryQuery(undefined);
   const categories: Category[] = categoryData?.data ?? [];
 
-  const updateParams = useUpdateSearchParamsWithRedirect();
-
   // Desktop state
   const [activeRootId, setActiveRootId] = React.useState<string | null>(null);
   const [hoveredL2Id, setHoveredL2Id] = React.useState<string | null>(null);
@@ -186,20 +193,13 @@ export default function MegaNavigation() {
     );
   }, [activeRoot, hoveredL2Id]);
 
-  // Navigate – set last selected id in search params
-  const handleSelect = React.useCallback(
-    (id: string) => {
-      updateParams({
-        path: "/shop",
-        params: { category: id },
-      });
-      setActiveRootId(null);
-      setHoveredL2Id(null);
-      setMobileOpen(false);
-      setMobileRootId(null);
-    },
-    [updateParams]
-  );
+  // Reset menu UI state after a Link navigation fires
+  const closeMenus = React.useCallback(() => {
+    setActiveRootId(null);
+    setHoveredL2Id(null);
+    setMobileOpen(false);
+    setMobileRootId(null);
+  }, []);
 
   const handleNavLeave = () => {
     setActiveRootId(null);
@@ -223,33 +223,49 @@ export default function MegaNavigation() {
         <nav className="bg-white border-b border-gray-200">
           <div className="flex justify-center px-6">
             <div className="flex items-center overflow-x-auto scrollbar-hide">
-              {categories.map((root) => (
-                <button
-                  key={root.id}
-                  onMouseEnter={() => {
-                    setActiveRootId(root.id);
-                    setHoveredL2Id(null);
-                  }}
-                  onClick={() => {
-                    if (root.children.length === 0) {
-                      handleSelect(root.id);
-                    } else {
-                      setActiveRootId((p) =>
-                        p === root.id ? null : root.id
-                      );
+              {categories.map((root) => {
+                const isLeaf = root.children.length === 0;
+                const className = cn(
+                  "relative px-4 py-3 text-base font-semibold whitespace-nowrap transition-colors cursor-pointer flex-shrink-0",
+                  activeRootId === root.id
+                    ? "text-black after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                    : "text-gray-600 hover:text-black"
+                );
+
+                if (isLeaf) {
+                  return (
+                    <Link
+                      key={root.id}
+                      href={categoryHref(root.id)}
+                      onMouseEnter={() => {
+                        setActiveRootId(root.id);
+                        setHoveredL2Id(null);
+                      }}
+                      onClick={closeMenus}
+                      className={className}
+                    >
+                      {root.name}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <button
+                    key={root.id}
+                    onMouseEnter={() => {
+                      setActiveRootId(root.id);
                       setHoveredL2Id(null);
-                    }
-                  }}
-                  className={cn(
-                    "relative px-4 py-3 text-base font-semibold whitespace-nowrap transition-colors cursor-pointer flex-shrink-0",
-                    activeRootId === root.id
-                      ? "text-black after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
-                      : "text-gray-600 hover:text-black"
-                  )}
-                >
-                  {root.name}
-                </button>
-              ))}
+                    }}
+                    onClick={() => {
+                      setActiveRootId((p) => (p === root.id ? null : root.id));
+                      setHoveredL2Id(null);
+                    }}
+                    className={className}
+                  >
+                    {root.name}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </nav>
@@ -261,40 +277,50 @@ export default function MegaNavigation() {
               {/* L2 sidebar */}
               <div className="w-56 border-r border-gray-100 bg-gray-50/60 py-4">
                 {/* "All" option */}
-                <button
-                  onClick={() => handleSelect(activeRoot.id)}
+                <Link
+                  href={categoryHref(activeRoot.id)}
+                  onClick={closeMenus}
                   className="w-full flex items-center gap-3 px-4 py-2 text-base font-semibold text-gray-500 hover:text-black hover:bg-white transition-colors"
                 >
                   <Grid3X3 className="h-4 w-4" />
                   <span>All</span>
-                </button>
+                </Link>
 
                 <div className="mt-1 space-y-0.5 px-2">
                   {activeRoot.children.map((l2) => {
                     const isActive =
                       hoveredL2Id === l2.id ||
                       (!hoveredL2Id && activeL2?.id === l2.id);
+                    const isLeaf = l2.children.length === 0;
+                    const className = cn(
+                      "flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-base",
+                      isActive
+                        ? "bg-white shadow-sm text-black font-semibold"
+                        : "text-gray-600 hover:bg-white hover:text-black"
+                    );
+
+                    if (isLeaf) {
+                      return (
+                        <Link
+                          key={l2.id}
+                          href={categoryHref(l2.id)}
+                          onMouseEnter={() => setHoveredL2Id(l2.id)}
+                          onClick={closeMenus}
+                          className={className}
+                        >
+                          <span>{l2.name}</span>
+                        </Link>
+                      );
+                    }
+
                     return (
                       <div
                         key={l2.id}
                         onMouseEnter={() => setHoveredL2Id(l2.id)}
-                        onClick={() => {
-                          if (l2.children.length === 0) {
-                            handleSelect(l2.id);
-                          }
-                          // if has children, just keep it expanded
-                        }}
-                        className={cn(
-                          "flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-base",
-                          isActive
-                            ? "bg-white shadow-sm text-black font-semibold"
-                            : "text-gray-600 hover:bg-white hover:text-black"
-                        )}
+                        className={className}
                       >
                         <span>{l2.name}</span>
-                        {l2.children.length > 0 && (
-                          <ChevronRight className="h-3.5 w-3.5 flex-shrink-0 opacity-50" />
-                        )}
+                        <ChevronRight className="h-3.5 w-3.5 flex-shrink-0 opacity-50" />
                       </div>
                     );
                   })}
@@ -306,65 +332,29 @@ export default function MegaNavigation() {
                 {activeL2 && activeL2.children.length > 0 ? (
                   <div>
                     {/* L2 name as section header, clickable */}
-                    <button
-                      onClick={() => handleSelect(activeL2.id)}
+                    <Link
+                      href={categoryHref(activeL2.id)}
+                      onClick={closeMenus}
                       className="text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-black mb-4 block transition-colors"
                     >
                       {activeL2.name}
-                    </button>
+                    </Link>
 
                     <CollapsibleLeafList
                       items={activeL2.children}
-                      onSelect={handleSelect}
+                      onNavigate={closeMenus}
                     />
-
-                    {/* {activeL2.children.every((c) => c.children.length === 0) ? (
-                      // All L3s are leaves — render as a single collapsible flat list
-                      <CollapsibleLeafList
-                        items={activeL2.children}
-                        onSelect={handleSelect}
-                        selectedId={selectedId}
-                      />
-                    ) : (
-                      // L3s have their own children — grid of collapsible groups
-                      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-1 items-start">
-                        {activeL2.children.map((l3) =>
-                          l3.children.length > 0 ? (
-                            <div key={l3.id} className="mb-4">
-                              <button
-                                onClick={() => handleSelect(l3.id)}
-                                className="text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-black mb-1.5 block transition-colors"
-                              >
-                                {l3.name}
-                              </button>
-                              <CollapsibleLeafList
-                                items={l3.children}
-                                onSelect={handleSelect}
-                                selectedId={selectedId}
-                              />
-                            </div>
-                          ) : (
-                            <LeafItem
-                              key={l3.id}
-                              item={l3}
-                              onSelect={handleSelect}
-                              isSelected={selectedId === l3.id}
-                            />
-                          )
-                        )}
-                      </div>
-                    )} */}
-
                   </div>
                 ) : (
                   activeL2 && (
                     <div className="flex items-start pt-2">
-                      <button
-                        onClick={() => handleSelect(activeL2.id)}
+                      <Link
+                        href={categoryHref(activeL2.id)}
+                        onClick={closeMenus}
                         className="text-sm text-gray-600 hover:text-black underline underline-offset-2 transition-colors"
                       >
                         Browse all {activeL2.name}
-                      </button>
+                      </Link>
                     </div>
                   )
                 )}
@@ -379,27 +369,41 @@ export default function MegaNavigation() {
         {/* Horizontal scroll pill tabs */}
         <div className="bg-white border-b border-gray-200">
           <div className="flex items-center gap-1 px-3 py-2 overflow-x-auto scrollbar-hide">
-            {categories.map((root) => (
-              <button
-                key={root.id}
-                onClick={() => {
-                  if (root.children.length === 0) {
-                    handleSelect(root.id);
-                  } else {
+            {categories.map((root) => {
+              const isLeaf = root.children.length === 0;
+              const className = cn(
+                "flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap border",
+                mobileRootId === root.id && mobileOpen
+                  ? "bg-black text-white border-black"
+                  : "text-gray-700 border-gray-200 hover:border-gray-400"
+              );
+
+              if (isLeaf) {
+                return (
+                  <Link
+                    key={root.id}
+                    href={categoryHref(root.id)}
+                    onClick={closeMenus}
+                    className={className}
+                  >
+                    {root.name}
+                  </Link>
+                );
+              }
+
+              return (
+                <button
+                  key={root.id}
+                  onClick={() => {
                     setMobileRootId((p) => (p === root.id ? null : root.id));
                     setMobileOpen(true);
-                  }
-                }}
-                className={cn(
-                  "flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap border",
-                  mobileRootId === root.id && mobileOpen
-                    ? "bg-black text-white border-black"
-                    : "text-gray-700 border-gray-200 hover:border-gray-400"
-                )}
-              >
-                {root.name}
-              </button>
-            ))}
+                  }}
+                  className={className}
+                >
+                  {root.name}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -423,13 +427,14 @@ export default function MegaNavigation() {
             {/* Scrollable content */}
             <div className="flex-1 overflow-y-auto">
               {/* "All" root option */}
-              <button
-                onClick={() => handleSelect(mobileRoot.id)}
+              <Link
+                href={categoryHref(mobileRoot.id)}
+                onClick={closeMenus}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 border-b border-gray-100"
               >
                 <Grid3X3 className="h-4 w-4" />
                 All {mobileRoot.name}
-              </button>
+              </Link>
 
               <div className="p-3 space-y-1">
                 {mobileRoot.children.map((child) => (
@@ -437,7 +442,7 @@ export default function MegaNavigation() {
                     key={child.id}
                     item={child}
                     depth={0}
-                    onSelect={handleSelect}
+                    onNavigate={closeMenus}
                   />
                 ))}
               </div>

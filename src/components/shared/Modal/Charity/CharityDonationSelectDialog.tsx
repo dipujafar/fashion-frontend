@@ -96,7 +96,7 @@ export function CharityDonationSelectDialog({
     };
 
     try {
-      const res = await AddToCart({ payload, extraRevalidatePaths: [tags.carts] });
+      const res = await AddToCart({ payload, extraRevalidatePaths: [`/shop/${product?.id}`] });
       if (res?.error) {
         setError(res?.error);
         return; // keep dialog open so the user can see the error

@@ -11,13 +11,13 @@ import { cn } from "@/lib/utils";
 import { IBandleTier } from "@/types";
 import Link from "next/link";
 
-export default function ChoiceBundleModal({ tiers }: { tiers: IBandleTier[] }) {
+export default function ChoiceBundleModal({ tiers, userName, btnTxt = "Create Bundle" }: { tiers: IBandleTier[]; userName: string; btnTxt?: string }) {
 
   return (
     <Dialog>
       <DialogTrigger>
         <Button className="cursor-pointer group shadow-none rounded-none">
-          Create Bundle
+          {btnTxt}
         </Button>
       </DialogTrigger>
       <DialogContent className="rounded-none">
@@ -44,7 +44,7 @@ export default function ChoiceBundleModal({ tiers }: { tiers: IBandleTier[] }) {
           ))}
         </div>
         <Link
-          href={`/build-bundle`}
+          href={`/${userName}/bundle`}
           className="w-full"
         >
           {" "}

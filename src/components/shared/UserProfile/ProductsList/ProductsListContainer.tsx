@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { query: { [key: string]: string | undefined }, userName: string, initialData: IProduct[], initialMeta: IMeta }) => {
 
-  const [loadFavoriteProds, { isLoading }] = useProductsGetByMemberMutation();
+  const [loadSellerProds, { isLoading }] = useProductsGetByMemberMutation();
   const triggerRef = useRef(null);
 
   const loadNextPage = async (page: number) => {
@@ -16,7 +16,7 @@ const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { 
 
       query.page = page.toString();
 
-      const res = await loadFavoriteProds({ params: query, userName }).unwrap();
+      const res = await loadSellerProds({ params: query, userName }).unwrap();
       const data = res?.data?.data || [];
       const meta = res?.data?.meta;
 

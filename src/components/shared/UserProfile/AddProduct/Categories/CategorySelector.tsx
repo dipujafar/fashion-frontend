@@ -169,7 +169,7 @@ export default function CategorySelector({
 
       {/* Search bar */}
       <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-        <div className="flex items-center gap-2 bg-muted rounded px-3 py-2.5">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2 py-2">
           <Search className="w-4 h-4 text-muted-foreground shrink-0" />
           <input
             ref={isMobile ? undefined : searchRef}
@@ -177,7 +177,7 @@ export default function CategorySelector({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Find a category"
-            className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+            className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           {search && (
             <button type="button" onClick={() => setSearch("")}>
@@ -300,7 +300,7 @@ function DrillRow({ cat, isSelected, onSelect, onDrill }: DrillRowProps) {
   return (
     <div
       onClick={() => (hasChildren ? onDrill?.() : onSelect())}
-      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
         }`}
     >
       <span className="flex-1  text-foreground">{cat.name}</span>
@@ -332,7 +332,7 @@ function SearchResultRow({ cat, isSelected, onSelect, onDrill }: SearchResultRow
   return (
     <div
       onClick={() => (hasChildren ? onDrill?.() : onSelect())}
-      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
         }`}
     >
       <div className="flex-1 min-w-0 pr-3">
