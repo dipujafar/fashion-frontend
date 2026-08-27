@@ -17,15 +17,17 @@ async function MoreBycategoryPage({ params }: { params: Promise<{ productId: str
     };
 
     return (
-        <div>
-            <div className='flex items-center justify-between mb-5'>
-                <h2 className='text-lg md:text-xl font-semibold'>More in {res?.data?.categoryName}</h2>
-                <Link href={`/shop?category=${res?.data?.categoryId}`}>
-                    <p className='text-base font-semibold text-primary-light-blue hover:underline'>See More</p>
-                </Link>
+       res?.data?.products.length > 0 && (
+            <div>
+                <div className='flex items-center justify-between mb-5'>
+                    <h2 className='text-lg md:text-xl font-semibold'>More in {res?.data?.categoryName}</h2>
+                    <Link href={`/shop?category=${res?.data?.categoryId}`}>
+                        <p className='text-base font-semibold text-primary-light-blue hover:underline'>See More</p>
+                    </Link>
+                </div>
+                <Listingcarousel products={res?.data?.products} isOwner={res?.data?.isOwner} />
             </div>
-            <Listingcarousel products={res?.data?.products} isOwner={res?.data?.isOwner} />
-        </div>
+        )
     )
 }
 

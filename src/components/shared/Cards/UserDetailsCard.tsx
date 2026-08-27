@@ -1,8 +1,21 @@
 import { cn } from "@/lib/utils";
-import { TUserDetails } from "@/types";
+import { defaultImg } from "@/utils/defaultImg";
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+
+interface TUserDetails {
+  _id: number,
+  id: string,
+  name: string,
+  image: string,
+  title: string,
+  features: {
+    _id: number,
+    title: string,
+    description: string[],
+  }[]
+}
 
 const UserDetailsCard = ({
   data,
@@ -19,17 +32,19 @@ const UserDetailsCard = ({
         className="w-full lg:w-1/2 rounded-lg h-fit max-h-[600px] object-cover"
         width={1200}
         height={1200}
+        placeholder="blur"
+        blurDataURL={defaultImg?.placeholderImg}
       />
       <div className="text-[#7F7F7F]">
-        <h3 className="lg:text-[40px] md:text-3xl text-xl  font-bold text-[#232323]">{data?.name}</h3>
+        <h3 className="lg:text-3xl md:text-2xl text-xl font-bold text-[#232323] mb-2">{data?.name}</h3>
         <p>{data?.title}</p>
         <p>Key Features:</p>
         <div className="px-1">
           {data?.features.map((feature, index) => (
-            <p key={index}>
+            <div className="my-2" key={index}>
               <div className="flex ">
                 <Dot />
-                <span className="flex-1">{feature?.title}</span>
+                <span className="flex-1 text-gray-700">{feature?.title}</span>
               </div>
               <div className="px-5">
                 {feature?.description.map((description, index) => (
@@ -39,7 +54,7 @@ const UserDetailsCard = ({
                   </p>
                 ))}
               </div>
-            </p>
+            </div>
           ))}
         </div>
       </div>

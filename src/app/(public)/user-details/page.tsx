@@ -4,7 +4,7 @@ import UserDetailsContainer from "./components/UserDetailsContainer";
 
 function UserDetailsPage() {
   return (
-    <Container>
+    <Container className="pt-5 lg:pt-8">
       <UserDetailsContainer />
     </Container>
   );

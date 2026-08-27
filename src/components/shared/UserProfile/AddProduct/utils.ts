@@ -6,16 +6,12 @@ type Charity = {
 };
 
 export const formattedData = (data: z.infer<typeof productFormSchema>) => {
-  const charities = data?.donations?.map((item: Charity) => ({
-    charityId: item.donateToCharity,
-    isAnonymous: data?.donationPrivacy === "anonymous",
-  }));
 
   return {
     title: data?.title,
     description: data?.productDescription,
     price: Number(data?.price),
-    discountPct: Number(data?.discountedPrice) || 0,
+    discountPct: Number(data?.discountPct) || 0,
     currency: "USD",
     brandId: data?.brandId,
     sizeId: data?.sizeId,
@@ -24,9 +20,14 @@ export const formattedData = (data: z.infer<typeof productFormSchema>) => {
     color: data?.color,
     tags: data?.tags,
     meterials: [data?.fabric],
-    care_instructions: data?.careInstructions,
-    allow_offer: data?.allowOffers,
-    return_window: Number(data?.returnsPolicy),
-    charities: charities,
+    // care_instructions: data?.careInstructions,
+    // allow_offer: data?.allowOffers,
+    // return_window: Number(data?.returnsPolicy),
+    charities: data?.charities,
+    weight_kg: Number(data?.weight_kg),
+    length_cm: Number(data?.length_cm),
+    width_cm: Number(data?.width_cm),
+    hight_cm: Number(data?.hight_cm),
+    donationPrivacy: data?.donationPrivacy === "anonymous",
   };
 };

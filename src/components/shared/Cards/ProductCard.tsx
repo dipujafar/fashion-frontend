@@ -42,18 +42,18 @@ const ProductCard = ({
         </div>
 
         {/* ===================================== product details =============================== */}
-        <div className="md:space-y-[2px] space-y-[1px]">
+        <div className="md:space-y-2 space-y-1">
 
           {/* ===================== product title ================ */}
           <Link href={`/shop/${data?.id}`} className="group">
 
             {/* ===================== product title ================ */}
-            <p className="text-primary-gray text-sm group-hover:underline underline-offset-1 duration-150 mt-1">
+            <p className="text-primary-gray text-sm group-hover:underline underline-offset-1 duration-150 mt-1 line-clamp-1">
               {data?.title}
             </p>
-            <div className='flex flex-row justify-between items-center'>
-              <p className="md:text-lg text-primary-black">{data?.brand?.name}</p>
-              <p className="md:text-lg text-primary-black">{data?.size?.title}</p>
+            <div className='flex flex-row flex-wrap justify-between items-center'>
+              <p className="md:text-base text-primary-black">{data?.brand?.name}</p>
+              <p className="md:text-base text-primary-black">{data?.size?.title}</p>
             </div>
             <div className='flex flex-row gap-x-2 items-center'>
               <p className="font-medium text-gray-600 line-through text-sm">${data?.price?.toFixed(2)}</p>

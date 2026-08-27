@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 5001",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node api.js && next dev --port 5001",
+    "build": "node api.js && next build",
+    "start": "node api.js && next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -46,6 +46,7 @@
     "embla-carousel": "^8.5.2",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "firebase": "^12.18.0",
     "framer-motion": "^12.4.10",
     "input-otp": "^1.4.2",
     "js-cookie": "^3.0.5",

@@ -1,11 +1,10 @@
 "use client"
 import BillingAddressModal from '@/app/(public)/checkout/[cartGroupId]/_components/Billing/BillingAddressModal';
-import { Button } from '@/components/ui/button';
 import { updateSellingDetails } from '@/lib/Actions/Cart.action';
 import { IBillingDetails } from '@/types';
 import React, { useState } from 'react'
 
-function UpdateSellingAddress({ defaultdata, actionBtn }: { defaultdata: IBillingDetails | null, actionBtn : React.ReactNode }) {
+function UpdateSellingAddress({ defaultdata, actionBtn, className }: { defaultdata: IBillingDetails | null, actionBtn: React.ReactNode, className?: string }) {
     const [showEditAddress, setShowEditAddress] = useState<boolean>(false);
 
     const updateAddressFn = async (data: any) => {
@@ -16,7 +15,7 @@ function UpdateSellingAddress({ defaultdata, actionBtn }: { defaultdata: IBillin
     return (
         <div>
 
-            <button onClick={() => setShowEditAddress(true)}>
+            <button type="button" className={className} onClick={() => setShowEditAddress(true)}>
                 {actionBtn}
             </button>
 

@@ -21,7 +21,6 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
-import CommonButton from "@/components/ui/common-button";
 import appleIcon from "@/assets/icons/apple.png";
 import googleIcon from "@/assets/icons/google.png";
 import Image from "next/image";
@@ -30,8 +29,7 @@ import { useLoginMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/authSlice";
-import { redirectUrl } from "./utils";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   email: z
@@ -63,17 +61,14 @@ const SIgnInForm = () => {
           setUser({
             user: jwtDecode(res?.data?.accessToken),
             accessToken: res?.data?.accessToken,
-            refreshToken : res?.data?.refreshToken
+            refreshToken: res?.data?.refreshToken
           })
         );
         toast.success("Login successful");
         if (callbackUrl)
           router.replace(callbackUrl);
-        else if (res?.data?.user?.role)
-          router.replace(redirectUrl(res?.data?.user?.role));
         else
-          router.replace("/");
-
+          router.replace("/profile");
       }
     } catch (error: any) {
       toast.error(error.data.message);
@@ -82,24 +77,12 @@ const SIgnInForm = () => {
 
   return (
     <Card
-      className="max-w-[742px] mx-auto shadow-none border-none"
-      style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
-    >
-      <CardHeader>
-        <div className="flex justify-between">
-          <Link
-            href={"/sign-up"}
-            className="flex-1 flex justify-center items-center px-2.5 py-3"
-          >
-            Sign Up
-          </Link>
+      className="max-w-lg mx-auto shadow-none border-none">
 
-          <div className="flex-1 flex justify-center items-center bg-primary-black text-primary-white px-2.5 py-3">
-            Sign In
-          </div>
-        </div>
-      </CardHeader>
       <CardContent>
+
+        <h3 className="text-3xl font-bold text-center my-5 lg:mb-8">Welcome Back</h3>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -115,7 +98,7 @@ const SIgnInForm = () => {
                     <Input
                       placeholder="Enter Your Email"
                       {...field}
-                      className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                      className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                     />
                   </FormControl>
                   <FormMessage />
@@ -134,7 +117,7 @@ const SIgnInForm = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter Your Password"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showPassword ? (
@@ -142,14 +125,14 @@ const SIgnInForm = () => {
                             onClick={() => setShowPassword(false)}
                             className="cursor-pointer"
                           >
-                            <Eye color="#A5A7A9" />
+                            <Eye color="#A5A7A9" className="size-5" />
                           </div>
                         ) : (
                           <div
                             onClick={() => setShowPassword(true)}
                             className="cursor-pointer"
                           >
-                            <EyeOff color="#A5A7A9" />
+                            <EyeOff color="#A5A7A9" className="size-5" />
                           </div>
                         )}
                       </div>
@@ -160,22 +143,15 @@ const SIgnInForm = () => {
               )}
             />
 
-            <div className="flex flex-col justify-between gap-y-3 md:flex-row">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label htmlFor="terms" className="text-secondary-gray">
-                  Remember me
-                </label>
-              </div>
-              <div></div>
+            <div>
               <Link href="/forget-password">
-                <p className="text-secondary-gray font-medium hover:text-black duration-500">Forgot Password</p>
+                <p className="text-gray-700 font-medium hover:text-black duration-500">Forgot Password</p>
               </Link>
             </div>
 
-            <CommonButton loading={isLoading} disabled={isLoading} className="w-full">SIGN IN</CommonButton>
+            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Sign In"}</Button>
 
-            <div className="flex justify-center gap-x-2">
+            <div className="flex justify-center gap-x-2 items-center">
               <p className="text-secondary-gray">Don&apos;t have an account?</p>
               <Link href={"/sign-up"}>
                 <span className="text-lg text-primary-red font-medium underline">
@@ -192,17 +168,24 @@ const SIgnInForm = () => {
           <p className="w-fit">Or, Log in with </p>
           <span className="w-16   h-[0.5px] bg-primary-gray"></span>
         </div>
-        <div className="flex items-center justify-center gap-x-3">
-          <Image
-            src={googleIcon}
-            alt="apple_icon"
-            className="size-8 cursor-pointer"
-          ></Image>
-          <Image
-            src={appleIcon}
-            alt="apple_icon"
-            className="size-8 cursor-pointer"
-          ></Image>
+        <div className="space-y-2 w-full">
+          <button className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-2.5 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer">
+            <Image
+              src={googleIcon}
+              alt="apple_icon"
+              className="size-5 cursor-pointer"
+            ></Image>
+            <p className="text-base font-medium">Continue with Google</p>
+          </button>
+          <button className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-2.5 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer">
+            <Image
+              src={appleIcon}
+              alt="apple_icon"
+              className="size-6 cursor-pointer"
+            ></Image>
+            <p className="text-base font-medium">Continue with Apple</p>
+          </button>
+
         </div>
       </CardFooter>
     </Card>

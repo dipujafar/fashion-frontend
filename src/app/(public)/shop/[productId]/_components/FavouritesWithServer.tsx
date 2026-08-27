@@ -17,7 +17,6 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
     const [favouriteCount, setFavouriteCount] = useState<number>(count || 0);
 
     const addFavorite = async () => {
-        setIsFavourited(prev => !prev);
         if (isFavourited) {
             try {
                 const res = await DeleteToFavourite({ payload: { productId: id }, extraRevalidatePaths });
@@ -48,6 +47,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                 toast.error(error?.message);
             }
         }
+        setIsFavourited(prev => !prev);
     }
 
     return (

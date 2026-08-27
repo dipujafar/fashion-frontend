@@ -1,5 +1,5 @@
 "use client";;
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,44 +14,50 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import CommonButton from "@/components/ui/common-button";
-import { PhoneInput } from "@/components/ui/PhoneInput";
-import facebook from "@/assets/icons/facebook.png";
-import instagram from "@/assets/icons/instagram.png";
-import tiktok from "@/assets/icons/tiktokIcon.png";
-import XIcon from "@/assets/icons/x-icon.png";
 import Image from "next/image";
-import { Label } from "@/components/ui/label";
-import CountryStateCitySelector from "@/components/ui/country-state-city-selector";
 import { useCreateUserMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
 import formSchema from "./SignSchema";
 import { useRouter } from "next/navigation";
-import { signUpHandler } from "@/utils/sign-up-handler-func";
 import { getFirstErrorMessage } from "@/utils/modifyFormError";
-import SignUpFormHeader from "@/components/shared/SignUpFormHeader";
-import { formattedData } from "./utils.data";
+import { Button } from "@/components/ui/button";
 
+import appleIcon from "@/assets/icons/apple.png";
+import googleIcon from "@/assets/icons/google.png";
+import { UserRole } from "@/types";
+import SocailloginFinish from "@/app/(auth)/sign-up/components/SocailloginFinish";
 
+import { GoogleAuthProvider, OAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase.init";
 
-const SignUpForm = () => {
+const SignUpForm = ({ isCharity = false }: { isCharity?: boolean }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [agree, setAgree] = useState(false);
   const [createAccount, { isLoading }] = useCreateUserMutation();
   const router = useRouter();
+
+  const [isSignupWithEmail, setIsSignupWithEmail] = useState(false);
+  const [socialLoginToken, setSocialLoginToken] = useState<{ token: string, name: string | null } | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const { register, setValue, control, formState: { errors, isSubmitting } } = form;
-
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const modifiedData = formattedData(data);
-    signUpHandler(modifiedData, createAccount, router);
+
+    try {
+      const res = await createAccount({ ...data, role: UserRole.CHARITABLE_ORGANIZATION }).unwrap();
+      if (res?.data?.otpToken) {
+        sessionStorage.setItem("verifyOtpToken", res?.data?.otpToken);
+        toast.success("Account created successfully");
+        toast.success(
+          "Please verify your email with OTP, which has been sent to your email.",
+        );
+        router.push("/verify-otp");
+      }
+    } catch (error: any) {
+      toast.error(error.data.message || "An error occurred while creating the account.");
+    }
   };
 
   const onError = (errors: any) => {
@@ -61,300 +67,191 @@ const SignUpForm = () => {
 
 
 
+  const GoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    const res = await signInWithPopup(auth, provider);
+    const { displayName, email, photoURL } = res.user;
+    const token = await res.user.getIdToken();
+
+    setSocialLoginToken({ token, name: displayName });
+
+  };
+
+  const AppleLogin = async () => {
+    const provider = new OAuthProvider("apple.com");
+
+    const result = await signInWithPopup(auth, provider);
+
+    const { displayName, email, photoURL } = result.user;
+
+    const token = await result.user.getIdToken();
+
+    setSocialLoginToken({ token, name: displayName });
+
+  };
+
   return (
     <Card
-      className="max-w-[742px] mx-auto shadow-none border-none"
-      style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
+      className="max-w-lg mx-auto shadow-none border-none"
     >
-      <CardHeader>
-        <SignUpFormHeader />
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit, onError)}
-            className="md:space-y-6 space-y-4"
-          >
-            <div className=" flex flex-col md:flex-row md:items-center  gap-4 ">
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter Your First Name"
-                          {...field}
-                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5 "
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter Your Last Name"
-                          {...field}
-                          className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5 "
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
 
-            <FormField
-              control={form.control}
-              name="userName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>User Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter Your User Name"
-                      {...field}
-                      className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5 "
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <CardContent className="space-y-4">
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter Your Email"
-                      {...field}
-                      className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className="my-4 md:my-5 lg:my-8 space-y-2">
+          <h3 className="text-2xl md:text-3xl font-bold text-center">Welcome to FASHI-ON</h3>
+          <p className="text-secondary-gray text-sm lg:text-base">Sign up to start your fashion journey. Discover styles you’ll love and make every look your own.</p>
+        </div>
 
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <PhoneInput
-                      // @ts-ignore
-                      value={field.value}
-                      onChange={field.onChange}
-                      international
-                      defaultCountry="US"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {socialLoginToken ? <SocailloginFinish socialLoginToken={socialLoginToken} role={UserRole.CHARITABLE_ORGANIZATION} isCharity={isCharity} /> : isSignupWithEmail &&
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="md:space-y-6 space-y-4">
 
-            <div>
-              <label className="text-sm font-medium mb-2">
-                Social Media Link (Optional)
-              </label>
-              <div className="grid sm:grid-cols-2  gap-4">
-                <div className="flex items-center gap-x-2">
-                  <Image
-                    src={instagram}
-                    alt="logo"
-                    className="w-[40px] h-[40px]"
-                  />
-                  <Input
-                    {...form.register(`socialMedia.${0}.instagram`)}
-                    type="text"
-                    placeholder="Enter Your Instagram Link"
-                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                  />
-                </div>
-                <div className="flex items-center gap-x-2">
-                  <Image
-                    src={facebook}
-                    alt="logo"
-                    className="w-[40px] h-[40px]"
-                  />
-                  <Input
-                    {...form.register(`socialMedia.${0}.facebook`)}
-                    type="text"
-                    placeholder="Enter Your Facebook Link"
-                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                  />
-                </div>
-                <div className="flex items-center gap-x-2">
-                  <Image src={XIcon} alt="logo" className="w-[40px] h-[40px]" />
-                  <Input
-                    {...form.register(`socialMedia.${0}.x`)}
-                    type="text"
-                    placeholder="Enter Your X Link"
-                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                  />
-                </div>
-                <div className="flex items-center gap-x-2">
-                  <Image
-                    src={tiktok}
-                    alt="logo"
-                    className="w-[40px] h-[40px]"
-                  />
-                  <Input
-                    {...form.register(`socialMedia.${0}.tiktok`)}
-                    type="text"
-                    placeholder="Enter Your Tiktok Link"
-                    className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* ________________ location ________________________ */}
-            {/* Country, State, City Selector */}
-            <div className="grid w-full  items-center gap-1.5">
-              <Label>Location</Label>
-              <CountryStateCitySelector
-                control={control}
-                setValue={setValue}
-                register={register}
-                errors={errors}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
+              <FormField
+                control={form.control}
+                name="fname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{isCharity ? "Organization Name" : "First Name"}</FormLabel>
+                    <FormControl>
                       <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter Your Password"
+                        placeholder={isCharity ? "Organization Name" : "First Name"}
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                       />
-                      <div className="absolute right-2 top-1/2 -translate-y-1/2">
-                        {showPassword ? (
-                          <div
-                            onClick={() => setShowPassword(false)}
-                            className="cursor-pointer"
-                          >
-                            <Eye color="#A5A7A9" />
-                          </div>
-                        ) : (
-                          <div
-                            onClick={() => setShowPassword(true)}
-                            className="cursor-pointer"
-                          >
-                            <EyeOff color="#A5A7A9" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm New Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Enter Your Password"
-                        {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
-                      />
-                      <div className="absolute right-2 top-1/2 -translate-y-1/2">
-                        {showConfirmPassword ? (
-                          <div
-                            onClick={() => setShowConfirmPassword(false)}
-                            className="cursor-pointer"
-                          >
-                            <Eye color="#A5A7A9" />
-                          </div>
-                        ) : (
-                          <div
-                            onClick={() => setShowConfirmPassword(true)}
-                            className="cursor-pointer"
-                          >
-                            <EyeOff color="#A5A7A9" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="terms"
-                className="border-black"
-                checked={agree}
-                onCheckedChange={() => setAgree(!agree)}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <label htmlFor="terms" className="text-secondary-gray">
-                By hitting the "Register" button, you agree to the{" "}
-                <Link
-                  href={"/terms-use"}
-                  className="text-primary-red font-medium"
-                >
-                  Terms conditions
-                </Link>{" "}
-                &{" "}
-                <Link
-                  href={"/privacy-policy"}
-                  className="text-primary-red font-medium"
-                >
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
 
-            <CommonButton loading={isLoading} disabled={!agree || isLoading} className="w-full">
-              SIGN UP
-            </CommonButton>
+              <FormField
+                control={form.control}
+                name="userName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Username"
+                        {...field}
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="flex justify-center gap-x-2">
-              <p className="text-secondary-gray">Have an account?</p>
-              <Link href={"/sign-in"}>
-                <span className="text-lg text-primary-red font-medium underline">
-                  Sign In
-                </span>
-              </Link>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Email Address"
+                        {...field}
+                        type="email"
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Strong Password"
+                          {...field}
+                          className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
+                        />
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                          {showPassword ? (
+                            <div
+                              onClick={() => setShowPassword(false)}
+                              className="cursor-pointer"
+                            >
+                              <Eye color="#A5A7A9" className="size-5" />
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => setShowPassword(true)}
+                              className="cursor-pointer">
+                              <EyeOff color="#A5A7A9" className="size-5" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Sign Up"}</Button>
+
+            </form>
+          </Form>}
+
+        {(!isSignupWithEmail && !socialLoginToken) && (
+          <Button variant={"default"} onClick={() => setIsSignupWithEmail(true)} type="button" className="rounded-full h-11 w-full cursor-pointer text-base">{"Continue With Email"}</Button>
+        )}
+
+        <div className="flex justify-center gap-x-2 items-center">
+          <p className="text-secondary-gray">Already have an account?</p>
+          <Link href={"/sign-in"}>
+            <span className="text-lg text-primary-red font-medium underline">
+              Sign In
+            </span>
+          </Link>
+        </div>
+
+        {(!isSignupWithEmail && !socialLoginToken) && (<>
+          <div className="flex  items-center justify-center w-full gap-x-2 text-primary-gray">
+            <span className="w-16 h-[0.5px] bg-primary-gray"></span>
+            <p className="w-fit">Or, Log in with </p>
+            <span className="w-16 h-[0.5px] bg-primary-gray"></span>
+          </div>
+
+          <div className="flex-col gap-y-2">
+
+            <div className="space-y-4 w-full">
+              <button onClick={GoogleLogin} type="button" className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-2.5 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer">
+                <Image
+                  src={googleIcon}
+                  alt="apple_icon"
+                  className="size-5 cursor-pointer"
+                ></Image>
+                <p className="text-base font-medium">Continue with Google</p>
+              </button>
+              <button onClick={AppleLogin} type="button" className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-2.5 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer">
+                <Image
+                  src={appleIcon}
+                  alt="apple_icon"
+                  className="size-6 cursor-pointer"
+                ></Image>
+                <p className="text-base font-medium">Continue with Apple</p>
+              </button>
+
             </div>
-          </form>
-        </Form>
+          </div>
+        </>)}
+
       </CardContent>
+
     </Card>
   );
 };

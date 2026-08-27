@@ -1,16 +1,17 @@
-import { IBandleTier, IBillingDetails, IUser } from "@/types";
+import { Addresses, IBandleTier, IBillingDetails, IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+
         getCharities: builder.query<{ data: IUser[] }, void>({
             query: () => ({
                 url: "/users/charities",
                 method: "GET",
             }),
-            providesTags: [tagTypes.user],
         }),
+
         defaultBillingDetails: builder.query<{ data: IBillingDetails | null }, void>({
             query: () => ({
                 url: "/users/billing-details",
@@ -18,6 +19,7 @@ const userApi = baseApi.injectEndpoints({
             }),
             providesTags: [tagTypes.user_billing],
         }),
+        
         updateBillingDetails: builder.mutation<{ data: IBillingDetails | null }, IBillingDetails>({
             query: (payload) => ({
                 url: "/users/billing-details",
@@ -25,6 +27,14 @@ const userApi = baseApi.injectEndpoints({
                 body: payload
             }),
             invalidatesTags: [tagTypes.user_billing],
+        }),
+
+        userAddresses: builder.query<{ data: Addresses }, void>({
+            query: () => ({
+                url: "/users/addresses",
+                method: "GET",
+            }),
+            providesTags: [tagTypes.user_billing],
         }),
 
         sellerBundleTiers: builder.query<{ data: { tiers: IBandleTier[] } }, { username: string }>({
@@ -37,4 +47,4 @@ const userApi = baseApi.injectEndpoints({
     }),
 })
 
-export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery } = userApi;
+export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery } = userApi;
