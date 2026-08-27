@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronRight, Search, X, Check, ChevronDown } from "lucide-react";
 import { Control, Controller } from "react-hook-form";
+import { ProductFormValues } from "../schema";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,9 +20,7 @@ interface BrandSelectorProps {
     /** Brands array from API */
     brands: BrandOption[];
     /** react-hook-form control */
-    control: Control<any>;
-    /** Field name in your form schema */
-    name: string;
+    control: Control<ProductFormValues>;
     /** If null, field is disabled and shows tooltip */
     selectedCategory: { id: string; name: string } | null;
     placeholder?: string;
@@ -32,7 +31,6 @@ interface BrandSelectorProps {
 export default function BrandSelector({
     brands,
     control,
-    name,
     selectedCategory,
     placeholder = "Select brand",
 }: BrandSelectorProps) {
@@ -41,7 +39,7 @@ export default function BrandSelector({
     return (
         <Controller
             control={control}
-            name={name}
+            name={"brandId"}
             render={({ field, fieldState }) => (
                 <div className="flex flex-col gap-1">
                     <BrandSelectorInner
@@ -192,7 +190,7 @@ function BrandSelectorInner({
                     type="button"
                     onClick={openPanel}
                     disabled={isDisabled}
-                    className={`flex items-center justify-between w-full bg-white border border-gray-200 rounded focus-within:border-primary-black px-3 md:py-3 py-2 text-sm text-left focus:outline-none transition-opacity cursor-pointer ${isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    className={`flex items-center justify-between w-full bg-white border border-gray-200 rounded focus-within:border-primary-black px-3 md:py-3 py-2 text-sm text-left focus:outline-none transition-opacity cursor-pointer ${isDisabled ? "opacity-80 bg-zinc-50 cursor-not-allowed" : ""
                         }`}
                 >
                     <span className={selectedBrand ? "text-foreground" : "text-muted-foreground"}>

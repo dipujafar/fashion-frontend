@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { PlusCircle, Search, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Search, X, ChevronDown } from "lucide-react";
 import {
   FormControl,
   FormField,
@@ -10,41 +9,36 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { IUser } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-// ─── Charity Select ───────────────────────────────────────────────────────────
+// ─── Charity Multi Select ──────────────────────────────────────────────────
 
-function CharitySelect({
+function CharityMultiSelect({
   charities,
   value,
   onChange,
-  selectedIds = [],
 }: {
   charities: IUser[];
-  value: string;
-  onChange: (id: string) => void;
-  selectedIds?: string[];
+  value: string[];
+  onChange: (ids: string[]) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const selected = charities.find((c) => c.id === value);
-
-  // Exclude charities already selected in other rows; keep own value selectable
-  const available = charities.filter(
-    (c) => c.id === value || !selectedIds.includes(c.id)
-  );
+  const selectedCharities = charities.filter((c) => value.includes(c.id));
 
   const filtered = search.trim()
-    ? available.filter((c) =>
-      c.fname.toLowerCase().includes(search.toLowerCase()) ||
-      c.lname.toLowerCase().includes(search.toLowerCase()) ||
-      c.userName.toLowerCase().includes(search.toLowerCase())
+    ? charities.filter(
+      (c) =>
+        c.fname.toLowerCase().includes(search.toLowerCase()) ||
+        c.lname.toLowerCase().includes(search.toLowerCase()) ||
+        c.userName.toLowerCase().includes(search.toLowerCase())
     )
-    : available;
+    : charities;
 
   function openPanel() {
     setSearch("");
@@ -56,9 +50,13 @@ function CharitySelect({
     setSearch("");
   }
 
-  function handleSelect(charity: IUser) {
-    onChange(charity.id);
-    closePanel();
+  function toggle(charity: IUser) {
+    const isChecked = value.includes(charity.id);
+    if (isChecked) {
+      onChange(value.filter((id) => id !== charity.id));
+    } else {
+      onChange([...value, charity.id]);
+    }
   }
 
   useEffect(() => {
@@ -111,35 +109,47 @@ function CharitySelect({
         </p>
       ) : (
         filtered.map((charity) => {
-          const isSelected = value === charity.id;
+          const isChecked = value.includes(charity.id);
           return (
             <div
               key={charity.id}
-              onClick={() => handleSelect(charity)}
-              className={`flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+              onClick={() => toggle(charity)}
+              className={`flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isChecked ? "bg-muted" : ""
                 }`}
             >
               <div className="flex flex-row gap-x-2 items-center">
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={charity.picture?.url} className='bg-card object-cover ring-4 ring-card' />
-                  <AvatarFallback className='text-sm capitalize font-medium'>{charity.fname.slice(0, 1)}</AvatarFallback>
+                  <AvatarImage
+                    src={charity.picture?.url}
+                    className="bg-card object-cover ring-4 ring-card"
+                  />
+                  <AvatarFallback className="text-sm capitalize font-medium">
+                    {charity.fname.slice(0, 1)}
+                  </AvatarFallback>
                 </Avatar>
-                <span className="text-base text-foreground">{charity.fname} {charity.lname}</span>
+                <span className="text-base text-foreground">
+                  {charity.fname} {charity.lname}
+                </span>
               </div>
-              <div
-                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${isSelected ? "border-primary" : "border-muted-foreground/40"
-                  }`}
-              >
-                {isSelected && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                )}
-              </div>
+              <Checkbox
+                checked={isChecked}
+                onCheckedChange={() => toggle(charity)}
+                onClick={(e) => e.stopPropagation()}
+                className="rounded-xs border-gray-500 data-[state=checked]:text-white shrink-0 ml-2"
+              />
             </div>
           );
         })
       )}
     </div>
   );
+
+  const triggerLabel =
+    selectedCharities.length === 0
+      ? "Select charities"
+      : selectedCharities.length === 1
+        ? `${selectedCharities[0].fname} ${selectedCharities[0].lname}`
+        : `${selectedCharities.length} charities selected`;
 
   return (
     <div className="relative w-full">
@@ -149,8 +159,12 @@ function CharitySelect({
         onClick={openPanel}
         className="flex items-center justify-between w-full rounded px-3 md:py-2.5 py-2 text-sm text-left focus:outline-none border border-gray-200 focus:border-primary-black cursor-pointer"
       >
-        <span className={selected ? "text-foreground" : "text-muted-foreground"}>
-          {selected ? selected.userName : "Select charity"}
+        <span
+          className={
+            selectedCharities.length ? "text-foreground" : "text-muted-foreground"
+          }
+        >
+          {triggerLabel}
         </span>
         <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
       </button>
@@ -162,7 +176,7 @@ function CharitySelect({
             className="md:hidden fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/50" onClick={closePanel} />
             <div
               className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
               style={{ maxHeight: "80dvh" }}
@@ -172,7 +186,7 @@ function CharitySelect({
               <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
                 <div className="w-7" />
                 <span className="font-semibold text-base text-foreground">
-                  Select Charity
+                  Select Charities
                 </span>
                 <button
                   type="button"
@@ -184,6 +198,15 @@ function CharitySelect({
               </div>
               {searchBar()}
               {listContent}
+              <div className="px-4 py-3 border-t border-border shrink-0">
+                <button
+                  type="button"
+                  onClick={closePanel}
+                  className="w-full rounded bg-primary-black text-white text-sm py-2"
+                >
+                  Done
+                </button>
+              </div>
             </div>
           </div>
 
@@ -201,82 +224,35 @@ function CharitySelect({
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
+// ─── Main component ─────────────────────────────────────────────────────────
 
 export default function InputCharityDonationInput({
   form,
-  fields,
-  append,
-  remove,
+  name = "charities",
   charities,
 }: {
   form: any;
-  fields: any[];
-  append: (value: any) => void;
-  remove: (index: number) => void;
+  /** Name of the form field holding the array of selected charity ids */
+  name?: string;
   charities: IUser[];
 }) {
   return (
-    <>
-      {fields.map((field: any, index: number) => (
-        <div key={field.id} className="flex flex-row gap-x-3 items-center">
-
-          {/* Charity Select */}
-          <FormField
-            control={form.control}
-            name={`donations.${index}.donateToCharity`}
-            render={({ field }) => {
-              // Collect all selected charity IDs across all rows
-              const allSelected: string[] = form
-                .getValues("charities")
-                ?.map((c: any) => c.donateToCharity)
-                .filter(Boolean) ?? [];
-
-              return (
-                <FormItem className="w-full">
-                  <FormLabel className="flex ">
-                    Charity
-                  </FormLabel>
-                  <FormControl>
-                    <CharitySelect
-                      charities={charities}
-                      value={field.value}
-                      onChange={field.onChange}
-                      selectedIds={allSelected}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-
-          {/* Donation Percent */}
-          {index > 0 && (
-            <Button
-              type="button"
-              variant="default"
-              size="icon"
-              className="cursor-pointer bg-destructive/10 text-destructive hover:bg-destructive/20 border border-destructive/30 rounded"
-              onClick={() => remove(index)}
-            >
-              ✕
-            </Button>
-          )}
-
-        </div>
-      ))}
-
-      <div className="col-span-1 lg:col-span-2">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => append({ donateToCharity: "" })}
-          className="border-primary-black w-auto rounded cursor-pointer"
-        >
-          <PlusCircle /> Add More
-        </Button>
-      </div>
-    </>
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="w-full">
+          <FormLabel>Charity</FormLabel>
+          <FormControl>
+            <CharityMultiSelect
+              charities={charities}
+              value={field.value ?? []}
+              onChange={field.onChange}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 }

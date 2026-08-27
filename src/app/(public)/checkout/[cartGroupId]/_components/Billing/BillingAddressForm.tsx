@@ -24,6 +24,8 @@ import { updateShippingDetails } from "@/lib/Actions/Cart.action";
 import { useAppDispatch } from "@/redux/hooks";
 import { clearCart } from "@/redux/features/cart.slice";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { baseApi } from "@/redux/api/baseApi";
+import { tagTypes } from "@/redux/tagTypes";
 
 const GOOGLE_MAPS_API_KEY = EnvConfig.MAP_KEY!
 
@@ -95,6 +97,8 @@ export default function BillingAddressForm(
       await updateAddressFn(body);
       toast.success("Address updated successfully")
       dispatch(clearCart());
+      dispatch(baseApi.util.invalidateTags([tagTypes.user_billing]));
+
       onOpenChange(false);
     } catch (error: any) {
       if (isRedirectError(error)) {
@@ -109,7 +113,7 @@ export default function BillingAddressForm(
   return (
     <LoadScriptNext googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={["places"]}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form className="space-y-6">
           {/* First Name and Last Name */}
           <div>
             <FormField
@@ -249,7 +253,7 @@ export default function BillingAddressForm(
           )}
 
           <div className="flex gap-4">
-            <Button size={"lg"} type="submit" disabled={isLoading} className="flex-1 group cursor-pointer rounded-none py-6 text-base font-semibold">
+            <Button size={"lg"} type="button" onClick={form.handleSubmit(onSubmit)} disabled={isLoading} className="flex-1 group cursor-pointer rounded-none py-6 text-base font-semibold">
               {isLoading ? <span className="loader" /> : "Save Changes"}
               {/* <AnimatedArrow /> */}
             </Button>

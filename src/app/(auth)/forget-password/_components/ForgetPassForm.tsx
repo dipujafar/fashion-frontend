@@ -16,6 +16,7 @@ import CommonButton from "@/components/ui/common-button";
 import { useRouter } from "next/navigation";
 import { useForgotPasswordMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   email: z
@@ -47,10 +48,16 @@ const ForgetPassForm = () => {
 
   return (
     <Card
-      className="max-w-[742px] mx-auto shadow-none border-none"
-      style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
+      className="max-w-lg mx-auto shadow-none border-none"
     >
+
       <CardContent>
+
+        <div className="my-8 space-y-2">
+          <h3 className="text-3xl font-bold text-center">Forgot Your Password?</h3>
+          <p className="text-secondary-gray">Enter the email address associated with your account and we'll send you a link to reset your password.</p>
+        </div>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -66,7 +73,7 @@ const ForgetPassForm = () => {
                     <Input
                       placeholder="Enter Your Email"
                       {...field}
-                      className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                      className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                     />
                   </FormControl>
                   <FormMessage />
@@ -74,7 +81,7 @@ const ForgetPassForm = () => {
               )}
             />
 
-            <CommonButton loading={isLoading} className="w-full">Send</CommonButton>
+            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Submit"}</Button>
           </form>
         </Form>
       </CardContent>

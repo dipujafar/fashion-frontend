@@ -40,7 +40,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
 
         <div>
           <DisplayLargeDescriptionText data={product?.description} />
-          
+
           <p className="flex flex-wrap gap-2 items-center ">
             {product?.tags?.map((tag, index) => (
               <Link href={`/shop?search=${tag}`} key={index} className="text-black font-semibold hover:underline duration-150 text-lg">
@@ -100,15 +100,15 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
           <p>{productDetails?.care_Instruction}</p>
         </div> */}
         {/* =============== Shipping & Delivery =============== */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Shipping & Delivery:</h2>
           <p>UK Standard Shipping (3–5 working days)</p>
-        </div>
+        </div> */}
         {/* =============== Returns Policy =============== */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Returns Policy:</h2>
           <p>Returns accepted – {product?.return_window} days </p>
-        </div>
+        </div> */}
         {/* ======== alert section ============= */}
         <div className="flex gap-x-2 bg-primary-green/10 px-2 py-1 w-fit rounded">
           <CheckIcon />

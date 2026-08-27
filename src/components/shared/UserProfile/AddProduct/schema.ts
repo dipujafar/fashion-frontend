@@ -7,7 +7,7 @@ export const productFormSchema = z.object({
   price: z.string({ required_error: "Price is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: "Price must be a valid positive number.",
   }),
-  discountedPrice: z.string().refine(
+  discountPct: z.string().refine(
     (val) => {
       const num = Number(val);
       return !isNaN(num) && num >= 0 && num <= 100;
@@ -42,62 +42,81 @@ export const productFormSchema = z.object({
   color: z.string().min(1, {
     message: "Please select colors.",
   }),
-  careInstructions: z.array(z.string()).optional(),
+  // careInstructions: z.array(z.string()).optional(),
 
-  donations: z.array(
-    z.object({
-      donateToCharity: z.string().min(1, "Please select a charity"),
-    }),
-  ),
+  charities: z
+    .array(z.string().min(1, "Charity id cannot be empty"))
+    .min(1, "Please select at least one charity"),
 
   donation_percent: z.string({ required_error: "Donation Percent is required." }).min(1, {
-    message: "RDonation Percent is required.",
+    message: "Donation Percent is required.",
   }),
 
   donationPrivacy: z.enum(["anonymous", "show-name"], {
     required_error: "Please select donation privacy preference.",
   }),
-  donateToCharity2: z.string().optional(),
-  donationAmount2: z.string().optional(),
+  // donateToCharity2: z.string().optional(),
+  // donationAmount2: z.string().optional(),
   productDescription: z.string().min(1, {
     message: "Product description is required.",
   }),
-  shippingDelivery: z.string({ required_error: "Shipping & returns information is required." }).min(1, {
-    message: "Shipping & returns information is required.",
+  // shippingDelivery: z.string({ required_error: "Shipping & returns information is required." }).min(1, {
+  //   message: "Shipping & returns information is required.",
+  // }),
+  // returnsPolicy: z.string({ required_error: "Returns policy is required." }).min(1, {
+  //   message: "Returns policy is required.",
+  // }),
+  // allowOffers: z.boolean().default(false),
+
+  weight_kg: z.string({ required_error: "Weight is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: "Weight must be a valid positive number.",
   }),
-  returnsPolicy: z.string({ required_error: "Returns policy is required." }).min(1, {
-    message: "Returns policy is required.",
+
+  length_cm: z.string({ required_error: "Length is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: "Length must be a valid positive number.",
   }),
-  allowOffers: z.boolean().default(false),
+
+  width_cm: z.string({ required_error: "Width is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: "Width must be a valid positive number.",
+  }),
+
+  hight_cm: z.string({ required_error: "Height is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: "Height must be a valid positive number.",
+  }),
+
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 
-export const productFormDefaultValues = () => {
-  return {
-    title: "",
-    price: "",
-    discountedPrice: "0",
-    // itemNumber: "",
-    category: "",
-    tags: [],
-    condition: "",
-    fabric: "",
-    brand: "",
-    availableSizes: "",
-    color: "",
-    careInstructions: [],
-    donationPrivacy: undefined,
-    productDescription: "",
-    deliveryPolicy: "",
-    shippingDelivery: "",
-    donations: [{ donateToCharity: "", donationAmount: 0 }],
-    durationTime: "",
-    returnsPolicy: "0",
-    donation_percent: "5",
-    returnDescription: "",
-    allowOffers: false,
-  };
+export const productFormDefaultValues: ProductFormValues = {
+  title: "",
+  price: "",
+  discountPct: "0",
+  // itemNumber: "",
+  categoryId: "",
+  tags: [],
+  condition: "",
+  fabric: "",
+  brandId: "",
+  sizeId: "",
+  color: "",
+  // careInstructions: [],
+  donationPrivacy: "anonymous",
+  productDescription: "",
+  // deliveryPolicy: "",
+  // shippingDelivery: "",
+  charities: [],
+  donation_percent: "5",
+
+  hight_cm: "",
+  length_cm: "",
+  width_cm: "",
+  weight_kg: "",
+
+  // durationTime: "",
+  // returnsPolicy: "0",
+  // returnDescription: "",
+  // allowOffers: false,
 };
 
 // color data

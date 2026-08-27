@@ -77,7 +77,6 @@ async function ProdDetailsPage({ params }: { params: Promise<{ productId: string
     return (
         <div>
             <SingleProductDetails product={detail} />
-
         </div>
     )
 }

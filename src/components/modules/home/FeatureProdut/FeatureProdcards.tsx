@@ -30,7 +30,7 @@ function FeatureProdcards({ productsData }: { productsData: IProduct[] }) {
         whileInView="animate"
         variants={fadeUpVariants as any}
         viewport={{ once: true }}
-        className="grid grid-cols-2 md:grid-cols-3     2xl:grid-cols-4  md:gap-4 gap-x-2 gap-y-4 xl:gap-6 "
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
       >
         {productsData?.slice(0, 8).map((prod) => (
           <motion.div variants={fadeUpWithBlurVariants as any} key={prod.id}>

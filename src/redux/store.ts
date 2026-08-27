@@ -11,7 +11,7 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import authSlice from "../redux/features/authSlice";
-import cartSlice from "../redux/features/cart.slice";
+// import cartSlice from "../redux/features/cart.slice";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { baseApi } from "./api/baseApi";
 
@@ -52,7 +52,7 @@ export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
-    cart: cartSlice,
+    // cart: cartSlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

@@ -1,5 +1,4 @@
 import AboutUsSection from "./AboutUsSection";
-import BlogsUpdate from "./BlogsUpdate";
 import ClothesSection from "./ClothesSection/ClothesSection";
 import FeatureProduct from "./FeatureProdut/FeatureProduct";
 import UserAvatar from "./UserAvatatTitle/UserAvatar";
@@ -80,9 +79,6 @@ const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string
 
         </div>
       </Container>
-
-
-      <BlogsUpdate></BlogsUpdate>
 
       {/* ==================Recommende============= */}
       <Container>

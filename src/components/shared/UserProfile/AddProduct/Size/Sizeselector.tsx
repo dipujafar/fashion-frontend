@@ -2,16 +2,16 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Search, X, ChevronDown } from "lucide-react";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldPath } from "react-hook-form";
 import { ISize } from "@/types";
+import { ProductFormValues } from "../schema";
 
 interface SizeSelectorProps {
     /** Sizes array from API */
     sizes: ISize[];
     /** react-hook-form control */
-    control: Control<any>;
+    control: Control<ProductFormValues>;
     /** Field name in your form schema */
-    name: string;
     /** If null, field is disabled and shows tooltip */
     selectedCategory: { id: string; name: string } | null;
     placeholder?: string;
@@ -22,7 +22,6 @@ interface SizeSelectorProps {
 export default function SizeSelector({
     sizes,
     control,
-    name,
     selectedCategory,
     placeholder = "Select size",
 }: SizeSelectorProps) {
@@ -31,7 +30,7 @@ export default function SizeSelector({
     return (
         <Controller
             control={control}
-            name={name}
+            name={"sizeId"}
             render={({ field, fieldState }) => (
                 <div className="flex flex-col gap-1">
                     <SizeSelectorInner
@@ -182,7 +181,7 @@ function SizeSelectorInner({
                     type="button"
                     onClick={openPanel}
                     disabled={isDisabled}
-                    className={`flex items-center justify-between w-full bg-white rounded border border-gray-200 focus:border-primary-black px-3 md:py-3 py-2 text-sm text-left focus:outline-none transition-opacity cursor-pointer ${isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    className={`flex items-center justify-between w-full bg-white rounded border border-gray-200 focus:border-primary-black px-3 md:py-3 py-2 text-sm text-left focus:outline-none transition-opacity cursor-pointer ${isDisabled ? "opacity-80 bg-zinc-50 cursor-not-allowed" : ""
                         }`}
                 >
                     <span className={selectedSize ? "text-foreground" : "text-muted-foreground"}>

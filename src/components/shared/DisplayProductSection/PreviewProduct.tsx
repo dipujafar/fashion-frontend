@@ -30,7 +30,8 @@ const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
         {productData?.slice(0, 8)?.map((data) => (
           <CarouselItem
             key={data?.id}
-            className="basis-1/2  md:basis-1/3 xl:basis-1/5 "
+            // grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4
+            className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6"
           >
             <Link href={`/shop/${data?.id}`}>
               <ProductImageCard data={{ image: data?.images[0]?.url }} />

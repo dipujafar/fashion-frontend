@@ -1,5 +1,5 @@
 "use client"
-import { Addresses, IBillingDetails } from '@/types';
+import { Addresses } from '@/types';
 import { Pencil } from 'lucide-react';
 import React, { useState } from 'react'
 import BillingAddressModal from './BillingAddressModal';

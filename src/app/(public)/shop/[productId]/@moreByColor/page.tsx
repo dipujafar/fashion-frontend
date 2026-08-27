@@ -16,7 +16,7 @@ async function MoreByColorPage({ params }: { params: Promise<{ productId: string
     };
 
     return (
-        <div>
+       res?.data?.products.length > 0 && <div>
             <div className='flex items-center justify-between mb-5'>
                 <h2 className='text-lg md:text-xl font-semibold'>More in {res?.data?.color} Color</h2>
                 <Link href={`/shop?color=${res?.data?.color}`}>
