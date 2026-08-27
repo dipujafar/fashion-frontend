@@ -2,8 +2,8 @@
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useState, useCallback } from "react";
-import { X, Plus, Camera } from "lucide-react";
+import { useState } from "react";
+import { X, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,25 +22,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import Link from "next/link";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import {
   colors,
+  conditionOptions,
   productFormDefaultValues,
   productFormSchema,
   ProductFormValues,
-  returnsPolicy,
-  shippingDelivery,
 } from "./schema";
 import { ImageUploadGuide } from "./ImageUploadGuide";
 import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
-import { CareInstructionsField } from "./FormComponent/CareInstructionsField";
-import { useRouter, useSearchParams } from "next/navigation";
 import InputCharityDonationInput from "./InputCharityDonationInput";
-import { useGetCategoryBrandsQuery, useGetCategoryQuery, useGetCategorySizeQuery } from "@/redux/api/categoryApi";
+import { useGetCategoryQuery } from "@/redux/api/categoryApi";
 import CategorySelector, { Category } from "./Categories/CategorySelector";
 import SizeSelector from "./Size/Sizeselector";
 import BrandSelector from "./Brand/Brandselector";
@@ -48,9 +42,17 @@ import { getFirstErrorMessage } from "@/utils/modifyFormError";
 import { toast } from "sonner";
 import { useGetCharitiesQuery } from "@/redux/api/userApi";
 import { formattedData } from "./utils";
-import { useCreateProductMutation } from "@/redux/api/productApi";
-import LoadingSpin from "@/components/ui/loading-spin";
 import Image from "next/image";
+import { useGetSizesQuery } from "@/redux/api/size.api";
+import { useGetBrandsQuery } from "@/redux/api/brand.api";
+
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+import { AddNewProduct } from "@/lib/Actions/Product.api";
+import UpdateShippingAddress from "./UpdateShippingAddress";
 
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
@@ -58,36 +60,30 @@ const INPUT_ID = "photo-uploader-input";
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
-  const fromEditPage = useSearchParams().get("edit");
-  const router = useRouter();
+
   // ======================= category ===========================
   const { data: categoriesData } = useGetCategoryQuery(undefined);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   // ======================= category size ===========================
-  const { data: sizeData } = useGetCategorySizeQuery(selectedCategory?.id, {
+  const { data: sizeData } = useGetSizesQuery({ categoryId: selectedCategory?.id }, {
     skip: !selectedCategory
   });
   // ======================= category brand ===========================
-  const { data: brandData } = useGetCategoryBrandsQuery(selectedCategory?.id, {
+  const { data: brandData } = useGetBrandsQuery({ categoryId: selectedCategory?.id }, {
     skip: !selectedCategory
   });
   // =============================== get charities =============================
   const { data: charitiesData } = useGetCharitiesQuery();
   // =============================== product api ==============================
-  const [uploadProduct, { isLoading }] = useCreateProductMutation();
+  // const [uploadProduct, { isLoading }] = useCreateProductMutation();
 
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
-    defaultValues: productFormDefaultValues(),
+    defaultValues: productFormDefaultValues,
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "donations",
-  });
-
-
+  const { isSubmitting: isLoading } = form.formState;
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const incoming = Array.from(e.target.files || []).filter(
@@ -109,7 +105,6 @@ export default function AddProductForm() {
 
   const boxes = Array.from({ length: 8 });
 
-
   // ====================================== set selected category data ============================
   function handleCategorySelect(cat: Category) {
     setSelectedCategory(cat);
@@ -122,6 +117,8 @@ export default function AddProductForm() {
 
   // ===================================== submitting error ===============================
   const onError = (errors: any) => {
+
+    console.log(errors);
     const firstErrorMessage = getFirstErrorMessage(errors);
     toast.error(firstErrorMessage);
   };
@@ -140,15 +137,19 @@ export default function AddProductForm() {
 
       formData.append("data", JSON.stringify(formattedValues));
       try {
-        await uploadProduct(formData).unwrap();
+        await AddNewProduct({ payload: formData });
         form.reset();
         toast.success("Product uploaded successfully!");
+        setImages([]);
         // router.push("/")
       } catch (error: any) {
-        toast.error(error?.data?.message);
+        toast.error(error?.message || "An error occurred while uploading the product.");
       }
     }
   }
+
+  const price = Number(form.watch("price"));
+  const discountPct = Number(form.watch("discountPct")) || 0;
 
 
   return (
@@ -273,34 +274,32 @@ export default function AddProductForm() {
 
 
             {/* ========================================== product category ================================ */}
-            <div>
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <CategorySelector
-                        categories={categories}
-                        value={selectedCategory?.id}
-                        onSelect={handleCategorySelect}
-                        placeholder="Select category"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <FormControl>
+                    <CategorySelector
+                      categories={categories}
+                      value={selectedCategory?.id}
+                      onSelect={handleCategorySelect}
+                      placeholder="Select category"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
 
             {/* ========================================= product brand and size ================================ */}
-            <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4")}>
+            <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4 items-start")}>
               <FormItem>
                 <FormLabel>Size</FormLabel>
                 <SizeSelector
                   control={form.control}
-                  name="sizeId"
                   sizes={sizes}
                   selectedCategory={selectedCategory}  // null = disabled
                   placeholder="Select size"
@@ -311,17 +310,15 @@ export default function AddProductForm() {
                 <FormLabel>Brand</FormLabel>
                 <BrandSelector
                   control={form.control}
-                  name="brandId"
                   brands={brands}
                   selectedCategory={selectedCategory}
                   placeholder="Select brand"
                 />
               </FormItem>
-
             </div>
 
+            <div className="grid grid-cols-2 md:gap-x-4 gap-x-2 items-start">
 
-            <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
               <FormField
                 control={form.control}
                 name="tags"
@@ -339,6 +336,7 @@ export default function AddProductForm() {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="fabric"
@@ -359,7 +357,7 @@ export default function AddProductForm() {
             </div>
 
 
-            <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-4">
               <FormField
                 control={form.control}
                 name="color"
@@ -378,13 +376,13 @@ export default function AddProductForm() {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full">
+                        <SelectTrigger className="bg-white border-gray-200 rounded shadow-none focus-visible:border-primary-black focus-visible:ring-0 focus:ring-0 focus:border focus-within:border-primary-black text-base py-5 px-3 w-full cursor-pointer">
                           <SelectValue placeholder="Select a color" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="max-h-[400px]">
+                      <SelectContent className="max-h-[400px] !rounded-none !p-0">
                         {colors.map((color) => (
-                          <SelectItem key={color.name} value={color.name}>
+                          <SelectItem key={color.name} value={color.name} className="cursor-pointer">
                             <div className="flex items-center gap-2">
                               <div
                                 className="size-5 rounded-full border border-border "
@@ -438,23 +436,7 @@ export default function AddProductForm() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="careInstructions"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Care Instructions</FormLabel>
-                    <FormControl className="border border-blue-500 w-full">
-                      <CareInstructionsField field={field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* ======================================== condition input ============================================== */}
-            <div>
+              {/* ======================================== condition input ============================================== */}
               <FormField
                 control={form.control}
                 name="condition"
@@ -466,24 +448,21 @@ export default function AddProductForm() {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full">
+                        <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer focus-within:border-primary-black">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="new">New</SelectItem>
-                        <SelectItem value="like-new">Like New</SelectItem>
-                        <SelectItem value="3-months-used">
-                          3 Months Used
-                        </SelectItem>
-                        <SelectItem value="6-months-used">
-                          6 Months Used
-                        </SelectItem>
-                        <SelectItem value="1-year-used">
-                          1 Year Used
-                        </SelectItem>
-                        <SelectItem value="well-used">Well Used</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                      <SelectContent className="p-0 rounded-none">
+
+                        {conditionOptions.map((option) => (
+                          <SelectItem
+                            className="rounded-none cursor-pointer py-2.5 px-3 text-base"
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -492,139 +471,252 @@ export default function AddProductForm() {
               />
             </div>
 
-          </div>
 
-          <div className="space-y-4">
-            <div>
-              <p className="text-lg lg:text-2xl font-bold text-gray-900">
-                Donation
-              </p>
+            <div className="space-y-4 mt-12">
+              <div>
+                <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
 
+                <>
+                  <span className="text-xs">
+                    (Minimum 5% donation required)
+                  </span>
+                  {/* <SelectDonationOption /> */}
+                </>
+              </div>
 
-              <>
-                <span className="text-xs">
-                  (Minimum 5% donation required)
-                </span>
-                {/* <SelectDonationOption /> */}
-              </>
+              <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+                <FormField
+                  control={form.control}
+                  name="donation_percent"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Donation Percent (%)</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer">
+                              <SelectValue placeholder="Select Donation Percent" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="rounded-none p-0">
+                            {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
+                              <SelectItem value={item.toString()} key={item} className="rounded-none cursor-pointer">
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <InputCharityDonationInput charities={charitiesData?.data || []} form={form} name="charities" />
+
+              </div>
 
             </div>
 
-            <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+            {/* Donation Privacy */}
+            <div>
+              <p className="mb-5 font-medium">
+                Donation Privacy: Would you like to remain anonymous?
+              </p>
               <FormField
                 control={form.control}
-                name="donation_percent"
+                name="donationPrivacy"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Donation Percent (%)</FormLabel>
+                  <FormItem className="md:space-y-3 space-y-1">
+
                     <FormControl>
-                      <Select
+                      <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        className="flex flex-col md:space-y-1"
                       >
-                        <FormControl>
-                          <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer">
-                            <SelectValue placeholder="Select Donation Percent" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="rounded-none p-0">
-                          {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
-                            <SelectItem value={item.toString()} key={item} className="rounded-none cursor-pointer">
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="anonymous" id="anonymous" />
+                          <label htmlFor="anonymous" className="text-sm">
+                            Yes, keep my donation anonymous
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="show-name" id="show-name" />
+                          <label htmlFor="show-name" className="text-sm">
+                            No, show my name
+                          </label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+          </div>
+
+          {/* ============Price================ */}
+          <div className="space-y-4 mt-10">
+            <p className="text-lg lg:text-2xl font-bold text-gray-900">Price</p>
+
+            {/* ========================================= Price and Discount ============================== */}
+            <div className="grid grid-cols-2 md:gap-x-4 gap-x-2 items-start">
+
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Product Price ($)</FormLabel>
+                    <FormControl>
+                      <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
+                        <InputGroupInput placeholder="eg: 100" {...field} className="!text-base" />
+                        <InputGroupAddon align={"inline-start"} className="text-primary-black text-lg" >
+                          $
+                        </InputGroupAddon>
+                      </InputGroup>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <InputCharityDonationInput charities={charitiesData?.data || []} form={form} fields={fields} append={append} remove={remove} />
+              <FormField
+                control={form.control}
+                name="discountPct"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Discount (%)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter discount percentage"
+                        {...field}
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <p className="text-sm text-muted-foreground">
+                      Write a discount percentage you want to offer on this product.
+                    </p>
+                  </FormItem>
+                )}
+              />
+
+
+
+              {!isNaN(price) && (
+                <p className="text-green-700 font-medium">
+                  Final Price: ${(price * (1 - discountPct / 100)).toFixed(2)}
+                </p>
+              )}
 
             </div>
 
+          </div>
 
-            {/* Donation Privacy */}
-            <FormField
-              control={form.control}
-              name="donationPrivacy"
-              render={({ field }) => (
-                <FormItem className="md:space-y-3 space-y-1">
-                  <FormLabel>
-                    Donation Privacy: Would you like to remain anonymous?
-                  </FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col md:space-y-1"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="anonymous" id="anonymous" />
-                        <label htmlFor="anonymous" className="text-sm">
-                          Yes, keep my donation anonymous
-                        </label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="show-name" id="show-name" />
-                        <label htmlFor="show-name" className="text-sm">
-                          No, show my name
-                        </label>
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+          {/* ============Shipment================ */}
+
+          <div className="space-y-3 mt-12">
+            <p className="text-lg lg:text-2xl font-bold text-gray-900">Shipping</p>
+            <UpdateShippingAddress />
+
+            <div className="mt-8">
+              <p className="text-lg lg:text-xl font-semibold text-gray-900 mb-5">Parcel Size</p>
+
+              {/* ========================================= Price and Discount ============================== */}
+              <div className="grid grid-cols-2 md:gap-4 gap-2 items-start">
+
+                <FormField
+                  control={form.control}
+                  name="weight_kg"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Weight (kg)</FormLabel>
+                      <FormControl>
+                        <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
+                          <InputGroupInput placeholder="eg: 0.3" {...field} className="!text-base" />
+                          <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
+                            kg
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="hight_cm"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Height (cm)</FormLabel>
+                      <FormControl>
+                        <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
+                          <InputGroupInput placeholder="eg: 10" {...field} className="!text-base" />
+                          <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
+                            cm
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="width_cm"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Width (cm)</FormLabel>
+                      <FormControl>
+                        <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
+                          <InputGroupInput placeholder="eg: 20" {...field} className="!text-base" />
+                          <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
+                            cm
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="length_cm"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Length (cm)</FormLabel>
+                      <FormControl>
+                        <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
+                          <InputGroupInput placeholder="eg: 6" {...field} className="!text-base" />
+                          <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
+                            cm
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
           </div>
 
-          {/* ========================================= Price and Discount ============================== */}
-          <div className="grid grid-cols-2 md:gap-x-4 gap-x-2">
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Price ($)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter product price"
-                      {...field}
-                      className="bg-[#f2f2f2] md:py-5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="discountedPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Discount (%)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter discounted price in %"
-                      {...field}
-                      className="bg-[#f2f2f2] md:py-5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
 
           <div className="flex gap-4">
-            <Button disabled={isLoading} type="submit" className="flex-1 group cursor-pointer">
-              Submit <AnimatedArrow /> {isLoading && <LoadingSpin />}
+            <Button disabled={isLoading} type="submit" variant={"default"} className="flex-1 group cursor-pointer rounded-none py-5">
+              {isLoading ? <span className="loader" /> : "Ready to Submit"}
             </Button>
           </div>
         </form>

@@ -54,7 +54,7 @@ const ProfileFeatures = async ({
   const prodData = await GetProductsByMember({ query, userName });
 
   return (
-    <div >
+    <div>
       <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)}/>
     </div>
   );

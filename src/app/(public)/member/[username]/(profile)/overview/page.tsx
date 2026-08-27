@@ -64,7 +64,7 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                         >
                             <span>Website</span>
                             <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                → {new URL(user?.data?.website).hostname}
+                                → {user?.data?.website}
                             </span>
                         </Link>
                     </li>}
@@ -77,7 +77,7 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                         >
                             <span>Facebook</span>
                             <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                → {new URL(user?.data?.facebook).hostname}
+                                → {user?.data?.facebook}
                             </span>
                         </Link>
                     </li>}
@@ -90,7 +90,7 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                         >
                             <span>Instagram</span>
                             <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                → {new URL(user?.data?.instagram).hostname}
+                                → {user?.data?.instagram}
                             </span>
                         </Link>
                     </li>}
@@ -103,7 +103,7 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                         >
                             <span>Twitter</span>
                             <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                                → {new URL(user?.data?.twitter).hostname}
+                                → {user?.data?.twitter}
                             </span>
                         </Link>
                     </li>}

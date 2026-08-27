@@ -1,15 +1,13 @@
 import Container from "@/components/shared/Container";
-import PageTopSection from "@/components/shared/PageTopSection";
 import React from "react";
 import UserRoleContainer from "./components/UserRoleContainer";
 
 const SignUpPage = () => {
   return (
     <div className="lg:space-y-12 space-y-7">
-      <PageTopSection title="Choose Your  Role"></PageTopSection>
-      <Container className="lg:space-y-8 space-y-5">
-        <h1 className="text-center text-lg md:text-3xl">
-          Join the Fashion Philanthropist Community! 
+      <Container className="lg:space-y-8 space-y-5 pt-5 lg:pt-8">
+        <h1 className="text-center text-lg md:text-3xl font-medium text-gray-900 lg:leading-[3rem]">
+          Join the Fashion Philanthropist Community!
         </h1>
         <UserRoleContainer></UserRoleContainer>
       </Container>

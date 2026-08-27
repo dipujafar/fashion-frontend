@@ -46,6 +46,7 @@
     "embla-carousel": "^8.5.2",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "firebase": "^12.18.0",
     "framer-motion": "^12.4.10",
     "input-otp": "^1.4.2",
     "js-cookie": "^3.0.5",

@@ -6,7 +6,6 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { Switch } from "@/components/ui/switch";
 import { ProfileNavIcon } from "@/icons";
 import {
   ChevronRight,
@@ -14,7 +13,6 @@ import {
   LifeBuoy,
   List,
   LogOut,
-  Moon,
   Package,
   Settings,
   SquareChartGantt,
@@ -32,99 +30,67 @@ import { logout } from "@/redux/features/authSlice";
 
 const navLinksFotProfileIcon = [
   {
-    icon: <UserRound className="h-5 w-5" />,
+    icon: <UserRound className="size-5" />,
     name: "View Profile",
     link: "/professional-seller/profile-preview",
   },
   {
-    icon: <UserRoundCog className="h-5 w-5" />,
+    icon: <UserRoundCog className="size-5" />,
     name: "Edit Profile ",
     link: "/professional-seller/dashboard/profile",
   },
   {
-    icon: <SquareChartGantt className="h-5 w-5" />,
+    icon: <SquareChartGantt className="size-5" />,
     name: "List an item",
     link: "/sell-products",
   },
   {
-    icon: <List className="h-5 w-5" />,
+    icon: <List className="size-5" />,
     name: "Products-Listing",
     link: "/professional-seller/dashboard/products-list",
   },
   {
-    icon: <Package className="h-5 w-5" />,
+    icon: <Package className="size-5" />,
     name: "My Orders",
     link: "/professional-seller/dashboard/products-list/purchase-product",
   },
   {
-    icon: <Tag className="h-5 w-5" />,
+    icon: <Tag className="size-5" />,
     name: "Your Offers",
     link: "/professional-seller/dashboard/offers",
   },
   {
-    icon: <Settings className="h-5 w-5" />,
+    icon: <Settings className="size-5" />,
     name: "Settings",
     link: "/professional-seller/dashboard/settings",
   },
   {
-    icon: <Handshake className="h-5 w-5" />,
+    icon: <Handshake className="size-5" />,
     name: "Assisted Seller",
     link: "/assisted-seller",
   },
   {
-    icon: <Tags className="h-5 w-5" />,
+    icon: <Tags className="size-5" />,
     name: "Badges",
     link: "/badges",
   },
-
   {
-    name: "vacation mode",
-    label: (
-      <div>
-        <div className="flex justify-between items-center gap-2 px-1.5 text-sm py-1 ">
-          <div className="flex items-center gap-x-2 pl-1">
-            <div className="flex h-5 w-5 items-center justify-center text-muted-foreground">
-              <Moon />
-            </div>
-            <p className="text-base ">
-              Vacation mode
-            </p>
-          </div>
-          <Switch />
-        </div>
-        <MenubarSeparator />
-      </div>
-    ),
-  },
-  {
-    name: "Balance",
-    label: (
-      <div>
-        <div className="flex justify-between items-center gap-2 px-1.5 text-sm py-1 ">
-          <div className="flex items-center gap-x-2 pl-1">
-            <div className="flex h-5 w-5 items-center justify-center text-muted-foreground">
-              <Wallet />
-            </div>
-            <p className="text-base ">
-              Balance
-            </p>
-          </div>
-          <span className="text-base">$600</span>
-        </div>
-        <MenubarSeparator />
-      </div>
-    ),
+    icon: <Wallet className="size-5" />,
+    name: "Wallet",
+    link: "/wallet",
   },
   {
     name: "Donate now",
     label: (
-      <div className="px-1.5">
-        <div className="flex items-center gap-x-2 pl-1 cursor-pointer">
-          <LifeBuoy className="flex h-5 w-5 items-center justify-center text-muted-foreground" />
-          <CharityDonationFormDialog>Donate Now</CharityDonationFormDialog>
+      <CharityDonationFormDialog>
+        <div className="px-1.5 hover:bg-zinc-100">
+          <div className="flex items-center gap-x-3 pl-1 cursor-pointer py-3">
+            <LifeBuoy className="flex size-5 items-center justify-center text-muted-foreground" />
+            Donate Now
+          </div>
+          <MenubarSeparator />
         </div>
-        <MenubarSeparator />
-      </div>
+      </CharityDonationFormDialog>
     ),
   },
 ];
@@ -139,14 +105,14 @@ export default function ProfileIcon() {
   };
   return (
     <>
-      <MenubarTrigger className="md:flex hidden">
+      <MenubarTrigger className="md:flex hidden cursor-pointer">
         <ProfileNavIcon />
       </MenubarTrigger>
-      <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
+      <MenubarContent align="end" className="md:min-w-xs overflow-y-auto max-h-96 p-0 rounded-none">
         {navLinksFotProfileIcon.map((item, index) =>
           item?.link ? (
             <Link href={item?.link} key={item.name}>
-              <MenubarItem className="cursor-pointer group">
+              <MenubarItem className="cursor-pointer group rounded-none border-b border-gray-200 py-3">
                 <div className="flex h-6 w-6 items-center justify-center text-muted-foreground">
                   {item.icon}
                 </div>
@@ -157,26 +123,24 @@ export default function ProfileIcon() {
                   <ChevronRight className="group-hover:translate-x-2 transition-all duration-300" />
                 </MenubarShortcut>
               </MenubarItem>
-              {index !== navLinksFotProfileIcon.length - 1 && (
-                <MenubarSeparator />
-              )}
+             
             </Link>
           ) : (
             item?.label
           )
         )}
 
-        <MenubarItem onClick={handleLogout} className="cursor-pointer group">
+        <MenubarItem onClick={handleLogout} className="cursor-pointer group rounded-none border-b border-gray-200 py-3">
           <div className="flex items-center gap-x-2 pl-1">
             <div>
-              <LogOut className="h-6 w-6" />
+              <LogOut className="size-5" />
             </div>
             <p className="text-base">
               Logout
             </p>
           </div>
-
         </MenubarItem>
+
       </MenubarContent>
     </>
   );

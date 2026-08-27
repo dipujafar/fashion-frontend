@@ -29,7 +29,7 @@ export type IProductWithUser = Omit<IProduct, "user"> & {
 
 const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   return (
-    <div className="lg:my-5 space-y-3">
+    <div className="lg:my-5 space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
       <div >
         <ProductDetailsHeader product={product} />
@@ -48,6 +48,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
               </Link>
             ))}
           </p>
+
         </div>
 
         {product?.donation_percent > 0 && <div className="flex md:gap-x-8 gap-x-4 items-center">
@@ -99,15 +100,15 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
           <p>{productDetails?.care_Instruction}</p>
         </div> */}
         {/* =============== Shipping & Delivery =============== */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Shipping & Delivery:</h2>
           <p>UK Standard Shipping (3–5 working days)</p>
-        </div>
+        </div> */}
         {/* =============== Returns Policy =============== */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Returns Policy:</h2>
           <p>Returns accepted – {product?.return_window} days </p>
-        </div>
+        </div> */}
         {/* ======== alert section ============= */}
         <div className="flex gap-x-2 bg-primary-green/10 px-2 py-1 w-fit rounded">
           <CheckIcon />

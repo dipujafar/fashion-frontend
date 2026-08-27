@@ -29,3 +29,53 @@ export const GetProductsByMember = async ({ query, userName }: { query: { [key: 
         throw err;
     }
 };
+
+export const GetProductCharitySupport = async ({ productId }: { productId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/products/donation-support/${productId}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const GetSimilarFromSeller = async ({ productId }: { productId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/products/similar-from-seller/${productId}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+export const GetSimilarCategoryProds = async ({ productId }: { productId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/products/same-category/${productId}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+export const GetSimilarColorProds = async ({ productId }: { productId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/products/same-color/${productId}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};

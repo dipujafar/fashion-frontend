@@ -1,39 +1,55 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import CommonButton from "@/components/ui/common-button";
-import { TUserRoleData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
-const UserRoleCard = ({ data }: { data: TUserRoleData }) => {
-  const router = useRouter();
+export interface TUserRoleCardProps {
+  data: {
+    _id: number;
+    image: string;
+    title: string;
+    description: string;
+    link: string;
+    role: string;
+  };
+}
 
+const UserRoleCard = ({ data }: TUserRoleCardProps) => {
   return (
-    <Card className="shadow-none py-6">
-      <CardContent className="lg:space-y-6 space-y-4">
+    <Card className="shadow-none py-6 h-full flex flex-col">
+      <CardContent className="lg:space-y-6 space-y-4 flex flex-col flex-1">
         <Image
           src={data?.image}
           alt="user_role_image"
           width={1200}
           height={1200}
-          className="w-full  max-h-[175px]"
+          className="w-full max-h-[175px]"
         ></Image>
-        <div>
+
+        {/* This block grows to fill leftover space, pushing the button down */}
+        <div className="flex-1">
           <h1 className="text-lg font-medium">{data?.title}</h1>
           <p className="text-sm text-primary-gray">
             {data?.description}...{" "}
-            <span
-              onClick={() => handleRedirectUser(data?.role, router)}
+            <Link
+              href={handleRedirectUser(data?.role)}
               className="text-primary font-semibold cursor-pointer"
             >
               More Details
-            </span>
+            </Link>
           </p>
         </div>
-        <Link href={data?.link}>
-          <CommonButton className="w-full md:py-4">Join Now</CommonButton>
+
+        {/* mt-auto keeps the button pinned to the bottom of the card */}
+        <Link href={data?.link} className="mt-auto">
+          <Button
+            variant={"default"}
+            className="rounded-full h-10 w-full cursor-pointer"
+          >
+            Join Now
+          </Button>
         </Link>
       </CardContent>
     </Card>
@@ -44,31 +60,25 @@ export default UserRoleCard;
 
 // user redirect for more details
 
-export const handleRedirectUser = (role: string, router: any) => {
+export const handleRedirectUser = (role: string) => {
   switch (role) {
     case "individual_user":
-      router.push("/user-details#individual_user");
-      break;
+      return "/user-details#individual_user";
     case "charitable_organization":
-      router.push("/user-details#charitable_organization");
-      break;
+      return "/user-details#charitable_organization";
     case "charity_shop":
-      router.push("/user-details#charity_store");
-      break;
+      return "/user-details#charity_store";
     case "eco_friendly_store":
-      router.push("/user-details#eco_friendly_store");
-      break;
+      return "/user-details#eco_friendly_store";
     case "professional_seller":
-      router.push("/user-details#professional_seller");
-      break;
+      return "/user-details#professional_seller";
     case "assisted_seller":
-      router.push("/user-details#assisted_seller");
-      break;
+      return "/user-details#assisted_seller";
     case "ambassador":
-      router.push("/user-details#ambassador");
+      return "/user-details#ambassador";
     case "celebrity":
-      router.push("/user-details#celebrity");
+      return "/user-details#celebrity";
     default:
-      break;
+      return "/user-details";
   }
 };

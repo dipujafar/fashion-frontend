@@ -8,9 +8,6 @@ export const AddToCart = async ({ payload, extraRevalidatePaths = [] }: { payloa
 
     const res = await serverQueryWithReauth({ payload, endPoint: "/carts", method: "POST" });
 
-    revalidatePath(`/shop/${payload?.productId}`);
-    revalidatePath(`/shopping-cart`);
-
     if (extraRevalidatePaths.length > 0) {
         for (let path of extraRevalidatePaths) {
             revalidatePath(path);
@@ -20,12 +17,9 @@ export const AddToCart = async ({ payload, extraRevalidatePaths = [] }: { payloa
     return res;
 }
 
-export const DeleteFromCart = async ({ payload, extraRevalidatePaths = [] }: { payload: { "itemId": string, productId: string }, extraRevalidatePaths?: string[] }) => {
+export const DeleteFromCart = async ({ payload, extraRevalidatePaths = [] }: { payload: { productId: string }, extraRevalidatePaths?: string[] }) => {
 
-    const res = await serverQueryWithReauth({ endPoint: `/carts/${payload?.itemId}`, method: "DELETE" });
-
-    revalidatePath(`/shop/${payload?.productId}`);
-    revalidatePath(`/shopping-cart`);
+    const res = await serverQueryWithReauth({ endPoint: `/carts/${payload?.productId}`, method: "DELETE" });
 
     if (extraRevalidatePaths.length > 0) {
         for (let path of extraRevalidatePaths) {
@@ -63,7 +57,7 @@ export const updateAuthenticationCostCheckout = async (payload: { allowAuthentic
 
 }
 
-export const updateShippingDetails = async (payload: IBillingDetails, cartGroupId ?: string) => {
+export const updateShippingDetails = async (payload: IBillingDetails, cartGroupId?: string) => {
 
     const res = await serverQueryWithReauth({
         endPoint: `/users/buying-details`,
@@ -74,7 +68,7 @@ export const updateShippingDetails = async (payload: IBillingDetails, cartGroupI
     revalidateTag(tags.cart_summary);
     revalidateTag(tags.shipping_rates);
     revalidatePath(`/profile/address`);
-    if(cartGroupId){
+    if (cartGroupId) {
         revalidatePath(`/checkout/${cartGroupId}`);
     }
     return res;

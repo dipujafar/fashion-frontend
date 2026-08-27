@@ -418,7 +418,7 @@ const userDetailsData = [
 
 const UserDetailsContainer = () => {
   return (
-    <div className="md:space-y-10 space-y-7">
+    <div className=" space-y-7 md:space-y-10">
       {userDetailsData.map((data) => (
         <UserDetailsCard
           key={data._id}

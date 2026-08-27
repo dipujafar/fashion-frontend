@@ -2,26 +2,16 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Search, X, ChevronDown } from "lucide-react";
-import { Control, Controller } from "react-hook-form";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-export interface SizeOption {
-    id: string;
-    title: string;
-    order: number;
-    categoryId: string;
-    createdAt: string;
-    updatedAt: string;
-}
+import { Control, Controller, FieldPath } from "react-hook-form";
+import { ISize } from "@/types";
+import { ProductFormValues } from "../schema";
 
 interface SizeSelectorProps {
     /** Sizes array from API */
-    sizes: SizeOption[];
+    sizes: ISize[];
     /** react-hook-form control */
-    control: Control<any>;
+    control: Control<ProductFormValues>;
     /** Field name in your form schema */
-    name: string;
     /** If null, field is disabled and shows tooltip */
     selectedCategory: { id: string; name: string } | null;
     placeholder?: string;
@@ -32,7 +22,6 @@ interface SizeSelectorProps {
 export default function SizeSelector({
     sizes,
     control,
-    name,
     selectedCategory,
     placeholder = "Select size",
 }: SizeSelectorProps) {
@@ -41,7 +30,7 @@ export default function SizeSelector({
     return (
         <Controller
             control={control}
-            name={name}
+            name={"sizeId"}
             render={({ field, fieldState }) => (
                 <div className="flex flex-col gap-1">
                     <SizeSelectorInner
@@ -63,7 +52,7 @@ export default function SizeSelector({
 // ─── Inner selector (handles open/close, search, modal) ──────────────────────
 
 interface SizeSelectorInnerProps {
-    sizes: SizeOption[];
+    sizes: ISize[];
     value: string | undefined;
     onChange: (id: string) => void;
     isDisabled: boolean;
@@ -101,7 +90,7 @@ function SizeSelectorInner({
         setSearch("");
     }
 
-    function handleSelect(size: SizeOption) {
+    function handleSelect(size: ISize) {
         onChange(size.id);
         closePanel();
     }
@@ -142,7 +131,7 @@ function SizeSelectorInner({
                             className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
                                 }`}
                         >
-                            <span className="text-lg text-foreground">{size.title}</span>
+                            <span className="text-base text-foreground">{size.title}</span>
                             <div
                                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? "border-primary" : "border-muted-foreground/40"
                                     }`}
@@ -160,7 +149,7 @@ function SizeSelectorInner({
 
     const searchBar = (
         <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-            <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5">
+            <div className="flex items-center gap-2 bg-white border border-gray-200 focus-within:border-primary-black rounded px-2 py-2">
                 <Search className="w-4 h-4 text-muted-foreground shrink-0" />
                 <input
                     ref={searchRef}
@@ -168,7 +157,7 @@ function SizeSelectorInner({
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search size..."
-                    className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+                    className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 />
                 {search && (
                     <button type="button" onClick={() => setSearch("")}>
@@ -192,7 +181,7 @@ function SizeSelectorInner({
                     type="button"
                     onClick={openPanel}
                     disabled={isDisabled}
-                    className={`flex items-center justify-between w-full bg-[#f2f2f2] rounded-md px-3 md:py-3 py-2 text-sm text-left focus:outline-none focus:ring-2 focus:ring-ring transition-opacity ${isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    className={`flex items-center justify-between w-full bg-white rounded border border-gray-200 focus:border-primary-black px-3 md:py-3 py-2 text-sm text-left focus:outline-none transition-opacity cursor-pointer ${isDisabled ? "opacity-80 bg-zinc-50 cursor-not-allowed" : ""
                         }`}
                 >
                     <span className={selectedSize ? "text-foreground" : "text-muted-foreground"}>
