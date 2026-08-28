@@ -4,6 +4,7 @@ import ProductImages from "./ProductImages";
 import { IProduct, IUser } from "@/types";
 import { MessageIcon, OfferIcon } from "@/icons";
 import { Button } from "@/components/ui/button";
+import { SMActionButtons } from "./ActionButtons";
 
 type IUserWithExtra = IUser & {
   _count: {
@@ -50,16 +51,7 @@ const SingleProductDetails = async ({ product }: { product: { data: IProductWith
         </div>
 
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 shadow-lg md:hidden z-10">
-          <div className="max-w-6xl mx-auto flex items-center gap-3">
-            <Button><MessageIcon className="size-11" /></Button>
-
-            <Button
-              // onClick={() => setShowOpenOfferModal(true)}
-              className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
-
-            <Button className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Buy now</Button>
-
-          </div>
+          <SMActionButtons product={product?.data}></SMActionButtons>
         </div>
 
       </div>

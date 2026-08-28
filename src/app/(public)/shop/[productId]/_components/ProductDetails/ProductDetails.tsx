@@ -2,7 +2,7 @@
 import Link from "next/link";
 import ActionButtons from "../ActionButtons";
 import SellerDetails from "../SellerDetails";
-import { CheckIcon, ReportIcon, ShareIcon } from "@/icons";
+import { CheckIcon } from "@/icons";
 import ProductDetailsHeader from "./ProductDetailsHeader";
 import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
 import { IProduct, IUser } from "@/types";
@@ -28,6 +28,7 @@ export type IProductWithUser = Omit<IProduct, "user"> & {
 };
 
 const ProductDetails = ({ product }: { product: IProductWithUser }) => {
+  const isStockOut = product?.stock === 0;
   return (
     <div className="lg:my-5 space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
@@ -52,7 +53,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
         </div>
 
         {product?.donation_percent > 0 && <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Donation:</h2>
+          <h2 className="w-30">Donation:</h2>
           <p className="text-green-600">{product?.donation_percent}%</p>
         </div>}
         {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
@@ -60,28 +61,28 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
           <p>{productDetails?.item_Number}</p>
         </div> */}
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px] ">Category :</h2>
+          <h2 className="w-30">Category :</h2>
           <p>
             <Link href={`/shop?category=${product?.category?.id}`} className="underline duration-150 font-medium text-black underline-offset-1">{product?.category?.name}</Link>
           </p>
         </div>
 
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Condition:</h2>
+          <h2 className="w-30">Condition:</h2>
           <p>{product?.condition}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Fabric: </h2>
+          <h2 className="w-30">Fabric: </h2>
           <p>{product?.meterials?.join(", ")}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Brands: </h2>
+          <h2 className="w-30">Brands: </h2>
           <Link href={`/shop?brand=${product?.brand?.id}`} className="hover:underline">{product?.brand?.name}</Link>
         </div>
         {/* available sizes */}
         <div className="flex flex-col md:flex-row justify-between gap-x-2">
           <div className="flex md:gap-x-8 gap-x-4 items-center">
-            <h2 className="w-[120px]">Available Size: </h2>
+            <h2 className="w-30">Available Size: </h2>
             <Link href={`/shop?size=${product?.size?.id}`} className="hover:underline">{product?.size?.title}</Link>
           </div>
           <Link
@@ -119,7 +120,10 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
       </div>
 
       {/* ======================= all actions buttons ================ */}
-      <ActionButtons product={product}></ActionButtons>
+      {!isStockOut ? <ActionButtons product={product}></ActionButtons> : <div className="py-4 max-w-lg bg-destructive 2xl:w-2/3">
+        <p className="text-center text-white">Item Sold Out</p>
+      </div>}
+
       {/* ========================= seller details ========================= */}
       <SellerDetails user={product?.user}></SellerDetails>
     </div>
