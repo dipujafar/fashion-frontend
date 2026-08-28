@@ -17,7 +17,16 @@ const favoriteProductApi = baseApi.injectEndpoints({
       ],
     }),
 
-    getFavoriteProduct: builder.mutation<{ message: string, data: { data: IFavoriteItem[], meta: IMeta } }, { }>({
+    myFavoriteProducts: builder.query<{ message: string, data: { data: IFavoriteItem[], meta: IMeta } }, void>({
+      query: (args) => ({
+        url: "/favourites",
+        method: "GET",
+        params: args,
+      }),
+      providesTags: [tagTypes.favorite],
+    }),
+
+    getFavoriteProduct: builder.mutation<{ message: string, data: { data: IFavoriteItem[], meta: IMeta } }, {}>({
       query: (args) => ({
         url: "/favourites",
         method: "GET",
@@ -42,4 +51,5 @@ export const {
   useAddFavoriteProductMutation,
   useGetFavoriteProductMutation,
   useDeleteFavoriteProductMutation,
+  useMyFavoriteProductsQuery,
 } = favoriteProductApi;

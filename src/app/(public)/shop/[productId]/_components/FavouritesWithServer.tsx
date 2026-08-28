@@ -2,6 +2,9 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { AddToFavourite, DeleteToFavourite } from "@/lib/Actions/Favourite.action";
 import { cn } from "@/lib/utils";
+import { baseApi } from "@/redux/api/baseApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { tagTypes } from "@/redux/tagTypes";
 import { Heart } from "lucide-react";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { useState } from "react";
@@ -16,6 +19,8 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
     const [isFavourited, setIsFavourited] = useState<boolean>(includedProduct?.length > 0);
     const [favouriteCount, setFavouriteCount] = useState<number>(count || 0);
 
+    const dispatch = useAppDispatch();
+
     const addFavorite = async () => {
         if (isFavourited) {
             try {
@@ -24,12 +29,13 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                     toast.error(res?.error);
                 }
                 setFavouriteCount(prev => prev - 1);
+                dispatch(baseApi.util.invalidateTags([tagTypes.favorite]));
             }
             catch (error: any) {
                 if (isRedirectError(error)) {
                     throw error; // Let Next.js handle the redirect
                 }
-                toast.error(error?.message);
+                toast.error(error?.message || "Something went wrong");
             }
         }
         else {
@@ -39,12 +45,13 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                     toast.error(res?.error);
                 }
                 setFavouriteCount(prev => prev + 1);
+                dispatch(baseApi.util.invalidateTags([tagTypes.favorite]));
             }
             catch (error: any) {
                 if (isRedirectError(error)) {
                     throw error; // Let Next.js handle the redirect
                 }
-                toast.error(error?.message);
+                toast.error(error?.message || "Something went wrong");
             }
         }
         setIsFavourited(prev => !prev);

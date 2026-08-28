@@ -1,11 +1,14 @@
+import { UserRole } from "@/types";
+
 export const userRoleData = [
   {
     _id: 1,
     image: "/userRoleImage1.png",
     title: "Individual User",
     description: "This is an account for individuals to BUY or SELL items",
-    link: "/users/sign-up#individual-user",
-    role: "individual_user",
+    link: "/user-details#individual_user",
+    slug: "individual-user",
+    role: UserRole.INDIVIDUAL_USER,
   },
   {
     _id: 2,
@@ -13,8 +16,9 @@ export const userRoleData = [
     title: "Charitable Organization",
     description:
       "A space for nonprofits to raise funds through clothing sales.",
-    link: "/charity/sign-up",
-    role: "charitable_organization",
+    link: "/user-details#charitable_organization",
+    slug: "charitable-organization",
+    role: UserRole.CHARITABLE_ORGANIZATION,
   },
   {
     _id: 3,
@@ -22,8 +26,9 @@ export const userRoleData = [
     title: "Charity Shop",
     description:
       "Sell donated clothing to support your cause and give back to the community.",
-    link: "/charity-shop/sign-up",
-    role: "charity_shop",
+    link: "/user-details#charity_shop",
+    slug: "charity-shop",
+    role: UserRole.CHARITY_SHOP,
   },
   {
     _id: 4,
@@ -31,8 +36,9 @@ export const userRoleData = [
     title: "Eco-Friendly Store",
     description:
       "Promote sustainable fashion with pre-loved or upcycled clothing.",
-    link: "/eco-friendly-store/sign-up",
-    role: "eco_friendly_store",
+    link: "/user-details#eco_friendly_store",
+    slug: "eco-friendly-store",
+    role: UserRole.ECO_FRIENDLY_STORE,
   },
   {
     _id: 5,
@@ -40,8 +46,9 @@ export const userRoleData = [
     title: "Celebrity",
     description:
       "Share your unique fashion finds and inspire others with your style.",
-    link: "/celebrity/sign-up",
-    role: "celebrity",
+    link: "/user-details#celebrity",
+    slug: "celebrity",
+    role: UserRole.CELEBRITY,
   },
   {
     _id: 6,
@@ -49,8 +56,9 @@ export const userRoleData = [
     title: "Ambassador",
     description:
       "Represent a brand, promote products, and grow your fashion influence.",
-    link: "/ambassador/sign-up",
-    role: "ambassador",
+    link: "/user-details#ambassador",
+    slug: "ambassador",
+    role: UserRole.AMBASSADOR,
   },
   {
     _id: 7,
@@ -58,8 +66,9 @@ export const userRoleData = [
     title: "Professional Seller",
     description:
       "A business-oriented account for scaling your online fashion store.",
-    link: "/professional-seller/sign-up",
-    role: "professional_seller",
+    link: "/user-details#professional_seller",
+    slug: "professional-seller",
+    role: UserRole.PROFESSIONAL_SELLER,
   },
   // {
   //   _id: 8,
@@ -68,6 +77,17 @@ export const userRoleData = [
   //   description:
   //     "Get support in managing your store while selling your fashion items.",
   //   link: "/assisted-seller/sign-up",
-  //   role: "assisted_seller",
+  //   slug: "assisted-seller",
+  //   role: UserRole.ASISTED_SELLER,
   // },
 ];
+
+export const roleOptions: Record<string, UserRole> = {
+  "individual-user": UserRole.INDIVIDUAL_USER,
+  "charitable-organization": UserRole.CHARITABLE_ORGANIZATION,
+  "charity-shop": UserRole.CHARITY_SHOP,
+  "eco-friendly-store": UserRole.ECO_FRIENDLY_STORE,
+  "celebrity": UserRole.CELEBRITY,
+  "ambassador": UserRole.AMBASSADOR,
+  "professional-seller": UserRole.PROFESSIONAL_SELLER
+}

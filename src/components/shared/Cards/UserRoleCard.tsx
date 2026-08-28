@@ -13,6 +13,7 @@ export interface TUserRoleCardProps {
     description: string;
     link: string;
     role: string;
+    slug: string;
   };
 }
 
@@ -34,7 +35,7 @@ const UserRoleCard = ({ data }: TUserRoleCardProps) => {
           <p className="text-sm text-primary-gray">
             {data?.description}...{" "}
             <Link
-              href={handleRedirectUser(data?.role)}
+              href={`${data?.link}`}
               className="text-primary font-semibold cursor-pointer"
             >
               More Details
@@ -43,7 +44,7 @@ const UserRoleCard = ({ data }: TUserRoleCardProps) => {
         </div>
 
         {/* mt-auto keeps the button pinned to the bottom of the card */}
-        <Link href={data?.link} className="mt-auto">
+        <Link href={`/sign-up/${data?.slug}`} className="mt-auto">
           <Button
             variant={"default"}
             className="rounded-full h-10 w-full cursor-pointer"
@@ -57,28 +58,3 @@ const UserRoleCard = ({ data }: TUserRoleCardProps) => {
 };
 
 export default UserRoleCard;
-
-// user redirect for more details
-
-export const handleRedirectUser = (role: string) => {
-  switch (role) {
-    case "individual_user":
-      return "/user-details#individual_user";
-    case "charitable_organization":
-      return "/user-details#charitable_organization";
-    case "charity_shop":
-      return "/user-details#charity_store";
-    case "eco_friendly_store":
-      return "/user-details#eco_friendly_store";
-    case "professional_seller":
-      return "/user-details#professional_seller";
-    case "assisted_seller":
-      return "/user-details#assisted_seller";
-    case "ambassador":
-      return "/user-details#ambassador";
-    case "celebrity":
-      return "/user-details#celebrity";
-    default:
-      return "/user-details";
-  }
-};

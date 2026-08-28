@@ -28,8 +28,14 @@ const formSchema = z.object({
     .min(1, { message: "Name is required" }),
 
   userName: z
-    .string({ required_error: "User Name is required" })
-    .min(1, { message: "User Name is required" }),
+    .string()
+    .trim()
+    .min(3, "Username must be at least 3 characters")
+    .max(20, "Username must be at most 20 characters")
+    .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, and underscores are allowed")
+    .refine((val) => !/^\d/.test(val), {
+      message: "Username cannot start with a number",
+    })
 
 })
 
@@ -69,7 +75,7 @@ function SocailloginFinish({ socialLoginToken, role, isCharity = false }: { soci
           router.replace("/profile");
       }
     } catch (error: any) {
-      toast.error(error.data.message || "An error occurred while creating the account.");
+      toast.error(error?.data?.message || "An error occurred while creating the account.");
     }
   };
 

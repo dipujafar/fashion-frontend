@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
 } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,11 +24,13 @@ import appleIcon from "@/assets/icons/apple.png";
 import googleIcon from "@/assets/icons/google.png";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLoginMutation } from "@/redux/api/authApi";
+import { useLoginMutation, useSocialLoginMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/authSlice";
 import { Button } from "@/components/ui/button";
+import { GoogleAuthProvider, OAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase.init";
 
 const formSchema = z.object({
   email: z
@@ -47,6 +48,8 @@ const SIgnInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
+  const [socialLoginMethod, setSocialLoginMethod] = useState<"google" | "apple">("google");
+  const [socialLogin, { isLoading: isSocialLoading }] = useSocialLoginMutation();
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,8 +74,52 @@ const SIgnInForm = () => {
           router.replace("/profile");
       }
     } catch (error: any) {
-      toast.error(error.data.message);
+      toast.error(error?.data?.message || "Something went wrong");
     }
+  };
+
+  const handleSocialLogin = async (idToken: string) => {
+    try {
+      const res = await socialLogin({ idToken }).unwrap();
+      if (res?.data?.user?.role) {
+        dispatch(
+          setUser({
+            user: jwtDecode(res?.data?.accessToken),
+            accessToken: res?.data?.accessToken,
+            refreshToken: res?.data?.refreshToken
+          })
+        );
+        toast.success("Login successful");
+        if (callbackUrl)
+          router.replace(callbackUrl);
+        else
+          router.replace("/profile");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
+  }
+
+  const GoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    const res = await signInWithPopup(auth, provider);
+    const token = await res.user.getIdToken();
+    setSocialLoginMethod("google");
+
+    await handleSocialLogin(token);
+  };
+
+  const AppleLogin = async () => {
+    const provider = new OAuthProvider("apple.com");
+
+    const result = await signInWithPopup(auth, provider);
+
+    const token = await result.user.getIdToken();
+    setSocialLoginMethod("apple");
+
+    await handleSocialLogin(token);
+
   };
 
   return (
@@ -81,7 +128,7 @@ const SIgnInForm = () => {
 
       <CardContent>
 
-        <h3 className="text-3xl font-bold text-center my-5 lg:mb-8">Welcome Back</h3>
+        <h3 className="text-2xl md:text-3xl font-bold text-center my-5 lg:mb-8">Welcome Back</h3>
 
         <Form {...form}>
           <form
@@ -169,21 +216,29 @@ const SIgnInForm = () => {
           <span className="w-16   h-[0.5px] bg-primary-gray"></span>
         </div>
         <div className="space-y-2 w-full">
-          <button className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-2.5 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer">
+          <button onClick={GoogleLogin} disabled={isSocialLoading && socialLoginMethod === "google"} className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-3 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:border-gray-200">
+
             <Image
               src={googleIcon}
-              alt="apple_icon"
+              alt="google_icon"
               className="size-5 cursor-pointer"
             ></Image>
-            <p className="text-base font-medium">Continue with Google</p>
+
+
+            {(isSocialLoading && socialLoginMethod == "google") ? <span className="loaderDark !w-8"></span> : <p className="text-base font-medium">Continue with Google</p>}
           </button>
-          <button className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-2.5 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer">
+
+          <button onClick={AppleLogin} disabled={isSocialLoading && socialLoginMethod === "apple"} className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-3 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:border-gray-200">
+
             <Image
               src={appleIcon}
               alt="apple_icon"
               className="size-6 cursor-pointer"
             ></Image>
-            <p className="text-base font-medium">Continue with Apple</p>
+
+
+            {(isSocialLoading && socialLoginMethod === "apple") ? <span className="loaderDark !w-8"></span> : <p className="text-base font-medium">Continue with Apple</p>}
+
           </button>
 
         </div>

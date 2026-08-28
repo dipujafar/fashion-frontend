@@ -56,7 +56,7 @@ const VerifyOtpForm = () => {
         }
       }
       catch (error: any) {
-        toast.error(error.data.message);
+        toast.error(error?.data?.message || "Something went wrong");
       }
     }
 
@@ -67,7 +67,7 @@ const VerifyOtpForm = () => {
         sessionStorage.removeItem("verifyOtpToken");
         router.push("/sign-in");
       } catch (error: any) {
-        toast.error(error.data.message);
+        toast.error(error?.data?.message || "Something went wrong");
       }
     }
   };
@@ -79,8 +79,8 @@ const VerifyOtpForm = () => {
 
       <CardContent>
 
-        <div className="my-8 space-y-2">
-          <h3 className="text-3xl font-bold text-center">Verify Your Email</h3>
+        <div className="my-5 lg:my-8 space-y-2">
+          <h3 className="text-2xl md:text-3xl font-bold text-center">Verify Your Email</h3>
           <p className="text-secondary-gray">A 6-digit code has been sent to your email address. Please enter the code below to verify your email.</p>
         </div>
 
@@ -100,16 +100,16 @@ const VerifyOtpForm = () => {
                       maxLength={6}
                       value={field.value}
                       onChange={field.onChange}
-                      className="border "
+                      className=""
                     >
-                      <InputOTPGroup className="gap-x-2">
+                      <InputOTPGroup className="gap-x-2 mx-auto">
                         {Array(6)
                           .fill(null)
                           .map((_, index) => (
                             <InputOTPSlot
                               key={index}
                               index={index}
-                              className="border lg:size-16 text-xl"
+                              className="border size-10 sm:size-12 lg:size-16 text-xl"
                             />
                           ))}
                       </InputOTPGroup>

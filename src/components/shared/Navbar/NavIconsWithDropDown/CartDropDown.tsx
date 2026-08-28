@@ -1,28 +1,31 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import CustomAvatar from "@/components/ui/custom-avatar";
-import Empty from "@/components/ui/empty";
 import {
   MenubarContent,
   MenubarItem,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { CartIcon } from "@/icons";
-import GetCartProds from "@/lib/services/Cartprods";
 import { ICartGroup } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense } from "react";
+import React from "react";
 import DltCart from "./DltCart";
+import { useGetMyCartItemsQuery } from "@/redux/api/cart.api";
 
 export default function CartDropDown() {
 
-  const cartPromise = GetCartProds();
+  const { isLoading, data, isSuccess } = useGetMyCartItemsQuery();
 
   return (
     <>
-      <MenubarTrigger className="cursor-pointer">
+      <MenubarTrigger className="cursor-pointer relative">
         <CartIcon className="size-5 lg:size-7" />
+
+        {(isSuccess && data?.data?.length > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 py-0.5 px-[3px] text-[10px] text-white">{data?.data.length}</span>}
+        
       </MenubarTrigger>
       <MenubarContent className="min-w-xs rounded-none">
 
@@ -30,27 +33,24 @@ export default function CartDropDown() {
           <p className="text-base font-medium px-3 pt-2 pb-3 text-center">Shopping Cart</p>
         </div>
 
-        <Suspense key={Date.now()} fallback={<div className="flex-center h-28">
-          <span className="loaderDark !w-10"> </span>
-        </div>}>
-          <CartProds cartPromise={cartPromise} />
-        </Suspense>
+        {
+          isLoading ? <div className="flex-center h-28">
+            <span className="loaderDark !w-10"> </span>
+          </div> : <CartProds cart={data?.data || []} />
+        }
 
       </MenubarContent>
     </>
   );
 }
 
-const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGroup[] }> }) => {
-  const cartProds = await cartPromise;
-
-  const cart = cartProds?.data;
+const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
 
   return <>
     {
       <div className="space-y-3 overflow-y-auto max-h-[450px]">
         {
-          cartProds?.data?.map((cartGroup) => (
+          cart?.map((cartGroup) => (
             <MenubarItem key={cartGroup?.id} className="flex-none focus:bg-transparent">
 
               <div className="w-full">

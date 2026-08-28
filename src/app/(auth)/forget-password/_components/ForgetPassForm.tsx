@@ -41,7 +41,7 @@ const ForgetPassForm = () => {
         router.push(`/verify-otp?status=forgot&email=${data?.email}`);
       }
     } catch (error: any) {
-      toast.error(error.data.message);
+      toast.error(error?.data?.message || "Something went wrong");
     }
 
   };

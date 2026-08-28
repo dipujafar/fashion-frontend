@@ -36,7 +36,7 @@ const ProductCard = ({
 
           {/* ===================== favorite button ================ */}
           {!ownProduct && <div className="absolute top-2 right-2">
-            <FavouritesWithServer id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites} extraRevalidatePaths={[`/member/${data?.user?.userName}`]}></FavouritesWithServer>
+            <FavouritesWithServer id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavouritesWithServer>
           </div>}
 
         </div>

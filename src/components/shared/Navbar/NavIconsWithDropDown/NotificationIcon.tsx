@@ -94,7 +94,12 @@ export default function NotificationIcon() {
                 </center>
               </div>}
 
-            </> : <></>
+            </> : <div className="py-10 space-y-2">
+              <Image src={"/notification.gif"} unoptimized alt="empty-cart" className="h-12 w-auto mx-auto" height={500} width={500} />
+              <p className="text-center text-gray-500 text-sm">No notifications available</p>
+              <center>
+              </center>
+            </div>
           }
         </div>
 

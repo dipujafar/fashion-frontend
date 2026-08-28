@@ -1,9 +1,19 @@
-import { IProduct } from "@/types";
+import { ICartGroup, IProduct } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
 const cartApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getMyCartItems: builder.query<{
+            data: ICartGroup[]
+        }, void>({
+            query: () => ({
+                url: `/carts`,
+                method: "GET",
+            }),
+            providesTags: [tagTypes.cart],
+        }),
+
         getSingleSellerCartItems: builder.query<{
             data: {
                 items: { product: IProduct, id : string }[]
@@ -24,4 +34,4 @@ const cartApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useGetSingleSellerCartItemsQuery } = cartApi;
+export const { useGetSingleSellerCartItemsQuery, useGetMyCartItemsQuery } = cartApi;

@@ -4,6 +4,7 @@ import SingleProductDetails from '../_components/SingleProductDetails';
 import { IProduct } from '@/types';
 import { EnvConfig } from '@/config';
 import { IProductWithUser } from '../_components/ProductDetails/ProductDetails';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({
     params,
@@ -73,6 +74,10 @@ export async function generateMetadata({
 async function ProdDetailsPage({ params }: { params: Promise<{ productId: string }> }) {
     const { productId } = await params;
     const detail = await GetProductDetails({ id: productId }) as { data: IProductWithUser };
+
+    if(!detail?.data) {
+        return notFound();
+    }
 
     return (
         <div>

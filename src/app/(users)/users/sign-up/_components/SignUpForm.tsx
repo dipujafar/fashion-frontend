@@ -31,7 +31,7 @@ import SocailloginFinish from "@/app/(auth)/sign-up/components/SocailloginFinish
 import { GoogleAuthProvider, OAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase.init";
 
-const SignUpForm = ({ isCharity = false }: { isCharity?: boolean }) => {
+const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: UserRole }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [createAccount, { isLoading }] = useCreateUserMutation();
   const router = useRouter();
@@ -46,7 +46,7 @@ const SignUpForm = ({ isCharity = false }: { isCharity?: boolean }) => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
 
     try {
-      const res = await createAccount({ ...data, role: UserRole.CHARITABLE_ORGANIZATION }).unwrap();
+      const res = await createAccount({ ...data, role}).unwrap();
       if (res?.data?.otpToken) {
         sessionStorage.setItem("verifyOtpToken", res?.data?.otpToken);
         toast.success("Account created successfully");
@@ -56,7 +56,7 @@ const SignUpForm = ({ isCharity = false }: { isCharity?: boolean }) => {
         router.push("/verify-otp");
       }
     } catch (error: any) {
-      toast.error(error.data.message || "An error occurred while creating the account.");
+      toast.error(error?.data?.message || "An error occurred while creating the account.");
     }
   };
 
@@ -103,7 +103,7 @@ const SignUpForm = ({ isCharity = false }: { isCharity?: boolean }) => {
           <p className="text-secondary-gray text-sm lg:text-base">Sign up to start your fashion journey. Discover styles you’ll love and make every look your own.</p>
         </div>
 
-        {socialLoginToken ? <SocailloginFinish socialLoginToken={socialLoginToken} role={UserRole.CHARITABLE_ORGANIZATION} isCharity={isCharity} /> : isSignupWithEmail &&
+        {socialLoginToken ? <SocailloginFinish socialLoginToken={socialLoginToken} role={role} isCharity={isCharity} /> : isSignupWithEmail &&
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

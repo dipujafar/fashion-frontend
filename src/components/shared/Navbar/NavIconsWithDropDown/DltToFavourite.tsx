@@ -1,11 +1,15 @@
 "use client"
 import { DeleteToFavourite } from '@/lib/Actions/Favourite.action';
+import { baseApi } from '@/redux/api/baseApi';
+import { useAppDispatch } from '@/redux/hooks';
+import { tagTypes } from '@/redux/tagTypes';
 import { Trash2 } from 'lucide-react';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import React from 'react'
 import { toast } from 'sonner';
 
 function DltToFavourite({ prodId }: { prodId: string }) {
+    const dispatch = useAppDispatch();
 
     const deleteFavorite = async (prodId: string) => {
 
@@ -14,6 +18,7 @@ function DltToFavourite({ prodId }: { prodId: string }) {
             if (res?.error) {
                 toast.error(res?.error);
             }
+            dispatch(baseApi.util.invalidateTags([tagTypes.favorite]));
         }
         catch (error: any) {
             if (isRedirectError(error)) {
