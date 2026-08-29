@@ -11,9 +11,9 @@ const Navbar = () => {
       <Container className="md:hidden px-0">
         <GlobalItemAndMemberSearch/>
       </Container>
-      <div className="hidden md:block">
+      {/* <div className="hidden md:block">
         <NavLinksSection></NavLinksSection>
-      </div>
+      </div> */}
       <NavbarCategories />
     </div>
   );

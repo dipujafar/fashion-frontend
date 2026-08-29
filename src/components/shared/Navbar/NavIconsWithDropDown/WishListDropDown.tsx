@@ -22,7 +22,7 @@ export default function WishListDropDown() {
       <MenubarTrigger className="cursor-pointer relative">
         <HeartIcon className="size-5 lg:size-6 " />
       </MenubarTrigger>
-      <MenubarContent className="rounded-none min-w-xs">
+      <MenubarContent className="rounded-none w-xs">
 
         <div className="border-b border-gray-200 py-2 px-3">
           <p className="text-base font-medium text-center">Favourites</p>
@@ -62,7 +62,7 @@ const FavProds = ({ favoriteProds }: { favoriteProds: IFavoriteItem[] }) => {
                 <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <div className="flex-1">
-                      <p className="text-base break-words font-medium text-gray-800">
+                      <p className="text-base break-words font-medium text-gray-800 line-clamp-1">
                         {product?.product?.title}
                       </p>
 

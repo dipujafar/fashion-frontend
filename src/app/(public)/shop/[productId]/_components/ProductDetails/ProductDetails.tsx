@@ -1,11 +1,11 @@
-"use client";
 import Link from "next/link";
 import ActionButtons from "../ActionButtons";
 import SellerDetails from "../SellerDetails";
 import { CheckIcon } from "@/icons";
 import ProductDetailsHeader from "./ProductDetailsHeader";
 import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
-import { IProduct, IUser } from "@/types";
+import { IProduct, ISize, IUser } from "@/types";
+import Sizechart from "../dialog/Sizechart";
 
 export type IUserWithExtra = IUser & {
   _count: {
@@ -24,11 +24,13 @@ export type IProductWithUser = Omit<IProduct, "user"> & {
   _count: {
     cartItems: number;
     favourites: number;
-  }
+  },
+  sizechart: ISize[]
 };
 
 const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   const isStockOut = product?.stock === 0;
+
   return (
     <div className="lg:my-5 space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
@@ -85,12 +87,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
             <h2 className="w-30">Available Size: </h2>
             <Link href={`/shop?size=${product?.size?.id}`} className="hover:underline">{product?.size?.title}</Link>
           </div>
-          <Link
-            href="/product-size"
-            className="underline text-primary-light-blue"
-          >
-            View Size Guide
-          </Link>
+          <Sizechart sizes={product?.sizechart} />
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Colour: </h2>
@@ -120,7 +117,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
       </div>
 
       {/* ======================= all actions buttons ================ */}
-      {!isStockOut ? <ActionButtons product={product}></ActionButtons> : <div className="py-4 max-w-lg bg-destructive 2xl:w-2/3">
+      {!isStockOut ? <ActionButtons product={product}></ActionButtons> : <div className="py-3 max-w-lg bg-yellow-700 2xl:w-2/3">
         <p className="text-center text-white">Item Sold Out</p>
       </div>}
 

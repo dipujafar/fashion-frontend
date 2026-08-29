@@ -29,5 +29,6 @@ export const formattedData = (data: z.infer<typeof productFormSchema>) => {
     width_cm: Number(data?.width_cm),
     hight_cm: Number(data?.hight_cm),
     donationPrivacy: data?.donationPrivacy === "anonymous",
+    donation_percent: Number(data?.donation_percent) || 0,
   };
 };

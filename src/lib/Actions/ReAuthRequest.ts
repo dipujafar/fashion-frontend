@@ -34,7 +34,6 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
     let response = await makeRequest(accessToken);
 
 
-
     if (!response.ok && response.status === 401 && refreshToken) {
 
         const refreshResponse = await fetch(EnvConfig.serverBaseUrl + '/auth/refresh', {

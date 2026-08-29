@@ -3,16 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 function ProductDetailSkeleton() {
     return (
         <div className="mt-2">
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-2 mb-4">
-                <Skeleton className="h-4 w-10" />
-                <span className="text-gray-300">/</span>
-                <Skeleton className="h-4 w-16" />
-                <span className="text-gray-300">/</span>
-                <Skeleton className="h-4 w-36" />
-                <span className="text-gray-300">/</span>
-                <Skeleton className="h-4 w-14" />
-            </div>
+            
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
                 {/* Left: Image gallery */}

@@ -27,7 +27,7 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
     return (
         <section
             aria-labelledby="charity-heading"
-            className="mt-10 overflow-hidden rounded-3xl border border-border bg-give p-6 shadow-soft sm:p-8"
+            className="mt-10 overflow-hidden rounded-md border border-border bg-give p-6 shadow-soft sm:p-8"
         >
             <div className="flex flex-wrap items-center gap-4">
                 <span className="flex size-11 items-center justify-center rounded-full bg-green-500/10 text-primary">
@@ -51,7 +51,7 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                 {res?.data?.charities?.map((c) => (
                     <li
                         key={c?.charity.fname + c?.charity.lname}
-                        className="flex items-center gap-3 rounded-2xl border border-border bg-card/80 p-4 backdrop-blur"
+                        className="flex items-center gap-3 rounded-md border border-border bg-card/80 p-4 backdrop-blur"
                     >
                         <Link href={`/member/${c?.charity.userName}`}>
                             <Avatar className="h-12 w-12 shadow-sm">

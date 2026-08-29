@@ -10,9 +10,7 @@ export const metadata = {
 export default function SellProductPage() {
   return (
     <Container>
-      <Suspense fallback={<div>Loading...</div>}>
-        <AddProductForm />
-      </Suspense>
+      <AddProductForm />
     </Container>
   );
 }

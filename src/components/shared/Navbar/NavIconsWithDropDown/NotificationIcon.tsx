@@ -37,7 +37,7 @@ export default function NotificationIcon() {
         {(isSuccess && notifications?.data?.data?.length > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 py-0.5 px-[3px] text-xs text-white">{notifications?.data?.unReadCount}</span>}
 
       </MenubarTrigger>
-      <MenubarContent className="rounded-none min-w-xs">
+      <MenubarContent className="rounded-none w-xs">
 
         <div className="overflow-y-auto max-h-[450px]">
 

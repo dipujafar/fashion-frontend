@@ -27,7 +27,7 @@ export default function CartDropDown() {
         {(isSuccess && data?.data?.length > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 py-0.5 px-[3px] text-[10px] text-white">{data?.data.length}</span>}
         
       </MenubarTrigger>
-      <MenubarContent className="min-w-xs rounded-none">
+      <MenubarContent className="w-xs rounded-none">
 
         <div className="border-b border-gray-200">
           <p className="text-base font-medium px-3 pt-2 pb-3 text-center">Shopping Cart</p>

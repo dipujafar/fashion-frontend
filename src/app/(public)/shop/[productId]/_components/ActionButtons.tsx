@@ -62,7 +62,7 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
 
 export default ActionButtons;
 
-export const SMActionButtons = ({ product }: { product: IProductWithUser }) => {
+export const SMActionButtons = ({ product, isSold }: { product: IProductWithUser; isSold: boolean }) => {
   const [showOpenOfferModal, setShowOpenOfferModal] = useState<boolean>(false);
   const [showOpenOpenCharityModal, setShowOpenOpenCharityModal] = useState<boolean>(false);
 
@@ -79,16 +79,20 @@ export const SMActionButtons = ({ product }: { product: IProductWithUser }) => {
     <>
       <div className="max-w-6xl mx-auto flex items-center gap-3">
 
-        <Button><MessageIcon className="size-11" /></Button>
+        <button><MessageIcon className="size-10" /></button>
 
-        <Button
-          onClick={() => setShowOpenOfferModal(true)}
-          className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
+        {isSold ? <div className="py-2.5 bg-yellow-700 px-5 flex-1">
+          <p className="text-center text-white">Item Sold Out</p>
+        </div> : <div className="flex-1 flex flex-row justify-between items-center gap-3">
+          <Button
+            onClick={() => setShowOpenOfferModal(true)}
+            className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
 
-        {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5 flex-1">
-          <Check />
-          <p className="text-lg font-medium">Added</p>
-        </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Add to Cart</Button>}
+          {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5 flex-1">
+            <Check />
+            <p className="text-lg font-medium">Added</p>
+          </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Add to Cart</Button>}</div>
+        }
 
       </div>
 

@@ -15,7 +15,7 @@ function DltCart({ cartItemId, productId }: { cartItemId: string, productId: str
     const handleDltTocart = async (productId: string) => {
         setLoading(true);
         try {
-            const res = await DeleteFromCart({ payload: { productId }, extraRevalidatePaths: ["shopping-cart"] });
+            const res = await DeleteFromCart({ payload: { productId }, extraRevalidatePaths: ["shopping-cart", `/shop/${productId}`] });
             if (res?.error) {
                 toast.error(res?.error);
                 return;

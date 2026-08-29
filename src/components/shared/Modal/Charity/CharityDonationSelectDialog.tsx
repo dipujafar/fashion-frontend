@@ -15,6 +15,9 @@ import { ICharity, IProduct } from "@/types";
 import { AddToCart } from "@/lib/Actions/Cart.action";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { tags } from "@/utils/serverTags";
+import { useDispatch } from "react-redux";
+import { baseApi } from "@/redux/api/baseApi";
+import { tagTypes } from "@/redux/tagTypes";
 
 interface CharityDonationFormData {
   selectedCharities: string[];
@@ -49,6 +52,8 @@ export function CharityDonationSelectDialog({
   const [additionalDonation, setAdditionalDonation] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
 
   const { handleSubmit, control, watch } = useForm<CharityDonationFormData>({
     defaultValues: {
@@ -101,6 +106,7 @@ export function CharityDonationSelectDialog({
         setError(res?.error);
         return; // keep dialog open so the user can see the error
       }
+      dispatch(baseApi.util.invalidateTags([tagTypes.cart])); // Invalidate cart tag to refresh cart state
       onOpenChange(false);
     } catch (error: any) {
       if (isRedirectError(error)) {

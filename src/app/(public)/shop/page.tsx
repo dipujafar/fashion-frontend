@@ -70,10 +70,10 @@ const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: s
       <div className="space-y-5 md:space-y-5">
 
         {/* ----------------------------------------- show filter option ------------------------------------- */}
-        <SelectCatBypath categoryId={category} />
+        <SelectCatBypath categoryId={category}/>
 
         {/* ----------------------lg filter-------------------------- */}
-        <div className="hidden lg:flex flex-row justify-between gap-x-4 items-center">
+        <div className="hidden lg:flex flex-row justify-between gap-x-4 items-center mt-5">
 
           <div className="flex flex-row flex-wrap items-center gap-4">
             <CategorySelectClient selectedCat={category} />

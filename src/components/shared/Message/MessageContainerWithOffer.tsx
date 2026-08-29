@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { Clock, MapPin, Paperclip, Send, Star } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import userImg from "@/assets/images/message/user2.png";
 import user2Img from "@/assets/images/message/user1.png";
@@ -15,69 +14,15 @@ import { ReportDialog } from "./ReportDialog";
 
 const MessageContainerWithOffer = () => {
   return (
-    <div className="lg:mx-auto ">
-      <div className="relative z-10 flex flex-col  lg:flex-row">
+    <div className="pt-5">
+      <div className="relative z-10 flex flex-col lg:flex-row border-t border-gray-200">
         {/* left */}
-        <div className="border-opacity-[40%] pr-2 lg:w-[30%] lg:border-r-2 lg:border-gray-300">
-          <div className="border-t-black flex items-center justify-between gap-x-5 border-opacity-[40%]  text-black">
-            <h4 className="text-2xl font-bold">Messages</h4>
-            <p>
-              <BellIcon />
-            </p>
-          </div>
-
-          <div className="mx-auto mb-10 mt-4">
-            <Input
-              placeholder="Search messages"
-              className="w-full rounded-xl border  bg-transparent  py-6 "
-              type="text"
-            />
-
-            {/* users list - TODO: Use dynamic data */}
-            <div className="scroll-hide mt-8 max-h-[calc(100vh-250px)] space-y-8 overflow-auto">
-              {Array.from({ length: 8 }).map((_, idx) => (
-                <UserCard
-                  key={idx}
-                  user={{
-                    img: user3Img,
-                    name: "Elmer Laverty",
-                    latestMsg: "Emily: Yes, You can make an offer of ...",
-                  }}
-                  active={idx === 1 ? true : false}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        
 
         {/* right */}
-        <div className="flex flex-col  lg:flex-grow lg:px-8 max-h-[77vh] justify-between">
-          <div className=" bg-black text-white flex items-center justify-between border-b border-opacity-[40%] pb-1 px-4 py-1 rounded">
-            <div className="flex items-center gap-x-5">
-              <div className="w-[22%]">
-                <Image
-                  src={userImg}
-                  alt="user image"
-                  className="aspect-square w-full rounded-full"
-                />
-              </div>
+        <div className="flex flex-col lg:grow max-h-[calc(100vh-250px)] justify-between lg:border-r border-gray-200 lg:border-b">
 
-              <div className="lg:flex-grow">
-                <h3 className="text-xl font-semibold">Elmer Laverty</h3>
-
-                <div className="mt-1 flex items-center gap-x-2">
-                  {/* Active/Online Indicator */}
-                  <div className="h-2 w-2 rounded-full bg-green-500" />
-                  <p className="">Online</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <ReportDialog />
-            </div>
-          </div>
-
-          <div className="max-h-[60vh] overflow-y-auto">
+          <div className="max-h-[60vh] overflow-y-auto px-4">
             <div>
               {/* Product Section */}
               <div className="flex gap-4 mb-4">
@@ -128,11 +73,10 @@ const MessageContainerWithOffer = () => {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-3 h-3 ${
-                          i < 4
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "fill-gray-200 text-gray-200"
-                        }`}
+                        className={`w-3 h-3 ${i < 4
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "fill-gray-200 text-gray-200"
+                          }`}
                       />
                     ))}
                     <span className="text-xs text-gray-600 ml-1">(4.9/5)</span>
@@ -210,7 +154,9 @@ const MessageContainerWithOffer = () => {
               />
             </div>
           </div>
+
         </div>
+
       </div>
     </div>
   );

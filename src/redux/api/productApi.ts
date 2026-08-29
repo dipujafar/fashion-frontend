@@ -37,6 +37,20 @@ const productApi = baseApi.injectEndpoints({
         params,
       }),
     }),
+    getProductStats: builder.query<{
+      data: {
+        "_count": {
+          "favourites": number,
+          "cartItems": number,
+          "offerItems": number
+        }
+      }
+    }, { productId: string }>({
+      query: ({ productId }) => ({
+        url: `/products/stats/${productId}`,
+        method: "GET"
+      }),
+    }),
 
     productsGetByMember: builder.mutation<{ data: { data: IProduct[], meta: IMeta } }, { userName: string, params: {} }>({
       query: ({ params, userName }) => ({
@@ -49,4 +63,4 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation, useGetProductStatsQuery } = productApi;
