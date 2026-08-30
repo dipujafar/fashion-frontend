@@ -2,7 +2,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
-const initialState = {
+interface IUser {
+  id: string;
+  // ...other fields
+}
+
+interface AuthState {
+  user: IUser | null;
+  token: string | null;
+}
+
+const initialState: AuthState = {
   user: null,
   token: null,
 };

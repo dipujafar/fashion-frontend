@@ -8,6 +8,7 @@ import "react-pagination-bar/dist/index.css";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/lib/provider/Providers";
 import { Toaster } from "sonner";
+import SocketProvider from "@/Context/SocketProvider";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -40,9 +41,11 @@ export default function RootLayout({
 
           <div
             className="min-h-[calc(100vh-140px)] md:pb-16 pb-8"
-            // className=""
+          // className=""
           >
-            {children}
+            <SocketProvider>
+              {children}
+            </SocketProvider>
           </div>
           <div className="bg-[#F6F6F6] lg:py-14 py-8">
             <Footer></Footer>

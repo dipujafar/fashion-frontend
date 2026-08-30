@@ -2,7 +2,7 @@ import { useEffect, useReducer, useCallback } from "react";
 import debounce from "lodash.debounce";
 
 const INTERSECTION_THRESHOLD = 5;
-const LOAD_DELAY_MS = 500;
+const LOAD_DELAY_MS = 50;
 
 type State<T> = {
     loading: boolean;
@@ -15,12 +15,14 @@ type Action<T> =
     | {
         type: "set";
         payload: Partial<State<T>>;
+        newDataAppendToEnd?: boolean;
     }
     | {
         type: "onGrabData";
         payload: {
             data: T[];
             hasMore: boolean;
+            newDataAppendToEnd?: boolean;
         };
     };
 
@@ -37,7 +39,7 @@ const reducer = <T>(state: State<T>, action: Action<T>): State<T> => {
             return {
                 ...state,
                 loading: false,
-                data: [...state.data, ...action.payload.data],
+                data: action.payload.newDataAppendToEnd ? [...state.data, ...action.payload.data] : [...action.payload.data, ...state.data],
                 currentPage: state.currentPage + 1,
                 hasMore: action.payload.hasMore,
             };
@@ -57,6 +59,7 @@ type UseLazyLoadProps<T> = {
     triggerRef: React.RefObject<HTMLElement | null>;
     onGrabData: (page: number) => Promise<GrabDataResult<T>>;
     options?: IntersectionObserverInit;
+    newDataAppendToEnd?: boolean;
     initialData?: T[];
     initialPage?: number;
     initialHasMore?: boolean;
@@ -68,6 +71,7 @@ const useLazyLoad = <T,>({
     options,
     initialData = [],
     initialPage = 1,
+    newDataAppendToEnd = true,
     initialHasMore = true,
 }: UseLazyLoadProps<T>) => {
     const [state, dispatch] = useReducer(
@@ -105,6 +109,7 @@ const useLazyLoad = <T,>({
                 payload: {
                     data,
                     hasMore,
+                    newDataAppendToEnd: newDataAppendToEnd,
                 },
             });
         }

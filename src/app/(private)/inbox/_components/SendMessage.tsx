@@ -1,9 +1,33 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Camera, Paperclip, Send } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useSendNewMsgMutation } from '@/redux/api/message.api'
+import { Camera, LoaderCircle, Send } from 'lucide-react'
 import React from 'react'
+import { toast } from 'sonner'
 
-function SendMessage() {
+function SendMessage({ username }: { username: string }) {
+
+    const [handleSendMessage, { isLoading }] = useSendNewMsgMutation();
+
+    const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+
+        try {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const msgInput = form?.message as HTMLFormElement
+            if (msgInput?.value) {
+                await handleSendMessage({ text: msgInput?.value, receiverUserName: username }).unwrap();
+                form.reset()
+            }
+        } catch (error: any) {
+            console.log(error)
+            toast.error(error?.data?.message || "Message sending failed");
+        }
+    }
+
+
     return (
         <div className="mt-3 flex w-full items-center pb-2">
             <div className='mx-2'>
@@ -21,7 +45,7 @@ function SendMessage() {
             </div>
 
             <form
-                // onSubmit={handleSubmitForm}
+                onSubmit={handleSubmitForm}
                 className='w-full'>
                 <div className="flex w-full items-stretch gap-x-4 relative">
                     <Input
@@ -30,12 +54,12 @@ function SendMessage() {
                         name='message'
                         className="w-full bg-white border-[#e1e1e1] shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black px-4 pr-10 py-5 rounded-3xl"
                     />
-                    <button type='submit' className='cursor-pointer absolute right-4 top-3'>
-                        <Send
+                    <button disabled={isLoading} type='submit' className={cn("cursor-pointer absolute right-4 top-3", isLoading && "cursor-not-allowed")}>
+                        {!isLoading ? <Send
                             size={20}
                             color="#d55758"
                             className=""
-                        />
+                        /> : <LoaderCircle className='animate-spin' />}
                     </button>
                 </div>
             </form>

@@ -2,7 +2,8 @@
 import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { EnvConfig } from "@/config";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 type TValueType = {
     socket: Socket;
@@ -15,14 +16,13 @@ export const useSocket = () => {
 };
 
 // const socketApi = "http://10.10.10.9:3500"
-const socketApi = EnvConfig.baseUrl
+const socketApi = EnvConfig.socket_url
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     const [socketLoading, setSocketLoading] = useState(false);
-    const [cookies] = useCookies(['accessToken']);
+    const token = useSelector((state: RootState) => state.auth?.token);
     const socketRef = useRef<Socket | null>(null);
-    const token = cookies?.accessToken;
 
     useEffect(() => {
         if (token && !socketRef.current) {

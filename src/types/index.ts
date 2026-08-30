@@ -161,7 +161,8 @@ export interface IUser {
   followers: IFolow[]
   following: IFolow[]
   charityGalleries: { id: string, url: string, caption: string }[]
-  vacationMode: boolean
+  vacationMode: boolean,
+  lastOnlineAt: Date | null
 }
 
 export interface INotification {
@@ -437,4 +438,33 @@ export interface IBandleTier {
   id: string;
   itemCount: number;
   discountPercent: number;
+}
+
+export interface IChatUser {
+  id: string,
+  user1: IUser,
+  user1Id: string,
+  user2: IUser,
+  user2Id: string,
+  items: { product: IProduct, productId: string }[],
+  messages: IMessage[],
+  _count: { messages: number }
+}
+
+export interface IMessage {
+  id: string;
+  text?: string;
+  file?: {
+    key: string;
+    url: string;
+    type: "image" | "document"
+  }[];
+  type: "text" | "file"
+  isSeen: boolean;
+  chatId: string;
+  senderId: string;
+  sender: IUser;
+  receiverId: string;
+  receiver: IUser;
+  createdAt: Date
 }

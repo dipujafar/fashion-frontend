@@ -19,7 +19,7 @@ const userApi = baseApi.injectEndpoints({
             }),
             providesTags: [tagTypes.user_billing],
         }),
-        
+
         updateBillingDetails: builder.mutation<{ data: IBillingDetails | null }, IBillingDetails>({
             query: (payload) => ({
                 url: "/users/billing-details",
@@ -44,7 +44,14 @@ const userApi = baseApi.injectEndpoints({
             }),
         }),
 
+        getUserByUsername: builder.query<{ data: { user: IUser, review: { _avg: { rating: number } } } }, { username: string }>({
+            query: ({ username }) => ({
+                url: `/users/${username}`,
+                method: "GET",
+            }),
+        }),
+
     }),
 })
 
-export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery } = userApi;
+export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery } = userApi;

@@ -1,4 +1,4 @@
-import { IMeta, IProduct } from "@/types";
+import { IChatUser, IMeta, IProduct, IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -60,7 +60,21 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
 
+    productsByIds: builder.query<{
+      data: {
+        products: IProduct[],
+        seller: IUser,
+        totalPrice: number,
+        chat : IChatUser
+      }
+    }, { ids: string }>({
+      query: ({ ids }) => ({
+        url: `/products/by-ids/${ids}`,
+        method: "GET",
+      }),
+    }),
+
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation, useGetProductStatsQuery } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation, useGetProductStatsQuery, useProductsByIdsQuery } = productApi;

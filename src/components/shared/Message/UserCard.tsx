@@ -1,32 +1,60 @@
 import CustomAvatar from "@/components/shared/CustomAvatar";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { RootState } from "@/redux/store";
+import { IChatUser } from "@/types";
+import moment from "moment";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 
-const UserCard = ({ user, active }: { user: any; active: boolean }) => {
-  const { img, name, latestMsg } = user;
+const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) => {
+
+  const user = useSelector((state: RootState) => state?.auth?.user);
+
+  const pathName = usePathname();
+
+  const friendUser = chat?.user1?.id === user?.id ? chat?.user2 : chat?.user1;
+
+  const active = pathName === `/inbox/${friendUser?.userName}`;
+
+  const unreadCount = chat?._count?.messages || 0;
+
   return (
-    <div
-      className={`flex items-start p-3 gap-x-3 border-b border-gray-200 ${active ? "bg-[#E6E6E6] p-2" : ""}`}
-    >
-      <div>
-        {/* <Image src={img} alt={name} className="w-full rounded-full" /> */}
-        <CustomAvatar img={img} name={name} className="md:size-12 size-10" />
-      </div>
-
-      <div className="flex-grow">
-        <div className="flex items-center justify-between">
-          <p className={cn("text-base font-medium text-black")}>
-            {name}
-          </p>
-          <p className="font-medium text-sm text-secondary-2 text-gray-600">12m</p>
+    <Link
+      href={`/inbox/${friendUser?.userName}`}>
+      <div
+        className={`flex items-start p-3 py-4 gap-x-3 border-b border-gray-200 hover:bg-zinc-100 duration-150 ${active ? "bg-zinc-100" : ""}`}
+      >
+        <div>
+          {/* <Image src={img} alt={name} className="w-full rounded-full" /> */}
+          <CustomAvatar img={friendUser?.picture?.url} name={friendUser?.userName || "Unknown User"} className="md:size-12 size-10" />
         </div>
-        <p className="line-clamp-1 text-sm text-black/60">{latestMsg}</p>
-        <div className="flex items-center gap-x-1">
-          <Image src="/t_shirt_image.png" alt="product_image" width={1200} height={1200} className="size-8 rounded" />
-        </div>
-      </div>
 
-    </div>
+        <div className="flex-grow">
+          <div className="flex items-center justify-between">
+            <p className={cn("text-base font-medium text-black")}>
+              {friendUser?.userName}
+            </p>
+            {<p className={`text-xs px-1.5 py-0.5 rounded-full font-normal text-secondary-2 text-gray-800`}>{moment(chat?.messages[0]?.createdAt).calendar(null, {
+              sameDay: "hh:mm A",
+              lastDay: "[Yesterday]",
+              sameElse: "DD-MM-YYYY",
+            })}</p>}
+
+          </div>
+
+          <div className="flex items-center justify-between">
+            <p className="line-clamp-1 text-sm text-black/60">{chat?.messages[0]?.text || ""}</p>
+            {unreadCount > 0 && <p className={`text-xs w-5 h-5 flex justify-center items-center rounded-full font-semibold text-secondary-2  ${active ? " bg-white text-gray-700" : " text-gray-200 bg-main-color"}`}>{unreadCount}</p>}
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </Link >
   );
 };
 
