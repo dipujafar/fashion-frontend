@@ -1,109 +1,165 @@
+import { Button } from "@/components/ui/button";
 import CommonButton from "@/components/ui/common-button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { InfoIcon3 } from "@/icons";
+import { AddNewOffer } from "@/lib/Actions/Product.api";
 import { cn } from "@/lib/utils";
-import { TProduct } from "@/types";
+import { IProduct } from "@/types";
+import { defaultImg } from "@/utils/defaultImg";
+import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function SendOfferModal({
   open,
-  setOpen
+  setOpen,
+  product
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  product: IProduct;
 }) {
   const router = useRouter();
-  const [selectedOffer, setSelectedOffer] = useState<number>(0);
+  const [offerPrice, setOfferPrice] = useState<number>(0);
+  const [isCustomOffer, setIsCustomOffer] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSendOffer = () => {
-    router.push("/individual-user/dashboard/message");
+  const handleSendOffer = async () => {
+    setIsLoading(true);
+    try {
+      const payload = {
+        sellerId: product?.userId,
+        offerPrice: offerPrice,
+        productIds: [product?.id]
+      };
+
+      const res = await AddNewOffer({ payload });
+
+      toast.success("Offer sent successfully!");
+      
+      setError(null);
+
+    } catch (err: any) {
+      setError(err?.message || "Offer sending failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+      setOpen(false);
+    }
+
   };
 
   const offerData = [
     {
       id: 1,
       discount: 5,
-      price: 152.00,
+      price: product?.finalPrice - (product?.finalPrice * 5) / 100,
     },
     {
       id: 2,
       discount: 10,
-      price: 144.00,
+      price: product?.finalPrice - (product?.finalPrice * 10) / 100,
     },
     {
       id: 3,
       discount: 15,
-      price: 142.00,
+      price: product?.finalPrice - (product?.finalPrice * 15) / 100,
     },
   ];
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="w-[700px]">
+
+      <DialogContent className="w-[700px] rounded-none">
+
+        <DialogHeader className="border-b border-gray-200 pb-3.5">
+          <h2 className="text-base font-medium text-center">Send Offer</h2>
+        </DialogHeader>
+
         <div className="space-y-4">
           <div className="flex md:flex-row flex-col  gap-x-4">
             <div className="relative">
               <Image
-                src={"/productDetailsImage3.jpeg"}
+                src={product?.images[0]?.url || defaultImg?.product}
                 alt="hero image"
                 width={500}
                 height={500}
-                className="h-32 w-36 rounded-2xl object-cover "
+                placeholder="blur"
+                blurDataURL={defaultImg?.placeholderImg}
+                className="h-28 w-28 rounded object-cover "
               />
-           
+
             </div>
 
             <div className="text-base">
-              <h1 className="text-base">
-               Brown fringe shawl / bohemian - whimsical vibes.
-              </h1>
-              <p className="text-[#8A8A8A]">Product Price: $300.00</p>
-             
-              <p className="text-[#E12728]">Offer Expire in 24 hrs</p>
+              <p className="text-base">
+                {product?.title}
+              </p>
+              <p className="text-gray-700">{product?.size?.title}</p>
+              <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">${product?.finalPrice?.toFixed(2)}</span></p>
+
+              {/* <p className="text-[#E12728]">Offer Expire in 24 hrs</p> */}
             </div>
           </div>
-          <div className="text-[#6B6B6B] font-medium text-lg">
-            <h1>Submit your offer</h1>
-            <hr className="my-2" />
+          <div className="">
 
-            <div className={cn("flex justify-center items-center gap-x-5 flex-wrap")}>
+            <div className={cn("grid grid-cols-4 items-center gap-3 flex-wrap")}>
               {offerData?.map((item) => (
-                <p
+                <button
                   key={item?.id}
-                  onClick={() => setSelectedOffer(item?.id)}
-                  style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.05)" }}
-                  className={cn("text-center  w-fit py-2 px-5 rounded-xl border border-gray-200 cursor-pointer",  selectedOffer === item?.id && "border-primary-gray/40 bg-gray-100")}
+                  onClick={() => {
+                    setIsCustomOffer(false);
+                    setOfferPrice(item?.price);
+                  }}
+                  className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer shadow-sm text-sm h-full font-medium text-gray-700", offerPrice === item?.price && "border-gray-600 bg-zinc-50")}
                 >
-                  £{item?.price} for <br /> {item?.discount}% off
-                </p>
+                  <span className="font-semibold text-primary-black">${item?.price.toFixed(2)}</span> for <br /> {item?.discount}% off
+                </button>
               ))}
+              <button
+                onClick={() => {
+                  setIsCustomOffer(true);
+                  setOfferPrice(0);
+                }}
+                className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer h-full shadow flex flex-col items-center justify-center tex-sm", isCustomOffer && "border-gray-600 bg-zinc-50")}
+              >
+                <Plus />
+                Custom
+              </button>
             </div>
 
-            <div className="py-2">
-              <p className="text-lg font-medium text-black">Custom Offer</p>
+            {isCustomOffer && <div className="py-5">
+              <p className="text-sm font-medium text-black mb-2">Custom Offer</p>
               <Input
                 placeholder="Enter your offer price"
-                className="mt-2 bg-[#EEE] h-[50px]"
+                value={offerPrice}
+                onChange={(e) => setOfferPrice(parseFloat(e.target.value) || 0)}
+                className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
               />
-              <div className="flex mt-2 items-center gap-x-0.5">
+              {/* <div className="flex mt-2 items-center gap-x-0.5">
                 <InfoIcon3 />
                 <p className="text-[#E12728] line-clamp-1 text-base">
                   The lowest amount you can offer is £210.00 for (20% off).
                 </p>
-              </div>
-            </div>
+              </div> */}
+            </div>}
+
           </div>
+
+          {error && (
+            <div className="rounded border border-red-300 bg-red-50 px-3 py-2">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
 
           {/* ------------------------------- action buttons ------------------------------- */}
           <div className="mt-5 flex gap-2">
-            <CommonButton handlerFunction={handleSendOffer} className="flex-1">
-              Send Offer
-            </CommonButton>
-            <CommonButton className="flex-1 bg-transparent text-black border-b-3 border-r-3 border-black hover:bg-gray-100">
-              Contact Seller
-            </CommonButton>
+            <Button disabled={offerPrice === 0 || isLoading} onClick={handleSendOffer} className="w-full h-11 rounded-none cursor-pointer">
+              {isLoading ? <span className="loader" /> : "Send Offer"}
+            </Button>
           </div>
         </div>
       </DialogContent>

@@ -59,10 +59,10 @@ const SIgnInForm = () => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const res = await login(data).unwrap();
-      if (res?.data?.user?.role) {
+      if (res?.data?.user?.auth?.role) {
         dispatch(
           setUser({
-            user: jwtDecode(res?.data?.accessToken),
+            user: res?.data?.user,
             accessToken: res?.data?.accessToken,
             refreshToken: res?.data?.refreshToken
           })

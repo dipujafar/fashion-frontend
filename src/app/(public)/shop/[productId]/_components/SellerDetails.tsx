@@ -65,7 +65,7 @@ const SellerDetails = ({ user }: { user: IUserWithExtra }) => {
             ><Button variant={"outline"} className="border border-gray-900 cursor-pointer py-4">Visit Shop</Button></Link>
 
             <Link
-              href={`/member/${user?.userName}`}
+              href={`/inbox/${user?.userName}`}
               className="cursor-pointer"
             >
               <Button variant={"outline"} className="border border-gray-900 cursor-pointer py-4">Ask A Question</Button>

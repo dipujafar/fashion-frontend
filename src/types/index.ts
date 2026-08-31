@@ -78,6 +78,7 @@ export interface IProduct {
   }[];
   donation_percent: number,
   user: IUser;
+  userId: string;
   charities: ICharity[],
   stock: number,
 }
@@ -454,10 +455,12 @@ export interface IChatUser {
 export interface IMessage {
   id: string;
   text?: string;
-  file?: {
+  files: {
+    title: string | null,
+    id: string
     key: string;
     url: string;
-    type: "image" | "document"
+    type: "IMAGE" | "DOCUMENT"
   }[];
   type: "text" | "file"
   isSeen: boolean;
@@ -466,5 +469,39 @@ export interface IMessage {
   sender: IUser;
   receiverId: string;
   receiver: IUser;
-  createdAt: Date
+  createdAt: Date,
+  offer: IOffer | null
+}
+
+export interface IOffer {
+  id: string,
+  buyerId: string,
+  buyer: IUser,
+  sellerId: string,
+  seller: IUser,
+  status: OfferStatus,
+  createdAt: Date,
+  updatedAt: Date,
+  offerItems: IOfferItem[],
+
+  offeredPrice: number,
+  actualPrice: number,
+  actionAt: Date | null,
+}
+
+export interface IOfferItem {
+  id: string,
+  offerId: string,
+  offer: IOffer,
+  productId: string,
+  product: IProduct,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export enum OfferStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  CANCELED = "CANCELED"
 }

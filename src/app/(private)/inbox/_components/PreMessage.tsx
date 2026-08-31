@@ -6,18 +6,41 @@ import useLazyLoad from '@/hooks/useLazyLoad';
 import { useGetMyMessagesMutation } from '@/redux/api/message.api';
 import { RootState } from '@/redux/store';
 import { IMessage } from '@/types';
+import moment from 'moment';
 import Image from 'next/image';
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux';
+
+const formatChatDate = (date: Date | string) => {
+    const mDate = moment(date);
+    const today = moment();
+
+    if (mDate.isSame(today, "day")) {
+        return "Today";
+    }
+
+    if (mDate.isSame(today.clone().subtract(1, "day"), "day")) {
+        return "Yesterday";
+    }
+
+    if (mDate.isAfter(today.clone().subtract(7, "days"))) {
+        return mDate.format("dddd"); // Monday, Tuesday, etc.
+    }
+
+    return mDate.format("MM/DD/YYYY");
+};
+
 
 function PreMessage({
     friendUserName,
     scrollToBottom,
     containerRef,
+    updatedMsgs
 }: {
     friendUserName: string;
     scrollToBottom: (behavior?: ScrollBehavior) => void;
     containerRef: React.RefObject<HTMLDivElement | null>;
+    updatedMsgs: IMessage[];
 }) {
     const [loadProds, { isLoading }] = useGetMyMessagesMutation();
     const triggerRef = useRef(null);
@@ -119,11 +142,31 @@ function PreMessage({
             }
 
             {
-                data?.map((message) => {
+                data?.map((msg, index) => {
+
+                    const isUpdatedMsg = updatedMsgs?.find((msgUp) => msgUp?.id === msg?.id);
+
+                    const message = isUpdatedMsg ? isUpdatedMsg : msg;
+
                     const isMyMessage = message?.senderId?.toString() === user?.id?.toString();
 
+                    const currentDate = moment(message?.createdAt);
+                    const prevDate = index > 0 ? moment(data[index - 1]?.createdAt) : null;
+
+                    const showDateSeparator = index === 0 || !currentDate.isSame(prevDate, "day");
+
                     return <div key={message?.id}>
-                        {isMyMessage ?
+
+                        {showDateSeparator && (
+                            <div className="flex justify-center items-center text-sm my-8">
+                                <p className="text-gray-900 bg-gray-200 px-2 py-0.5 rounded-md text-xs font-normal">
+                                    {formatChatDate(message?.createdAt)}
+                                </p>
+                            </div>
+                        )}
+
+
+                        {!isMyMessage ?
                             <div className="flex items-start gap-x-4">
                                 <Image
                                     src={message?.sender?.picture?.url || "/empty-user.png"}
@@ -133,7 +176,7 @@ function PreMessage({
                                     width={500}
                                 />
                                 <div className="max-w-[50%] space-y-3 overflow-hidden">
-                                    <OwnerMsgCard message={message?.text || ""} createdAt={message?.createdAt} />
+                                    <ReceiverMsgCard msg={message} />
                                 </div>
                             </div>
                             :
@@ -146,7 +189,7 @@ function PreMessage({
                                     width={500}
                                 />
                                 <div className="flex max-w-[50%] flex-col items-end space-y-3">
-                                    <ReceiverMsgCard message={message?.text || ""} createdAt={message?.createdAt} />
+                                    <OwnerMsgCard msg={message} />
                                 </div>
                             </div>}
                     </div>

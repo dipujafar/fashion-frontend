@@ -46,6 +46,7 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
       <SendOfferModal
         open={showOpenOfferModal}
         setOpen={setShowOpenOfferModal}
+        product={product}
       />
       <CharityDonationSelectDialog
         product={product}
@@ -99,6 +100,7 @@ export const SMActionButtons = ({ product, isSold }: { product: IProductWithUser
       <SendOfferModal
         open={showOpenOfferModal}
         setOpen={setShowOpenOfferModal}
+        product={product}
       />
       <CharityDonationSelectDialog
         product={product}

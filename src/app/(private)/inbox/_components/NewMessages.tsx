@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToBottom: () => void }) {
+function NewMessages({ userName, scrollToBottom, setUpdatedMsgs, updatedMsgs }: { userName: string; scrollToBottom: () => void; setUpdatedMsgs: React.Dispatch<React.SetStateAction<IMessage[]>>, updatedMsgs: IMessage[] }) {
 
     const { socket } = useSocket();
     const user = useSelector((state: RootState) => state?.auth?.user);
@@ -27,14 +27,6 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
 
             setNewMessages((prev) => [...prev, res]);
             socket?.emit(`seen`, { chatId: res?.chatId })
-
-            // const { distanceFromBottom = 0 } = checkScroll();
-
-            // if (distanceFromBottom > 80) {
-            //     setNewMessageCount(prev => {
-            //         return prev + 1
-            //     });
-            // }
         });
 
         socket.on(`new-message::${user?.id}`, (res: IMessage) => {
@@ -42,13 +34,18 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
             setNewMessages((prev) => [...prev, res]);
             socket?.emit(`seen`, { chatId: res?.chatId })
 
-            // const { distanceFromBottom = 0 } = checkScroll();
+        });
 
-            // if (distanceFromBottom > 80) {
-            //     setNewMessageCount(prev => {
-            //         return prev + 1
-            //     });
-            // }
+        socket.on(`update-message::${userName}`, (res: IMessage) => {
+
+            setUpdatedMsgs((prev) => [...prev, res]);
+            // socket?.emit(`seen`, { chatId: res?.chatId })
+        });
+
+        socket.on(`update-message::${user?.id}`, (res: IMessage) => {
+
+            setUpdatedMsgs((prev) => [...prev, res]);
+
         });
 
 
@@ -63,6 +60,9 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
                 // socket.off(`message`);
                 socket.off(`seen`);
                 socket.off(`new-message::${userName}`);
+                socket.off(`new-message::${user?.id}`);
+                socket.off(`update-message::${userName}`);
+                socket.off(`update-message::${user?.id}`);
             }
         };
 
@@ -74,8 +74,19 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
 
     return (
         <>
+
+            {newMessages?.length > 0 && <div className="flex justify-center items-center text-sm my-8">
+                <p className="text-gray-900 bg-gray-200 px-2 py-0.5 rounded-md text-xs font-normal">
+                    Latest messages
+                </p>
+            </div>}
+
             {
-                newMessages?.map((message, index) => {
+                newMessages?.map((msg, index) => {
+
+                    const isUpdatedMsg = updatedMsgs?.find((msgUp) => msgUp?.id === msg?.id);
+
+                    const message = isUpdatedMsg ? isUpdatedMsg : msg;
 
                     const isMyMessage = message?.senderId?.toString() === user?.id?.toString();
 
@@ -96,7 +107,7 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
                             </div>
                         )} */}
 
-                        {isMyMessage ?
+                        {!isMyMessage ?
                             // sent message
                             <div className="flex items-start gap-x-4" >
                                 <Image
@@ -108,7 +119,7 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
                                 />
                                 <div className="max-w-[50%] space-y-3 overflow-hidden">
 
-                                    <OwnerMsgCard message={message?.text || ""} createdAt={message?.createdAt} />
+                                    <ReceiverMsgCard msg={message} />
                                 </div>
                             </div>
 
@@ -124,7 +135,7 @@ function NewMessages({ userName, scrollToBottom }: { userName: string; scrollToB
                                     width={500}
                                 />
                                 <div className="flex max-w-[50%] flex-col items-end space-y-3">
-                                    <ReceiverMsgCard message={message?.text || ""} createdAt={message?.createdAt} />
+                                    <OwnerMsgCard msg={message} />
                                 </div>
                             </div>}
                     </div>

@@ -19,13 +19,24 @@ export default function CartDropDown() {
 
   const { isLoading, data, isSuccess } = useGetMyCartItemsQuery();
 
+  const itemsCount =
+    data?.data?.reduce(
+      (acc: number, cartGroup: ICartGroup) =>
+        acc + (cartGroup?.items?.length || 0),
+      0
+    ) || 0;
+
   return (
     <>
       <MenubarTrigger className="cursor-pointer relative">
         <CartIcon className="size-5 lg:size-7" />
 
-        {(isSuccess && data?.data?.length > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 py-0.5 px-[3px] text-[10px] text-white">{data?.data.length}</span>}
-        
+        {isSuccess && itemsCount > 0 && (
+          <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 px-[3px] py-0.5 text-[10px] text-white">
+            {itemsCount}
+          </span>
+        )}
+
       </MenubarTrigger>
       <MenubarContent className="w-xs rounded-none">
 
@@ -91,7 +102,7 @@ const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
                           <Link
                             href={`/shop/${item?.product?.id}`}
                             className="cursor-pointer"
-                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28" />
+                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28 object-cover" />
                           </Link>
                           <div>
                             <Link

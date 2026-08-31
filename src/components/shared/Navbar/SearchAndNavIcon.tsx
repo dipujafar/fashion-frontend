@@ -9,17 +9,13 @@ const SearchAndNavIcon = () => {
 
   return (
     <Menubar className="border-none shadow-none">
-      {/* <div>
-        <Link href={"/messages"}>
-          <Mail />
-        </Link>
-      </div> */}
-      <div >
 
+      <div>
         <MenubarMenu>
           <MessageDropDown />
         </MenubarMenu>
       </div>
+
       <div>
         <MenubarMenu>
           <WishListDropDown />
@@ -29,14 +25,17 @@ const SearchAndNavIcon = () => {
       <MenubarMenu>
         <NotificationIcon />
       </MenubarMenu>
+
       <div>
         <MenubarMenu>
           <CartDropDown />
         </MenubarMenu>
       </div>
+
       <MenubarMenu>
         <ProfileIcon />
       </MenubarMenu>
+      
     </Menubar>
   );
 };

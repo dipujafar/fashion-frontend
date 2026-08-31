@@ -1,6 +1,7 @@
 import { EnvConfig } from "@/config";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
+import Cookies from "js-cookie";
 
 export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = [], revalidate, cache }: { payload?: any, endPoint: string, method: string, tags?: string[], revalidate?: number, cache?: "force-cache" | "no-store" }) => {
     const cookieStore = await cookies();
@@ -51,21 +52,32 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
             const newAccessToken = data?.data?.accessToken;
             const newRefreshToken = data?.data?.refreshToken;
 
+            Cookies.set("fashion-access-token", newAccessToken, {
+                path: "/",
+                expires: 7,
+            });
+
+            Cookies.set("fashion-refresh-token", newRefreshToken, {
+                path: "/",
+                expires: 30,
+            });
+
             // Save new access token cookie
-            cookieStore.set('fashion-access-token', newAccessToken, {
-                httpOnly: false,
-                maxAge: 14 * 24 * 60 * 60,
-                path: '/',
-                sameSite: 'lax',
-                secure: EnvConfig.hasSSL === "true"
-            });
-            cookieStore.set('fashion-refresh-token', newRefreshToken, {
-                httpOnly: false,
-                maxAge: 30 * 24 * 60 * 60,
-                path: '/',
-                sameSite: 'lax',
-                secure: EnvConfig.hasSSL === "true"
-            });
+            // cookieStore.set('fashion-access-token', newAccessToken, {
+            //     httpOnly: false,
+            //     maxAge: 14 * 24 * 60 * 60,
+            //     path: '/',
+            //     sameSite: 'lax',
+            //     secure: EnvConfig.hasSSL === "true"
+            // });
+
+            // cookieStore.set('fashion-refresh-token', newRefreshToken, {
+            //     httpOnly: false,
+            //     maxAge: 30 * 24 * 60 * 60,
+            //     path: '/',
+            //     sameSite: 'lax',
+            //     secure: EnvConfig.hasSSL === "true"
+            // });
 
             // Retry original request with new token
             response = await makeRequest(newAccessToken);
@@ -76,6 +88,9 @@ export const serverQueryWithReauth = async ({ payload, endPoint, method, tags = 
             // cookieStore.delete('fashion-refresh-token');
             // Optionally, send redirect info to client
             // const errorData = await refreshResponse.json().catch(() => null);
+
+            Cookies.remove("fashion-access-token", { path: "/" });
+            Cookies.remove("fashion-refresh-token", { path: "/" });
 
             // user redict to login page
             redirect('/sign-in', RedirectType.push);

@@ -16,7 +16,6 @@ import {
   Package,
   Settings,
   SquareChartGantt,
-  Tag,
   Tags,
   UserRound,
   UserRoundCog,
@@ -27,75 +26,12 @@ import { useRouter } from "next/navigation";
 import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFormDialog";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/authSlice";
-
-const navLinksFotProfileIcon = [
-  {
-    icon: <UserRound className="size-5" />,
-    name: "View Profile",
-    link: "/professional-seller/profile-preview",
-  },
-  {
-    icon: <UserRoundCog className="size-5" />,
-    name: "Edit Profile ",
-    link: "/professional-seller/dashboard/profile",
-  },
-  {
-    icon: <SquareChartGantt className="size-5" />,
-    name: "List an item",
-    link: "/sell-products",
-  },
-  {
-    icon: <List className="size-5" />,
-    name: "Products-Listing",
-    link: "/professional-seller/dashboard/products-list",
-  },
-  {
-    icon: <Package className="size-5" />,
-    name: "My Orders",
-    link: "/professional-seller/dashboard/products-list/purchase-product",
-  },
-  {
-    icon: <Tag className="size-5" />,
-    name: "Your Offers",
-    link: "/professional-seller/dashboard/offers",
-  },
-  {
-    icon: <Settings className="size-5" />,
-    name: "Settings",
-    link: "/professional-seller/dashboard/settings",
-  },
-  {
-    icon: <Handshake className="size-5" />,
-    name: "Assisted Seller",
-    link: "/assisted-seller",
-  },
-  {
-    icon: <Tags className="size-5" />,
-    name: "Badges",
-    link: "/badges",
-  },
-  {
-    icon: <Wallet className="size-5" />,
-    name: "Wallet",
-    link: "/wallet",
-  },
-  {
-    name: "Donate now",
-    label: (
-      <CharityDonationFormDialog>
-        <div className="px-1.5 hover:bg-zinc-100">
-          <div className="flex items-center gap-x-3 pl-1 cursor-pointer py-3">
-            <LifeBuoy className="flex size-5 items-center justify-center text-muted-foreground" />
-            Donate Now
-          </div>
-          <MenubarSeparator />
-        </div>
-      </CharityDonationFormDialog>
-    ),
-  },
-];
+import { useSelector } from "react-redux";
 
 export default function ProfileIcon() {
+
+  const user = useSelector((state: any) => state.auth.user);
+
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -103,6 +39,74 @@ export default function ProfileIcon() {
     dispatch(logout());
     router.refresh();
   };
+
+  const navLinksFotProfileIcon = [
+    {
+      icon: <UserRound className="size-5" />,
+      name: "View Profile",
+      link: `/member/${user?.userName}`,
+    },
+    {
+      icon: <UserRoundCog className="size-5" />,
+      name: "Edit Profile ",
+      link: "/profile",
+    },
+    {
+      icon: <SquareChartGantt className="size-5" />,
+      name: "List an item",
+      link: "/sell-products",
+    },
+    {
+      icon: <List className="size-5" />,
+      name: "Products-Listing",
+      link: "/profile/sell/products",
+    },
+    {
+      icon: <Package className="size-5" />,
+      name: "My Orders",
+      link: "/profile/purchase/orders",
+    },
+    // {
+    //   icon: <Tag className="size-5" />,
+    //   name: "Your Offers",
+    //   link: "/professional-seller/dashboard/offers",
+    // },
+    {
+      icon: <Settings className="size-5" />,
+      name: "Settings",
+      link: "/profile",
+    },
+    {
+      icon: <Handshake className="size-5" />,
+      name: "Assisted Seller",
+      link: "/assisted-seller",
+    },
+    {
+      icon: <Tags className="size-5" />,
+      name: "Badges",
+      link: "/badges",
+    },
+    {
+      icon: <Wallet className="size-5" />,
+      name: "Earnings & Wallet",
+      link: "/profile/payment/earnings",
+    },
+    {
+      name: "Donate now",
+      label: (
+        <CharityDonationFormDialog>
+          <div className="px-1.5 hover:bg-zinc-100">
+            <div className="flex items-center gap-x-3 pl-1 cursor-pointer py-3">
+              <LifeBuoy className="flex size-5 items-center justify-center text-muted-foreground" />
+              Donate Now
+            </div>
+            <MenubarSeparator />
+          </div>
+        </CharityDonationFormDialog>
+      ),
+    },
+  ];
+
   return (
     <>
       <MenubarTrigger className="md:flex hidden cursor-pointer">
@@ -123,7 +127,7 @@ export default function ProfileIcon() {
                   <ChevronRight className="group-hover:translate-x-2 transition-all duration-300" />
                 </MenubarShortcut>
               </MenubarItem>
-             
+
             </Link>
           ) : (
             item?.label

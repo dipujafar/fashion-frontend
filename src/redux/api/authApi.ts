@@ -1,3 +1,4 @@
+import { IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -27,7 +28,7 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
-    login: builder.mutation({
+    login: builder.mutation<{ data: { user: IUser, accessToken: string, refreshToken: string } }, {}>({
       query: (data) => ({
         url: "/auth/login",
         method: "POST",
@@ -62,4 +63,4 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {useCreateUserMutation, useVerifyOtpMutation, useLoginMutation, useForgotPasswordMutation, useResetPasswordMutation, useSocialSignupMutation, useSocialLoginMutation} = authApi;
+export const { useCreateUserMutation, useVerifyOtpMutation, useLoginMutation, useForgotPasswordMutation, useResetPasswordMutation, useSocialSignupMutation, useSocialLoginMutation } = authApi;

@@ -44,7 +44,7 @@ export default function ChoiceBundleModal({ tiers, userName, btnTxt = "Create Bu
           ))}
         </div>
         <Link
-          href={`/${userName}/bundle`}
+          href={`/member/${userName}/bundle`}
           className="w-full"
         >
           {" "}

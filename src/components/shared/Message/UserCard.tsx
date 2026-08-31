@@ -19,6 +19,10 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
 
   const unreadCount = chat?._count?.messages || 0;
 
+  const offerStatusMsg = chat?.messages[0]?.offer ? chat?.messages[0]?.offer?.status === "ACCEPTED" ? "🏷️Offer Accepted" : chat?.messages[0]?.offer?.status === "REJECTED" ? "🏷️Offer Rejected" : chat?.messages[0]?.offer?.status === "PENDING" ? "🏷️Waiting for offer response" : "🏷️Offer cancelled" : "";
+
+  const lastmsg = chat?.messages[0]?.text ? chat?.messages[0]?.text : chat?.messages[0]?.files?.length > 0 ? "Sent an attachment" : chat?.messages[0]?.offer ? offerStatusMsg : "No messages yet";
+
   return (
     <Link
       href={`/inbox/${friendUser?.userName}`}>
@@ -27,7 +31,7 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
       >
         <div>
           {/* <Image src={img} alt={name} className="w-full rounded-full" /> */}
-          <CustomAvatar img={friendUser?.picture?.url} name={friendUser?.userName || "Unknown User"} className="md:size-12 size-10" />
+          <CustomAvatar img={friendUser?.picture?.url} name={friendUser?.userName || "Unknown User"} className="md:size-12 size-10" fallbackClass="text-base md:text-base" />
         </div>
 
         <div className="flex-grow">
@@ -44,8 +48,8 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="line-clamp-1 text-sm text-black/60">{chat?.messages[0]?.text || ""}</p>
-            {unreadCount > 0 && <p className={`text-xs w-5 h-5 flex justify-center items-center rounded-full font-semibold text-secondary-2  ${active ? " bg-white text-gray-700" : " text-gray-200 bg-main-color"}`}>{unreadCount}</p>}
+            <p className="line-clamp-1 text-sm text-black/60">{lastmsg}</p>
+            {unreadCount > 0 && <p className={`text-xs w-5 h-5 flex justify-center items-center rounded-full font-semibold text-secondary-2  bg-primary-black text-white`}>{unreadCount}</p>}
 
           </div>
 

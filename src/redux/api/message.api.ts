@@ -19,7 +19,7 @@ const messageApi = baseApi.injectEndpoints({
 
         sendNewMsg: builder.mutation<{
             data: {}
-        }, { text: string, receiverUserName: string }>({
+        }, FormData>({
             query: (body) => ({
                 url: `/messages/send`,
                 method: "POST",
