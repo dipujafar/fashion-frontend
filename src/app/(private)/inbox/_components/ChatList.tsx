@@ -31,16 +31,17 @@ function ChatList({ userName }: { userName?: string }) {
         });
 
 
-        // socket?.emit("my-chat-list", {}, (response: { chats: IChatUser[] }) => {
-        //     setChatList(response?.chats || []);
-        //     setIsLoading(false);
-        // });
+        socket?.emit("my-chat-list", {}, () => {
+            // setChatList(response || []);
+            setIsLoading(false);
+        });
 
 
         return () => {
 
             if (socket) {
                 socket.off(`chat-list`);
+                socket.off(`my-chat-list`);
                 socket.off(`io-error`);
                 socket.off("connect");
             }

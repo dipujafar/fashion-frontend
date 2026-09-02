@@ -6,8 +6,9 @@ import Image from "next/image";
 import { FileText } from "lucide-react";
 
 const OwnerMsgCard = ({ msg }: { msg: IMessage }) => {
+
   return (
-    msg?.offer ? <OfferCard offer={msg?.offer} isSent={true} isImSellerForThisOffer={msg?.senderId === msg?.offer?.sellerId} /> : <div className="max-w-max rounded-xl border bg-[#DFE1E3] px-3 py-2 space-y-1">
+    msg?.offer ? <OfferCard offer={msg?.offer} isSent={true} isImSellerForThisOffer={msg?.senderId === msg?.offer?.sellerId} /> : <div className="rounded-xl border bg-[#DFE1E3] px-3 py-2 space-y-1">
       {msg?.files?.length > 0 && (<div className="flex flex-row gap-2 items-start">
         {msg?.files?.map((file, index) => (
           <Link href={file?.url} target="_blank" key={file?.id}>

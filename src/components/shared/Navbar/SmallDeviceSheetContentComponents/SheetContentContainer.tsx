@@ -121,7 +121,7 @@ export function SheetContentContainer({
             </div>
             <div className="bg-black px-4 py-2 text-center">
               <Link
-                href={"/sell-products"}
+                href={"/sell"}
                 onClick={() => setOpen(false)}
                 className="flex items-center justify-center gap-2 group"
               >

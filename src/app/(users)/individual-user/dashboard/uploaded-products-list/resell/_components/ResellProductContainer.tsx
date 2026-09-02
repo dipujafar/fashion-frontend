@@ -43,7 +43,7 @@ const ResellProductContainer = () => {
       </div>
       <div className="flex md:gap-x-4 gap-y-2 flex-col md:flex-row">
         <div className="flex-1 group cursor-pointer">
-          <Link href={"/sell-products?edit=true"}>
+          <Link href={"/sell?edit=true"}>
             <Button className="w-full cursor-pointer bg-transparent text-black hover:bg-black/10 border-b-2 border-r-2 border-black rounded-none">
               Edit <AnimatedArrow />
             </Button>
@@ -61,7 +61,7 @@ const ResellProductContainer = () => {
               <p>If you don’t make any changes, the data will be submitted for sale with the same details and the same charity for donation. If you want to modify anything, please click Edit.
               </p>
               <div className="flex gap-x-2 mt-1">
-                <Link href={"/sell-products?edit=true"} className="flex-1">
+                <Link href={"/sell?edit=true"} className="flex-1">
                   <Button className="w-full cursor-pointer bg-transparent text-black hover:bg-black/10 border-b-2 border-r-2 border-black rounded-none">
                     Edit <AnimatedArrow />
                   </Button>

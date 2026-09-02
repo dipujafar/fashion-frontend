@@ -14,7 +14,7 @@ type IIncludedProduct = {
     id: string
 }
 
-function FavouritesWithServer({ id, count, includedProduct, className, extraRevalidatePaths = [] }: { id: string, count: number, includedProduct: IIncludedProduct[], className?: string, extraRevalidatePaths?: string[] }) {
+function FavouritesWithServer({ id, count, includedProduct, className, extraRevalidatePaths = [], isMyProduct = false }: { id: string, count: number, includedProduct: IIncludedProduct[], className?: string, extraRevalidatePaths?: string[], isMyProduct?: boolean }) {
 
     const [isFavourited, setIsFavourited] = useState<boolean>(includedProduct?.length > 0);
     const [favouriteCount, setFavouriteCount] = useState<number>(count || 0);
@@ -22,6 +22,7 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
     const dispatch = useAppDispatch();
 
     const addFavorite = async () => {
+        if (isMyProduct) return;
         if (isFavourited) {
             try {
                 const res = await DeleteToFavourite({ payload: { productId: id }, extraRevalidatePaths });
@@ -59,10 +60,13 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
 
     return (
         <Tooltip>
-            <TooltipTrigger asChild><button onClick={addFavorite} className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm", className)}>
-                <Heart className={cn(" text-primary-red duration-500 md:size-[18px] size-4", isFavourited && "fill-primary-red")}></Heart>
-                {favouriteCount > 0 && <p className="text-sm">{favouriteCount}</p>}
-            </button>
+            <TooltipTrigger asChild>
+                <button
+                    onClick={addFavorite}
+                    className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm", className)}>
+                    <Heart className={cn(" text-primary-red duration-500 md:size-[18px] size-4", (isFavourited || isMyProduct) && "fill-primary-red")}></Heart>
+                    {favouriteCount > 0 && <p className="text-sm">{favouriteCount}</p>}
+                </button>
             </TooltipTrigger>
 
             <TooltipContent className="rounded-none" side="bottom">

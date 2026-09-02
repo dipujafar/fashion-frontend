@@ -1,6 +1,7 @@
 import { IChatUser, IMeta, IProduct, IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+import { IProductExtra } from "@/app/(profile)/profile/sell/products/_components/SellProdCard";
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -60,12 +61,20 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
 
+    myProductsGet: builder.mutation<{ data: { data: IProductExtra[], meta: IMeta } }, { params: {} }>({
+      query: ({ params }) => ({
+        url: `/products/my-items`,
+        method: "GET",
+        params,
+      }),
+    }),
+
     productsByIds: builder.query<{
       data: {
         products: IProduct[],
         seller: IUser,
         totalPrice: number,
-        chat : IChatUser
+        chat: IChatUser
       }
     }, { ids: string }>({
       query: ({ ids }) => ({
@@ -77,4 +86,4 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation, useGetProductStatsQuery, useProductsByIdsQuery } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation, useGetProductStatsQuery, useProductsByIdsQuery, useMyProductsGetMutation } = productApi;

@@ -140,7 +140,7 @@ function BrandSelectorInner({
                             className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
                                 }`}
                         >
-                            <span className="text-lg text-foreground">{brand.name}</span>
+                            <span className="text-base text-foreground">{brand.name}</span>
                             <div
                                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? "border-primary" : "border-muted-foreground/40"
                                     }`}

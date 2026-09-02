@@ -54,7 +54,7 @@ export default function ProfileIcon() {
     {
       icon: <SquareChartGantt className="size-5" />,
       name: "List an item",
-      link: "/sell-products",
+      link: "/sell",
     },
     {
       icon: <List className="size-5" />,

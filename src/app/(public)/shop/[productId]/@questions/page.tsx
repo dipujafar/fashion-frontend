@@ -20,11 +20,11 @@ async function Questionpage({ params }: { params: Promise<{ productId: string }>
     const questions = await GetQuesAnsWithProdDetails({ prodId: productId }) as { data: { data: IQuesAns[], isOwner: boolean } };
 
     return (
-        <div>
+        questions?.data?.data.length > 0 && <div>
 
             <div className='lg:space-y-8 space-y-5'>
                 <div className={cn(" rounded-sm  space-y-4",)}>
-                    <h3 className="md:text-3xl text-xl font-medium">Questions (0)</h3>
+                    <h3 className="md:text-xl lg:text-2xl text-lg font-medium">Questions ({questions?.data?.data.length})</h3>
                     <div>
 
                         {/* ====================Submit Question============== */}

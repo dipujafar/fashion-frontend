@@ -65,7 +65,7 @@ export default function PhilanthropistBox({
             }}
             className="pt-2 flex justify-end"
           >
-            <Link href="/sell-products">
+            <Link href="/sell">
               <Button
                 variant={"outline"}
                 size="sm"

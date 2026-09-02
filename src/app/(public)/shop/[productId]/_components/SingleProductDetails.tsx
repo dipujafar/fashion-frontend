@@ -1,5 +1,5 @@
 import React from "react";
-import ProductDetails from "./ProductDetails/ProductDetails";
+import ProductDetails, { IProductWithUser } from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
 import { IProduct, ISize, IUser } from "@/types";
 import { SMActionButtons } from "./ActionButtons";
@@ -14,15 +14,6 @@ type IUserWithExtra = IUser & {
       discountPercent: number;
     }[]
   } | null;
-};
-
-type IProductWithUser = Omit<IProduct, "user"> & {
-  user: IUserWithExtra;
-  _count: {
-    cartItems: number;
-    favourites: number;
-  },
-  sizechart: ISize[]
 };
 
 const SingleProductDetails = async ({ product }: { product: { data: IProductWithUser } }) => {
@@ -46,9 +37,9 @@ const SingleProductDetails = async ({ product }: { product: { data: IProductWith
           <ProductDetails product={product?.data} />
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 shadow-lg md:hidden z-10">
-          <SMActionButtons product={product?.data} isSold={isStockOut}></SMActionButtons>
-        </div>
+        {!product?.data?.isMyProduct && <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 shadow-lg md:hidden z-10">
+          <SMActionButtons product={product?.data} isSold={isStockOut} isDeleted={product?.data?.isDeleted}></SMActionButtons>
+        </div>}
 
       </div>
     </div>

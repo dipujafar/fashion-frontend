@@ -1,15 +1,12 @@
 import { Button } from "@/components/ui/button";
-import CommonButton from "@/components/ui/common-button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { InfoIcon3 } from "@/icons";
 import { AddNewOffer } from "@/lib/Actions/Product.api";
 import { cn } from "@/lib/utils";
 import { IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
 import { Plus } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -22,7 +19,7 @@ export default function SendOfferModal({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   product: IProduct;
 }) {
-  const router = useRouter();
+
   const [offerPrice, setOfferPrice] = useState<number>(0);
   const [isCustomOffer, setIsCustomOffer] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,16 +37,15 @@ export default function SendOfferModal({
       const res = await AddNewOffer({ payload });
 
       toast.success("Offer sent successfully!");
-      
+
       setError(null);
+      setOpen(false);
 
     } catch (err: any) {
       setError(err?.message || "Offer sending failed. Please try again.");
     } finally {
       setIsLoading(false);
-      setOpen(false);
     }
-
   };
 
   const offerData = [

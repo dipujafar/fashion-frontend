@@ -1,6 +1,6 @@
 import Container from "@/components/shared/Container";
 import AddProductForm from "@/components/shared/UserProfile/AddProduct/AddProductForm";
-import React, { Suspense } from "react";
+import React from "react";
 
 export const metadata = {
   title: "Sell Products",

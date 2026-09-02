@@ -30,6 +30,20 @@ export const GetProductsByMember = async ({ query, userName }: { query: { [key: 
     }
 };
 
+export const MySellProducts = async ({ query }: { query: { [key: string]: string } }) => {
+    try {
+        const queryString = query ? `?${new URLSearchParams(query).toString()}` : "";
+        const res = await serverQueryWithReauth({
+            endPoint: `/products/my-items${queryString}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
 export const GetProductCharitySupport = async ({ productId }: { productId: string }) => {
     try {
         const res = await serverQueryWithReauth({

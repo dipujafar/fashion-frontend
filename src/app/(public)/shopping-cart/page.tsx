@@ -110,7 +110,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
 
                                                             {item?.product?.stock < 1 && <div className="h-full w-full flex justify-center items-center absolute bottom-0 left-0">
                                                                 <span className=" text-white text-[10px] py-0.5 w-full flex items-center justify-center bg-destructive">
-                                                                    STOCK OUT
+                                                                    SOLD OUT
                                                                 </span>
                                                             </div>}
 

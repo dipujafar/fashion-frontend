@@ -57,8 +57,8 @@ export function CounterOffer({
         }
     };
 
-    const after_20_percent = offer?.actualPrice - ((offer?.actualPrice * 20) / 100);
-    const after_5_Percent = offer?.actualPrice - ((offer?.actualPrice * 5) / 100);
+    const after_20_percent = offer?.actualPrice - ((offer?.actualPrice * 30) / 100);
+    const after_5_Percent = offer?.actualPrice - ((offer?.actualPrice * 10) / 100);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -152,7 +152,7 @@ export function CounterOffer({
                         </form>
                     </Form>
 
-                    <p className="text-gray-700 text-sm"><span className="text-primary-black font-semibold">Note : </span>Buyer respond better to higher discount offers. Try offering a discount between <span className="font-semibold text-primary-black">${after_20_percent} - ${after_5_Percent}</span></p>
+                    <p className="text-gray-700 text-sm"><span className="text-primary-black font-semibold">Note : </span>Buyer respond better to higher discount offers. Try offering a discount between <span className="font-semibold text-primary-black">${Math.ceil(after_20_percent)} - ${Math.ceil(after_5_Percent)}</span></p>
 
                 </div>
             </DialogContent>

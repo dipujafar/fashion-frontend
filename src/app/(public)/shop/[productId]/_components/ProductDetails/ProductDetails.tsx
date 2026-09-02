@@ -25,17 +25,20 @@ export type IProductWithUser = Omit<IProduct, "user"> & {
     cartItems: number;
     favourites: number;
   },
-  sizechart: ISize[]
+  sizechart: ISize[],
+  isMyProduct: boolean
 };
 
 const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   const isStockOut = product?.stock === 0;
 
+  const isDeleted = product?.isDeleted;
+
   return (
     <div className="lg:my-5 space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
       <div >
-        <ProductDetailsHeader product={product} />
+        <ProductDetailsHeader product={product} isMyProduct={product?.isMyProduct} />
       </div>
 
       {/* --------- product details data ---------- */}
@@ -117,12 +120,14 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
       </div>
 
       {/* ======================= all actions buttons ================ */}
-      {!isStockOut ? <ActionButtons product={product}></ActionButtons> : <div className="py-3 max-w-lg bg-yellow-700 2xl:w-2/3">
+      {isStockOut ? <div className="py-3 max-w-lg bg-yellow-700 2xl:w-2/3">
         <p className="text-center text-white">Item Sold Out</p>
-      </div>}
+      </div> : isDeleted ? <div className="py-3 max-w-lg bg-yellow-700 2xl:w-2/3">
+        <p className="text-center text-white">Item not available</p>
+      </div> : product?.isMyProduct ? <></> : <ActionButtons product={product}></ActionButtons>}
 
       {/* ========================= seller details ========================= */}
-      <SellerDetails user={product?.user}></SellerDetails>
+      <SellerDetails user={product?.user} isMyProfile={product?.isMyProduct}></SellerDetails>
     </div>
   );
 };

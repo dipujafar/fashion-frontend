@@ -5,7 +5,7 @@ import Link from "next/link";
 import { IUserWithExtra } from "./ProductDetails/ProductDetails";
 import { Button } from "@/components/ui/button";
 
-const SellerDetails = ({ user }: { user: IUserWithExtra }) => {
+const SellerDetails = ({ user, isMyProfile }: { user: IUserWithExtra; isMyProfile: boolean }) => {
 
   return (
     <div className=" max-w-lg">
@@ -64,12 +64,12 @@ const SellerDetails = ({ user }: { user: IUserWithExtra }) => {
               className="cursor-pointer"
             ><Button variant={"outline"} className="border border-gray-900 cursor-pointer py-4">Visit Shop</Button></Link>
 
-            <Link
+            {isMyProfile ? <></> : <Link
               href={`/inbox/${user?.userName}`}
               className="cursor-pointer"
             >
               <Button variant={"outline"} className="border border-gray-900 cursor-pointer py-4">Ask A Question</Button>
-            </Link>
+            </Link>}
           </div>
 
         </div>

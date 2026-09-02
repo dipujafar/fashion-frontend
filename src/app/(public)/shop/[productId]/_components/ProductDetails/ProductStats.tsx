@@ -8,7 +8,8 @@ import { CartIcon, OfferIcon2 } from "@/icons";
 import { BadgePercent } from "lucide-react";
 
 
-function ProductStats({ product }: { product: IProduct }) {
+
+function ProductStats({ product, isMyProduct }: { product: IProduct; isMyProduct: boolean }) {
     const { isLoading, isSuccess, data } = useGetProductStatsQuery({ productId: product?.id }, { skip: !product?.id });
 
     return (
@@ -36,7 +37,7 @@ function ProductStats({ product }: { product: IProduct }) {
             }
 
             {/* ===================== favorite button ================ */}
-            {isSuccess && <FavouritesWithServer id={product?.id} count={data?.data?._count?.favourites} includedProduct={product?.favourites}></FavouritesWithServer>}
+            {isSuccess && <FavouritesWithServer id={product?.id} count={data?.data?._count?.favourites} includedProduct={product?.favourites} isMyProduct={isMyProduct}></FavouritesWithServer>}
 
         </div>
     )

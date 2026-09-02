@@ -81,6 +81,11 @@ export interface IProduct {
   userId: string;
   charities: ICharity[],
   stock: number,
+
+  weight_kg: number
+  hight_cm: number // in cm, for shipping cost calculation
+  width_cm: number // in cm, for shipping cost calculation
+  length_cm: number
 }
 
 export interface ICartGroup {
@@ -170,9 +175,66 @@ export interface INotification {
   id: string
   title: string,
   message: string,
+  actorId: string | null,
+  actor: IUser | null,
+  receiverId: string,
+  receiver: IUser,
+  entityId: string | null,
+  entityType: NotificationEntityType,
+  type: NotificationType,
+  entityImgs: string[],
+  groupKeyId: string | null,
+  "fcmToken": string | null,
   "isRead": boolean,
   "createdAt": string,
   "updatedAt": string,
+}
+
+export enum NotificationEntityType {
+  PRODUCT = "PRODUCT",
+  OFFER = "OFFER",
+  ORDER = "ORDER",
+  MESSAGE = "MESSAGE",
+  USER = "USER",
+  DONATION = "DONATION",
+  RETURN = "RETURN"
+}
+
+export enum NotificationType {
+  //for product
+  PRODUCT_LIKE = "PRODUCT_LIKE",
+  PRICE_DROP = "PRICE_DROP",
+  SOLD_OUT = "SOLD_OUT",
+
+  //for offer
+  OFFER_RECEIVED = "OFFER_RECEIVED",
+  OFFER_ACCEPTED = "OFFER_ACCEPTED",
+  OFFER_REJECTED = "OFFER_REJECTED",
+  OFFER_CANCELED = "OFFER_CANCELED",
+
+  //for order
+  ORDER_PLACED = "ORDER_PLACED",
+  ORDER_STATUS_CHANGED = "ORDER_STATUS_CHANGED",
+  ORDER_COMPLETED = "ORDER_COMPLETED",
+  ORDER_ITEM_CANCELED = "ORDER_ITEM_CANCELED",
+
+  //for message
+  MESSAGE_RECEIVED = "MESSAGE_RECEIVED",
+
+  //for user
+  FOLLOWED = "FOLLOWED",
+  REVIEW_RECEIVED = "REVIEW_RECEIVED",
+
+  //for donation
+  DONATION_RECEIVED = "DONATION_RECEIVED",
+
+  //for return
+  RETURN_REQUESTED = "RETURN_REQUESTED",
+  RETURN_APPROVED = "RETURN_APPROVED",
+  RETURN_REJECTED = "RETURN_REJECTED",
+  RETURN_COMPLETED = "RETURN_COMPLETED",
+  RETURN_STATUS_CHANGED = "RETURN_STATUS_CHANGED",
+  RETURN_ITEM_CANCELED = "RETURN_ITEM_CANCELED"
 }
 
 export interface IQuesAns {
@@ -487,6 +549,7 @@ export interface IOffer {
   offeredPrice: number,
   actualPrice: number,
   actionAt: Date | null,
+  expiresAt: Date | null,
 }
 
 export interface IOfferItem {

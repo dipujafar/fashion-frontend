@@ -12,6 +12,7 @@ import CounterOffer from "./CounterOffer";
 const VISIBLE_COUNT = 3;
 
 function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, isSent: boolean, isImSellerForThisOffer: boolean }) {
+
   const [open, setOpen] = useState(false);
 
   const [loadingAccept, setLoadingAccept] = useState(false);
@@ -30,6 +31,9 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
     }
   }
 
+  const haveStockOutItem = offer?.offerItems?.some(item => item?.product?.stock === 0);
+
+  const isOfferExpired = moment().isAfter(moment(offer?.expiresAt));
 
   return (
     <div className="rounded-xl min-w-48 bg-[#DFE1E3] border border-gray-200 p-4 space-y-1">
@@ -80,15 +84,32 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
 
       {!isSent ? <div className={cn("flex gap-2 justify-start")}>
         {
-          offer?.status === "PENDING" ? (isImSellerForThisOffer ? <>
-            <CounterOffer offer={offer} />
-            <Button disabled={loadingAccept} onClick={() => acceptOfferhandler(offer?.id)} className="cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors">
-              {loadingAccept ? <span className="loader" /> : "Accept Offer"}
-            </Button>
-          </> : <p className="text-sm text-gray-700 font-medium text-right">Waiting for response</p>) : <div>
+          offer?.status === "PENDING" ? isImSellerForThisOffer ? <>
+            {
+              haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <>
+
+                <CounterOffer offer={offer} />
+                <Button disabled={loadingAccept} onClick={() => acceptOfferhandler(offer?.id)} className="cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors">
+                  {loadingAccept ? <span className="loader" /> : "Accept Offer"}
+                </Button>
+              </>
+            }
+          </> : <p className="text-sm text-gray-700 font-medium text-right">Waiting for response</p> : <div>
             {offer?.status === "ACCEPTED" ?
 
-              <p className="text-sm text-green-700 font-medium text-right">Offer Accepted</p>
+              !isImSellerForThisOffer ? <>
+
+                {
+                  isOfferExpired ? <p className="text-sm text-yellow-700 font-medium text-right">Offer Expired</p> : haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <Button
+                    // onClick={() => acceptOfferhandler(offer?.id)}
+                    className={cn(
+                      "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors",
+                      loadingAccept ? "cursor-not-allowed opacity-50" : "")}>
+                    {loadingAccept ? <span className="loader" /> : "Buy Now"}
+                  </Button>
+                }
+
+              </> : <p className="text-sm text-green-700 font-medium text-right">Offer Accepted</p>
 
               : offer?.status === "REJECTED" ? <p className="text-sm text-red-700 font-medium text-right">Offer Rejected</p> : <p className="text-sm text-gray-700 font-medium text-right">Waiting for response</p>}
 
@@ -100,13 +121,19 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
         <div className="flex gap-2 justify-end">
           {offer?.status === "ACCEPTED" ?
 
-            isImSellerForThisOffer ? <p className="text-sm text-green-700 font-medium text-right">Offer Accepted</p> : <Button
-              // onClick={() => acceptOfferhandler(offer?.id)}
-              className={cn(
-                "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors",
-                loadingAccept ? "cursor-not-allowed opacity-50" : "")}>
-              {loadingAccept ? <span className="loader" /> : "Buy Now"}
-            </Button>
+            isImSellerForThisOffer ? <p className="text-sm gray-800 font-medium text-right">Offer Sent</p> : <>
+
+              {
+                isOfferExpired ? <p className="text-sm text-yellow-700 font-medium text-right">Offer Expired</p> : haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <Button
+                  // onClick={() => acceptOfferhandler(offer?.id)}
+                  className={cn(
+                    "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors",
+                    loadingAccept ? "cursor-not-allowed opacity-50" : "")}>
+                  {loadingAccept ? <span className="loader" /> : "Buy Now"}
+                </Button>
+              }
+
+            </>
 
             : offer?.status === "REJECTED" ? <p className="text-sm text-red-700 font-medium text-right">Offer Rejected</p> : <p className="text-sm text-gray-700 font-medium text-right">Waiting for response</p>}
         </div>}

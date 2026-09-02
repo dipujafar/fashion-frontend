@@ -2,7 +2,6 @@ import { CharityDonationFormDialog } from '@/components/shared/Modal/Charity/Cha
 import { GetCharityAbout } from '@/lib/services/UserDetails';
 import { IUser } from '@/types';
 import { defaultImg } from '@/utils/defaultImg';
-import { Globe, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -12,7 +11,6 @@ async function CharityDetails({ params }: { params: Promise<{ username: string }
     const { username } = await params;
 
     const user = GetCharityAbout({ userName: username })
-
 
     return (
         <div>

@@ -1,4 +1,5 @@
 "use server"
+import { revalidatePath } from "next/cache";
 import { serverQueryWithReauth } from "./ReAuthRequest";
 
 export const AddNewProduct = async ({ payload }: { payload: FormData }) => {
@@ -25,6 +26,15 @@ export const AcceptOffer = async ({ payload }: { payload: { offerId: string } })
 export const DeclineOffer = async ({ payload }: { payload: { offerId: string, offerPrice: number } }) => {
 
     const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer/decline`, method: "POST" });
+
+    return res;
+}
+
+export const DropPrice = async ({ payload }: { payload: { productId: string, newPrice: number } }) => {
+
+    const res = await serverQueryWithReauth({ payload, endPoint: `/products/price/drop`, method: "POST" });
+
+    revalidatePath("/profile/sell/products");
 
     return res;
 }

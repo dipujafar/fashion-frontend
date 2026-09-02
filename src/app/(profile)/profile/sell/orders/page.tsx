@@ -20,7 +20,7 @@ async function OrdersPage({ searchParams }: { searchParams: Promise<{ [key: stri
                         </p>
                     </div>
 
-                    <Link href={"/professional-seller/dashboard/products-list/add-product"}>
+                    <Link href={"/sell"}>
                         <Button className="w-full rounded-none cursor-pointer">SELL NOW</Button>
                     </Link>
                 </div>

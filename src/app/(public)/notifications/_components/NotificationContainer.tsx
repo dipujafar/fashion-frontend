@@ -10,6 +10,8 @@ import { CheckCheck, ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from
 import Image from "next/image";
 import { useState } from "react";
 import { Pagination } from "react-pagination-bar";
+import { NotificationRender } from "@/components/shared/Navbar/NavIconsWithDropDown/NotificationRender";
+import Link from "next/link";
 
 export default function NotificationContainer() {
 
@@ -33,7 +35,7 @@ export default function NotificationContainer() {
       <div className="flex items-end justify-between gap-3">
         <div>
           {/* <p className="mb-2 text-base font-medium text-primary">Your updates</p> */}
-          <h1 className="text-balance text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">Notifications</h1>
+          <h1 className="text-balance text-3xl font-semibold tracking-[-0.04em] sm:text-2xl lg:text-3xl">Notifications</h1>
           <p className="mt-2 max-w-md text-pretty text-sm lg:text-base leading-6 text-gray-600">Stay in the loop with what&apos;s happening around your account.</p>
         </div>
 
@@ -57,41 +59,57 @@ export default function NotificationContainer() {
       </div>)}
 
       {isSuccess && <div className="space-y-3 py-3">
-        {notifications?.data?.data?.map((notification) => (
-          <Card
-            key={notification.id}
-            className="p-4 shadow-none rounded"
-          >
-            <div className="flex items-start gap-3">
-              <Avatar className="w-10 h-10 bg-gray-900 flex-shrink-0">
-                <AvatarFallback className="bg-gray-900 text-white">
-                  <NotificationBellIconWhite className="text-white size-7" />
-                </AvatarFallback>
-              </Avatar>
+        {notifications?.data?.data?.map((notification) => {
 
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          const renderNotification = NotificationRender({ notification });
+
+          return <div key={notification?.id}>
+            <Link href={renderNotification?.link || "#"} className="w-full">
+              <Card className="p-4 shadow-none rounded">
+                <div className="flex items-start gap-3">
+                  <Avatar className="size-10 bg-gray-900 flex justify-center items-center flex-shrink-0">
+                    {renderNotification.avatar}
+                  </Avatar>
+
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-base font-semibold text-gray-900">
-                        {notification?.title}
-                        {notification?.isRead && <CheckCheck className="inline-block ml-1 text-cyan-600" />}
-                      </p>
-                      <span className="text-xs text-gray-500 whitespace-nowrap">
-                        {moment(notification?.createdAt).format("MM/DD/YYYY, hh:mm A")}
-                      </span>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="gap-1">
+
+                          <div className="flex flex-row justify-between items-start">
+                            <p className="text-base text-gray-700">
+                              {notification.message.split(/(\*\*.*?\*\*)/g).map((part, index) =>
+                                part.startsWith("**") && part.endsWith("**") ? (
+                                  <strong key={index} className="text-primary-black">
+                                    {part.slice(2, -2)}
+                                  </strong>
+                                ) : (
+                                  <span key={index}>{part}</span>
+                                )
+                              )}
+                            </p>
+                            {notification?.isRead && <CheckCheck className="inline-block ml-1 text-cyan-600 size-4" />}
+                          </div>
+
+                          <span className="text-xs text-gray-500 whitespace-nowrap">
+                            {moment(notification?.createdAt).fromNow()}
+                          </span>
+
+                        </div>
+
+                        {
+                          renderNotification?.postImg
+                        }
+
+                      </div>
+
                     </div>
-                    <p className="text-sm text-gray-700 break-words">
-                      {notification?.message}
-                    </p>
-
                   </div>
-
                 </div>
-              </div>
-            </div>
-          </Card>
-        ))}
+              </Card>
+            </Link>
+          </div>
+        })}
       </div>}
 
       {
