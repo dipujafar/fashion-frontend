@@ -24,6 +24,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  CharityFormSchema,
   colors,
   conditionOptions,
   productFormDefaultValues,
@@ -53,6 +54,9 @@ import {
 } from "@/components/ui/input-group"
 import { AddNewProduct } from "@/lib/Actions/Product.api";
 import UpdateShippingAddress from "./UpdateShippingAddress";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { role } from "@/lib/userRole";
 
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
@@ -60,6 +64,8 @@ const INPUT_ID = "photo-uploader-input";
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
+
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // ======================= category ===========================
   const { data: categoriesData } = useGetCategoryQuery(undefined);
@@ -77,9 +83,12 @@ export default function AddProductForm() {
   // =============================== product api ==============================
   // const [uploadProduct, { isLoading }] = useCreateProductMutation();
 
+  const required_Charity = user?.auth?.role !== role.ECO_FRIENDLY_STORE;
+
+  const productSchema = required_Charity ? productFormSchema.merge(CharityFormSchema) : productFormSchema;
 
   const form = useForm<ProductFormValues>({
-    resolver: zodResolver(productFormSchema),
+    resolver: zodResolver(productSchema),
     defaultValues: productFormDefaultValues,
   });
 
@@ -472,92 +481,96 @@ export default function AddProductForm() {
             </div>
 
 
-            <div className="space-y-4 mt-12">
-              <div>
-                <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+            {required_Charity && <>
+              {/* ======================================== donation input ============================================== */}
+              <div className="space-y-4 mt-12">
+                <div>
+                  <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
 
-                <>
-                  <span className="text-xs">
-                    (Minimum 5% donation required)
-                  </span>
-                  {/* <SelectDonationOption /> */}
-                </>
+                  <>
+                    <span className="text-xs">
+                      (Minimum 5% donation required)
+                    </span>
+                    {/* <SelectDonationOption /> */}
+                  </>
+                </div>
+
+                <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+                  <FormField
+                    control={form.control}
+                    name="donation_percent"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Donation Percent (%)</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer">
+                                <SelectValue placeholder="Select Donation Percent" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="rounded-none p-0">
+                              {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
+                                <SelectItem value={item.toString()} key={item} className="rounded-none cursor-pointer">
+                                  {item}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <InputCharityDonationInput charities={charitiesData?.data || []} form={form} name="charities" />
+
+                </div>
+
               </div>
 
-              <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+
+              {/* Donation Privacy */}
+              <div>
+                <p className="mb-5 font-medium">
+                  Donation Privacy: Would you like to remain anonymous?
+                </p>
                 <FormField
                   control={form.control}
-                  name="donation_percent"
+                  name="donationPrivacy"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Donation Percent (%)</FormLabel>
+                    <FormItem className="md:space-y-3 space-y-1">
+
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
+                        <RadioGroup
+                          onValueChange={(value) => field.onChange(value === "true")}
+                          defaultValue={field.value ? "true" : "false"}
+                          className="flex flex-col md:space-y-1"
                         >
-                          <FormControl>
-                            <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer">
-                              <SelectValue placeholder="Select Donation Percent" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="rounded-none p-0">
-                            {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
-                              <SelectItem value={item.toString()} key={item} className="rounded-none cursor-pointer">
-                                {item}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="true" id="anonymous" />
+                            <label htmlFor="anonymous" className="text-sm">
+                              Yes, keep my donation anonymous
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="false" id="show-name" />
+                            <label htmlFor="show-name" className="text-sm">
+                              No, show my name
+                            </label>
+                          </div>
+                        </RadioGroup>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-                <InputCharityDonationInput charities={charitiesData?.data || []} form={form} name="charities" />
-
               </div>
+            </>}
 
-            </div>
-
-
-            {/* Donation Privacy */}
-            <div>
-              <p className="mb-5 font-medium">
-                Donation Privacy: Would you like to remain anonymous?
-              </p>
-              <FormField
-                control={form.control}
-                name="donationPrivacy"
-                render={({ field }) => (
-                  <FormItem className="md:space-y-3 space-y-1">
-
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col md:space-y-1"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="anonymous" id="anonymous" />
-                          <label htmlFor="anonymous" className="text-sm">
-                            Yes, keep my donation anonymous
-                          </label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="show-name" id="show-name" />
-                          <label htmlFor="show-name" className="text-sm">
-                            No, show my name
-                          </label>
-                        </div>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
           </div>
 
@@ -576,7 +589,7 @@ export default function AddProductForm() {
                     <FormLabel>Product Price ($)</FormLabel>
                     <FormControl>
                       <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                        <InputGroupInput placeholder="eg: 100" {...field} className="!text-base" />
+                        <InputGroupInput type="number" placeholder="eg: 100" {...field} className="!text-base" />
                         <InputGroupAddon align={"inline-start"} className="text-primary-black text-lg" >
                           $
                         </InputGroupAddon>
@@ -597,6 +610,7 @@ export default function AddProductForm() {
                       <Input
                         placeholder="Enter discount percentage"
                         {...field}
+                        type="number"
                         className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
                       />
                     </FormControl>
@@ -641,7 +655,7 @@ export default function AddProductForm() {
                       <FormLabel>Weight (kg)</FormLabel>
                       <FormControl>
                         <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                          <InputGroupInput placeholder="eg: 0.3" {...field} className="!text-base" />
+                          <InputGroupInput type="number" step="any" placeholder="eg: 0.3" {...field} className="!text-base" />
                           <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
                             kg
                           </InputGroupAddon>
@@ -660,7 +674,7 @@ export default function AddProductForm() {
                       <FormLabel>Height (cm)</FormLabel>
                       <FormControl>
                         <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                          <InputGroupInput placeholder="eg: 10" {...field} className="!text-base" />
+                          <InputGroupInput type="number" step="any" placeholder="eg: 10" {...field} className="!text-base" />
                           <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
                             cm
                           </InputGroupAddon>
@@ -679,7 +693,7 @@ export default function AddProductForm() {
                       <FormLabel>Width (cm)</FormLabel>
                       <FormControl>
                         <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                          <InputGroupInput placeholder="eg: 20" {...field} className="!text-base" />
+                          <InputGroupInput type="number" step="any" placeholder="eg: 20" {...field} className="!text-base" />
                           <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
                             cm
                           </InputGroupAddon>
@@ -698,7 +712,7 @@ export default function AddProductForm() {
                       <FormLabel>Length (cm)</FormLabel>
                       <FormControl>
                         <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                          <InputGroupInput placeholder="eg: 6" {...field} className="!text-base" />
+                          <InputGroupInput type="number" step="any" placeholder="eg: 6" {...field} className="!text-base" />
                           <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
                             cm
                           </InputGroupAddon>

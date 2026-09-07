@@ -44,7 +44,6 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from "@/components/ui/input-group";
-import { AddNewProduct } from "@/lib/Actions/Product.api"; // NOTE: assumes an UpdateProduct action exists — swap for whatever your API layer calls the PATCH/PUT endpoint
 import { IProduct, IProductImage } from "@/types";
 import { Category } from "@/components/shared/UserProfile/AddProduct/Categories/CategoryFilterSelector";
 import { ImageUploadGuide } from "@/components/shared/UserProfile/AddProduct/ImageUploadGuide";
@@ -78,11 +77,11 @@ function getDefaultValues(product: IProduct): ProductFormValues {
         fabric: product?.meterials[0] ?? "",
         color: product.color ?? "",
         condition: product.condition ?? "",
-        donation_percent: product.donation_percent
+        donation_percent: product?.donation_percent
             ? String(product.donation_percent)
             : "",
         charities: product.charities?.map((c) => c?.charityId) ?? [],
-        donationPrivacy: "show-name",
+        donationPrivacy: product?.donationAnonymous,
         price: product.price != null ? String(product.price) : "",
         discountPct: product.discountPct != null ? String(product.discountPct) : "0",
         weight_kg: product.weight_kg != null ? String(product.weight_kg) : "",
@@ -620,18 +619,18 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                     <FormItem className="md:space-y-3 space-y-1">
                                         <FormControl>
                                             <RadioGroup
-                                                onValueChange={field.onChange}
-                                                value={field.value}
+                                                onValueChange={(value) => field.onChange(value === "true")}
+                                                value={field.value ? "true" : "false"}
                                                 className="flex flex-col md:space-y-1"
                                             >
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem value="anonymous" id="anonymous" />
+                                                    <RadioGroupItem value={"true"} id="anonymous" />
                                                     <label htmlFor="anonymous" className="text-sm">
                                                         Yes, keep my donation anonymous
                                                     </label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem value="show-name" id="show-name" />
+                                                    <RadioGroupItem value={"false"} id="show-name" />
                                                     <label htmlFor="show-name" className="text-sm">
                                                         No, show my name
                                                     </label>
@@ -658,7 +657,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                         <FormLabel>Product Price ($)</FormLabel>
                                         <FormControl>
                                             <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                                                <InputGroupInput placeholder="eg: 100" {...field} className="!text-base" />
+                                                <InputGroupInput type="number" step="any" placeholder="eg: 100" {...field} className="!text-base" />
                                                 <InputGroupAddon align={"inline-start"} className="text-primary-black text-lg">
                                                     $
                                                 </InputGroupAddon>
@@ -679,6 +678,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                             <Input
                                                 placeholder="Enter discount percentage"
                                                 {...field}
+                                                type="number"
                                                 className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
                                             />
                                         </FormControl>
@@ -715,7 +715,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                             <FormLabel>Weight (kg)</FormLabel>
                                             <FormControl>
                                                 <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                                                    <InputGroupInput placeholder="eg: 0.3" {...field} className="!text-base" />
+                                                    <InputGroupInput type="number" step="any" placeholder="eg: 0.3" {...field} className="!text-base" />
                                                     <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg">
                                                         kg
                                                     </InputGroupAddon>
@@ -734,7 +734,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                             <FormLabel>Height (cm)</FormLabel>
                                             <FormControl>
                                                 <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                                                    <InputGroupInput placeholder="eg: 10" {...field} className="!text-base" />
+                                                    <InputGroupInput type="number" step="any"  placeholder="eg: 10" {...field} className="!text-base" />
                                                     <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg">
                                                         cm
                                                     </InputGroupAddon>
@@ -753,7 +753,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                             <FormLabel>Width (cm)</FormLabel>
                                             <FormControl>
                                                 <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                                                    <InputGroupInput placeholder="eg: 20" {...field} className="!text-base" />
+                                                    <InputGroupInput type="number" step="any" placeholder="eg: 20" {...field} className="!text-base" />
                                                     <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg">
                                                         cm
                                                     </InputGroupAddon>
@@ -772,7 +772,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                             <FormLabel>Length (cm)</FormLabel>
                                             <FormControl>
                                                 <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                                                    <InputGroupInput placeholder="eg: 6" {...field} className="!text-base" />
+                                                    <InputGroupInput type="number" step="any" placeholder="eg: 6" {...field} className="!text-base" />
                                                     <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg">
                                                         cm
                                                     </InputGroupAddon>

@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IUser } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-
-interface IUser {
-  id: string;
-  // ...other fields
-}
 
 interface AuthState {
   user: IUser | null;

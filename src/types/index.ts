@@ -77,6 +77,8 @@ export interface IProduct {
     id: string;
   }[];
   donation_percent: number,
+  donationAnonymous: boolean,
+
   user: IUser;
   userId: string;
   charities: ICharity[],

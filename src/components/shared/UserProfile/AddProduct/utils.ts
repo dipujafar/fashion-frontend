@@ -1,10 +1,6 @@
 import { productFormSchema } from "./schema";
 import { z } from "zod";
 
-type Charity = {
-  donateToCharity: string;
-};
-
 export const formattedData = (data: z.infer<typeof productFormSchema>) => {
 
   return {
@@ -28,7 +24,7 @@ export const formattedData = (data: z.infer<typeof productFormSchema>) => {
     length_cm: Number(data?.length_cm),
     width_cm: Number(data?.width_cm),
     hight_cm: Number(data?.hight_cm),
-    donationPrivacy: data?.donationPrivacy === "anonymous",
+    donationPrivacy: data?.donationPrivacy,
     donation_percent: Number(data?.donation_percent) || 0,
   };
 };

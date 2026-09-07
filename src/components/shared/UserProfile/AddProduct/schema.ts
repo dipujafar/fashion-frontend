@@ -44,19 +44,11 @@ export const productFormSchema = z.object({
   }),
   // careInstructions: z.array(z.string()).optional(),
 
-  charities: z
-    .array(z.string().min(1, "Charity id cannot be empty"))
-    .min(1, "Please select at least one charity"),
+  charities: z.array(z.string()).optional(),
+  donation_percent: z.string().optional(),
 
-  donation_percent: z.string({ required_error: "Donation Percent is required." }).min(1, {
-    message: "Donation Percent is required.",
-  }),
+  donationPrivacy: z.boolean().default(false),
 
-  donationPrivacy: z.enum(["anonymous", "show-name"], {
-    required_error: "Please select donation privacy preference.",
-  }),
-  // donateToCharity2: z.string().optional(),
-  // donationAmount2: z.string().optional(),
   productDescription: z.string().min(1, {
     message: "Product description is required.",
   }),
@@ -86,6 +78,17 @@ export const productFormSchema = z.object({
 
 });
 
+
+export const CharityFormSchema = z.object({
+  charities: z
+    .array(z.string().min(1, "Charity id cannot be empty"))
+    .min(1, "Please select at least one charity"),
+
+  donation_percent: z.string({ required_error: "Donation Percent is required." }).min(1, {
+    message: "Donation Percent is required.",
+  }),
+})
+
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 
 export const productFormDefaultValues: ProductFormValues = {
@@ -101,7 +104,7 @@ export const productFormDefaultValues: ProductFormValues = {
   sizeId: "",
   color: "",
   // careInstructions: [],
-  donationPrivacy: "anonymous",
+  donationPrivacy: true,
   productDescription: "",
   // deliveryPolicy: "",
   // shippingDelivery: "",

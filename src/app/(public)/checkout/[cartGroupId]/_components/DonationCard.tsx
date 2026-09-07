@@ -152,6 +152,7 @@ export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartG
             <div className="relative">
               <Input
                 type="number"
+                step="any"
                 placeholder="Enter number of trees"
                 value={customAmount}
                 onChange={(e) => handleCustomAmountChange(e.target.value)}

@@ -265,6 +265,7 @@ export function CharityDonationFormDialog({
                     <Input
                       id="customAmount"
                       type="number"
+                      step="any"
                       min="1"
                       placeholder="Enter your amount"
                       className=""
