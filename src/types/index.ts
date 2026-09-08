@@ -570,3 +570,39 @@ export enum OfferStatus {
   REJECTED = "REJECTED",
   CANCELED = "CANCELED"
 }
+
+export interface IAssitedSellRequest {
+  id: string,
+  itemsTitle: string,
+  itemsCount: number,
+  contactNumber: string | null,
+  itemsDetails: string | null,
+  priceType: PriceType,
+  targetPrice: number | null,
+  additionalNotes: string | null,
+  pictures: { id: string, url: string, key: string }[],
+  charities: { id: string, charityId: string, charity: IUser }[],
+  donationPct: number,
+  donationAnonymous: boolean,
+  deliveryCharge: number | null,
+  status: AssistentSellStatus,
+  listings: IProduct[],
+  order: IOrder | null,
+  sellerId: string,
+  seller: IUser,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export enum AssistentSellStatus {
+    PENDING = "PENDING",
+    APPROVED = "APPROVED",
+    REJECTED = "REJECTED",
+    LISTED = "LISTED"
+}
+
+export enum PriceType {
+    TARGET_AMOUNT = "TARGET_AMOUNT",
+    DISCUSSION = "DISCUSSION",
+    MARKET_PRICE = "MARKET_PRICE"
+}

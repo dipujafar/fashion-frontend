@@ -1,5 +1,4 @@
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
-import Image from "next/image"
 import GetOrdersBySeller from "@/lib/services/Orders"
 import { IMeta, IOrder } from "@/types"
 
@@ -52,13 +51,12 @@ export default async function SaleProductTable({ ssp }: { ssp: { [key: string]: 
         }
 
         {
-          orders?.length === 0 && <Empty message="No orders found" className="my-10" />
+          orders?.length === 0 && <Empty message="No orders available" className="my-10" />
         }
       </div>
 
 
       <PaginationSection className="mt-5" current={Number(page) || 1} total={meta?.total || 1} />
-      {/* <ReturnProductModal open={openRequestModal} setOpen={setOpenRequestModal} /> */}
     </div>
   )
 }

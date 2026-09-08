@@ -4,8 +4,6 @@ import { profileRouts } from '@/lib/profileRoutes';
 import Link from 'next/link';
 import React from 'react'
 
-
-
 function ProfileLayout({
     children,
 }: Readonly<{

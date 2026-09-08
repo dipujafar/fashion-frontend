@@ -44,6 +44,18 @@ export const profileRouts = [
         ]
     },
     {
+        id: 4,
+        title: "Assisted Selling",
+        rout: "/profile/assisted-sell",
+        routs: [
+            {
+                id: 1,
+                title: "Requests",
+                rout: "/profile/assisted-sell"
+            },
+        ]
+    },
+    {
         id: 3,
         title: "Payment",
         rout: "/profile/payment",

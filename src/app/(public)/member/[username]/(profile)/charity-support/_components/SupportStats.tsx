@@ -42,9 +42,9 @@ function SupportStats({ userName }: { userName: string }) {
                         </div>
                     </div>
                     <div className="flex gap-10">
-                        <Stat value={`${data?.data?.sellDonatedAmount || 0}`} label="Total donated" />
-                        <Stat value={`${data?.data?.avgSellDonationPercentage || 0}%`} label="Pledged avg sale" />
-                        <Stat value={`${data?.data?.totalCharitiesToSupport || 0}`} label="Charities" />
+                        <Stat value={`${data?.data?.sellDonatedAmount?.toFixed(2) || 0}`} label="Total donated" />
+                        <Stat value={`${data?.data?.avgSellDonationPercentage.toFixed(2) || 0}%`} label="Pledged avg sale" />
+                        <Stat value={`${data?.data?.totalCharitiesToSupport.toFixed(2) || 0}`} label="Charities" />
                     </div>
                 </div>
             </section>
@@ -69,7 +69,7 @@ function SupportStats({ userName }: { userName: string }) {
                                 <h4 className="truncate text-sm font-semibold text-foreground">
                                     {c?.charityName}
                                 </h4>
-                                <p className="text-sm text-muted-foreground">{c?.totalDonation} donated</p>
+                                <p className="text-sm text-muted-foreground">{c?.totalDonation?.toFixed(2) || 0} donated</p>
                             </div>
                         </div>
                     ))}

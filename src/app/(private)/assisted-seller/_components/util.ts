@@ -4,6 +4,7 @@ import { formSchema } from "./AssistedSellerForm";
 export const formattedAssistedSellerData = (data: z.infer<typeof formSchema>) => {
 
     return {
+        itemsTitle: data?.itemsTitle,
         itemsCount: Number(data?.itemsCount),
 
         itemsDetails: data?.itemsDetails,

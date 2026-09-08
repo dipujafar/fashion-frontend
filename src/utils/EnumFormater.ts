@@ -1,4 +1,4 @@
-import { OrderStatus, CurrentShipTo, OrderAuthStatus, CancelReason } from "@/types"
+import { OrderStatus, CurrentShipTo, OrderAuthStatus, CancelReason, AssistentSellStatus, PriceType } from "@/types"
 
 export const getOrderStatusFormat = (
     status: OrderStatus,
@@ -101,30 +101,164 @@ export const getOrderStatusFormat = (
 }
 
 export const CancelReasonFormat: Record<CancelReason, { label: string; color: string }> = {
-  // Buyer-initiated reasons
-  CHANGED_MIND: { label: "Changed Mind", color: "bg-gray-100 text-gray-800" },
-  FOUND_BETTER_PRICE: { label: "Found Better Price", color: "bg-blue-100 text-blue-800" },
-  ORDERED_BY_MISTAKE: { label: "Ordered by Mistake", color: "bg-gray-100 text-gray-800" },
-  ITEM_NO_LONGER_NEEDED: { label: "Item No Longer Needed", color: "bg-gray-100 text-gray-800" },
-  DELIVERY_TOO_LONG: { label: "Delivery Too Long", color: "bg-yellow-100 text-yellow-800" },
-  FOUND_BETTER_PRODUCT: { label: "Found Better Product", color: "bg-blue-100 text-blue-800" },
-  WRONG_ITEM_SELECTED: { label: "Wrong Item Selected", color: "bg-gray-100 text-gray-800" },
-  DUPLICATE_ORDER: { label: "Duplicate Order", color: "bg-gray-100 text-gray-800" },
-  SHIPPING_COST_TOO_HIGH: { label: "Shipping Cost Too High", color: "bg-yellow-100 text-yellow-800" },
-  PAYMENT_ISSUE: { label: "Payment Issue", color: "bg-red-100 text-red-800" },
-  SELLER_UNRESPONSIVE: { label: "Seller Unresponsive", color: "bg-red-100 text-red-800" },
+    // Buyer-initiated reasons
+    CHANGED_MIND: { label: "Changed Mind", color: "bg-gray-100 text-gray-800" },
+    FOUND_BETTER_PRICE: { label: "Found Better Price", color: "bg-blue-100 text-blue-800" },
+    ORDERED_BY_MISTAKE: { label: "Ordered by Mistake", color: "bg-gray-100 text-gray-800" },
+    ITEM_NO_LONGER_NEEDED: { label: "Item No Longer Needed", color: "bg-gray-100 text-gray-800" },
+    DELIVERY_TOO_LONG: { label: "Delivery Too Long", color: "bg-yellow-100 text-yellow-800" },
+    FOUND_BETTER_PRODUCT: { label: "Found Better Product", color: "bg-blue-100 text-blue-800" },
+    WRONG_ITEM_SELECTED: { label: "Wrong Item Selected", color: "bg-gray-100 text-gray-800" },
+    DUPLICATE_ORDER: { label: "Duplicate Order", color: "bg-gray-100 text-gray-800" },
+    SHIPPING_COST_TOO_HIGH: { label: "Shipping Cost Too High", color: "bg-yellow-100 text-yellow-800" },
+    PAYMENT_ISSUE: { label: "Payment Issue", color: "bg-red-100 text-red-800" },
+    SELLER_UNRESPONSIVE: { label: "Seller Unresponsive", color: "bg-red-100 text-red-800" },
 
-  // Seller-initiated reasons
-  OUT_OF_STOCK: { label: "Out of Stock", color: "bg-orange-100 text-orange-800" },
-  UNABLE_TO_FULFILL_IN_TIME: { label: "Unable to Fulfill in Time", color: "bg-orange-100 text-orange-800" },
-  PRICING_ERROR: { label: "Pricing Error", color: "bg-orange-100 text-orange-800" },
-  BUYER_UNREACHABLE: { label: "Buyer Unreachable", color: "bg-red-100 text-red-800" },
-  SUSPECTED_FRAUD: { label: "Suspected Fraud", color: "bg-red-100 text-red-800" },
-  SHIPPING_ADDRESS_ISSUE: { label: "Shipping Address Issue", color: "bg-yellow-100 text-yellow-800" },
-  LISTING_ERROR: { label: "Listing Error", color: "bg-orange-100 text-orange-800" },
-  BUYER_REQUESTED: { label: "Buyer Requested", color: "bg-blue-100 text-blue-800" },
-  DAMAGED_INVENTORY: { label: "Damaged Inventory", color: "bg-red-100 text-red-800" },
-  PAYMENT_NOT_VERIFIED: { label: "Payment Not Verified", color: "bg-red-100 text-red-800" },
+    // Seller-initiated reasons
+    OUT_OF_STOCK: { label: "Out of Stock", color: "bg-orange-100 text-orange-800" },
+    UNABLE_TO_FULFILL_IN_TIME: { label: "Unable to Fulfill in Time", color: "bg-orange-100 text-orange-800" },
+    PRICING_ERROR: { label: "Pricing Error", color: "bg-orange-100 text-orange-800" },
+    BUYER_UNREACHABLE: { label: "Buyer Unreachable", color: "bg-red-100 text-red-800" },
+    SUSPECTED_FRAUD: { label: "Suspected Fraud", color: "bg-red-100 text-red-800" },
+    SHIPPING_ADDRESS_ISSUE: { label: "Shipping Address Issue", color: "bg-yellow-100 text-yellow-800" },
+    LISTING_ERROR: { label: "Listing Error", color: "bg-orange-100 text-orange-800" },
+    BUYER_REQUESTED: { label: "Buyer Requested", color: "bg-blue-100 text-blue-800" },
+    DAMAGED_INVENTORY: { label: "Damaged Inventory", color: "bg-red-100 text-red-800" },
+    PAYMENT_NOT_VERIFIED: { label: "Payment Not Verified", color: "bg-red-100 text-red-800" },
 
-  OTHER: { label: "Other", color: "bg-gray-100 text-gray-800" },
+    OTHER: { label: "Other", color: "bg-gray-100 text-gray-800" },
+}
+
+export const getBundleOrderStatusFormat = (
+    status: OrderStatus,
+): { label: string; color: string; details: string } => {
+
+    switch (status) {
+        case OrderStatus.PENDING:
+            return {
+                label: "Pending",
+                color: "bg-yellow-100 text-yellow-800",
+                details: "Request shipment is waiting for processing.",
+            }
+
+        case OrderStatus.SHIPPED:
+            return {
+                label: "Shipped",
+                color: "bg-blue-100 text-blue-800",
+                details: "Items have shipped and is on its way to the FASHI-ON team.",
+            }
+
+        case OrderStatus.OUT_FOR_DELIVERY:
+            return {
+                label: "In Transit",
+                color: "bg-indigo-100 text-indigo-800",
+                details: "Item is in transit and out for delivery to the FASHI-ON team.",
+            }
+
+        case OrderStatus.DELIVERED:
+            return {
+                label: "Delivered",
+                color: "bg-purple-100 text-purple-800",
+                details: "Item has been delivered to the FASHI-ON team.",
+            }
+
+        case OrderStatus.COMPLETED:
+            return {
+                label: "Completed",
+                color: "bg-green-500",
+                details: "Shipment has been completed.",
+            }
+
+        case OrderStatus.CANCELLED:
+            return {
+                label: "Cancelled",
+                color: "bg-red-500",
+                details: "Shipment has been cancelled.",
+            }
+
+        default:
+            return {
+                label: "Unknown",
+                color: "bg-gray-100 text-gray-800",
+                details: "Status unavailable.",
+            }
+    }
+}
+
+export const getAssitedSellingStatusFormat = (
+    status: AssistentSellStatus,
+): { label: string; color: string; details: string } => {
+
+    switch (status) {
+        case AssistentSellStatus.PENDING:
+            return {
+                label: "Pending",
+                color: "bg-yellow-100 text-yellow-800",
+                details: "Request is waiting for response from the FASHI-ON team.",
+            }
+
+        case AssistentSellStatus.APPROVED:
+            return {
+                label: "Approved",
+                color: "bg-green-100 text-green-800",
+                details: "Request has been approved by the FASHI-ON team.",
+            }
+
+        case AssistentSellStatus.REJECTED:
+            return {
+                label: "Rejected",
+                color: "bg-red-100 text-red-800",
+                details: "Request has been rejected by the FASHI-ON team.",
+            }
+
+        case AssistentSellStatus.LISTED:
+            return {
+                label: "Listed",
+                color: "bg-blue-100 text-blue-800",
+                details: "Items have been listed and are on their way to the FASHI-ON team.",
+            }
+
+        default:
+            return {
+                label: "Unknown",
+                color: "bg-gray-100 text-gray-800",
+                details: "Status unavailable.",
+            }
+    }
+}
+
+export const getAssitedPriceTypeFormat = (
+    status: PriceType,
+    targetAmount?: number,
+): { label: string; color: string; details: string } => {
+
+    switch (status) {
+        case PriceType.DISCUSSION:
+            return {
+                label: "Discussion",
+                color: "bg-yellow-100 text-yellow-800",
+                details: "Price is open for discussion and negotiation.",
+            }
+
+        case PriceType.TARGET_AMOUNT:
+            return {
+                label: "Target Amount",
+                color: "bg-green-100 text-green-800",
+                details: `Want to earn minimum $${targetAmount?.toFixed(2)} amount from the sale.`,
+            }
+
+        case PriceType.MARKET_PRICE:
+            return {
+                label: "Market Price",
+                color: "bg-blue-100 text-blue-800",
+                details: "Price is based on the current market value of the item.",
+            }
+
+        default:
+            return {
+                label: "Unknown",
+                color: "bg-gray-100 text-gray-800",
+                details: "Status unavailable.",
+            }
+    }
 }

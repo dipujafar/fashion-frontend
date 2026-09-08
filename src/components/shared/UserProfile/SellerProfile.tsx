@@ -10,7 +10,16 @@ import FolowUnFolow from '@/app/(public)/member/[username]/_components/FolowUnFo
 import { CharityDonationFormDialog } from '../Modal/Charity/CharityDonationFormDialog';
 import { Button } from '@/components/ui/button';
 
-type User = { data: { user: IUser, review: { _avg: { rating: number }, _count: { id: number } }, isfolowing: boolean, totalDonation: number } }
+type User = {
+  data:
+  {
+    user: IUser,
+    review: { _avg: { rating: number }, _count: { id: number } },
+    isfolowing: boolean,
+    totalDonation: number,
+    isCurrentUser: boolean
+  }
+}
 
 
 export default async function SellerProfile({ user, isCharity, isCharityShop }: { user: User, isCharity: boolean, isCharityShop: boolean }) {
@@ -92,7 +101,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
             </div>
           </div>
 
-          <div className="w-full flex flex-col justify-start lg:justify-end items-start lg:items-end gap-y-3">
+          {!user?.data?.isCurrentUser && <div className="w-full flex flex-col justify-start lg:justify-end items-start lg:items-end gap-y-3">
             <FolowUnFolow isFolow={user?.data?.isfolowing} memberId={userData?.id} />
             {isCharityShop && (
               <div className='lg:w-auto w-full'>
@@ -101,8 +110,8 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                     Donate Now
                   </Button>
                 </CharityDonationFormDialog>
-            </div>)}
-          </div>
+              </div>)}
+          </div>}
         </div>
 
         {/* Bio Section */}

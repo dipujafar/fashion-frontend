@@ -29,6 +29,9 @@ import { SuccessModal } from "@/components/shared/Modal/SuccessModal";
 import Link from "next/link";
 
 export const formSchema = z.object({
+  itemsTitle: z.string({ required_error: "Item title is required." }).min(1, {
+    message: "Item title is required.",
+  }),
   itemsCount: z.string({ required_error: "Item count is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 1, {
     message: "Item count must be a valid positive number greater than 1.",
   }),
@@ -125,6 +128,7 @@ export function AssistedSellerForm() {
 
 
   async function onSubmit(values: FormValues) {
+    setError(null);
     try {
       const formData = new FormData();
 
@@ -135,8 +139,6 @@ export function AssistedSellerForm() {
       });
 
       await RequestNewAssitentSell({ payload: formData });
-
-      toast.success("Your request has been submitted successfully. We will contact you soon.");
 
       //reset the form and uploaded images
       form.reset();
@@ -296,6 +298,20 @@ export function AssistedSellerForm() {
                     international
                     defaultCountry="US"
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="itemsTitle"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-gray-900">Items Title</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="eg: Vintage denim & leather bundle" className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
