@@ -97,6 +97,14 @@ export const NotificationRender = ({ notification }: { notification: INotificati
                 postImg: null
             }
 
+            case "BADGE":
+            // badge earned notification
+            return {
+                avatar: <NotificationBellIconWhite className="size-4" />,
+                link: `/member/${notification?.entityId}`,
+                postImg: null
+            }
+
         default:
             return {
                 avatar: <NotificationBellIconWhite className="size-4" />,

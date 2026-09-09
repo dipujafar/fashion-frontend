@@ -1,14 +1,14 @@
 "use client";
 import PProductCard from "@/components/shared/Cards/PProductCard";
 import useLazyLoad from "@/hooks/useLazyLoad";
-import { useGetProductListMutation } from "@/redux/api/productApi";
+import { useLazyGetProductsQuery } from "@/redux/api/productApi";
 import { IMeta, IProduct } from "@/types";
 import Image from "next/image";
 import { useRef } from "react";
 
 const AllProducts = ({ query, initialData, initialMeta }: { query: { [key: string]: string | undefined }, initialData: IProduct[], initialMeta: IMeta }) => {
 
-  const [loadProds, { isLoading }] = useGetProductListMutation();
+  const [loadProds, { isLoading }] = useLazyGetProductsQuery();
   const triggerRef = useRef(null);
 
   const loadNextPage = async (page: number) => {

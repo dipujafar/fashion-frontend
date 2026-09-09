@@ -1,7 +1,7 @@
 "use client"
 import { Rating } from '@/components/ui/rating';
 import useLazyLoad from '@/hooks/useLazyLoad';
-import { useReviewsGetBySellerMutation } from '@/redux/api/review.api';
+import { useLazyReviewsGetBySellerQuery } from '@/redux/api/review.api';
 import { IReview } from '@/types';
 import { defaultImg } from '@/utils/defaultImg';
 import moment from 'moment';
@@ -11,7 +11,7 @@ import { useRef } from 'react';
 
 function Reviews({ userName }: { userName: string }) {
 
-    const [loadReviews, { isLoading }] = useReviewsGetBySellerMutation();
+    const [loadReviews, { isLoading }] = useLazyReviewsGetBySellerQuery();
     const triggerRef = useRef(null);
 
     const loadNextPage = async (page: number) => {

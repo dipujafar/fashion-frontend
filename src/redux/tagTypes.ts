@@ -9,6 +9,9 @@ export const tagTypes = {
   brand: "brand",
   size: "size",
   cart: "cart",
+  folowings: "folowings",
+  folowers: "folowers",
+  review: "review",
 };
 
 export const tagTypesList = [
@@ -22,4 +25,7 @@ export const tagTypesList = [
   tagTypes.brand,
   tagTypes.size,
   tagTypes.cart,
+  tagTypes.folowings,
+  tagTypes.folowers,
+  tagTypes.review,
 ];

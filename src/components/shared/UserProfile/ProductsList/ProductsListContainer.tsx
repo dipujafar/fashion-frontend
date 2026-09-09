@@ -1,14 +1,14 @@
 "use client"
 import { IMeta, IProduct } from "@/types";
 import ProductCard from "../../Cards/ProductCard";
-import { useProductsGetByMemberMutation } from "@/redux/api/productApi";
 import { useRef } from "react";
 import useLazyLoad from "@/hooks/useLazyLoad";
 import Image from "next/image";
+import { useLazyProductsGetByMemberQuery } from "@/redux/api/productApi";
 
 const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { query: { [key: string]: string | undefined }, userName: string, initialData: IProduct[], initialMeta: IMeta }) => {
 
-  const [loadSellerProds, { isLoading }] = useProductsGetByMemberMutation();
+  const [loadSellerProds, { isLoading }] = useLazyProductsGetByMemberQuery();
   const triggerRef = useRef(null);
 
   const loadNextPage = async (page: number) => {

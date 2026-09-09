@@ -1,7 +1,6 @@
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { IUser } from '@/types'
+import { IBadge, IUser } from '@/types'
 import { notFound } from 'next/navigation'
-import FolowerListFolowingList from '@/app/(public)/member/[username]/_components/FolowerListFolowingList'
 import { Rating } from "@/components/ui/rating";
 import moment from 'moment'
 import { userRoleMapper } from '@/utils/userRoleMapper'
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import FolowUnFolow from '@/app/(public)/member/[username]/_components/FolowUnFolow';
 import { CharityDonationFormDialog } from '../Modal/Charity/CharityDonationFormDialog';
 import { Button } from '@/components/ui/button';
+import FolowerFolowing from '@/app/(public)/member/[username]/_components/FolowerFolowing';
 
 type User = {
   data:
@@ -17,7 +17,11 @@ type User = {
     review: { _avg: { rating: number }, _count: { id: number } },
     isfolowing: boolean,
     totalDonation: number,
-    isCurrentUser: boolean
+    isCurrentUser: boolean,
+    badges: {
+      id: string,
+      badge: IBadge,
+    }[]
   }
 }
 
@@ -58,9 +62,9 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                   {userRoleMapper(user?.data?.user?.auth?.role)?.label}
                 </span>
 
-                <h1 className="text-2xl md:text-3xl font-bold text-foreground my-0.5 block">
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground my-0.5 block">
                   {userData?.userName}
-                </h1>
+                </h2>
 
                 {/* Rating */}
                 {user?.data?.review?._count?.id > 0 ? <div className="flex items-center gap-2 mb-1">
@@ -79,16 +83,16 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
             <div className='flex flex-row items-center gap-8 lg:gap-10'>
 
               <div className=''>
-                <FolowerListFolowingList folowers={userData?.followers} folowings={userData?.following} type='following' actionBtn={<div className=''>
-                  <p className='font-semibold'>{userData?.following?.length}</p>
+                <FolowerFolowing type='following' folowerCount={userData?._count?.followers || 0} folowingCount={userData?._count?.following || 0} actionBtn={<div className=''>
+                  <p className='font-semibold'>{userData?._count?.following || 0}</p>
                   <p className='text-gray-700'>Following</p>
                 </div>} userName={userData?.userName} />
               </div>
 
 
               <div className='border-x border-gray-200 px-8 lg:px-10'>
-                <FolowerListFolowingList folowers={userData?.followers} folowings={userData?.following} type='followers' actionBtn={<div className=''>
-                  <p className='font-semibold'>{userData?.followers?.length}</p>
+                <FolowerFolowing type='followers' folowerCount={userData?._count?.followers || 0} folowingCount={userData?._count?.following || 0} actionBtn={<div className=''>
+                  <p className='font-semibold'>{userData?._count?.followers || 0}</p>
                   <p className='text-gray-700'>Followers</p>
                 </div>} userName={userData?.userName} />
               </div>
@@ -114,14 +118,43 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
           </div>}
         </div>
 
+        {/* Badges Section */}
+        {
+          user?.data?.badges?.length > 0 && <div className="mt-4 md:mt-5 lg:mt-6 flex flex-row flex-wrap items-center gap-4">
+
+            {user?.data?.badges?.map((badgeItem) => (
+              <div key={badgeItem?.id} className="flex flex-row items-center gap-2 px-2.5 py-1 rounded-full bg-zinc-50">
+                <div
+                  className="h-4 w-4 bg-[#0000ff]"
+                  style={{
+                    maskImage: `url(${badgeItem?.badge?.icon})`,
+                    WebkitMaskImage: `url(${badgeItem?.badge?.icon})`,
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                  }}
+                />
+                <span className="text-sm text-[#0000ff]">{badgeItem?.badge?.name}</span>
+              </div>
+            ))}
+
+          </div>
+        }
+
         {/* Bio Section */}
         {
           userData?.bio && <div className="mt-5 md:mt-8 lg:mt-10">
-            <p className="text-foreground leading-relaxed md:text-lg max-w-xl">
+            <pre className="text-foreground leading-relaxed md:text-lg max-w-xl whitespace-pre-wrap break-words">
               {userData?.bio}
-            </p>
+            </pre>
           </div>
         }
+
+
+
       </> : <div className="">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div className="max-w-2xl">

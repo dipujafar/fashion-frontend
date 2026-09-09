@@ -84,7 +84,7 @@ export default function ProfileIcon() {
     {
       icon: <Tags className="size-5" />,
       name: "Badges",
-      link: "/badges",
+      link: "/profile/badges",
     },
     {
       icon: <Wallet className="size-5" />,

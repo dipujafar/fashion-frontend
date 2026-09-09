@@ -166,8 +166,10 @@ export interface IUser {
   auth: IUserAuth;
   avgRating: number;
   picture: { key: string, url: string } | null;
-  followers: IFolow[]
-  following: IFolow[]
+  _count : {
+    following: number,
+    followers: number,
+  }
   charityGalleries: { id: string, url: string, caption: string }[]
   vacationMode: boolean,
   lastOnlineAt: Date | null
@@ -199,7 +201,8 @@ export enum NotificationEntityType {
   MESSAGE = "MESSAGE",
   USER = "USER",
   DONATION = "DONATION",
-  RETURN = "RETURN"
+  RETURN = "RETURN",
+  BADGE = "BADGE"
 }
 
 export enum NotificationType {
@@ -236,7 +239,10 @@ export enum NotificationType {
   RETURN_REJECTED = "RETURN_REJECTED",
   RETURN_COMPLETED = "RETURN_COMPLETED",
   RETURN_STATUS_CHANGED = "RETURN_STATUS_CHANGED",
-  RETURN_ITEM_CANCELED = "RETURN_ITEM_CANCELED"
+  RETURN_ITEM_CANCELED = "RETURN_ITEM_CANCELED",
+
+  //for badge
+  BADGE_EARNED = "BADGE_EARNED"
 }
 
 export interface IQuesAns {
@@ -249,6 +255,7 @@ export interface IQuesAns {
 }
 
 export interface IFolow {
+  id: string,
   followerId: string,
   followingId: string
   follower: IUser
@@ -595,14 +602,49 @@ export interface IAssitedSellRequest {
 }
 
 export enum AssistentSellStatus {
-    PENDING = "PENDING",
-    APPROVED = "APPROVED",
-    REJECTED = "REJECTED",
-    LISTED = "LISTED"
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  LISTED = "LISTED"
 }
 
 export enum PriceType {
-    TARGET_AMOUNT = "TARGET_AMOUNT",
-    DISCUSSION = "DISCUSSION",
-    MARKET_PRICE = "MARKET_PRICE"
+  TARGET_AMOUNT = "TARGET_AMOUNT",
+  DISCUSSION = "DISCUSSION",
+  MARKET_PRICE = "MARKET_PRICE"
+}
+
+export interface IBadge {
+  id: string,
+  name: string,
+  description: string,
+  icon: string,
+  type: IBadgeType,
+  target: number,
+  progress: number,
+  isCompleted: true,
+}
+
+export enum IBadgeType {
+  FASHION_PHILANTHROPIST = "FASHION_PHILANTHROPIST",
+  STYLE_STARTER = "STYLE_STARTER",
+  FIRST_PURCHASE = "FIRST_PURCHASE",
+  MONEY_DONOR = "MONEY_DONOR",
+  ECO_HERO = "ECO_HERO",
+  FIRST_SALE = "FIRST_SALE",
+  TREE_PLANTER = "TREE_PLANTER",
+  CLOTHING_DONOR = "CLOTHING_DONOR",
+  FREQUENT_SELLER = "FREQUENT_SELLER",
+  TOP_BUYER = "TOP_BUYER",
+  SPEEDY_SHIPPER = "SPEEDY_SHIPPER",
+  FASHION_ACTIVIST = "FASHION_ACTIVIST",
+  TRUSTED_SELLER = "TRUSTED_SELLER",
+  CHARITY_SUPPORTER = "CHARITY_SUPPORTER",
+  SUSTAINABLE_MATERIALS = "SUSTAINABLE_MATERIALS",
+  FAST_SHIPPER = "FAST_SHIPPER",
+  TOP_ECO_SELLER = "TOP_ECO_SELLER",
+  BUYERS_FAVOURITE = "BUYERS_FAVOURITE",
+  CHARITY_CHAMPION = "CHARITY_CHAMPION",
+  TOP_CHARITY_FUNDRAISER = "TOP_CHARITY_FUNDRAISER",
+  VINTAGE_COLLECTION = "VINTAGE_COLLECTION",
 }

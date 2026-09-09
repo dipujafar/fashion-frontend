@@ -1,4 +1,4 @@
-import { Addresses, IBandleTier, IBillingDetails, IUser } from "@/types";
+import { Addresses, IBandleTier, IBillingDetails, IFolow, IMeta, IUser } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -51,7 +51,24 @@ const userApi = baseApi.injectEndpoints({
             }),
         }),
 
+        getFolowings: builder.query<{ data: { data: IFolow[], meta: IMeta } }, { userName: string, query: {} }>({
+            query: ({ userName, query }) => ({
+                url: `/users/folowings/${userName}`,
+                method: "GET",
+                params: query,
+            }),
+            providesTags: (result, error, arg) => [{ type: tagTypes.folowings, id: arg.userName }],
+        }),
+        getFolowers: builder.query<{ data: { data: IFolow[], meta: IMeta } }, { userName: string, query: {} }>({
+            query: ({ userName, query }) => ({
+                url: `/users/folowers/${userName}`,
+                method: "GET",
+                params: query,
+            }),
+            providesTags: (result, error, arg) => [{ type: tagTypes.folowers, id: arg.userName }],
+        }),
+
     }),
 })
 
-export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery } = userApi;
+export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery, useLazyGetFolowingsQuery, useLazyGetFolowersQuery } = userApi;

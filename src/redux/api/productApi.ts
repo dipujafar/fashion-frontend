@@ -31,13 +31,14 @@ const productApi = baseApi.injectEndpoints({
       },
     }),
 
-    getProductList: builder.mutation<{ data: { data: IProduct[], meta: IMeta } }, {}>({
+    getProductList: builder.query<{ data: { data: IProduct[], meta: IMeta } }, {}>({
       query: (params) => ({
         url: "/products",
         method: "GET",
         params,
       }),
     }),
+
     getProductStats: builder.query<{
       data: {
         "_count": {
@@ -53,7 +54,7 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
 
-    productsGetByMember: builder.mutation<{ data: { data: IProduct[], meta: IMeta } }, { userName: string, params: {} }>({
+    productsGetByMember: builder.query<{ data: { data: IProduct[], meta: IMeta } }, { userName: string, params: {} }>({
       query: ({ params, userName }) => ({
         url: `/products/member/${userName}`,
         method: "GET",
@@ -61,7 +62,7 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
 
-    myProductsGet: builder.mutation<{ data: { data: IProductExtra[], meta: IMeta } }, { params: {} }>({
+    myProductsGet: builder.query<{ data: { data: IProductExtra[], meta: IMeta } }, { params: {} }>({
       query: ({ params }) => ({
         url: `/products/my-items`,
         method: "GET",
@@ -86,4 +87,4 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery, useProductsGetByMemberMutation, useGetProductListMutation, useGetProductStatsQuery, useProductsByIdsQuery, useMyProductsGetMutation } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useLazyProductsGetByMemberQuery, useLazyGetProductsQuery, useGetProductStatsQuery, useProductsByIdsQuery, useLazyMyProductsGetQuery } = productApi;

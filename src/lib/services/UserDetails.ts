@@ -92,3 +92,16 @@ export const GetUserBillingDetails = async () => {
         throw err;
     }
 };
+
+export const GetUserbadgeStats = async () => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/users/badge-stats`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};

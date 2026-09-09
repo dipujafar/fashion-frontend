@@ -17,7 +17,7 @@ export const profileRouts = [
         ],
     },
     {
-        id: 4,
+        id: 12,
         title: "Selling",
         rout: "/profile/sell",
         routs: [
@@ -83,10 +83,16 @@ export const profileRouts = [
                 rout: "/profile/address"
             },
             {
+                id: 2,
+                title: "Badges",
+                rout: "/profile/badges"
+            },
+            {
                 id: 6,
                 title: "Vacation Mode",
                 rout: "/profile/vacation-mode"
             },
+
             // {
             //     id: 1,
             //     title: "Notifications",

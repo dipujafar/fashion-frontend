@@ -1,4 +1,4 @@
-import { OrderStatus, CurrentShipTo, OrderAuthStatus, CancelReason, AssistentSellStatus, PriceType } from "@/types"
+import { OrderStatus, CurrentShipTo, OrderAuthStatus, CancelReason, AssistentSellStatus, PriceType, IBadgeType } from "@/types"
 
 export const getOrderStatusFormat = (
     status: OrderStatus,
@@ -261,4 +261,28 @@ export const getAssitedPriceTypeFormat = (
                 details: "Status unavailable.",
             }
     }
+}
+
+export const BadgeIcons : Record<IBadgeType, string> = {
+    FASHION_PHILANTHROPIST : "/badges/heart-handshake.svg",
+    STYLE_STARTER: "/badges/sparkles.svg",
+    FIRST_PURCHASE: "/badges/shopping-bag.svg",
+    MONEY_DONOR : "/badges/circle-dollar-sign.svg",
+    ECO_HERO : "/badges/cannabis.svg",
+    FIRST_SALE : "/badges/badge-check.svg",
+    TREE_PLANTER : "/badges/sprout.svg",
+    CLOTHING_DONOR : "/badges/shirt.svg",
+    FREQUENT_SELLER : "/badges/package-open.svg",
+    TOP_BUYER : "/badges/circle-star.svg",
+    SPEEDY_SHIPPER : "/badges/rocket.svg",
+    FASHION_ACTIVIST : "/badges/award.svg",
+    TRUSTED_SELLER : "/badges/shield-check.svg",
+    CHARITY_SUPPORTER : "/badges/heart-handshake.svg",
+    SUSTAINABLE_MATERIALS : "/badges/recycle.svg",
+    FAST_SHIPPER : "/badges/truck.svg",
+    TOP_ECO_SELLER : "/badges/leaf.svg",
+    BUYERS_FAVOURITE : "/badges/heart.svg",
+    CHARITY_CHAMPION : "/badges/heart-plus.svg",
+    TOP_CHARITY_FUNDRAISER : "/badges/trophy.svg",
+    VINTAGE_COLLECTION : "/badges/clock.svg"
 }

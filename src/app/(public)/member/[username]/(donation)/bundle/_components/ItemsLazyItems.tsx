@@ -1,6 +1,5 @@
 "use client"
 import { IMeta, IProduct } from "@/types";
-import { useProductsGetByMemberMutation } from "@/redux/api/productApi";
 import { useRef, useState } from "react";
 import useLazyLoad from "@/hooks/useLazyLoad";
 import Image from "next/image";
@@ -13,6 +12,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { useAppDispatch } from "@/redux/hooks";
 import { baseApi } from "@/redux/api/baseApi";
 import { tagTypes } from "@/redux/tagTypes";
+import { useLazyProductsGetByMemberQuery } from "@/redux/api/productApi";
 
 interface IProductCart extends IProduct {
     cartItems: {}[]
@@ -20,7 +20,7 @@ interface IProductCart extends IProduct {
 
 const ItemsLazyItems = ({ query, userName, initialData, initialMeta }: { query: { [key: string]: string | undefined }, userName: string, initialData: IProductCart[], initialMeta: IMeta }) => {
 
-    const [loadSellerProds, { isLoading }] = useProductsGetByMemberMutation();
+    const [loadSellerProds, { isLoading }] = useLazyProductsGetByMemberQuery();
     const triggerRef = useRef(null);
 
     const loadNextPage = async (page: number) => {
