@@ -22,7 +22,7 @@ export default function middleware(req: any) {
 
 export const config = {
   matcher: [
-    "/profile/:path*",
+    // "/profile/:path*",
     // "/sell",
     "/wishlist"
   ],

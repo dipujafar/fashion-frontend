@@ -5,6 +5,28 @@ import { baseApi } from "./baseApi";
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
 
+        balance: builder.query<{ data: { balance: number } }, void>({
+            query: () => ({
+                url: "/account/balance",
+                method: "GET",
+            }),
+        }),
+
+        accountData : builder.query<{ data: { account_last_num: string } | null }, void>({
+            query: () => ({
+                url: "/account/account-data",
+                method: "GET",
+            }),
+        }),
+
+        connectAccount: builder.mutation<{ data: { url: string } }, void>({
+            query: (payload) => ({
+                url: "/account/connect",
+                method: "PATCH",
+                body: payload
+            }),
+        }),
+
         getCharities: builder.query<{ data: IUser[] }, void>({
             query: () => ({
                 url: "/users/charities",
@@ -71,4 +93,4 @@ const userApi = baseApi.injectEndpoints({
     }),
 })
 
-export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery, useLazyGetFolowingsQuery, useLazyGetFolowersQuery } = userApi;
+export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery, useLazyGetFolowingsQuery, useLazyGetFolowersQuery, useBalanceQuery, useAccountDataQuery, useConnectAccountMutation } = userApi;

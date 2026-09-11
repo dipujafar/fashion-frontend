@@ -58,12 +58,12 @@ export const profileRouts = [
     {
         id: 3,
         title: "Payment",
-        rout: "/profile/payment",
+        rout: "/profile/earnings",
         routs: [
             {
                 id: 5,
                 title: "Earnings",
-                rout: "/profile/payment/earnings"
+                rout: "/profile/earnings"
             }
         ]
     },
