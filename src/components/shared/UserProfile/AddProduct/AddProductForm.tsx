@@ -3,7 +3,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState } from "react";
-import { X, Camera } from "lucide-react";
+import { X, Camera, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -57,6 +57,7 @@ import UpdateShippingAddress from "./UpdateShippingAddress";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { role } from "@/lib/userRole";
+import { SuccessModal } from "../../Modal/SuccessModal";
 
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
@@ -64,6 +65,8 @@ const INPUT_ID = "photo-uploader-input";
 export default function AddProductForm() {
   const [images, setImages] = useState<File[]>([]);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
+
+  const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -83,7 +86,7 @@ export default function AddProductForm() {
   // =============================== product api ==============================
   // const [uploadProduct, { isLoading }] = useCreateProductMutation();
 
-  const required_Charity = user?.auth?.role !== role.ECO_FRIENDLY_STORE;
+  const required_Charity = !(user?.auth?.role == role.ECO_FRIENDLY_STORE || user?.auth?.role == role.CHARITY_SHOP);
 
   const productSchema = required_Charity ? productFormSchema.merge(CharityFormSchema) : productFormSchema;
 
@@ -148,8 +151,8 @@ export default function AddProductForm() {
       try {
         await AddNewProduct({ payload: formData });
         form.reset();
-        toast.success("Product uploaded successfully!");
         setImages([]);
+        setOpenSuccessDialog(true);
         // router.push("/")
       } catch (error: any) {
         toast.error(error?.message || "An error occurred while uploading the product.");
@@ -481,7 +484,7 @@ export default function AddProductForm() {
             </div>
 
 
-            {required_Charity && <>
+            <>
               {/* ======================================== donation input ============================================== */}
               <div className="space-y-4 mt-12">
                 <div>
@@ -489,7 +492,7 @@ export default function AddProductForm() {
 
                   <>
                     <span className="text-xs">
-                      (Minimum 5% donation required)
+                      {required_Charity ? "(Minimum 5% donation required)" : "(Optional donation)"}
                     </span>
                     {/* <SelectDonationOption /> */}
                   </>
@@ -569,7 +572,7 @@ export default function AddProductForm() {
                   )}
                 />
               </div>
-            </>}
+            </>
 
 
           </div>
@@ -735,6 +738,38 @@ export default function AddProductForm() {
           </div>
         </form>
       </Form>
+
+
+      <SuccessModal
+        open={openSuccessDialog}
+        setOpen={setOpenSuccessDialog}
+        content={
+          <div className="p-6 sm:p-8">
+
+            {/* Icon with soft glow background */}
+            <div className="flex justify-center mb-6">
+              <div className="relative flex items-center justify-center w-20 h-20 rounded-full bg-green-50">
+                <div className="absolute inset-0 rounded-full bg-green-100 animate-ping opacity-40" />
+                <CheckCircle2
+                  className="w-11 h-11 text-green-500 relative"
+                  strokeWidth={2}
+                />
+              </div>
+            </div>
+
+            {/* Heading */}
+            <p className="text-center text-2xl font-semibold text-gray-900 leading-snug mb-2">
+              Listing Published!
+            </p>
+
+            {/* Subtext */}
+            <p className="text-center text-sm text-gray-500 leading-relaxed mb-8 max-w-xs mx-auto">
+              Your item has been listed successfully and is now visible to buyers.
+            </p>
+
+          </div>
+        }
+      />
 
 
     </div>

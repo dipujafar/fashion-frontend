@@ -49,14 +49,14 @@ export function SmallDeviceFilter({ categoryId, sspResult }: { categoryId?: stri
           setActiveOption(null);
         }}
         variant={"outline"}
-        className="rounded-full shadow-none border-primary-black hover:bg-primary-black hover:text-white duration-150 md:hidden flex items-center gap-2 px-3 h-8 cursor-pointer"
+        className="rounded-full shadow-none border-primary-black hover:bg-primary-black hover:text-white duration-150 lg:hidden flex items-center gap-2 px-3 h-8 cursor-pointer"
       >
         <ListFilter />
         Filter
       </Button>
 
       {open && (
-        <div className="bg-white fixed bottom-0 left-0 right-0 z-50 w-full h-full border-t border-gray-200 md:hidden overflow-auto">
+        <div className="bg-white fixed bottom-0 left-0 right-0 z-50 w-full h-full border-t border-gray-200 lg:hidden overflow-auto">
           {/* =====header======== */}
           <div className="flex flex-row justify-between items-center p-2.5 border-b border-gray-200 sticky top-0 bg-white z-10">
             {activeOption && (

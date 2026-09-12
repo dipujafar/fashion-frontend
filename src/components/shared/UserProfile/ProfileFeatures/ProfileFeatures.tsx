@@ -10,7 +10,7 @@ const ProfileFeatures = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
 
-  const { category, sortBy: sort, brand, priceMin, priceMax, size, color, condition } = ssp;
+  const { category, sortBy: sort, brand, priceMin, priceMax, size, color, condition, stock } = ssp;
 
   let sortBy = "createdAt";
   let orderBy = "desc"
@@ -50,12 +50,15 @@ const ProfileFeatures = async ({
   if (condition) {
     query.conditions = condition
   }
+  if (stock) {
+    query.stock = stock
+  }
 
   const prodData = await GetProductsByMember({ query, userName });
 
   return (
     <div>
-      <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)}/>
+      <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)} />
     </div>
   );
 };

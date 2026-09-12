@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import appleIcon from "@/assets/icons/apple.png";
 import googleIcon from "@/assets/icons/google.png";
@@ -81,10 +80,10 @@ const SIgnInForm = () => {
   const handleSocialLogin = async (idToken: string) => {
     try {
       const res = await socialLogin({ idToken }).unwrap();
-      if (res?.data?.user?.role) {
+      if (res?.data?.user?.auth?.role) {
         dispatch(
           setUser({
-            user: jwtDecode(res?.data?.accessToken),
+            user: res?.data?.user,
             accessToken: res?.data?.accessToken,
             refreshToken: res?.data?.refreshToken
           })

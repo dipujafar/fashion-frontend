@@ -1,8 +1,6 @@
 import { HeartHandshake } from "lucide-react";
 import { GetProductCharitySupport } from "@/lib/services/Products";
-import Image from "next/image";
 import { IUser } from "@/types";
-import { defaultImg } from "@/utils/defaultImg";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -25,9 +23,7 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
     const splitPercent = GLOBAL_DONATION_PERCENT / res?.data?.charities?.length || 0;
 
     return (
-        <section
-            className="mt-10"
-        >
+        res?.data?.charities.length > 0 && <section className="mt-10">
             <div className="flex flex-wrap items-center gap-4">
                 <span className="flex size-11 items-center justify-center rounded-full bg-green-500/10 text-primary">
                     <HeartHandshake className="size-5" aria-hidden />

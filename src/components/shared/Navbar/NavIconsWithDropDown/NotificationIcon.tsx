@@ -39,11 +39,11 @@ export default function NotificationIcon() {
         {(isSuccess && notifications?.data?.unReadCount > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 px-[3px] py-0.5 text-[10px] text-white">{notifications?.data?.unReadCount}</span>}
 
       </MenubarTrigger>
-      <MenubarContent className="rounded-none w-xs">
+      <MenubarContent className="rounded-none w-[340px]">
 
         <div className="overflow-y-auto max-h-[450px]">
 
-          <div className="border-b border-gray-200 flex flex-row justify-between items-center py-2 px-3">
+          <div className="border-b border-gray-200 flex flex-row justify-between items-center py-2 px-3 sticky top-0 bg-white z-10">
             <p className="text-base font-medium">Notifications</p>
 
             {(isSuccess && notifications?.data?.unReadCount > 0) && (
@@ -72,9 +72,10 @@ export default function NotificationIcon() {
                             {renderNotification.avatar}
                           </Avatar>
 
-                          <div className="flex-1 flex flex-row gap-x-1 items-start justify-between">
+                          <div className="flex flex-row gap-x-1 items-start justify-between">
+                            
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                              <div className="flex-1">
+                              <div className="flex-1 min-w-0">
 
                                 <p className="text-sm text-gray-700">
                                   {notification.message.split(/(\*\*.*?\*\*)/g).map((part, index) =>
@@ -94,9 +95,11 @@ export default function NotificationIcon() {
                               </div>
                             </div>
 
-                            {
-                              notification?.entityImgs?.length == 1 && renderNotification?.postImg
-                            }
+                            <div className="flex-shrink-0">
+                              {
+                                notification?.entityImgs?.length == 1 && renderNotification?.postImg
+                              }
+                            </div>
 
                           </div>
                         </div>

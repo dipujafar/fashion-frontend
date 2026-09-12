@@ -166,7 +166,7 @@ export interface IUser {
   auth: IUserAuth;
   avgRating: number;
   picture: { key: string, url: string } | null;
-  _count : {
+  _count: {
     following: number,
     followers: number,
   }
@@ -311,14 +311,19 @@ export interface ISelldonation {
   extra_money: number,
   isAnonymous: boolean,
   total_amount: number,
-  status: string,
+  status: SellDonationStatus,
   createdAt: Date,
   orderItemId: string,
   charityId: string,
   charity: IUser,
-  orderItem: {
-    product: IProduct
-  }
+  orderItem: IOrderItem,
+  donatedAt: Date | null
+}
+
+enum SellDonationStatus {
+  PENDING = "PENDING",
+  PAID = "PAID",
+  FAILED = "FAILED"
 }
 
 export interface IDirectDonation {
@@ -365,7 +370,7 @@ export type OrderSummeryType = { itemTotal: number, otherTotal: number, total: n
 
 export interface IOrder {
   id: string,
-
+  orderNumber: string,
   buyerId: string,
   buyer: IUser,
 
@@ -387,6 +392,8 @@ export interface IOrder {
 
   billingDetails: IBillingDetails,
   createdAt: Date,
+
+  payment: IPayment | null,
 }
 
 export enum CurrentShipTo {
@@ -647,4 +654,32 @@ export enum IBadgeType {
   CHARITY_CHAMPION = "CHARITY_CHAMPION",
   TOP_CHARITY_FUNDRAISER = "TOP_CHARITY_FUNDRAISER",
   VINTAGE_COLLECTION = "VINTAGE_COLLECTION",
+}
+
+export interface IPayment {
+  id: string,
+
+  orderId: string,
+  order: IOrder,
+
+  status: PaymentStatus
+
+  stripe_status: StripePaymentStatus
+
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export enum PaymentStatus {
+  PENDING = "PROCESSING",
+  SUCCESSED = "SUCCESSED",
+  FAILED = "FAILED",
+  REFUNDED = "REFUNDED"
+}
+
+export enum StripePaymentStatus {
+  PENDING = "PENDING",
+  ESCROWED = "ESCROWED",
+  RELEASED = "RELEASED",
+  REFUNDED = "REFUNDED"
 }

@@ -17,7 +17,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: { payload: { user: IUser; accessToken: string; refreshToken: string } }) => {
       const { user, accessToken, refreshToken } = action.payload;
 
       state.user = user;
@@ -32,6 +32,9 @@ const authSlice = createSlice({
         path: "/",
         expires: 30,
       });
+
+
+
     },
 
     logout: (state) => {

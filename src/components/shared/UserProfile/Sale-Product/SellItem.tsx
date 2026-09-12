@@ -109,7 +109,8 @@ function SellItem({ order }: { order: IOrder }) {
             {/* Left: customer + items */}
             <div className="order-2 md:order-1 flex-1">
 
-                <div className="text-sm">
+                <div className="">
+                    <p className="text-gray-900 text-sm font-medium">{order?.orderNumber}</p>
                     <p className="text-primary-black text-base font-medium">USD ${order?.itemsTotal.toFixed(2)}</p>
                 </div>
 
@@ -249,14 +250,15 @@ function SellItem({ order }: { order: IOrder }) {
                     </Tooltip>
 
                     <div className="flex flex-row items-center gap-x-2">
-                        <Button
-                            size="icon"
-                            variant="ghost"
-                            className="cursor-pointer"
-                        // onClick={() => orderAction("Message drafted")}
-                        >
-                            <MessageCircle className="size-5 text-muted-foreground" />
-                        </Button>
+                        <Link href={`/inbox/${order?.buyer?.userName}`} className="cursor-pointer">
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                className="cursor-pointer"
+                            >
+                                <MessageCircle className="size-5 text-muted-foreground" />
+                            </Button>
+                        </Link>
 
                         {order?.status === OrderStatus.CANCELLED && <SellActions order={order} />}
                     </div>

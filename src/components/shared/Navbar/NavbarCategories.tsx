@@ -280,7 +280,7 @@ export default function MegaNavigation() {
                 <Link
                   href={categoryHref(activeRoot.id)}
                   onClick={closeMenus}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-base font-semibold text-gray-500 hover:text-black hover:bg-white transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2 text-base font-medium text-gray-500 hover:text-black hover:bg-white transition-colors"
                 >
                   <Grid3X3 className="h-4 w-4" />
                   <span>All</span>
@@ -292,11 +292,17 @@ export default function MegaNavigation() {
                       hoveredL2Id === l2.id ||
                       (!hoveredL2Id && activeL2?.id === l2.id);
                     const isLeaf = l2.children.length === 0;
+
                     const className = cn(
-                      "flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-base",
+                      "flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-base shadow-none rounded-none",
                       isActive
-                        ? "bg-white shadow-sm text-black font-semibold"
+                        ? "text-black font-medium"
                         : "text-gray-600 hover:bg-white hover:text-black"
+                    );
+
+                    const iconClassName = cn(
+                      "h-3.5 w-3.5 flex-shrink-0 opacity-50",
+                      isActive && "opacity-100"
                     );
 
                     if (isLeaf) {
@@ -320,7 +326,7 @@ export default function MegaNavigation() {
                         className={className}
                       >
                         <span>{l2.name}</span>
-                        <ChevronRight className="h-3.5 w-3.5 flex-shrink-0 opacity-50" />
+                        <ChevronRight className={iconClassName} />
                       </div>
                     );
                   })}

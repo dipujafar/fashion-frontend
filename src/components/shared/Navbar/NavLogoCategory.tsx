@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Container from "../Container";
 import logo from "@/assets/images/common-image/logo.png";
@@ -6,12 +7,25 @@ import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
 import { Search } from "lucide-react";
 import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { Button } from "@/components/ui/button";
+import { UserRole } from "@/types";
+import { CharityDonationFormDialog } from "../Modal/Charity/CharityDonationFormDialog";
 
 
 const NavLogoCategory = () => {
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const isCharity = user?.auth?.role === UserRole.CHARITY_SHOP || user?.auth?.role === UserRole.CHARITABLE_ORGANIZATION;
+
+  const isCharityOrg = user?.auth?.role === UserRole.CHARITABLE_ORGANIZATION;
+
   return (
     <div className="bg-primary-white">
-      <Container className="flex flex-row-reverse md:flex-row  justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16  py-4">
+      <Container className="flex flex-row-reverse md:flex-row justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16  py-4">
+
         {/* ======= Small Screen view ========== */}
         <div className="flex items-center gap-x-2">
           <div className="md:hidden ">
@@ -19,24 +33,7 @@ const NavLogoCategory = () => {
           </div>
           <SmallDeviceView />
         </div>
-        {/* ======= category ========== */}
-        {/* <div className="md:flex lg:gap-x-6 gap-x-1.5 hidden ">
-          {category.map((item) => (
-            <div key={item.id} className="relative group">
-              <Link
-                href={item.href}
-                className="uppercase group-hover:text-primary-black font-medium text-sm lg:text-base "
-              >
-                {item.label}
-              </Link>
-              <span
-                className={cn(
-                  "absolute left-0 bottom-0 h-[2px] w-full bg-black transform scale-x-0 transition-transform duration-700 ease-in-out group-hover:scale-x-100 origin-left"
-                )}
-              ></span>
-            </div>
-          ))}
-        </div> */}
+
         {/* ======= logo ========== */}
         <div className="flex justify-center items-center ">
           <Link href={"/"}>
@@ -44,16 +41,56 @@ const NavLogoCategory = () => {
           </Link>
         </div>
 
-        <div className="relative hidden md:block flex-1">
+        <div className="relative hidden lg:block flex-1">
           <GlobalItemAndMemberSearch />
-          <div className="absolute   top-2 right-1.5">
-            <Search size={20} color="#9E9E9E" />
-          </div>
         </div>
+
         {/* ======= search and nav icon  ========== */}
-        <div className="md:block hidden ">
-          <SearchAndNavIcon></SearchAndNavIcon>
-        </div>
+        {user ? <div className="md:block hidden ">
+          <div className="flex flex-row gap-x-4 items-center">
+
+            {!isCharity && <CharityDonationFormDialog>
+              <Button variant={"default"} className="rounded-none cursor-pointer bg-green-800 hover:bg-green-900 text-white">
+                Donate Now
+              </Button>
+            </CharityDonationFormDialog>}
+
+            {!isCharityOrg && <Link href={"/sell"}>
+              <Button variant={"default"} className="rounded-none cursor-pointer">
+                Sell An Item
+              </Button>
+            </Link>}
+            
+            <SearchAndNavIcon></SearchAndNavIcon>
+          </div>
+        </div> : <div className="flex-row gap-x-4 items-center hidden md:flex">
+
+          {!isCharity && <CharityDonationFormDialog>
+            <Button variant={"default"} className="rounded-none cursor-pointer bg-green-800 hover:bg-green-900 text-white">
+              Donate Now
+            </Button>
+          </CharityDonationFormDialog>}
+
+          <Link href={"/sell"}>
+            <Button variant={"default"} className="rounded-none cursor-pointer">
+              Sell An Item
+            </Button>
+          </Link>
+
+          <Link href={"/sign-in"}>
+            <p className="font-medium">
+              Sign In
+            </p>
+          </Link>
+
+          <Link href={"/sign-up"}>
+            <p className="font-medium">Sign Up</p>
+          </Link>
+
+        </div>}
+
+
+
       </Container>
     </div>
   );

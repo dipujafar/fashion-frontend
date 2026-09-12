@@ -28,7 +28,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
 
     return <>
         {
-            <div className="space-y-5">
+            <div className="space-y-5 shadow">
 
                 <div className="flex flex-col lg:flex-row items-center bg-white p-5 shadow justify-start gap-3">
 
@@ -47,7 +47,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                     href={`/member/${cartGroup?.seller?.userName}`}
                                     className="flex items-center cursor-pointer"
                                 >
-                                    <p className="font-bold text-lg leading-4">{cartGroup?.seller?.userName}</p>
+                                    <p className="font-semibold text-lg leading-4">{cartGroup?.seller?.userName}</p>
                                 </Link>
                             </div>
 
@@ -69,7 +69,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                                     href={`/shop/${item?.product?.id}`}
                                                     className="space-y-1"
                                                 >
-                                                    <p className="text-lg line-clamp-1 text-gray-700">{item?.product?.title}</p>
+                                                    <p className="text-base line-clamp-1 text-gray-700">{item?.product?.title}</p>
                                                     <div className='flex flex-row items-center gap-x-2'>
                                                         <p className="text-lg font-bold">${item?.product?.finalPrice?.toFixed(2)}</p>
                                                         {item?.extraDonation > 0 && (
@@ -95,16 +95,6 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                 </div>
             </div>
         }
-
-        {/* {cart?.length <= 0 && <div className="py-8">
-            <Image src={"/empty-cart.png"} alt="empty-cart" className="h-28 w-auto mx-auto" height={500} width={500} />
-            <p className="text-center text-gray-500">No items in cart</p>
-            <center>
-                <Link href={"/shop"}>
-                    <Button variant={"default"} className="mt-2 mx-auto text-center rounded-none py-5 border-2 cursor-pointer font-semibold">Browse</Button>
-                </Link>
-            </center>
-        </div>} */}
 
     </>
 

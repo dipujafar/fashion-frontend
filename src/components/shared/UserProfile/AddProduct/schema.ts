@@ -109,7 +109,7 @@ export const productFormDefaultValues: ProductFormValues = {
   // deliveryPolicy: "",
   // shippingDelivery: "",
   charities: [],
-  donation_percent: "5",
+  donation_percent: "",
 
   hight_cm: "",
   length_cm: "",

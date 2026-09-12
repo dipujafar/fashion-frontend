@@ -24,7 +24,7 @@ export default function WishListDropDown() {
       </MenubarTrigger>
       <MenubarContent className="rounded-none w-xs">
 
-        <div className="border-b border-gray-200 py-2 px-3">
+        <div className="border-b border-gray-200 py-2 px-3 sticky top-0 bg-white z-10">
           <p className="text-base font-medium text-center">Favourites</p>
         </div>
 

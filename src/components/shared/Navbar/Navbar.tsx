@@ -6,16 +6,16 @@ import NavbarCategories from "./NavbarCategories";
 
 const Navbar = () => {
   return (
-    <div>
+    <>
       <NavLogoCategory/>
-      <Container className="md:hidden px-0">
+      <Container className="lg:hidden px-0">
         <GlobalItemAndMemberSearch/>
       </Container>
       {/* <div className="hidden md:block">
         <NavLinksSection></NavLinksSection>
       </div> */}
       <NavbarCategories />
-    </div>
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import ConditionSelect from '@/app/(public)/shop/_components/ConditionSelect';
 import { SellerProfileProductSorting } from '@/components/shared/CategoryFilter/SellerProfileProductSorting';
 import { SmallDeviceFilter } from '@/app/(public)/shop/_components/SmallDeviceFilter';
 import SelectedAttributes from '@/app/(public)/shop/_components/SelectedAttributes';
+import FilterSold from '@/app/(public)/shop/_components/FilterSold';
 
 async function SellerProducts({ params, searchParams }: { params: Promise<{ username: string }>, searchParams: Promise<{ [key: string]: string | undefined }> }) {
 
@@ -45,6 +46,8 @@ async function SellerProducts({ params, searchParams }: { params: Promise<{ user
             <ColorSelect />
 
             <ConditionSelect />
+
+            <FilterSold />
           </div>
 
           <SellerProfileProductSorting />

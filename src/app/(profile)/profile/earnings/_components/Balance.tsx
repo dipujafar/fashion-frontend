@@ -71,7 +71,7 @@ const Account = () => {
                 </>}
             </div>
             {isLoading ? <Skeleton className="h-2 w-28 rounded-md mt-3 bg-zinc-700" /> : isSuccess && data?.data?.account_last_num && <p className="mt-4 text-xs text-primary-foreground/60">
-                Payout to Chase Checking <span className="text-primary-foreground">{data?.data?.account_last_num}</span>
+                Payout to Chase Checking <span className="text-primary-foreground">**** {data?.data?.account_last_num}</span>
             </p>}
         </>
     )

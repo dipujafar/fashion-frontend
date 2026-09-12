@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${figtree.className} antialiased`}>
         <Providers>
-          <TopInfo></TopInfo>
+          {/* <TopInfo></TopInfo> */}
           <div className="sticky top-0 z-50 ">
             <Navbar></Navbar>
           </div>

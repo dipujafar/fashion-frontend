@@ -180,7 +180,7 @@ function MyProfile({ user }: { user: IUser }) {
                                                 <Input
                                                     {...field}
                                                     disabled
-                                                    className="border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4 disabled:text-black"
+                                                    className="border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4 "
                                                 />
                                             </FormControl>
                                             <FormMessage />

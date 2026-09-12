@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
 import { useSocialSignupMutation } from '@/redux/api/authApi';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/redux/hooks';
-import { jwtDecode } from 'jwt-decode';
 import { setUser } from '@/redux/features/authSlice';
 
 const formSchema = z.object({
@@ -60,10 +59,10 @@ function SocailloginFinish({ socialLoginToken, role, isCharity = false }: { soci
 
     try {
       const res = await createAccount({ ...data, role: role, idToken: socialLoginToken?.token }).unwrap();
-      if (res?.data?.user?.role) {
+      if (res?.data?.user?.auth?.role) {
         dispatch(
           setUser({
-            user: jwtDecode(res?.data?.accessToken),
+            user: res?.data?.user,
             accessToken: res?.data?.accessToken,
             refreshToken: res?.data?.refreshToken
           })

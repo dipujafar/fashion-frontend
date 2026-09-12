@@ -30,8 +30,13 @@ const ProductCard = ({
               height={1200}
               placeholder="blur"
               blurDataURL={defaultImg?.placeholderImg}
-              className="h-52 md:h-60 lg:h-64 object-cover origin-center rounded cursor-pointer"
+              className="h-52 md:h-60 lg:h-60 object-cover origin-center rounded cursor-pointer"
             ></Image>
+
+            {data?.stock <= 0 && <div className="absolute h-full w-full top-0 left-0 flex flex-row justify-center items-center">
+              <span className="w-full bg-primary-black/40 text-white py-0.5 text-sm text-center">SOLD OUT</span>
+            </div>}
+
           </Link>
 
           {/* ===================== favorite button ================ */}

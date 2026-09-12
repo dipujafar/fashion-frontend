@@ -10,29 +10,8 @@ import {
   Download,
   type LucideIcon,
 } from "lucide-react";
-
-/* ============================================================
-   In a real project, split each component below into its own
-   file, matching this suggested structure:
-
-     tabs/
-       EarningsPayoutsTabs.tsx   (root — this default export)
-       EarningsView.tsx          (level 2: seller earning / donation)
-       DonationView.tsx          (level 3: sell / direct donation)
-       PayoutsPanel.tsx
-       SellerEarningPanel.tsx
-       SellDonationPanel.tsx
-       DirectDonationPanel.tsx
-       types.ts                  (shared types below)
-
-   They're combined here only because this preview environment
-   renders a single file. Each component is self-contained and
-   can be lifted out as-is.
-   ============================================================ */
-
-/* ---------------------------------------------------------------
-   Shared types
---------------------------------------------------------------- */
+import { SellerEarningPanel } from "./Earnings";
+import SellDonationPanel, { DirectDonationPanel } from "./Donation";
 
 interface TabItem {
   key: string;
@@ -46,8 +25,7 @@ interface RowData {
   right: number;
 }
 
-const money = (n: number): string =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+const money = (n: number): string => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
 /* ---------------------------------------------------------------
    Shared row — used by every leaf panel's list
@@ -82,46 +60,6 @@ function PanelHeading({ children, action }: PanelHeadingProps) {
 }
 
 /* ---------------------------------------------------------------
-   Level 3 content — leaf panels under Donation
---------------------------------------------------------------- */
-
-function SellDonationPanel() {
-  const rows: RowData[] = [
-    { left: "Handwoven basket set", mid: "Sold Sep 8 · 10% donated", right: 4.5 },
-    { left: "Ceramic mug, glazed blue", mid: "Sold Sep 6 · 10% donated", right: 2.1 },
-    { left: "Linen tote bag", mid: "Sold Sep 3 · 10% donated", right: 3.8 },
-  ];
-  return (
-    <div>
-      <PanelHeading>Recent sale-linked donations</PanelHeading>
-      <div>
-        {rows.map((r, i) => (
-          <Row key={i} {...r} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DirectDonationPanel() {
-  const rows: RowData[] = [
-    { left: "Amara K.", mid: "One-time · Sep 9", right: 25 },
-    { left: "Jordan P.", mid: "Monthly supporter · Sep 5", right: 10 },
-    { left: "Anonymous", mid: "One-time · Sep 2", right: 50 },
-  ];
-  return (
-    <div>
-      <PanelHeading>Recent supporters</PanelHeading>
-      <div>
-        {rows.map((r, i) => (
-          <Row key={i} {...r} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------------------------------------------------------
    Level 3 tab bar — Sell donation / Direct donation
    Indented and connected under "Donation" to read as a sub-branch.
 --------------------------------------------------------------- */
@@ -145,11 +83,10 @@ function DonationView() {
             <button
               key={key}
               onClick={() => setActive(key as DonationTabKey)}
-              className={`flex items-center gap-1.5 border-b-2 pb-2 cursor-pointer px-1 text-sm transition-colors ${
-                isActive
+              className={`flex items-center gap-1.5 border-b-2 pb-2 cursor-pointer px-1 text-sm transition-colors ${isActive
                   ? "border-black font-medium text-black"
                   : "border-transparent text-black/40 hover:text-black/70"
-              }`}
+                }`}
             >
               <Icon size={15} strokeWidth={2} />
               {label}
@@ -162,38 +99,9 @@ function DonationView() {
   );
 }
 
-/* ---------------------------------------------------------------
-   Level 2 content — Seller earning panel
---------------------------------------------------------------- */
-
-function SellerEarningPanel() {
-  const rows: RowData[] = [
-    { left: "Order #10231", mid: "Handwoven basket set", right: 42.0 },
-    { left: "Order #10229", mid: "Ceramic mug, glazed blue", right: 18.5 },
-    { left: "Order #10224", mid: "Linen tote bag", right: 34.0 },
-  ];
-  return (
-    <div>
-      <PanelHeading>Recent sales</PanelHeading>
-      <div>
-        {rows.map((r, i) => (
-          <Row key={i} {...r} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------------------------------------------------------
-   Level 2 tab bar — Seller earning / Donation
-   Sits inside Earnings, styled as an outlined segmented control.
-   When showDonation is false there's nothing to switch between,
-   so it skips the tab bar and goes straight to seller earnings.
---------------------------------------------------------------- */
-
 type EarningsTabKey = "seller" | "donation";
 
-function EarningsView({ showPanel }: {showPanel?: EarningsTabKey}) {
+function EarningsView({ showPanel }: { showPanel?: EarningsTabKey }) {
   const [active, setActive] = useState<EarningsTabKey>(showPanel ?? "seller");
 
   const tabs: TabItem[] = [
@@ -210,11 +118,10 @@ function EarningsView({ showPanel }: {showPanel?: EarningsTabKey}) {
             <button
               key={key}
               onClick={() => setActive(key as EarningsTabKey)}
-              className={`flex items-center gap-1.5 rounded-full px-3 cursor-pointer py-1.5 text-sm transition-colors border border-black/15 ${
-                isActive
+              className={`flex items-center gap-1.5 rounded-full px-3 cursor-pointer py-1.5 text-sm transition-colors border border-black/15 ${isActive
                   ? "bg-black font-medium text-white border-black"
                   : "text-black/50 hover:text-black"
-              }`}
+                }`}
             >
               <Icon size={15} strokeWidth={2} />
               {label}
@@ -263,7 +170,7 @@ function PayoutsPanel() {
 
 type RootTabKey = "earnings" | "payouts";
 
-export default function EarningsPayoutsTabs({ showPanel }: {showPanel?: EarningsTabKey}) {
+export default function EarningsPayoutsTabs({ showPanel }: { showPanel?: EarningsTabKey }) {
   const [active, setActive] = useState<RootTabKey>("earnings");
 
   const tabs: TabItem[] = [
@@ -284,11 +191,10 @@ export default function EarningsPayoutsTabs({ showPanel }: {showPanel?: Earnings
             <button
               key={key}
               onClick={() => setActive(key as RootTabKey)}
-              className={`flex items-center gap-1.5 border-b-2 pb-3 px-1 text-base cursor-pointer transition-colors ${
-                isActive
+              className={`flex items-center gap-1.5 border-b-2 pb-3 px-1 text-base cursor-pointer transition-colors ${isActive
                   ? "border-black font-medium text-black"
                   : "border-transparent text-black/40 hover:text-black/70"
-              }`}
+                }`}
             >
               <Icon size={17} strokeWidth={2} />
               {label}

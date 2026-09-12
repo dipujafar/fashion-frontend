@@ -27,6 +27,7 @@ import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFo
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/authSlice";
 import { useSelector } from "react-redux";
+import { baseApi } from "@/redux/api/baseApi";
 
 export default function ProfileIcon() {
 
@@ -37,6 +38,7 @@ export default function ProfileIcon() {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(baseApi.util.resetApiState())
     router.refresh();
   };
 

@@ -40,7 +40,7 @@ function ProcessOrder({ cartGroupId }: { cartGroupId: string }) {
             <Button
                 size="sm"
                 onClick={handleProcessOrder}
-                disabled={!shippingcart?.serviceId}
+                disabled={!shippingcart?.serviceId || isLoading}
                 className="flex-1 py-6 cursor-pointer rounded-none w-full font-semibold text-lg bg-green-600 hover:bg-green-500 duration-200 transition-colors">
 
                 {isLoading ? <span className="loader" /> : "Proceed to Payment"}

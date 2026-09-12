@@ -1,5 +1,5 @@
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
-import GetOrdersBySeller from "@/lib/services/Orders"
+import GetOrdersBySeller, { GetOrdersByBuyer } from "@/lib/services/Orders"
 import { IMeta, IOrder } from "@/types"
 import Empty from "@/components/ui/empty"
 import PurchaseItem from "./PurchaseItem";
@@ -33,7 +33,7 @@ async function PurchaseProductContainer({ ssp }: { ssp: { [key: string]: string 
         query.status = status
     }
 
-    const ordersResponse = await GetOrdersBySeller({ query }) as { data: { data: IOrder[], meta: IMeta } };
+    const ordersResponse = await GetOrdersByBuyer({ query }) as { data: { data: IOrder[], meta: IMeta } };
 
     const orders = ordersResponse?.data?.data || [];
 

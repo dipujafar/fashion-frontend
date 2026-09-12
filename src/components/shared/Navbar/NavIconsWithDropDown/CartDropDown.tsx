@@ -40,7 +40,7 @@ export default function CartDropDown() {
       </MenubarTrigger>
       <MenubarContent className="w-xs rounded-none">
 
-        <div className="border-b border-gray-200">
+        <div className="border-b border-gray-200 sticky top-0 bg-white z-10">
           <p className="text-base font-medium px-3 pt-2 pb-3 text-center">Shopping Cart</p>
         </div>
 
