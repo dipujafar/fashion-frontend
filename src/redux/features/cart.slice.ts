@@ -8,6 +8,9 @@ export interface Shipment {
 export interface CartGroupItem {
   shipment: Shipment | null;
   cartGroupId: string;
+  treeCount : number;
+  treeCostTotal : number;
+  allowedAuthentication : boolean;
 }
 
 export interface CartState {
@@ -30,7 +33,33 @@ const cartSlice = createSlice({
       if (existingCart) {
         existingCart.shipment = shipment;
       } else {
-        state.carts.push({ cartGroupId, shipment });
+        state.carts.push({ cartGroupId, shipment, treeCount: 0, treeCostTotal: 0, allowedAuthentication: false});
+      }
+    },
+
+    addTreeCountToCart: (state, action: { payload: { cartGroupId: string; treeCount: number; treeCostTotal: number } }) => {
+
+      const { cartGroupId, treeCount, treeCostTotal } = action.payload;
+
+      const existingCart = state.carts.find(cart => cart.cartGroupId === cartGroupId);
+
+      if (existingCart) {
+        existingCart.treeCount = treeCount;
+        existingCart.treeCostTotal = treeCostTotal;
+      } else {
+        state.carts.push({ cartGroupId, shipment: null, treeCount, treeCostTotal, allowedAuthentication: false });
+      }
+    },
+
+    toggleAuthenticationToCart: (state, action: { payload: { cartGroupId: string; allowedAuthentication: boolean } }) => {
+
+      const { cartGroupId, allowedAuthentication } = action.payload;
+
+      const existingCart = state.carts.find(cart => cart.cartGroupId === cartGroupId);
+      if (existingCart) {
+        existingCart.allowedAuthentication = allowedAuthentication;
+      }else {
+        state.carts.push({ cartGroupId, shipment: null, treeCount: 0, treeCostTotal: 0, allowedAuthentication });
       }
     },
 
@@ -43,6 +72,7 @@ const cartSlice = createSlice({
 
 
 
-export const { clearCart, addShipmentToCart } = cartSlice.actions;
+
+export const { clearCart, addShipmentToCart, addTreeCountToCart, toggleAuthenticationToCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

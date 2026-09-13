@@ -10,11 +10,14 @@ import { RootState } from '@/redux/store';
 
 function OrderSummeryTotal({ summery, cartGroupId }: { summery: OrderSummeryType, cartGroupId: string }) {
 
-    const shippingCart = useSelector((state: RootState) => state?.cart?.carts);
+    const shippingCart = useSelector((state: RootState) => state?.cart?.carts).find((cart) => cart?.cartGroupId === cartGroupId);
 
-    const shippingCost = shippingCart?.find((cart) => cart?.cartGroupId === cartGroupId)?.shipment?.shipment_charge_total || 0;
+    const treeGiftCost = shippingCart?.treeCostTotal || 0;
+    const authenticationCost = shippingCart?.allowedAuthentication ? 15 : 0;
 
-    const totalCost = summery?.total + shippingCost;
+    const shippingCost = shippingCart?.shipment?.shipment_charge_total || 0;
+
+    const totalCost = summery?.subTotal + shippingCost + treeGiftCost + authenticationCost;
 
     return (
         <CardContent>
@@ -66,11 +69,11 @@ function OrderSummeryTotal({ summery, cartGroupId }: { summery: OrderSummeryType
                 </div>
                 <div className="flex justify-between ">
                     <p className="text-gray-700">Verify & Authentication of Goods:</p>
-                    <p className="font-medium">${summery?.authenticationCost?.toFixed(2)}</p>
+                    <p className="font-medium">${authenticationCost?.toFixed(2)}</p>
                 </div>
                 <div className="flex justify-between ">
                     <p className="text-gray-700">Gift Trees:</p>
-                    <p className="font-medium">${summery?.treeGiftCost?.toFixed(2)}</p>
+                    <p className="font-medium">${treeGiftCost?.toFixed(2)}</p>
                 </div>
 
                 {shippingCost > 0 && <div className="flex justify-between ">

@@ -12,16 +12,23 @@ function ProcessOrder({ cartGroupId }: { cartGroupId: string }) {
 
     const router = useRouter();
 
-    const shippingcart = useSelector((state: RootState) => state.cart.carts?.find((cart) => cart?.cartGroupId === cartGroupId)?.shipment);
+    const shippingcart = useSelector((state: RootState) => state.cart.carts?.find((cart) => cart?.cartGroupId === cartGroupId));
 
     const handleProcessOrder = async () => {
-        if (!shippingcart?.serviceId) {
+        if (!shippingcart || !shippingcart?.shipment) {
             setError("Please select a shipping service before proceeding.");
             return;
         }
         setIsLoading(true);
         try {
-            const res = await makeOrder({ payload: { cartGroupId, shipmentServiceId: shippingcart?.serviceId } });
+            const res = await makeOrder({
+                payload: {
+                    cartGroupId,
+                    shipmentServiceId: shippingcart?.shipment?.serviceId,
+                    allowedAuthentication: shippingcart?.allowedAuthentication,
+                    treeGiftCount: shippingcart?.treeCount
+                }
+            });
             router.replace(res?.data);
         } catch (err: any) {
             setError(err?.message || "Something went wrong, try again");
@@ -40,7 +47,7 @@ function ProcessOrder({ cartGroupId }: { cartGroupId: string }) {
             <Button
                 size="sm"
                 onClick={handleProcessOrder}
-                disabled={!shippingcart?.serviceId || isLoading}
+                disabled={!shippingcart?.shipment?.serviceId || isLoading}
                 className="flex-1 py-6 cursor-pointer rounded-none w-full font-semibold text-lg bg-green-600 hover:bg-green-500 duration-200 transition-colors">
 
                 {isLoading ? <span className="loader" /> : "Proceed to Payment"}

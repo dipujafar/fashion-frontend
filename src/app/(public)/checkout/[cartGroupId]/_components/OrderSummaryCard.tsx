@@ -40,8 +40,6 @@ const SummaryOverview = async ({ summeryPromise, cartGroupId }: { summeryPromise
 
   const summery = data?.data;
 
-  const isLoading = true;
-
   return (
     <>
       <Card className=" hover:border hover:border-primary-color/50 duration-300 text-black h-fit rounded-none">
@@ -53,9 +51,9 @@ const SummaryOverview = async ({ summeryPromise, cartGroupId }: { summeryPromise
         <OrderSummeryTotal summery={summery} cartGroupId={cartGroupId} />
       </Card>
 
-      <AuthenticationCard checked={!!summery?.authenticationCost} cartGroupId={cartGroupId} />
+      <AuthenticationCard cartGroupId={cartGroupId} />
 
-      <DonationCard cartGroupId={cartGroupId} defaultCostAmount={summery?.treeGiftCost || 0} />
+      <DonationCard cartGroupId={cartGroupId} />
 
       <ProcessOrder cartGroupId={cartGroupId} />
 

@@ -7,28 +7,20 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch"
-import { updateAuthenticationCostCheckout } from "@/lib/Actions/Cart.action";
+import { toggleAuthenticationToCart } from "@/redux/features/cart.slice";
+import { RootState } from "@/redux/store";
 import { ShieldCheck } from "lucide-react";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
 import React from "react";
-import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
 
-function AuthenticationCard({ checked, cartGroupId }: { checked?: boolean; cartGroupId: string }) {
+function AuthenticationCard({ cartGroupId }: { cartGroupId: string }) {
+
+    const carts = useSelector((state: RootState) => state.cart);
+    const dispatch = useDispatch();
+    const selectedcart = carts?.carts?.find((cart) => cart?.cartGroupId === cartGroupId);
 
     const handleToggle = async (checked: boolean) => {
-        try {
-            const res = await updateAuthenticationCostCheckout({ allowAuthentication: checked, cartGroupId });
-            if (res?.error) {
-                toast.error(res?.error || "Something went wrong, try again");
-            }
-        }
-        catch (error: any) {
-            if (isRedirectError(error)) {
-                throw error; // Let Next.js handle the redirect
-            }
-            toast.error(error?.data?.message || "Something went wrong, try again");
-        }
-
+        dispatch(toggleAuthenticationToCart({ cartGroupId, allowedAuthentication: checked }));
     }
 
     return (
@@ -52,7 +44,7 @@ function AuthenticationCard({ checked, cartGroupId }: { checked?: boolean; cartG
                         id="authentication"
                         // defaultChecked
                         className="h-6 w-12 [&>span]:h-5 [&>span]:w-5 [&>span]:data-[state=checked]:translate-x-[25px]"
-                        defaultChecked={checked}
+                        defaultChecked={selectedcart?.allowedAuthentication || false}
                         onCheckedChange={handleToggle}
                     />
                 </div>

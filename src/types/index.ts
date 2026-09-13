@@ -366,7 +366,14 @@ export interface ICourierServiceRates {
   courier_service: { name: string, logo: string, id: string }
 }[]
 
-export type OrderSummeryType = { itemTotal: number, otherTotal: number, total: number, serviceFeeCost: number, treeGiftCost: number, authenticationCost: number, bundleDiscountPercent: number, bundleDiscountAmount: number, totalExtraDonation: number }
+export type OrderSummeryType = {
+  itemTotal: number,
+  subTotal: number,
+  serviceFeeCost: number,
+  bundleDiscountPercent: number,
+  bundleDiscountAmount: number,
+  totalExtraDonation: number
+}
 
 export interface IOrder {
   id: string,

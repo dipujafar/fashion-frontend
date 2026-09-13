@@ -4,139 +4,99 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Gift, RotateCcw, X } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { updateTreeGiftToCheckout } from "@/lib/Actions/Cart.action";
-import { toast } from "sonner";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { addTreeCountToCart } from "@/redux/features/cart.slice";
 
-export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartGroupId: string, defaultCostAmount: number }) {
-  const [selectedAmount, setSelectedAmount] = useState(5);
+const PRESET_AMOUNTS = [1, 5, 20, 50];
+const PRICE_PER_TREE = 4;
+const DEFAULT_PRESET = 5;
+
+export default function DonationCard({ cartGroupId }: { cartGroupId: string }) {
+  const dispatch = useDispatch();
+  const selectedcart = useSelector((state: RootState) =>
+    state.cart?.carts?.find((cart) => cart?.cartGroupId === cartGroupId)
+  );
+
+  const defaultTreeCount = selectedcart?.treeCount || 0;
+  const defaultTreeCostTotal = selectedcart?.treeCostTotal || 0;
+  const isGifted = defaultTreeCostTotal > 0;
+  const isPreset = PRESET_AMOUNTS.includes(defaultTreeCount);
+
+  const [selectedAmount, setSelectedAmount] = useState(DEFAULT_PRESET);
   const [customAmount, setCustomAmount] = useState("");
-  const [isCustomSelected, setIsCustomSelected] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const presetAmounts = [1, 5, 20, 50];
-  const pricePerTree = 4;
-  const pathName = usePathname();
-
-  const isGifted = defaultCostAmount > 0;
-
+  // Derived, not stored: custom mode is simply "there's text in the custom field"
+  const isCustomSelected = customAmount !== "";
+  const parsedCustom = parseInt(customAmount, 10);
   const treeCount = isCustomSelected
-    ? (customAmount === "" ? 0 : parseInt(customAmount))
+    ? (Number.isNaN(parsedCustom) ? 0 : parsedCustom)
     : selectedAmount;
-  const totalPrice = treeCount * pricePerTree;
+  const totalPrice = treeCount * PRICE_PER_TREE;
 
   const handlePresetClick = (amount: number) => {
     setSelectedAmount(amount);
-    setIsCustomSelected(false);
     setCustomAmount("");
   };
 
   const handleCustomAmountChange = (value: string) => {
     setCustomAmount(value);
-
-    if (value === "") {
-      setIsCustomSelected(false);
-      setSelectedAmount(5);
-    } else {
-      setIsCustomSelected(true);
-    }
+    if (value === "") setSelectedAmount(DEFAULT_PRESET);
   };
 
   const handleReset = () => {
     setCustomAmount("");
-    setIsCustomSelected(false);
-    setSelectedAmount(5);
+    setSelectedAmount(DEFAULT_PRESET);
   };
 
-  const handleGiftTrees = async () => {
-    if (treeCount < 0) return;
-
-    setIsLoading(true);
-
-    try {
-      const res = await updateTreeGiftToCheckout({ treeGiftCount: treeCount, cartGroupId });
-      if (res?.error) {
-        toast.error(res?.error || "Something went wrong, try again");
-      }
-    }
-    catch (error: any) {
-      if (isRedirectError(error)) {
-        throw error; // Let Next.js handle the redirect
-      }
-      toast.error(error?.data?.message || "Something went wrong, try again");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleGiftTrees = () => {
+    if (treeCount <= 0) return;
+    dispatch(addTreeCountToCart({ cartGroupId, treeCount, treeCostTotal: totalPrice }));
   };
 
-  const handleClearTrees = async () => {
-    setIsLoading(true);
-
-    try {
-      const res = await updateTreeGiftToCheckout({ treeGiftCount: 0, cartGroupId });
-      if (res?.error) {
-        toast.error(res?.error || "Something went wrong, try again");
-      }
-    }
-    catch (error: any) {
-      if (isRedirectError(error)) {
-        throw error; // Let Next.js handle the redirect
-      }
-      toast.error(error?.data?.message || "Something went wrong, try again");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleClearTrees = () => {
+    dispatch(addTreeCountToCart({ cartGroupId, treeCount: 0, treeCostTotal: 0 }));
     handleReset();
   };
 
-  const isPreset = presetAmounts.includes(defaultCostAmount);
-
   // sync state when gifted trees are loaded (e.g. on page refresh or re-render)
   useEffect(() => {
-    if (isGifted) {
-      if (isPreset) {
-        setSelectedAmount(defaultCostAmount);
-        setIsCustomSelected(false);
-        setCustomAmount("");
-      } else {
-        setCustomAmount(String(defaultCostAmount / 4));
-        setIsCustomSelected(true);
-      }
+    if (!isGifted) return;
+
+    if (isPreset) {
+      setSelectedAmount(defaultTreeCount);
+      setCustomAmount("");
+    } else {
+      setCustomAmount(String(defaultTreeCount));
     }
-  }, [defaultCostAmount]);
+  }, [defaultTreeCount, isGifted, isPreset]);
 
   return (
-    <div className={cn(pathName === `/shopping-cart/billing-address` && "hidden")}>
       <Card className="w-full rounded-none">
         <CardContent className="space-y-3">
-
           {/* Header */}
           <div>
             <h2 className="text-lg font-medium text-gray-900">
               Number of trees to be planted:
             </h2>
             {isGifted && (
-              <div className="flex items-center justify-between mt-1">
-                <p className="text-sm text-green-600">
-                  ✓ {Math.round(defaultCostAmount / 4)} trees gifted (${(defaultCostAmount).toFixed(2)})
-                </p>
-              </div>
+              <p className="text-sm text-green-600 mt-1">
+                ✓ {defaultTreeCount} trees gifted (${defaultTreeCostTotal.toFixed(2)})
+              </p>
             )}
           </div>
 
           {/* Preset Amount Buttons */}
           <div className="flex flex-row gap-2 flex-wrap">
-            {presetAmounts.map((amount) => (
+            {PRESET_AMOUNTS.map((amount) => (
               <Button
                 key={amount}
-                variant={"outline"}
-                className={`h-12 px-5 text-base font-medium cursor-pointer ${selectedAmount === amount && !isCustomSelected
-                  ? "border-2 border-primary-black bg-primary-black/10 text-primary-black"
-                  : ""
-                  }`}
+                variant="outline"
+                className={`h-12 px-5 text-base font-medium cursor-pointer ${
+                  selectedAmount === amount && !isCustomSelected
+                    ? "border-2 border-primary-black bg-primary-black/10 text-primary-black"
+                    : ""
+                }`}
                 onClick={() => handlePresetClick(amount)}
               >
                 {amount}
@@ -146,18 +106,16 @@ export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartG
 
           {/* Custom Tree Count */}
           <div className="space-y-2">
-            <h3 className="text-base font-medium text-gray-900">
-              Custom Tree
-            </h3>
+            <h3 className="text-base font-medium text-gray-900">Custom Tree</h3>
             <div className="relative">
               <Input
                 type="number"
-                step="any"
+                step="1"
+                min={0}
                 placeholder="Enter number of trees"
                 value={customAmount}
                 onChange={(e) => handleCustomAmountChange(e.target.value)}
                 className="h-10 pr-12 rounded-md focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-black text-base md:text-base py-5 border-gray-400"
-                min={0}
               />
               <Button
                 variant="ghost"
@@ -176,7 +134,7 @@ export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartG
               ${totalPrice.toFixed(2)} USD
             </p>
             <p className="text-sm text-gray-500">
-              {treeCount} tree{treeCount !== 1 ? "s" : ""} × ${pricePerTree}
+              {treeCount} tree{treeCount !== 1 ? "s" : ""} × ${PRICE_PER_TREE}
             </p>
           </div>
 
@@ -185,11 +143,11 @@ export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartG
             <Button
               size="sm"
               onClick={handleGiftTrees}
-              disabled={treeCount < 0}
+              disabled={treeCount <= 0}
               className="flex-1 py-5 bg-black text-white hover:bg-black/90 text-sm font-medium disabled:opacity-50 cursor-pointer rounded-none"
             >
               <Gift className="mr-2 h-5 w-5" />
-              {isLoading ? <span className="loader" /> : isGifted ? `UPDATE TREES GIFT` : "GIFT TREES"}
+              {isGifted ? "UPDATE TREES GIFT" : "GIFT TREES"}
             </Button>
 
             {isGifted && (
@@ -203,9 +161,8 @@ export default function DonationCard({ cartGroupId, defaultCostAmount }: { cartG
               </Button>
             )}
           </div>
-
         </CardContent>
       </Card>
-    </div>
+
   );
 }
