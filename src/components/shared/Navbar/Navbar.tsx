@@ -1,6 +1,5 @@
 import Container from "../Container";
 import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
-import NavLinksSection from "./NavLinksSection";
 import NavLogoCategory from "./NavLogoCategory";
 import NavbarCategories from "./NavbarCategories";
 
