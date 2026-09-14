@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  admin : 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admin-container
+    ports :
+      - '3000:3000'
+    env_file : .env
+    
