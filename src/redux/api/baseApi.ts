@@ -45,7 +45,7 @@ const baseQueryWithRefreshToken = async (
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    const res = await fetch(`${EnvConfig.baseUrl}/auth/refresh-token`, {
+    const res = await fetch(`${EnvConfig.baseUrl}/auth/refresh`, {
       method: "POST",
       credentials: "include",
     });
@@ -57,7 +57,8 @@ const baseQueryWithRefreshToken = async (
       api.dispatch(
         setUser({
           user,
-          token: data.data.accessToken,
+          accessToken: data.data.accessToken,
+          refreshToken: data.data.refreshToken,
         }),
       );
 

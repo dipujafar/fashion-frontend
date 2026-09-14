@@ -1,95 +1,82 @@
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
-import CommonButton from "@/components/ui/common-button";
 import CustomAvatar from "@/components/ui/custom-avatar";
 import { Rating } from "@/components/ui/rating";
-import { LocationIcon } from "@/icons";
-import { IUser } from "@/types";
 import { userRoleMapper } from "@/utils/userRoleMapper";
-import { userTagColor } from "@/utils/userTagColor";
-import { Check } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { IUserWithExtra } from "./ProductDetails/ProductDetails";
+import { Button } from "@/components/ui/button";
 
-const SellerDetails = ({ user }: { user: IUser }) => {
+const SellerDetails = ({ user, isMyProfile }: { user: IUserWithExtra; isMyProfile: boolean }) => {
+
   return (
     <div className=" max-w-lg">
-      <div className=" flex justify-between gap-x-2 items-center md:mb-3 mb-2 ">
-        <h4 className="uppercase underline text-primary-gray">
-          seller information
-        </h4>
-        <Link
-          href="/celebrity/profile-preview"
-          className="flex items-center gap-x-2 group cursor-pointer"
-        >
-          <p className="font-medium">VIEW DETAILS</p>
-          <AnimatedArrow size={18} />
-        </Link>
-      </div>
 
-      <div
-        style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.15)" }}
-        className="bg-primary-gray/10 lg:p-4 p-3 rounded-lg "
-      >
+      <hr className="mb-6" />
+      <div>
         <div className="space-y-2">
-          <div className="flex-between gap-x-2 ">
-            <Link
-              href="/celebrity/profile-preview"
-              className="flex items-center gap-x-2 group cursor-pointer"
-            >
-              <div className="relative size-12 rounded-full">
-                {/* <Image
-                  src={"/userProfile1.png"}
-                  alt="user_image"
-                  width={1200}
-                  height={1200}
-                  className="size-12 rounded-full  "
-                ></Image> */}
-                <CustomAvatar image={user?.picture?.url || null} name={user?.fname}></CustomAvatar>
-                <div
-                  className="rounded-full size-4 flex justify-center items-center absolute -top-1 right-1"
-                  style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }}>
-                  <Check size={16} color="#fff"></Check>
+          <div className="flex justify-between items-start gap-x-2 ">
+            <div className="flex gap-x-2">
+              <div className="flex flex-row gap-x-3">
+
+                <Link
+                  href={`/member/${user?.userName}`}
+                  className="cursor-pointer"
+                >
+                  <CustomAvatar image={user?.picture?.url || null} name={user?.userName} className="!size-14"></CustomAvatar>
+                </Link>
+
+                <div>
+                  <Link
+                    href={`/member/${user?.userName}`}
+                    className="flex items-center gap-x-2 group cursor-pointer"
+                  >
+                    <h5 className="font-semibold">{user?.userName}</h5>
+                  </Link>
+                  <Link
+                    href={`/member/${user?.userName}`}
+                    className="flex items-center gap-x-2 group cursor-pointer"
+                  >
+                    <p className="underline underline-offset-1 text-sm">{user?._count?.products} items for sale</p>
+                  </Link>
+
+                  <div className="flex items-center gap-x-1">
+                    <Rating rating={user?.avgRating} size={16}></Rating>
+                    <p className="text-primary-gray md:text-base text-sm">
+                      {user?.avgRating} Reviews
+                    </p>
+                  </div>
+
                 </div>
-              </div>
-            </Link>
 
-            <div
-              style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }}
-              className="px-3 rounded"
+              </div>
+            </div>
+
+            {/* <div
+              style={{ backgroundColor: userRoleMapper(user?.auth?.role)?.color }} className="px-2 rounded inline-block">
+              <h6 className="text-primary-white text-sm"> {userRoleMapper(user?.auth?.role)?.label}</h6>
+            </div> */}
+
+          </div>
+
+
+          <div className="flex flex-row gap-x-3 items-center">
+            <Link
+              href={`/member/${user?.userName}`}
+              className="cursor-pointer"
+            ><Button variant={"outline"} className="border border-gray-900 cursor-pointer py-4">Visit Shop</Button></Link>
+
+            {isMyProfile ? <></> : <Link
+              href={`/inbox/${user?.userName}`}
+              className="cursor-pointer"
             >
-              <h6 className="text-primary-white"> {userRoleMapper(user?.auth?.role)?.label}</h6>
-            </div>
+              <Button variant={"outline"} className="border border-gray-900 cursor-pointer py-4">Ask A Question</Button>
+            </Link>}
           </div>
 
-          <div className="flex-between gap-x-2">
-            <div>
-              <Link
-                href="/celebrity/profile-preview"
-                className="flex items-center gap-x-2 group cursor-pointer"
-              >
-                <h5 className="font-medium">{user?.fname}</h5>
-              </Link>
-              <div className="flex items-center gap-x-1">
-                <Rating rating={user?.avgRating} size={16}></Rating>
-                <p className="text-primary-gray md:text-base text-sm">
-                  ({user?.avgRating})
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-x-2 items-center">
-              <LocationIcon />
-              <h6>{user?.address || "N/A"}</h6>
-            </div>
-          </div>
-          <hr />
         </div>
 
-        <div className="lg:mt-4 mt-3 flex gap-x-2">
-          <CommonButton className="flex-1">Ask a Question</CommonButton>
-          <CommonButton className="flex-1 bg-primary-white text-black hover:bg-primary-black/10 ">
-            Follow seller
-          </CommonButton>
-        </div>
+        <hr className="mt-5" />
+
+
       </div>
     </div>
   );

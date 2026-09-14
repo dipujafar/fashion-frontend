@@ -28,7 +28,7 @@ export default function DisplayLargeDescriptionText({
             {isLong && (
               <button
                 onClick={() => setOpenAllText((prev) => !prev)}
-                className="text-black font-semibold underline ml-1 hover:opacity-75 transition-opacity"
+                className="text-black font-semibold underline ml-1 hover:opacity-75 transition-opacity cursor-pointer"
               >
                 {openAllText ? "Read Less" : "Read More"}
               </button>

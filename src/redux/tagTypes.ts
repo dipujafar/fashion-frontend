@@ -3,6 +3,15 @@ export const tagTypes = {
   product: "product",
   category: "category",
   favorite: "favorite",
+  user_billing: "user_billing",
+  orders: "orders",
+  notification: "notification",
+  brand: "brand",
+  size: "size",
+  cart: "cart",
+  folowings: "folowings",
+  folowers: "folowers",
+  review: "review",
 };
 
 export const tagTypesList = [
@@ -10,4 +19,13 @@ export const tagTypesList = [
   tagTypes.product,
   tagTypes.category,
   tagTypes.favorite,
+  tagTypes.user_billing,
+  tagTypes.orders,
+  tagTypes.notification,
+  tagTypes.brand,
+  tagTypes.size,
+  tagTypes.cart,
+  tagTypes.folowings,
+  tagTypes.folowers,
+  tagTypes.review,
 ];

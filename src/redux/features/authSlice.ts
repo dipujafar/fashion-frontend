@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IUser } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
-const initialState = {
+interface AuthState {
+  user: IUser | null;
+  token: string | null;
+}
+
+const initialState: AuthState = {
   user: null,
   token: null,
 };
@@ -11,7 +17,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: { payload: { user: IUser; accessToken: string; refreshToken: string } }) => {
       const { user, accessToken, refreshToken } = action.payload;
 
       state.user = user;
@@ -26,6 +32,9 @@ const authSlice = createSlice({
         path: "/",
         expires: 30,
       });
+
+
+
     },
 
     logout: (state) => {

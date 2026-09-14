@@ -101,7 +101,7 @@ export function GotCharityStoreDonation({
                               alt={donation.name}
                             />
                           ) : null}
-                          <AvatarFallback className="bg-gray-200 text-gray-600">
+                          <AvatarFallback>
                             {donation.name === "Anonymous"
                               ? "?"
                               : donation.name.charAt(0)}
@@ -145,7 +145,7 @@ export function GotCharityStoreDonation({
                             alt={donation.name}
                           />
                         ) : null}
-                        <AvatarFallback className="bg-gray-200 text-gray-600">
+                        <AvatarFallback >
                           {donation.name === "Anonymous"
                             ? "?"
                             : donation.name.charAt(0)}
@@ -191,7 +191,7 @@ export function GotCharityStoreDonation({
                               alt={donation.name}
                             />
                           ) : null}
-                          <AvatarFallback className="bg-gray-200 text-gray-600">
+                          <AvatarFallback >
                             {donation.name === "Anonymous"
                               ? "?"
                               : donation.name.charAt(0)}

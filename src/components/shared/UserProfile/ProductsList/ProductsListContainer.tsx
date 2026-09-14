@@ -1,52 +1,68 @@
-import PaginationSection from "@/components/shared/Pagination/PaginationSection";
-import AllUploadedProduct from "./AllUploadedProduct";
-import UserProfileProductFilter from "./UserProfileProductFilter";
+"use client"
+import { IMeta, IProduct } from "@/types";
+import ProductCard from "../../Cards/ProductCard";
+import { useRef } from "react";
+import useLazyLoad from "@/hooks/useLazyLoad";
+import Image from "next/image";
+import { useLazyProductsGetByMemberQuery } from "@/redux/api/productApi";
 
-const ProductsListContainer = () => {
+const ProductsListContainer = ({ query, userName, initialData, initialMeta }: { query: { [key: string]: string | undefined }, userName: string, initialData: IProduct[], initialMeta: IMeta }) => {
+
+  const [loadSellerProds, { isLoading }] = useLazyProductsGetByMemberQuery();
+  const triggerRef = useRef(null);
+
+  const loadNextPage = async (page: number) => {
+    try {
+
+      query.page = page.toString();
+
+      const res = await loadSellerProds({ params: query, userName }).unwrap();
+      const data = res?.data?.data || [];
+      const meta = res?.data?.meta;
+
+      // No meta or no data back -> treat as end of list
+      const hasMore = meta ? meta.page < meta.totalPage : data.length > 0;
+
+      return { data, hasMore };
+    } catch (error) {
+      return { data: [], hasMore: false };
+    }
+  }
+
+  const { data, hasMore } = useLazyLoad<IProduct>({
+    triggerRef,
+    onGrabData: loadNextPage,
+    options: {},
+    initialData: initialData,
+    initialPage: initialMeta?.page ? initialMeta.page + 1 : 2,
+    initialHasMore: initialMeta ? initialMeta?.page < initialMeta?.totalPage : true
+  });
+
   return (
     <div>
-      <div className="grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5	lg:gap-8 gap-4">
-        {/* <div className="2xl:space-y-10 space-y-6 hidden lg:block">
-            <div className="relative">
-            <Search
-              size={20}
-              color="#00000026"
-              className="absolute top-1/4 left-0.5"
-            />
-            <Input
-              className=" bg-[#F6F6F6] pl-6 py-5"
-              placeholder="Search any dress, price,..."
-            />
-          </div>
-          <Categories title="Category" data={categoryData}></Categories>
-          <Categories title="COLLECTION" data={collectionTypes}></Categories>
-        </div> */}
 
-        <div className="2xl:col-span-5 xl:col-span-4 md:col-span-3 ">
-          {/* =============================== categories ========================== */}
-          {/* <div className="flex justify-between items-center xl:mb-8 mb-4 lg:hidden ">
-            <div className="relative">
-              <div className="absolute top-1/4 left-0.5 min-w-[250px]">
-                <Search size={20} color="#00000026" />
-              </div>
-              <Input
-                className=" bg-[#F6F6F6] pl-6 py-5"
-                placeholder="Search any dress, price,..."
-              />
-            </div>
-            <div className="lg:hidden block">
-              <SmallDeviceFilter></SmallDeviceFilter>
-            </div>
-          </div> */}
-          {/* ============================= display total items and option for product filter ========================== */}
-          <UserProfileProductFilter totalItems={10}/>
-
-          {/* ========================= all products ========================== */}
-          <AllUploadedProduct></AllUploadedProduct>
+      {
+        data?.length === 0 && !isLoading && <div className="py-20 md:py-24 lg:py-28">
+          <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
+          <p className="text-center text-gray-700 text-sm lg:text-lg">No items available</p>
         </div>
+      }
+
+      {/* ========================= all products ========================== */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+        {data?.map((prod) => (
+          <ProductCard data={prod} key={prod?.id} ownProduct={true}></ProductCard>
+        ))}
+
+        {hasMore && <div ref={triggerRef} style={{ height: 1 }} />}
       </div>
-      {/* Pagination */}
-      <PaginationSection total={30} current={1}></PaginationSection>
+
+      {
+        isLoading && hasMore && <div className="flex-center h-28 lg:h-40">
+          <span className="loaderDark !w-10"> </span>
+        </div>
+      }
+
     </div>
   );
 };

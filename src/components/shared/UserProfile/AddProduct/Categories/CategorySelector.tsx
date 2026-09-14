@@ -15,7 +15,7 @@ export interface Category {
 interface CategorySelectorProps {
   categories: Category[];
   onSelect: (category: Category) => void;
-  value?: Category | null;
+  value?: string | null;
   placeholder?: string;
 }
 
@@ -36,6 +36,23 @@ function flattenCategories(
     if (cat.children?.length) flattenCategories(cat.children, path, acc);
   }
   return acc;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function findAncestors(
+  cats: Category[],
+  targetId: string,
+  path: Category[] = []
+): Category[] | null {
+  for (const cat of cats) {
+    if (cat.id === targetId) return path;
+    if (cat.children?.length) {
+      const found = findAncestors(cat.children, targetId, [...path, cat]);
+      if (found) return found;
+    }
+  }
+  return null;
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
@@ -59,15 +76,21 @@ export default function CategorySelector({
     stack.length === 0 ? categories : stack[stack.length - 1].children;
 
   const allFlat = flattenCategories(categories);
+  const selectedCategory = allFlat.find((c) => c.id === value) ?? null;
   const searchResults: FlatCategory[] = search.trim()
     ? allFlat.filter((c) =>
-        c.name.toLowerCase().includes(search.toLowerCase())
-      )
+      c.name.toLowerCase().includes(search.toLowerCase())
+    )
     : [];
 
   // Reset state when opening
   function openPanel() {
-    setStack([]);
+    if (value) {
+      const ancestors = findAncestors(categories, value) ?? [];
+      setStack(ancestors);
+    } else {
+      setStack([]);
+    }
     setSearch("");
     setOpen(true);
   }
@@ -146,7 +169,7 @@ export default function CategorySelector({
 
       {/* Search bar */}
       <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-        <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2 py-2">
           <Search className="w-4 h-4 text-muted-foreground shrink-0" />
           <input
             ref={isMobile ? undefined : searchRef}
@@ -154,7 +177,7 @@ export default function CategorySelector({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Find a category"
-            className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+            className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           {search && (
             <button type="button" onClick={() => setSearch("")}>
@@ -192,7 +215,7 @@ export default function CategorySelector({
               <SearchResultRow
                 key={cat.id + cat.breadcrumb}
                 cat={cat}
-                isSelected={value?.id === cat.id}
+                isSelected={value === cat.id}
                 onSelect={() => handleSelect(cat)}
                 onDrill={cat.children?.length ? () => drillInto(cat) : undefined}
               />
@@ -203,7 +226,7 @@ export default function CategorySelector({
             <DrillRow
               key={cat.id}
               cat={cat}
-              isSelected={value?.id === cat.id}
+              isSelected={value === cat.id}
               onSelect={() => handleSelect(cat)}
               onDrill={cat.children?.length ? () => drillInto(cat) : undefined}
             />
@@ -221,10 +244,10 @@ export default function CategorySelector({
       <button
         type="button"
         onClick={openPanel}
-        className="flex items-center justify-between w-full bg-[#f2f2f2] rounded-md px-3 md:py-3 py-2 text-sm text-left focus:outline-none focus:ring-2 focus:ring-ring"
+        className="flex items-center justify-between w-full rounded px-3 md:py-3 py-2 text-sm text-left focus:outline-none border border-gray-200 focus:border-primary-black cursor-pointer"
       >
         <span className={value ? "text-foreground" : "text-muted-foreground"}>
-          {value ? value.name : placeholder}
+          {selectedCategory?.name ?? placeholder}
         </span>
         <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
       </button>
@@ -240,7 +263,7 @@ export default function CategorySelector({
             <div className="absolute inset-0 bg-black/50" />
             {/* Dialog box — centered */}
             <div
-              className="relative w-full max-w-sm bg-background rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+              className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
               style={{ maxHeight: "80dvh" }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -251,7 +274,7 @@ export default function CategorySelector({
           {/* ── DESKTOP: dropdown ── */}
           <div
             ref={panelRef}
-            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border rounded-xl shadow-lg overflow-hidden"
+            className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[300px] bg-background border border-border shadow-lg overflow-hidden"
             style={{ maxHeight: 440 }}
           >
             {innerContent(false)}
@@ -277,9 +300,8 @@ function DrillRow({ cat, isSelected, onSelect, onDrill }: DrillRowProps) {
   return (
     <div
       onClick={() => (hasChildren ? onDrill?.() : onSelect())}
-      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${
-        isSelected ? "bg-muted" : ""
-      }`}
+      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+        }`}
     >
       <span className="flex-1  text-foreground">{cat.name}</span>
       <div className="shrink-0 ml-2">
@@ -310,9 +332,8 @@ function SearchResultRow({ cat, isSelected, onSelect, onDrill }: SearchResultRow
   return (
     <div
       onClick={() => (hasChildren ? onDrill?.() : onSelect())}
-      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${
-        isSelected ? "bg-muted" : ""
-      }`}
+      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+        }`}
     >
       <div className="flex-1 min-w-0 pr-3">
         <p className="font-medium  text-foreground leading-tight">
@@ -340,9 +361,8 @@ function SearchResultRow({ cat, isSelected, onSelect, onDrill }: SearchResultRow
 function RadioCircle({ selected }: { selected: boolean }) {
   return (
     <div
-      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-        selected ? "border-primary" : "border-muted-foreground/40"
-      }`}
+      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selected ? "border-primary" : "border-muted-foreground/40"
+        }`}
     >
       {selected && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
     </div>

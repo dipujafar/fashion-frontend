@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -36,67 +36,89 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import Link from "next/link";
 import CommonButton from "@/components/ui/common-button";
 import { cn } from "@/lib/utils";
+import { useGetCharitiesQuery } from "@/redux/api/userApi";
+import { DonateDirectMoney } from "@/lib/Actions/Donation.action";
+import { toast } from "sonner";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { defaultImg } from "@/utils/defaultImg";
 
 const formSchema = z.object({
-  charity: z.string().min(1, "Please select a charity type"),
+  charityId: z.string().min(1, "Please select a charity"),
   amount: z.string().min(1, "Please select or enter an amount"),
-  privacy: z.enum(["anonymous", "public"], {
+  isAnonymous: z.boolean({
     required_error: "Please select a privacy option",
   }),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-const charities = [
-  {
-    value: "women-for-women-international",
-    label: "Women for Women International",
-  },
-  { value: "plant-more-trees", label: "Plant More Trees" },
-  { value: "save-the-children", label: "Save the Children" },
-];
-
 export function CharityDonationFormDialog({
   children,
 }: {
   children?: React.ReactNode;
 }) {
-  const [selectedAmount, setSelectedAmount] = useState<string>("");
+  const { data: charitiesData, isLoading: charitiesLoading } =
+    useGetCharitiesQuery();
+
+  const [selectedPreset, setSelectedPreset] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [charityOpen, setCharityOpen] = useState(false);
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      charity: "",
+      charityId: "",
       amount: "",
-      privacy: "anonymous",
+      isAnonymous: true,
     },
   });
 
-  const presetAmounts = ["$50", "$100", "$200"];
+  const {
+    formState: { isSubmitting },
+  } = form;
 
-  const handleAmountSelect = (amount: string) => {
-    setSelectedAmount(amount);
-    form.setValue("amount", amount);
+  const presetAmounts = ["50", "100", "200"];
+
+  const handlePresetSelect = (amount: string) => {
+    setSelectedPreset(amount);
+    form.setValue("amount", amount, { shouldValidate: true });
   };
 
   const handleCustomAmountChange = (value: string) => {
-    setSelectedAmount("");
-    form.setValue("amount", value);
+    setSelectedPreset("");
+    form.setValue("amount", value, { shouldValidate: true });
   };
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
-    // Handle form submission here
+  const onSubmit = async (data: FormData) => {
+    try {
+      const res = await DonateDirectMoney({ payload: data });
+      if (res?.error) {
+        toast.error(res.error);
+        return;
+      }
+      router.replace(res?.data);
+      form.reset();
+    } catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error;
+      }
+      toast.error(
+        error?.data?.message ?? "Something went wrong. Please try again."
+      );
+    }
   };
+
+  const currentAmount = form.watch("amount");
+  const customInputValue = selectedPreset ? "" : currentAmount;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="w-auto">
         {children ? (
           <div>{children}</div>
         ) : (
@@ -105,31 +127,16 @@ export function CharityDonationFormDialog({
           </span>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md p-0 gap-0">
-        {/* Header */}
+
+      <DialogContent className="sm:max-w-md p-0 gap-0 rounded-none">
         <DialogHeader className="p-6 pb-4">
-          <div>
-            <div className="space-y-1">
-              <div className="flex justify-between items-center gap-3 flex-wrap  w-full">
-                <DialogTitle className="text-base font-medium text-foreground">
-                  Would you like to donate to charity?
-                </DialogTitle>
-                {/*  ----------------- option for viewing all charities ---------------- */}
-                <Link href={"/all-charities"}>
-                  <Button
-                    onClick={() => setOpen(false)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-sm text-muted-foreground hover:text-foreground cursor-pointer"
-                  >
-                    View all
-                  </Button>
-                </Link>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Choose a charity and donate any amount for your support
-              </p>
-            </div>
+          <div className="space-y-1">
+            <DialogTitle className="text-base font-medium text-foreground">
+              Would you like to donate to charity?
+            </DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Choose a charity and donate any amount for your support
+            </p>
           </div>
         </DialogHeader>
 
@@ -141,7 +148,7 @@ export function CharityDonationFormDialog({
             {/* Charity Selection */}
             <FormField
               control={form.control}
-              name="charity"
+              name="charityId"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -151,44 +158,68 @@ export function CharityDonationFormDialog({
                           variant="outline"
                           role="combobox"
                           aria-expanded={charityOpen}
+                          disabled={charitiesLoading}
                           className="w-full justify-between bg-transparent"
                         >
-                          {field.value
-                            ? charities.find(
-                                (charity) => charity.value === field.value
-                              )?.label 
-                            : <p className="text-muted-foreground">Select type of charity</p>}
+                          {charitiesLoading ? (
+                            <span className="flex items-center gap-2 text-muted-foreground">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              Loading charities…
+                            </span>
+                          ) : field.value ? (
+                            (() => {
+                              const match = charitiesData?.data?.find(
+                                (c) => c.id === field.value
+                              );
+                              // FIX: use userName consistently as the display name
+                              return match
+                                ? match.fname + " " + match.lname
+                                : "Select type of charity";
+                            })()
+                          ) : (
+                            <span className="text-muted-foreground">
+                              Select type of charity
+                            </span>
+                          )}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-full p-0">
+
+                      <PopoverContent className="w-full p-0" align="start">
                         <Command>
                           <CommandInput placeholder="Search charities..." />
                           <CommandList>
                             <CommandEmpty>No charity found.</CommandEmpty>
                             <CommandGroup>
-                              {charities.map((charity) => (
+                              {charitiesData?.data?.map((charity) => (
                                 <CommandItem
-                                  key={charity.value}
-                                  value={charity.value}
-                                  onSelect={(currentValue) => {
+                                  key={charity.id}
+                                  // FIX: use the display name as value so Command
+                                  // search filters against human-readable text,
+                                  // not a UUID.
+                                  value={charity.userName}
+                                  // FIX: onSelect is restored — this was the
+                                  // core bug causing selections to do nothing.
+                                  onSelect={() => {
                                     field.onChange(
-                                      currentValue === field.value
+                                      charity.id === field.value
                                         ? ""
-                                        : currentValue
+                                        : charity.id
                                     );
                                     setCharityOpen(false);
                                   }}
+                                  className="cursor-pointer"
                                 >
-                                  <Check
+                                  {field.value && <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      field.value === charity.value
+                                      field.value === charity.id
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
-                                  />
-                                  {charity.label}
+                                  />}
+                                  <Image alt="charity" src={charity.picture?.url || defaultImg.empty_user} width={32} height={32} className="rounded-full h-5 w-5 object-cover" />
+                                  {charity.fname} {charity.lname}
                                 </CommandItem>
                               ))}
                             </CommandGroup>
@@ -203,37 +234,56 @@ export function CharityDonationFormDialog({
             />
 
             {/* Preset Amount Buttons */}
-            <div className="flex gap-3">
-              {presetAmounts.map((amount) => (
-                <Button
-                  key={amount}
-                  type="button"
-                  variant={selectedAmount === amount ? "default" : "outline"}
-                  className="flex-1"
-                  onClick={() => handleAmountSelect(amount)}
-                >
-                  {amount}
-                </Button>
-              ))}
-            </div>
+            <FormField
+              control={form.control}
+              name="amount"
+              render={() => (
+                <FormItem>
+                  <div className="flex gap-3">
+                    {presetAmounts.map((amount) => (
+                      <Button
+                        key={amount}
+                        type="button"
+                        variant={
+                          selectedPreset === amount ? "default" : "outline"
+                        }
+                        className="flex-1"
+                        onClick={() => handlePresetSelect(amount)}
+                      >
+                        ${amount}
+                      </Button>
+                    ))}
+                  </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="customAmount" className="text-sm font-medium">
-                Custom Amount
-              </Label>
-              <Input
-                id="customAmount"
-                placeholder="Enter your amount"
-                className="bg-gray-200"
-                value={selectedAmount ? "" : form.watch("amount")}
-                onChange={(e) => handleCustomAmountChange(e.target.value)}
-              />
-            </div>
+                  <div className="space-y-2 pt-1">
+                    <Label
+                      htmlFor="customAmount"
+                      className="text-sm font-medium"
+                    >
+                      Custom Amount
+                    </Label>
+                    <Input
+                      id="customAmount"
+                      type="number"
+                      step="any"
+                      min="1"
+                      placeholder="Enter your amount"
+                      className=""
+                      value={customInputValue}
+                      onChange={(e) =>
+                        handleCustomAmountChange(e.target.value)
+                      }
+                    />
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             {/* Privacy Options */}
             <FormField
               control={form.control}
-              name="privacy"
+              name="isAnonymous"
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel className="text-sm font-medium">
@@ -241,12 +291,12 @@ export function CharityDonationFormDialog({
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
-                      value={field.value}
+                      value={String(field.value)}
+                      onValueChange={(val) => field.onChange(val === "true")}
                       className="space-y-2"
                     >
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="anonymous" id="anonymous" />
+                        <RadioGroupItem value="true" id="anonymous" />
                         <Label
                           htmlFor="anonymous"
                           className="text-sm font-normal cursor-pointer"
@@ -255,7 +305,7 @@ export function CharityDonationFormDialog({
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="public" id="public" />
+                        <RadioGroupItem value="false" id="public" />
                         <Label
                           htmlFor="public"
                           className="text-sm font-normal cursor-pointer"
@@ -271,7 +321,16 @@ export function CharityDonationFormDialog({
             />
 
             {/* Submit Button */}
-            <CommonButton className="w-full md:py-4">Submit</CommonButton>
+            <CommonButton className="w-full md:py-4" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Submitting…
+                </span>
+              ) : (
+                "Submit"
+              )}
+            </CommonButton>
           </form>
         </Form>
       </DialogContent>

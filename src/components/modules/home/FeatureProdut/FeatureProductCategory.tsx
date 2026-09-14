@@ -5,44 +5,41 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { cn } from "@/lib/utils";
 
 import Autoplay from "embla-carousel-autoplay";
+import { useSearchParams } from "next/navigation";
 
 const categories = [
   {
     _id: 1,
     label: "All",
-    value: "all",
+    value: "",
   },
   {
     _id: 2,
     label: "Top Selling",
-    value: "top_selling",
+    value: "topSelling",
   },
   {
     _id: 3,
     label: "Trending Item",
-    value: "trending_item",
+    value: "trending",
   },
   {
     _id: 4,
-    label: "Jackets",
-    value: "jackets",
-  },
-  {
-    _id: 5,
-    label: "Tops & Shirts",
-    value: "tops_shirts",
-  },
-  {
-    _id: 6,
-    label: "Accessories",
-    value: "accessories",
+    label: "Recomended",
+    value: "recomended",
   },
 ];
 
 const FeatureProductCategory = () => {
+  const serachparams = useSearchParams();
+  const updateparams = useUpdateSearchParams();
+
+  const selectedType = serachparams.get("type");
+
   return (
     <Carousel
       opts={{
@@ -54,7 +51,7 @@ const FeatureProductCategory = () => {
         Autoplay({
           delay: 4000,
           stopOnInteraction: false,
-          
+
           stopOnMouseEnter: true,
         }),
       ]}
@@ -67,9 +64,12 @@ const FeatureProductCategory = () => {
             className="basis-1/2 md:basis-1/4  lg:basis-1/6 xl:basis-1/8"
           >
             <div
+              onClick={() => {
+                updateparams({ type: category?.value })
+              }}
               className={cn(
-                "p-2  rounded w-full  flex justify-center bg-primary-gray/10 cursor-pointer truncate text-sm md:text-base",
-                category?.value === "all" && "bg-primary-gray/90 text-primary-white"
+                "p-2 rounded w-full  flex justify-center bg-primary-gray/10 cursor-pointer truncate text-sm md:text-base",
+                (category?.value === selectedType) && "bg-primary-gray/90 text-primary-white"
               )}
             >
               {category?.label}

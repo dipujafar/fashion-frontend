@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -16,7 +17,7 @@ export default function MessageDropDown() {
             <MenubarTrigger className="px-1">
                 <Mail className="size-[20px] lg:size-[24px]" color="#212121" />
             </MenubarTrigger>
-            <MenubarContent className="md:min-w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
+            <MenubarContent className="w-sm overflow-y-auto max-h-[calc(100vh-100px)]">
                 {Array.from({ length: 5 }).map((_, index) => (
                     <div key={index}>
                         <MenubarItem className="cursor-pointer">

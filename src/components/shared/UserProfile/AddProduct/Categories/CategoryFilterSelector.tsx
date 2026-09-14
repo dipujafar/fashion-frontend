@@ -1,0 +1,427 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { ChevronRight, ArrowLeft, Search, X, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface Category {
+  id: string;
+  name: string;
+  parentId: string | null;
+  children: Category[];
+}
+
+interface CategorySelectorProps {
+  categories: Category[];
+  onSelect: (category: Category | null) => void;
+  value?: string | null;
+  placeholder?: string;
+  className?: string,
+  isLoading?: boolean;
+}
+
+interface FlatCategory extends Category {
+  breadcrumb: string;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function flattenCategories(
+  cats: Category[],
+  ancestors: string[] = [],
+  acc: FlatCategory[] = []
+): FlatCategory[] {
+  for (const cat of cats) {
+    const path = [...ancestors, cat.name];
+    acc.push({ ...cat, breadcrumb: path.join(" > ") });
+    if (cat.children?.length) flattenCategories(cat.children, path, acc);
+  }
+  return acc;
+}
+
+function findAncestors(
+  cats: Category[],
+  targetId: string,
+  path: Category[] = []
+): Category[] | null {
+
+  // console.log(cats, path);
+
+  for (const cat of cats) {
+    if (cat.id === targetId) return path;
+    if (cat.children?.length) {
+      const found = findAncestors(cat.children, targetId, [...path, cat]);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export default function CategoryFilterSelector({
+  categories,
+  onSelect,
+  value,
+  placeholder = "Select category",
+  isLoading,
+  className
+}: CategorySelectorProps) {
+  const [open, setOpen] = useState(false);
+
+  const [stack, setStack] = useState<Category[]>([]);
+  const [search, setSearch] = useState("");
+
+  const searchRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const currentLevel: Category[] = stack.length === 0 ? categories : stack[stack.length - 1].children;
+
+  const allFlat = flattenCategories(categories);
+  const selectedCategory = allFlat.find((c) => c.id === value) ?? null;
+  const searchResults: FlatCategory[] = search.trim()
+    ? allFlat.filter((c) =>
+      c.name.toLowerCase().includes(search.toLowerCase())
+    )
+    : [];
+
+  // The parent category at the current drill level (top of stack)
+  const parentCategory: Category | null = stack.length > 0 ? stack[stack.length - 1] : null;
+
+  // Whether "All Categories" (i.e. no filter) is the active selection
+  const isAllSelected = value === null || value === undefined || value === "";
+
+  function openPanel() {
+    if (value) {
+      const ancestors = findAncestors(categories, value) ?? [];
+      setStack(ancestors);
+    } else {
+      setStack([]);
+    }
+    setSearch("");
+    setOpen(true);
+  }
+
+  function closePanel() {
+    setOpen(false);
+    setSearch("");
+    setStack([]);
+  }
+
+  function handleSelect(cat: Category | null) {
+    onSelect(cat);
+    closePanel();
+  }
+
+  function drillInto(cat: Category) {
+    setStack((s) => [...s, cat]);
+    setSearch("");
+  }
+
+  function goBack() {
+    setStack((s) => s.slice(0, -1));
+    setSearch("");
+  }
+
+  // Focus search on open
+  useEffect(() => {
+    if (open) setTimeout(() => searchRef.current?.focus(), 80);
+  }, [open]);
+
+  // Close desktop dropdown on outside click
+  useEffect(() => {
+    if (!open) return;
+    function handle(e: MouseEvent) {
+      if (window.innerWidth < 768) return;
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        closePanel();
+      }
+    }
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [open]);
+
+  const title = stack.length === 0 ? "Category" : stack[stack.length - 1].name;
+
+  // ── Shared inner content ──────────────────────────────────────────────────
+
+  const innerContent = (isMobile: boolean) => (
+    <div className="flex flex-col h-full">
+
+      {isLoading && <div className="flex-center h-24 lg:h-32">
+        <span className="loaderDark !w-10"> </span>
+      </div>}
+
+      {/* Mobile header */}
+      {isMobile && (
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
+          {stack.length > 0 ? (
+            <button
+              type="button"
+              onClick={goBack}
+              className="p-1 rounded hover:bg-muted transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          ) : (
+            <div className="w-7" />
+          )}
+          <span className="font-semibold text-base text-foreground">{title}</span>
+          <button
+            type="button"
+            onClick={closePanel}
+            className="p-1 rounded hover:bg-muted transition-colors"
+          >
+            <X className="w-5 h-5 text-muted-foreground" />
+          </button>
+        </div>
+      )}
+
+      {/* Search bar */}
+      <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2 py-1.5">
+          <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+          <input
+            ref={isMobile ? undefined : searchRef}
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Find a category"
+            className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          />
+          {search && (
+            <button type="button" onClick={() => setSearch("")} className="cursor-pointer">
+              <X className="w-4 h-4 text-muted-foreground" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Desktop back/title */}
+      {!isMobile && !search && (
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-border shrink-0">
+          {stack.length > 0 && (
+            <button
+              type="button"
+              onClick={goBack}
+              className="p-1 rounded hover:bg-muted transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
+          <span className="font-semibold text-base text-foreground">{title}</span>
+        </div>
+      )}
+
+      {/* List */}
+      <div className="overflow-y-auto" style={{ maxHeight: "320px" }}>
+        {search ? (
+          searchResults.length === 0 ? (
+            <p className="text-base text-muted-foreground text-center py-10">
+              No categories found
+            </p>
+          ) : (
+            searchResults.map((cat) => (
+              <SearchResultRow
+                key={cat.id + cat.breadcrumb}
+                cat={cat}
+                isSelected={value === cat.id}
+                onSelect={() => handleSelect(cat)}
+                onDrill={cat.children?.length ? () => drillInto(cat) : undefined}
+              />
+            ))
+          )
+        ) : (
+          <>
+            {/* "All <Parent>" row — shown whenever we're inside a drill level */}
+            {parentCategory && (
+              <AllRow
+                label={`All ${parentCategory.name}`}
+                isSelected={value === parentCategory.id}
+                onSelect={() => handleSelect(parentCategory)}
+              />
+            )}
+
+            {!parentCategory && (
+              <AllRow
+                label="All"
+                isSelected={isAllSelected}
+                onSelect={() => handleSelect(null)}
+              />
+            )}
+
+            {/* Regular drill rows */}
+            {currentLevel.map((cat) => (
+              <DrillRow
+                key={cat.id}
+                cat={cat}
+                isSelected={value === cat.id}
+                onSelect={() => handleSelect(cat)}
+                onDrill={cat.children?.length ? () => drillInto(cat) : undefined}
+              />
+            ))}
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────
+
+  return (
+    <div className="relative w-full">
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={openPanel}
+        className={cn("flex items-center gap-x-2 justify-between min-w-28 bg-white rounded px-2.5 h-8 text-sm text-left focus:outline-none cursor-pointer border hover:bg-zinc-50 border-gray-300", selectedCategory?.name ? "border-gray-700" : "", className)}
+      >
+        <span className={cn("text-foreground", selectedCategory?.name ? "font-semibold" : "")}>
+          {/* {selectedCategory?.name ?? placeholder} */}
+          {placeholder}
+        </span>
+        <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
+      </button>
+
+      {open && (
+        <>
+          {/* ── MOBILE: centered dialog ── */}
+          <div
+            className="md:hidden fixed inset-0 z-10 flex items-center justify-center p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/50" />
+            {/* Dialog box */}
+            <div
+              className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
+              style={{ maxHeight: "80dvh" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {innerContent(true)}
+            </div>
+          </div>
+
+          {/* ── DESKTOP: dropdown ── */}
+          <div
+            ref={panelRef}
+            className="hidden md:flex md:flex-col absolute z-10 mt-1 w-full min-w-[280px] bg-background border border-border shadow-md overflow-hidden"
+            style={{ maxHeight: 440 }}
+          >
+            {innerContent(false)}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─── All row ──────────────────────────────────────────────────────────────────
+
+interface AllRowProps {
+  label: string;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+function AllRow({ label, isSelected, onSelect }: AllRowProps) {
+  return (
+    <div
+      onClick={onSelect}
+      className={`flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 ${isSelected ? "bg-muted" : ""
+        }`}
+    >
+      <span className="flex-1 text-muted-foreground italic">
+        {label}
+      </span>
+      <RadioCircle selected={isSelected} />
+    </div>
+  );
+}
+
+// ─── Drill row ────────────────────────────────────────────────────────────────
+
+interface DrillRowProps {
+  cat: Category;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDrill?: () => void;
+}
+
+function DrillRow({ cat, isSelected, onSelect, onDrill }: DrillRowProps) {
+  const hasChildren = !!onDrill;
+
+  return (
+    <div
+      onClick={() => (hasChildren ? onDrill?.() : onSelect())}
+      className={`flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+        }`}
+    >
+      <span className="flex-1 text-foreground">{cat.name}</span>
+      <div className="shrink-0 ml-2">
+        {hasChildren ? (
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        ) : (
+          <RadioCircle selected={isSelected} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Search result row ────────────────────────────────────────────────────────
+
+interface SearchResultRowProps {
+  cat: FlatCategory;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDrill?: () => void;
+}
+
+function SearchResultRow({ cat, isSelected, onSelect, onDrill }: SearchResultRowProps) {
+  const hasChildren = !!onDrill;
+  const parts = cat.breadcrumb.split(" > ");
+  const parentPath = parts.slice(0, -1).join(" > ");
+
+  return (
+    <div
+      onClick={() => (hasChildren ? onDrill?.() : onSelect())}
+      className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
+        }`}
+    >
+      <div className="flex-1 min-w-0 pr-3">
+        <p className="font-medium text-foreground leading-tight">
+          {cat.name}
+        </p>
+        {parentPath && (
+          <p className="text-sm text-muted-foreground mt-0.5 truncate">
+            {parentPath}
+          </p>
+        )}
+      </div>
+      <div className="shrink-0">
+        {hasChildren ? (
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        ) : (
+          <RadioCircle selected={isSelected} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Radio circle ─────────────────────────────────────────────────────────────
+
+function RadioCircle({ selected }: { selected: boolean }) {
+  return (
+    selected ? (
+      <div className="w-4 h-4 rounded-full bg-black flex items-center justify-center shrink-0">
+        <div className="w-2 h-2 rounded-full bg-white" />
+      </div>
+    ) : (
+      <div className="w-4 h-4 rounded-full border-2 border-gray-400 shrink-0" />
+    )
+  );
+}

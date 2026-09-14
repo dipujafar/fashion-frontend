@@ -1,68 +1,50 @@
-import Container from "@/components/shared/Container";
 import React from "react";
-import ProductDetails from "./ProductDetails/ProductDetails";
+import ProductDetails, { IProductWithUser } from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
-import ReviewContainer from "./review/ReviewContainer";
-import DisplayProductSection from "@/components/shared/DisplayProductSection/DisplayProductSection";
-import { recentlyViewedData, trendingProductData } from "@/data/dummyData.tsx";
-import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
-import CharityInfo from "./dialog/CharityInfo";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
-import { CharityDonationFormDialog } from "@/components/shared/Modal/Charity/CharityDonationFormDialog";
-import { IProduct } from "@/types";
+import { IProduct, ISize, IUser } from "@/types";
+import { SMActionButtons } from "./ActionButtons";
 
-const SingleProductDetails = async ({ promiseDetails }: { promiseDetails: Promise<{ data: IProduct }> }) => {
+type IUserWithExtra = IUser & {
+  _count: {
+    products: number;
+  },
+  bundleDiscount: {
+    tiers: {
+      itemCount: number;
+      discountPercent: number;
+    }[]
+  } | null;
+};
 
-  const product = await promiseDetails;
+const SingleProductDetails = async ({ product }: { product: { data: IProductWithUser } }) => {
+
+  const isStockOut = product?.data?.stock === 0;
 
   return (
-    <Container className="xl:space-y-8 lg:space-y-6 space-y-4">
+
+    <div>
+
       <div className="flex flex-col lg:flex-row xl:gap-x-8 gap-x-5 gap-y-5">
+
         <div className="flex-1">
           <div className="md:mb-0 mb-3 md:hidden">
             {/* <ProductDetailsHeader /> */}
           </div>
           <ProductImages product={product?.data}></ProductImages>
         </div>
-        <div className="flex-1">
+
+        <div className="flex-1 xl:mt-5">
           <ProductDetails product={product?.data} />
         </div>
+
+        {!product?.data?.isMyProduct && <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 shadow-lg md:hidden z-10">
+          <SMActionButtons product={product?.data} isSold={isStockOut} isDeleted={product?.data?.isDeleted}></SMActionButtons>
+        </div>}
+
       </div>
-      <ReviewContainer></ReviewContainer>
-      <div>
-        <div>
-          {/* ======================================= section header ========================================== */}
-          <div className="flex-between lg:mb-2 mb-1 ">
-            <div className="flex items-center gap-x-1.5">
-              <h4 className="lg:text-2xl text-lg font-medium">
-                Charity Support
-              </h4>
-              <CharityInfo />
-            </div>
-            <CharityDonationFormDialog>
-              <div className="flex gap-x-3 items-center group cursor-pointer">
-                <h4 className="font-bold">ADD DONATE</h4>
-                <AnimatedArrow size={20} />
-              </div>
-            </CharityDonationFormDialog>
-          </div>
+    </div>
 
-          <hr className="border lg:mb-6 mb-4" />
-        </div>
-        <CharitySupportCards></CharitySupportCards>
-      </div>
 
-      {/* <ProductDescription></ProductDescription> */}
-      <DisplayProductSection
-        title="Recently Viewed"
-        data={recentlyViewedData}
-      ></DisplayProductSection>
-
-      <DisplayProductSection
-        title="You may also like"
-        data={trendingProductData}
-      ></DisplayProductSection>
-    </Container>
   );
 };
 

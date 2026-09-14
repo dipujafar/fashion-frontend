@@ -14,12 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import CommonButton from "@/components/ui/common-button";
 import { formSchema } from "./schema";
 import { getFirstErrorMessage } from "@/utils/modifyFormError";
 import { toast } from "sonner";
 import { useResetPasswordMutation } from "@/redux/api/authApi";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 
 const SetNewPasswordForm = () => {
@@ -42,7 +42,7 @@ const SetNewPasswordForm = () => {
       toast.success("Password reset successfully! Please login with your new credentials.");
       router.push("/sign-in");
     } catch (error: any) {
-      toast.error(error.data.message);
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
@@ -54,10 +54,12 @@ const SetNewPasswordForm = () => {
 
   return (
     <Card
-      className="max-w-[742px] mx-auto shadow-none border-none"
-      style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
-    >
+      className="max-w-lg mx-auto shadow-none border-none">
+
       <CardContent>
+
+        <h3 className="text-2xl md:text-3xl font-bold text-center my-5 lg:mb-8">Set New Password</h3>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, onError)}
@@ -68,14 +70,15 @@ const SetNewPasswordForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Create New Password</FormLabel>
+                  <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Enter Your Password"
+                        placeholder="****"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
+
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showPassword ? (
@@ -83,14 +86,14 @@ const SetNewPasswordForm = () => {
                             onClick={() => setShowPassword(false)}
                             className="cursor-pointer"
                           >
-                            <Eye color="#A5A7A9" />
+                            <Eye color="#A5A7A9" className="size-5" />
                           </div>
                         ) : (
                           <div
                             onClick={() => setShowPassword(true)}
                             className="cursor-pointer"
                           >
-                            <EyeOff color="#A5A7A9" />
+                            <EyeOff color="#A5A7A9" className="size-5" />
                           </div>
                         )}
                       </div>
@@ -110,9 +113,9 @@ const SetNewPasswordForm = () => {
                     <div className="relative">
                       <Input
                         type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Enter Your Password"
+                        placeholder="****"
                         {...field}
-                        className="focus-visible:ring-0  focus-visible:ring-offset-0  rounded bg-[#F5F5F5] md:py-5"
+                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2">
                         {showConfirmPassword ? (
@@ -120,14 +123,14 @@ const SetNewPasswordForm = () => {
                             onClick={() => setShowConfirmPassword(false)}
                             className="cursor-pointer"
                           >
-                            <Eye color="#A5A7A9" />
+                            <Eye color="#A5A7A9" className="size-5" />
                           </div>
                         ) : (
                           <div
                             onClick={() => setShowConfirmPassword(true)}
                             className="cursor-pointer"
                           >
-                            <EyeOff color="#A5A7A9" />
+                            <EyeOff color="#A5A7A9" className="size-5" />
                           </div>
                         )}
                       </div>
@@ -137,7 +140,8 @@ const SetNewPasswordForm = () => {
                 </FormItem>
               )}
             />
-            <CommonButton loading={isLoading} className="w-full">SIGN IN</CommonButton>
+            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Save New Password"}</Button>
+
           </form>
         </Form>
       </CardContent>

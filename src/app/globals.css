@@ -22,7 +22,7 @@
   /* --breakpoint-lg: 800px; 
    --breakpoint-md: 660px;
    --breakpoint-sm: 380px; */
-   --breakpoint-xs: 380px; 
+  --breakpoint-xs: 380px;
 }
 
 @theme inline {
@@ -139,6 +139,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -148,6 +149,7 @@
   .page-title {
     @apply md:text-2xl text-xl text-primary-gray;
   }
+
   .section-title {
     @apply text-center lg:text-4xl md:text-xl text-lg font-bold;
   }
@@ -155,9 +157,11 @@
   .section-name {
     @apply lg:text-3xl text-xl font-medium uppercase;
   }
+
   .flex-center {
     @apply flex justify-center items-center;
   }
+
   .flex-between {
     @apply flex justify-between items-center;
   }
@@ -181,4 +185,46 @@
 
 .scroll-hide::-webkit-scrollbar {
   scrollbar-width: none;
+}
+
+.loader {
+  width: 30px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side, #ffffff 90%, #0000);
+  background:
+    var(--_g) 0% 50%,
+    var(--_g) 50% 50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 50%;
+  animation: l3 1s infinite linear;
+}
+
+.loaderDark {
+  width: 50px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side, #000000 90%, #0000);
+  background:
+    var(--_g) 0% 50%,
+    var(--_g) 50% 50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 50%;
+  animation: l3 1s infinite linear;
+}
+
+@keyframes l3 {
+  20% {
+    background-position: 0% 0%, 50% 50%, 100% 50%
+  }
+
+  40% {
+    background-position: 0% 100%, 50% 0%, 100% 50%
+  }
+
+  60% {
+    background-position: 0% 50%, 50% 100%, 100% 0%
+  }
+
+  80% {
+    background-position: 0% 50%, 50% 50%, 100% 100%
+  }
 }

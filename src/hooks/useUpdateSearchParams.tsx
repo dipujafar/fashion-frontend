@@ -30,7 +30,7 @@ export function useUpdateSearchParams(targetId?: string) {
         document
           .getElementById(targetId)
           ?.scrollIntoView({ behavior: "smooth" });
-      }, 50);
+      }, 10);
     }
   };
 }

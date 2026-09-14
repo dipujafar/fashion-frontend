@@ -1,102 +1,78 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-export interface CartCharity {
-  id: string,
-  name: string,
-  donationPercent: number,
-  donationAmount: number
+export interface Shipment {
+  serviceId: string;
+  shipment_charge_total: number;
 }
 
-// Types
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image?: string;
-  charities: CartCharity[],
-  donation_percent: number,
-  extra_donation: number,
-  total_donation: number
+export interface CartGroupItem {
+  shipment: Shipment | null;
+  cartGroupId: string;
+  treeCount : number;
+  treeCostTotal : number;
+  allowedAuthentication : boolean;
 }
 
 export interface CartState {
-  items: CartItem[];
-  totalQuantity: number;
-  totalPrice: number;
+  carts: CartGroupItem[]
 }
 
 const initialState: CartState = {
-  items: [],
-  totalQuantity: 0,
-  totalPrice: 0,
+  carts: [],
 };
-
-const recalculate = (items: CartItem[]) => ({
-  totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
-  totalPrice: items.reduce(
-    (sum, item) =>
-      sum + item.price * item.quantity + item.extra_donation,
-    0
-  ),
-});
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existing = state.items.find((i) => i.id === action.payload.id);
 
-      if (existing) {
-        existing.quantity += action.payload.quantity;
+    addShipmentToCart: (state, action: { payload: { cartGroupId: string; shipment: Shipment } }) => {
+      const { cartGroupId, shipment } = action.payload;
+      const existingCart = state.carts.find(cart => cart.cartGroupId === cartGroupId);
+
+      if (existingCart) {
+        existingCart.shipment = shipment;
       } else {
-        state.items.push(action.payload);
+        state.carts.push({ cartGroupId, shipment, treeCount: 0, treeCostTotal: 0, allowedAuthentication: false});
       }
-
-      const { totalQuantity, totalPrice } = recalculate(state.items);
-      state.totalQuantity = totalQuantity;
-      state.totalPrice = totalPrice;
     },
 
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((i) => i.id !== action.payload);
+    addTreeCountToCart: (state, action: { payload: { cartGroupId: string; treeCount: number; treeCostTotal: number } }) => {
 
-      const { totalQuantity, totalPrice } = recalculate(state.items);
-      state.totalQuantity = totalQuantity;
-      state.totalPrice = totalPrice;
+      const { cartGroupId, treeCount, treeCostTotal } = action.payload;
+
+      const existingCart = state.carts.find(cart => cart.cartGroupId === cartGroupId);
+
+      if (existingCart) {
+        existingCart.treeCount = treeCount;
+        existingCart.treeCostTotal = treeCostTotal;
+      } else {
+        state.carts.push({ cartGroupId, shipment: null, treeCount, treeCostTotal, allowedAuthentication: false });
+      }
     },
 
-    updateQuantity: (
-      state,
-      action: PayloadAction<{ id: string; quantity: number }>
-    ) => {
-      const item = state.items.find((i) => i.id === action.payload.id);
+    toggleAuthenticationToCart: (state, action: { payload: { cartGroupId: string; allowedAuthentication: boolean } }) => {
 
-      if (item) {
-        item.quantity = Math.max(1, action.payload.quantity); // min 1
+      const { cartGroupId, allowedAuthentication } = action.payload;
+
+      const existingCart = state.carts.find(cart => cart.cartGroupId === cartGroupId);
+      if (existingCart) {
+        existingCart.allowedAuthentication = allowedAuthentication;
+      }else {
+        state.carts.push({ cartGroupId, shipment: null, treeCount: 0, treeCostTotal: 0, allowedAuthentication });
       }
-
-      const { totalQuantity, totalPrice } = recalculate(state.items);
-      state.totalQuantity = totalQuantity;
-      state.totalPrice = totalPrice;
     },
 
     clearCart: (state) => {
-      state.items = [];
-      state.totalQuantity = 0;
-      state.totalPrice = 0;
+      Object.assign(state, initialState);
     },
   },
 });
 
-// Selectors
-export const selectCartItems = (state: { cart: CartState }) => state.cart.items;
-export const selectTotalQuantity = (state: { cart: CartState }) => state.cart.totalQuantity;
-export const selectTotalPrice = (state: { cart: CartState }) => state.cart.totalPrice;
-export const selectIsInCart = (productId: string) => (state: { cart: CartState }) =>
-  state.cart.items.some((item) => item.id === productId);
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions;
+
+
+
+export const { clearCart, addShipmentToCart, addTreeCountToCart, toggleAuthenticationToCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

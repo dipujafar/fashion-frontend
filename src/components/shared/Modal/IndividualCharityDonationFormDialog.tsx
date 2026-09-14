@@ -137,6 +137,7 @@ export function IndividualCharityDonationFormDialog({
                             <Input
                               {...field}
                               type="number"
+                              step="any"
                               placeholder="Enter your amount"
                               className="h-12 pr-10"
                               onChange={(e) => {

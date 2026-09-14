@@ -8,6 +8,7 @@ import "react-pagination-bar/dist/index.css";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/lib/provider/Providers";
 import { Toaster } from "sonner";
+import SocketProvider from "@/Context/SocketProvider";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -31,22 +32,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${figtree.className}  antialiased`}>
+      <body className={`${figtree.className} antialiased`}>
         <Providers>
-          <TopInfo></TopInfo>
+          {/* <TopInfo></TopInfo> */}
           <div className="sticky top-0 z-50 ">
             <Navbar></Navbar>
           </div>
 
-          <div className="min-h-[calc(100vh-140px)] md:pb-16 pb-8 ">
-            {children}
+          <div
+            className="min-h-[calc(100vh-140px)] md:pb-16 pb-8"
+          // className=""
+          >
+            <SocketProvider>
+              {children}
+            </SocketProvider>
           </div>
           <div className="bg-[#F6F6F6] lg:py-14 py-8">
             <Footer></Footer>
           </div>
 
           <NextTopLoader
-            color="#DEEEFF"
+            color="#000"
             initialPosition={0.08}
             crawlSpeed={200}
             height={3}

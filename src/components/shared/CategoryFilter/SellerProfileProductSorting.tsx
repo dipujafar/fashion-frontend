@@ -1,9 +1,11 @@
 "use client"
-
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { ArrowDownUp, ChevronDown } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams"
+import { useSearchParams } from "next/navigation"
+import { cn } from "@/lib/utils"
+import { Checkbox } from "@/components/ui/checkbox"
 
 type SortOption = {
   id: string
@@ -11,45 +13,55 @@ type SortOption = {
 }
 
 const sortOptions: SortOption[] = [
-  { id: "relevance", label: "Relevance" },
-  { id: "price-high-low", label: "Price: high to low" },
-  { id: "price-low-high", label: "Price: low to high" },
   { id: "newest", label: "Newest first" },
+  // { id: "relevance", label: "Relevance" },
+  { id: "price", label: "Price: high to low" },
+  { id: "-price", label: "Price: low to high" }
 ]
 
 export function SellerProfileProductSorting() {
-  const [selectedSort, setSelectedSort] = useState("price-high-low")
+  const searchParams = useSearchParams()
+  const updateparams = useUpdateSearchParams();
+
+  const selectedSort = searchParams.get("sortBy")
 
   const selectedOption = sortOptions.find((option) => option.id === selectedSort)
+
+  const handleSelect = (sortBy: string) => {
+    updateparams({ sortBy })
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full justify-between bg-background hover:bg-accent border-none">
+
+        <Button variant="outline" className={cn("justify-between hover:bg-zinc-50 duration-150 border border-gray-300 shadow-none cursor-pointer rounded px-2.5 h-8", selectedOption && "border-gray-700")}>
+          <ArrowDownUp />
           <span className="flex items-center gap-2">
-            <span className="text-muted-foreground">Sort by</span>
-            <span className="font-medium">{selectedOption?.label}</span>
+            <span className={cn("text-foreground text-sm font-normal", selectedOption && "font-semibold")}>Sort</span>
           </span>
-          <ChevronDown className="h-4 w-4 text-muted-foreground" />
         </Button>
+
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] p-0">
-        <div className="p-2 space-y-1">
-          {sortOptions.map((option) => (
-            <button
-              key={option.id}
-              onClick={() => setSelectedSort(option.id)}
-              className="w-full flex items-center justify-between p-3 rounded-md hover:bg-accent transition-colors text-left"
-            >
-              <span className="text-sm font-medium">{option.label}</span>
-              <div className="relative">
-                <div className="w-4 h-4 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center">
-                  {selectedSort === option.id && <div className="w-2 h-2 rounded-full bg-teal-600" />}
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
+      <DropdownMenuContent className=" p-0 rounded-none min-w-48" align="end">
+
+        {sortOptions.map((option) => {
+          const isChecked = selectedSort === option.id
+
+          return (
+            <div key={option.id} onClick={() => handleSelect(option.id)} className="p-0 border-b border-gray-200 last:border-b-0">
+              <button
+                className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-accent transition-colors text-left cursor-pointer">
+
+                <p className="text-sm">{option?.label}</p>
+
+
+                <Checkbox className='rounded-xs border-gray-500 data-[state=checked]:text-white' checked={isChecked} />
+              </button>
+            </div>
+          )
+        })}
+
       </DropdownMenuContent>
     </DropdownMenu>
   )

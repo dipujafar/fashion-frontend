@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { ArrowRight, AlertTriangle, Trash2, Info } from "lucide-react";
+import { Ban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,8 +23,6 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 
 const reportSchema = z.object({
   reason: z.enum(["violent", "aggressive", "others"], {
@@ -73,10 +71,13 @@ export function ReportDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild className="cursor-pointer">
-        <Info />
+      <DialogTrigger asChild className="cursor-pointer px-2 mt-1">
+        <div className="flex flex-row gap-x-2 items-center">
+          <Ban className="text-destructive size-5" />
+          <p className='font-medium'>Report</p>
+        </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="rounded-none sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             Report this user
@@ -152,36 +153,14 @@ export function ReportDialog({
 
             <Button
               type="submit"
-              className="w-full bg-black hover:bg-black/90 text-white group"
+              className="w-full rounded-none h-10 cursor-pointer"
               disabled={form.formState.isSubmitting}
             >
               SUBMIT
-              <AnimatedArrow size={20}/>
             </Button>
           </form>
         </Form>
 
-        <Separator className="my-2" />
-
-        <div className="space-y-2">
-          <Button
-            variant="outline"
-            className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent cursor-pointer"
-            onClick={handleBlockUser}
-          >
-            <AlertTriangle className="mr-2 h-4 w-4 " />
-            Block this user
-          </Button>
-
-          <Button
-            variant="outline"
-            className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent cursor-pointer"
-            onClick={handleDeleteConversation}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete conversation
-          </Button>
-        </div>
       </DialogContent>
     </Dialog>
   );

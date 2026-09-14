@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/input-otp";
 import { useVerifyOtpMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
-import { setUser } from "@/redux/features/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { Button } from "@/components/ui/button";
 
 // ✅ Define form validation schema using Zod
 const formSchema = z.object({
@@ -56,7 +56,7 @@ const VerifyOtpForm = () => {
         }
       }
       catch (error: any) {
-        toast.error(error.data.message);
+        toast.error(error?.data?.message || "Something went wrong");
       }
     }
 
@@ -67,17 +67,23 @@ const VerifyOtpForm = () => {
         sessionStorage.removeItem("verifyOtpToken");
         router.push("/sign-in");
       } catch (error: any) {
-        toast.error(error.data.message);
+        toast.error(error?.data?.message || "Something went wrong");
       }
     }
   };
 
   return (
     <Card
-      className="max-w-[742px] w-fit mx-auto shadow-none border-none lg:px-16 lg:py-10"
-      style={{ boxShadow: "0px 4px 19px 0px rgba(0, 0, 0, 0.14)" }}
+      className="max-w-lg mx-auto shadow-none border-none"
     >
+
       <CardContent>
+
+        <div className="my-5 lg:my-8 space-y-2">
+          <h3 className="text-2xl md:text-3xl font-bold text-center">Verify Your Email</h3>
+          <p className="text-secondary-gray">A 6-digit code has been sent to your email address. Please enter the code below to verify your email.</p>
+        </div>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -94,16 +100,16 @@ const VerifyOtpForm = () => {
                       maxLength={6}
                       value={field.value}
                       onChange={field.onChange}
-                      className="border "
+                      className=""
                     >
-                      <InputOTPGroup className="gap-x-2 ">
+                      <InputOTPGroup className="gap-x-2 mx-auto">
                         {Array(6)
                           .fill(null)
                           .map((_, index) => (
                             <InputOTPSlot
                               key={index}
                               index={index}
-                              className="border lg:size-16"
+                              className="border size-10 sm:size-12 lg:size-16 text-xl"
                             />
                           ))}
                       </InputOTPGroup>
@@ -114,7 +120,7 @@ const VerifyOtpForm = () => {
               )}
             />
 
-            <CommonButton loading={isLoading} disabled={isLoading} className="w-full">Verify Code</CommonButton>
+            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Verify Code"}</Button>
           </form>
         </Form>
       </CardContent>

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronRight, Search, X, Check, ChevronDown } from "lucide-react";
 import { Control, Controller } from "react-hook-form";
+import { ProductFormValues } from "../schema";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,9 +20,7 @@ interface BrandSelectorProps {
     /** Brands array from API */
     brands: BrandOption[];
     /** react-hook-form control */
-    control: Control<any>;
-    /** Field name in your form schema */
-    name: string;
+    control: Control<ProductFormValues>;
     /** If null, field is disabled and shows tooltip */
     selectedCategory: { id: string; name: string } | null;
     placeholder?: string;
@@ -32,7 +31,6 @@ interface BrandSelectorProps {
 export default function BrandSelector({
     brands,
     control,
-    name,
     selectedCategory,
     placeholder = "Select brand",
 }: BrandSelectorProps) {
@@ -41,7 +39,7 @@ export default function BrandSelector({
     return (
         <Controller
             control={control}
-            name={name}
+            name={"brandId"}
             render={({ field, fieldState }) => (
                 <div className="flex flex-col gap-1">
                     <BrandSelectorInner
@@ -142,7 +140,7 @@ function BrandSelectorInner({
                             className={`flex items-center justify-between px-4 py-3.5 cursor-pointer hover:bg-muted/60 transition-colors border-b border-border/40 last:border-0 ${isSelected ? "bg-muted" : ""
                                 }`}
                         >
-                            <span className="text-lg text-foreground">{brand.name}</span>
+                            <span className="text-base text-foreground">{brand.name}</span>
                             <div
                                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? "border-primary" : "border-muted-foreground/40"
                                     }`}
@@ -160,7 +158,7 @@ function BrandSelectorInner({
 
     const searchBar = (
         <div className="px-3 pt-3 pb-2 border-b border-border shrink-0">
-            <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5">
+            <div className="flex items-center gap-2 bg-white border border-gray-200 rounded px-2 py-1.5">
                 <Search className="w-4 h-4 text-muted-foreground shrink-0" />
                 <input
                     ref={searchRef}
@@ -168,7 +166,7 @@ function BrandSelectorInner({
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search brand..."
-                    className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+                    className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 />
                 {search && (
                     <button type="button" onClick={() => setSearch("")}>
@@ -192,7 +190,7 @@ function BrandSelectorInner({
                     type="button"
                     onClick={openPanel}
                     disabled={isDisabled}
-                    className={`flex items-center justify-between w-full bg-[#f2f2f2] rounded-md px-3 md:py-3 py-2 text-sm text-left focus:outline-none focus:ring-2 focus:ring-ring transition-opacity ${isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    className={`flex items-center justify-between w-full bg-white border border-gray-200 rounded focus-within:border-primary-black px-3 md:py-3 py-2 text-sm text-left focus:outline-none transition-opacity cursor-pointer ${isDisabled ? "opacity-80 bg-zinc-50 cursor-not-allowed" : ""
                         }`}
                 >
                     <span className={selectedBrand ? "text-foreground" : "text-muted-foreground"}>
@@ -222,7 +220,7 @@ function BrandSelectorInner({
                     >
                         <div className="absolute inset-0 bg-black/50" />
                         <div
-                            className="relative w-full max-w-sm bg-background rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+                            className="relative w-full max-w-sm bg-background shadow-2xl flex flex-col overflow-hidden"
                             style={{ maxHeight: "80dvh" }}
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -246,7 +244,7 @@ function BrandSelectorInner({
                     {/* ── DESKTOP: dropdown ── */}
                     <div
                         ref={panelRef}
-                        className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[200px] bg-background border border-border rounded-xl shadow-lg overflow-hidden"
+                        className="hidden md:flex md:flex-col absolute z-50 mt-1 w-full min-w-[200px] bg-background border border-border shadow-lg overflow-hidden"
                     >
                         {searchBar}
                         {listContent}

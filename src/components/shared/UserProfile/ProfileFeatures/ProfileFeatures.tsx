@@ -1,96 +1,64 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 import ProductsListContainer from "../ProductsList/ProductsListContainer";
-import CustomerFeedbacks from "../CustomerFeedbacks";
-import { Switch } from "@/components/ui/switch";
-import CharitySupportCards from "../../Cards/CharitySupportCards";
-import AboutCharity from "../../Profile/AboutCharity";
+import { GetProductsByMember } from "@/lib/services/Products";
 
-const ProfileFeatures = ({
-  userRole,
-  preview,
+const ProfileFeatures = async ({
+  userName,
+  searchParams: ssp
 }: {
-  userRole: string;
-  preview?: string;
+  userName: string;
+  searchParams: { [key: string]: string | undefined };
 }) => {
+
+  const { category, sortBy: sort, brand, priceMin, priceMax, size, color, condition, stock } = ssp;
+
+  let sortBy = "createdAt";
+  let orderBy = "desc"
+
+  if (sort == "newest") {
+    orderBy = "desc"
+  } else if (sort == "-price") {
+    sortBy = "finalPrice";
+    orderBy = "asc"
+  }
+  else if (sort == "price") {
+    sortBy = "finalPrice";
+    orderBy = "desc"
+  }
+
+  const query: any = { sortBy, sortOrder: orderBy, limit: 24 }
+
+  if (category) {
+    query.category = category
+  }
+
+  if (brand) {
+    query.brands = brand
+  }
+  if (priceMin) {
+    query.minPrice = priceMin
+  }
+  if (priceMax) {
+    query.maxPrice = priceMax
+  }
+  if (size) {
+    query.sizes = size
+  }
+  if (color) {
+    query.colors = color
+  }
+  if (condition) {
+    query.conditions = condition
+  }
+  if (stock) {
+    query.stock = stock
+  }
+
+  const prodData = await GetProductsByMember({ query, userName });
+
   return (
     <div>
-      <Tabs
-        defaultValue={
-          userRole === "user" ||
-          userRole === "eco-friendly-store" ||
-          userRole === "professional-seller" ||
-          userRole === "celebrity"
-            ? "product_listing"
-            : "product_listing"
-        }
-        className="w-full"
-      >
-        <TabsList
-          style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.06)" }}
-          className="w-full bg-white lg:mb-4 mb-2"
-        >
-          <TabsTrigger
-            value="product_listing"
-            className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
-          >
-            Product Listing
-          </TabsTrigger>
-
-          {userRole === "charity store" && (
-            <TabsTrigger
-              value="about"
-              className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
-            >
-              About
-            </TabsTrigger>
-          )}
-          {(userRole === "user" ||
-            userRole === "eco-friendly-store" ||
-            userRole === "professional-seller" ||
-            userRole === "celebrity") && (
-            <TabsTrigger
-              value="charity_support"
-              className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
-            >
-              Charity Support
-            </TabsTrigger>
-          )}
-
-          <TabsTrigger
-            value="rating_review"
-            className="data-[state=active]:shadow-none  data-[state=active]:border-b-2   data-[state=active]:border-black cursor-pointer  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:rounded-none text-[#8A8A8A] data-[state=active]:text-black"
-          >
-            Rating & Review
-          </TabsTrigger>
-        </TabsList>
-        {(userRole === "user" ||
-          userRole === "eco-friendly-store" ||
-          userRole === "professional-seller" ||
-          userRole === "celebrity") && (
-          <TabsContent value="charity_support">
-            {/* ---------------------------------- option to show charity support or not ---------------------------------- */}
-            {userRole === "eco-friendly-store" && !preview && (
-              <div className="flex justify-between items-center  shadow-md py-4 px-5 rounded-xl mb-5">
-                <span className="text-lg">
-                  Show Charitable donation on your profile
-                </span>
-                <Switch className="data-[state=checked]:bg-[#3DB39E] cursor-pointer" />
-              </div>
-            )}
-            <CharitySupportCards />
-          </TabsContent>
-        )}
-        <TabsContent value="product_listing">
-          <ProductsListContainer />
-        </TabsContent>
-        <TabsContent value="rating_review">
-          <CustomerFeedbacks />
-        </TabsContent>
-        <TabsContent value="about">
-          <AboutCharity />
-        </TabsContent>
-      </Tabs>
+      <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)} />
     </div>
   );
 };

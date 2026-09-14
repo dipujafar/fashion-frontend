@@ -1,104 +1,96 @@
-"use client";
-import { productDetails } from "@/data/dummyData.tsx";
 import Link from "next/link";
 import ActionButtons from "../ActionButtons";
 import SellerDetails from "../SellerDetails";
-import { CheckIcon, ReportIcon, ShareIcon } from "@/icons";
+import { CheckIcon } from "@/icons";
 import ProductDetailsHeader from "./ProductDetailsHeader";
 import DisplayLargeDescriptionText from "@/components/shared/DisplayLargeDescriptionText";
-import { IProduct } from "@/types";
+import { IProduct, ISize, IUser } from "@/types";
+import Sizechart from "../dialog/Sizechart";
 
-const handleShare = () => {
-  navigator.share({
-    title: productDetails?.title,
-    url: `/shop/${productDetails?._id}`,
-  });
+export type IUserWithExtra = IUser & {
+  _count: {
+    products: number;
+  },
+  bundleDiscount: {
+    tiers: {
+      itemCount: number;
+      discountPercent: number;
+    }[]
+  } | null;
 };
 
-const ProductDetails = ({ product }: { product: IProduct }) => {
+export type IProductWithUser = Omit<IProduct, "user"> & {
+  user: IUserWithExtra;
+  _count: {
+    cartItems: number;
+    favourites: number;
+  },
+  sizechart: ISize[],
+  isMyProduct: boolean
+};
+
+const ProductDetails = ({ product }: { product: IProductWithUser }) => {
+  const isStockOut = product?.stock === 0;
+
+  const isDeleted = product?.isDeleted;
+
   return (
-    <div className=" md:space-y-5 space-y-3 my-5">
+    <div className="lg:my-5 space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
       <div >
-        <ProductDetailsHeader product={product} />
+        <ProductDetailsHeader product={product} isMyProduct={product?.isMyProduct} />
       </div>
 
       {/* --------- product details data ---------- */}
-      <div className="space-y-3 ">
-        <div className="flex justify-between items-center gap-x-3  mb-2">
-          <h5 className="uppercase underline text-primary-gray">
-            product Details
-          </h5>
-          <div className="flex gap-x-2">
-            <button
-              className="size-10 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
-              style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
-              onClick={handleShare}
-            >
-              <ShareIcon className="size-5" />
-            </button>
-            <button
-              className="size-10 rounded-full flex justify-center items-center cursor-pointer hover:bg-primary-gray/10  transition-all duration-300"
-              style={{ boxShadow: "0px 4px 5px 0px rgba(0, 0, 0, 0.07)" }}
-            >
-              <ReportIcon className="size-5" />
-            </button>
-          </div>
+      <div className="space-y-3">
+
+        <div>
+          <DisplayLargeDescriptionText data={product?.description} />
+
+          <p className="flex flex-wrap gap-2 items-center ">
+            {product?.tags?.map((tag, index) => (
+              <Link href={`/shop?search=${tag}`} key={index} className="text-black font-semibold hover:underline duration-150 text-lg">
+                #{tag}{" "}
+              </Link>
+            ))}
+          </p>
+
         </div>
-        <DisplayLargeDescriptionText data={product?.description} />
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Total Amount of charity:</h2>
+
+        {product?.donation_percent > 0 && <div className="flex md:gap-x-8 gap-x-4 items-center">
+          <h2 className="w-30">Donation:</h2>
           <p className="text-green-600">{product?.donation_percent}%</p>
-        </div>
+        </div>}
         {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Item Number:</h2>
           <p>{productDetails?.item_Number}</p>
         </div> */}
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px] ">Category :</h2>
+          <h2 className="w-30">Category :</h2>
           <p>
-            {product?.catagory_hierarchy?.map((i, index) => (
-              <span key={i?.id}>
-                <Link href={`/shop?category=${i?.id}`} className="hover:underline duration-150">{i?.name}</Link>
-                {index !== product.catagory_hierarchy.length - 1 && " / "}
-              </span>
-            ))}
+            <Link href={`/shop?category=${product?.category?.id}`} className="underline duration-150 font-medium text-black underline-offset-1">{product?.category?.name}</Link>
           </p>
         </div>
-        <div className="flex md:gap-x-8 gap-x-4 lg:items-center">
-          <h2 className="w-[120px]  flex-shrink-0">Tags:</h2>
-          <p className="flex flex-wrap gap-1 items-center ">
-            {product?.tags?.map((tag, index) => (
-              <span key={index} className="bg-black text-white px-1.5 rounded text-[15px]">
-                {tag}{" "}
-              </span>
-            ))}
-          </p>
-        </div>
+
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Condition:</h2>
+          <h2 className="w-30">Condition:</h2>
           <p>{product?.condition}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Fabric: </h2>
+          <h2 className="w-30">Fabric: </h2>
           <p>{product?.meterials?.join(", ")}</p>
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
-          <h2 className="w-[120px]">Brands: </h2>
+          <h2 className="w-30">Brands: </h2>
           <Link href={`/shop?brand=${product?.brand?.id}`} className="hover:underline">{product?.brand?.name}</Link>
         </div>
         {/* available sizes */}
         <div className="flex flex-col md:flex-row justify-between gap-x-2">
           <div className="flex md:gap-x-8 gap-x-4 items-center">
-            <h2 className="w-[120px]">Available Size: </h2>
+            <h2 className="w-30">Available Size: </h2>
             <Link href={`/shop?size=${product?.size?.id}`} className="hover:underline">{product?.size?.title}</Link>
           </div>
-          <Link
-            href="/product-size"
-            className="underline text-primary-light-blue"
-          >
-            View Size Guide
-          </Link>
+          <Sizechart sizes={product?.sizechart} />
         </div>
         <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px]">Colour: </h2>
@@ -109,15 +101,15 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
           <p>{productDetails?.care_Instruction}</p>
         </div> */}
         {/* =============== Shipping & Delivery =============== */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Shipping & Delivery:</h2>
           <p>UK Standard Shipping (3–5 working days)</p>
-        </div>
+        </div> */}
         {/* =============== Returns Policy =============== */}
-        <div className="flex md:gap-x-8 gap-x-4 items-center">
+        {/* <div className="flex md:gap-x-8 gap-x-4 items-center">
           <h2 className="w-[120px] flex-shrink-0 ">Returns Policy:</h2>
           <p>Returns accepted – {product?.return_window} days </p>
-        </div>
+        </div> */}
         {/* ======== alert section ============= */}
         <div className="flex gap-x-2 bg-primary-green/10 px-2 py-1 w-fit rounded">
           <CheckIcon />
@@ -128,9 +120,14 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
       </div>
 
       {/* ======================= all actions buttons ================ */}
-      <ActionButtons product={product}></ActionButtons>
+      {isStockOut ? <div className="py-3 max-w-lg bg-yellow-700 2xl:w-2/3">
+        <p className="text-center text-white">Item Sold Out</p>
+      </div> : isDeleted ? <div className="py-3 max-w-lg bg-yellow-700 2xl:w-2/3">
+        <p className="text-center text-white">Item not available</p>
+      </div> : product?.isMyProduct ? <></> : <ActionButtons product={product}></ActionButtons>}
+
       {/* ========================= seller details ========================= */}
-      <SellerDetails user={product?.user}></SellerDetails>
+      <SellerDetails user={product?.user} isMyProfile={product?.isMyProduct}></SellerDetails>
     </div>
   );
 };

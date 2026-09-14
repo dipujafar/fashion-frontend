@@ -1,5 +1,7 @@
+import { IFavoriteItem } from "@/app/(public)/favourites/_components/WishListContainer";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
+import { IMeta } from "@/types";
 
 const favoriteProductApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,13 +16,24 @@ const favoriteProductApi = baseApi.injectEndpoints({
         { type: tagTypes.product, id: arg.productId },
       ],
     }),
-    getFavoriteProduct: builder.query({
-      query: () => ({
+
+    myFavoriteProducts: builder.query<{ message: string, data: { data: IFavoriteItem[], meta: IMeta } }, void>({
+      query: (args) => ({
         url: "/favourites",
         method: "GET",
+        params: args,
       }),
-      providesTags: [tagTypes.favorite, tagTypes.product],
+      providesTags: [tagTypes.favorite],
     }),
+
+    getFavoriteProduct: builder.mutation<{ message: string, data: { data: IFavoriteItem[], meta: IMeta } }, {}>({
+      query: (args) => ({
+        url: "/favourites",
+        method: "GET",
+        params: args,
+      }),
+    }),
+
     deleteFavoriteProduct: builder.mutation({
       query: (id) => ({
         url: `/favourites/${id}`,
@@ -36,6 +49,7 @@ const favoriteProductApi = baseApi.injectEndpoints({
 
 export const {
   useAddFavoriteProductMutation,
-  useGetFavoriteProductQuery,
+  useGetFavoriteProductMutation,
   useDeleteFavoriteProductMutation,
+  useMyFavoriteProductsQuery,
 } = favoriteProductApi;

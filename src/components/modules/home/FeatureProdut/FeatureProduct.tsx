@@ -1,77 +1,47 @@
-"use client";
 import ProductCard from "@/components/shared/Cards/ProductCard";
 import Container from "@/components/shared/Container";
 import { productsData } from "@/data/dummyData.tsx";
-import React from "react";
-import FeatureProductCategory from "./FeatureProductCategory";
-import Link from "next/link";
-import CommonButton from "@/components/ui/common-button";
+import React, { Suspense } from "react";
 import { motion } from "framer-motion";
-import { fadeUpWithBlurVariants } from "@/animations/motionVariant";
+import GetProductsByType from "@/lib/services/ProductsByType";
+import { IProduct } from "@/types";
+import { ProductGridSkeleton } from "@/components/skeletons/ProductsCardSkeleton";
+import FeatureProdcards from "./FeatureProdcards";
+import FeatureProdTitle from "./FeatureProdTitle";
 
-const fadeUpVariants = {
-  initial: {
-    y: 50,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-      staggerChildren: 0.1,
-      when: "beforeChildren",
-    },
-  },
-};
+const FeatureProduct = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined }
+}) => {
+  const query: { type?: string } = {};
 
-const FeatureProduct = () => {
+  const type = searchParams.type;
+
+  if (type) {
+    query.type = type
+  }
+
+  const prodPromise = GetProductsByType({ query });
+
   return (
     <Container className="lg:space-y-8 space-y-4">
-      <motion.div
-        initial="initial"
-        whileInView="animate"
-        variants={fadeUpWithBlurVariants()}
-        viewport={{ once: true }}
-      >
-        <motion.h6
-          variants={fadeUpWithBlurVariants()}
-          className="page-title uppercase md:text-xl text-base text-center  mb-2"
-        >
-          fashion trend, style
-        </motion.h6>
-        <motion.h2
-          variants={fadeUpWithBlurVariants()}
-          className="section-name text-center lg:text-3xl md:text-base text-sm"
-        >
-          Timeless Fashion, Sustainable Impact
-        </motion.h2>
-      </motion.div>
-      <div className="flex flex-col md:flex-row md:gap-x-4 gap-y-2 justify-between items-center">
-        <div className=" md:w-[calc(100%-150px)] w-full">
-          <FeatureProductCategory></FeatureProductCategory>
-        </div>
-        <Link href={"/shop"}>
-          <CommonButton className="md:py-2 py-0">View All</CommonButton>
-        </Link>
-      </div>
 
-      <motion.div
-        initial="initial"
-        whileInView="animate"
-        variants={fadeUpVariants as any}
-        viewport={{ once: true }}
-        className="grid grid-cols-2 md:grid-cols-3     2xl:grid-cols-4  md:gap-4 gap-x-2 gap-y-4 xl:gap-6 "
-      >
-        {productsData?.slice(0, 8).map((user) => (
-          <motion.div variants={fadeUpVariants as any} key={user._id}>
-            <ProductCard data={user}></ProductCard>
-          </motion.div>
-        ))}
-      </motion.div>
+      <FeatureProdTitle />
+
+      {/* --------------Products------------ */}
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <Products prodPromise={prodPromise} />
+      </Suspense>
+
     </Container>
   );
 };
 
 export default FeatureProduct;
+
+const Products = async ({ prodPromise }: { prodPromise: Promise<{ data: IProduct[] }> }) => {
+  const res = await prodPromise;
+
+  return <FeatureProdcards productsData={res?.data} />
+}

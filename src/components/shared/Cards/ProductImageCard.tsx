@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import React from "react";
 
@@ -8,13 +9,15 @@ type TProps = {
 
 const ProductImageCard = ({ data }: { data: TProps }) => {
   return (
-    <div className="w-full  rounded   relative group">
+    <div className="w-full rounded relative group">
       <Image
-        src={data?.image}
+        src={data?.image || defaultImg.product}
         alt="cloth_image"
         width={1200}
         height={1200}
-        className="mx-auto"
+        placeholder="blur"
+        blurDataURL={defaultImg.placeholderImg}
+        className="mx-auto h-72 w-auto object-cover"
       ></Image>
       <div
         className={cn(

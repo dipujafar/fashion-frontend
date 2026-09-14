@@ -16,7 +16,8 @@ export default function FavoriteIcon({ id, count, includedProduct, className }: 
     const [deleteFavoriteList, { isLoading: isDeleting }] = useDeleteFavoriteProductMutation();
     const pathName = usePathname();
     const router = useRouter();
-    const user: ILoggedInUser | null = useAppSelector((state) => state.auth.user);
+    
+    const user = useAppSelector((state) => state.auth.user);
 
 
     const addFavorite = async () => {

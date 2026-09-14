@@ -1,0 +1,14 @@
+export const tags = {
+    "new_arrival": "newArrival",
+    "recommended": "recommended",
+    "trending": "trending",
+    "recentView": "recentView",
+    "products": "products",
+    "orders": "orders",
+    "favourites" : "favourites",
+    "carts" : "carts",
+    "category_hairerchy" : "category_hairerchy",
+    "cart_summary": "cart_summary",
+    "shipping_rates": "shipping_rates",
+    "address": "address",
+}

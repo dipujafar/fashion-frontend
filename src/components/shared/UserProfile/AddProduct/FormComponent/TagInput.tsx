@@ -32,11 +32,11 @@ export function TagInput({ value, onChange, placeholder }: TagInputProps) {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2 py-0.5 px-2 rounded-md border border-gray-300 bg-[#f2f2f2]">
+    <div className="flex flex-wrap items-center gap-2 py-0.5 px-3 bg-white border border-gry-200 focus-within:border-primary-black rounded focus-visible:border-primary-black !text-base">
       {value.map((tag, i) => (
         <span
           key={i}
-          className="flex items-center bg-black text-white text-sm px-2 py-1 rounded-full gap-1"
+          className="flex items-center bg-black text-white px-2 py-0.5 rounded-full gap-1 text-sm"
         >
           {tag}
           <button

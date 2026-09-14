@@ -4,13 +4,20 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "masumraihan.s3.eu-north-1.amazonaws.com",
-        port: "",
-        pathname: "**",
-        search: "",
+        protocol: 'https',
+        hostname: '**', // allow all hosts over https
+      },
+      {
+        protocol: 'http',
+        hostname: '**', // allow all hosts over http
       },
     ],
+  },
+
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "500mb",
+    },
   },
 };
 
