@@ -32,7 +32,7 @@ const NavLogoCategory = () => {
             <SearchAndNavIcon />
           </div>
           <SmallDeviceView />
-        </div> : <div className="flex items-center gap-x-4">
+        </div> : <div className="md:hidden flex items-center gap-x-4">
 
           <Link href={"/sign-up"}>
             <p className="font-medium">Sign Up</p>

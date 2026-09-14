@@ -6,10 +6,6 @@ export default function middleware(req: any) {
   const isLoggedIn = req.cookies.get("fashion-access-token")?.value;
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
   if (!isLoggedIn && !isAuthRoute) {
     const signInUrl = new URL("/sign-in", req.url);
     signInUrl.searchParams.set(
@@ -18,12 +14,18 @@ export default function middleware(req: any) {
     );
     return NextResponse.redirect(signInUrl);
   }
+
 }
 
 export const config = {
   matcher: [
-    // "/profile/:path*",
-    // "/sell",
-    "/wishlist"
+    "/profile/:path*",
+    "/sell/:path*",
+    "/favourites",
+    "/notifications",
+    "/inbox",
+    "/checkout/:path*",
+    "/shopping-cart",
+    "/assisted-seller",
   ],
 };
