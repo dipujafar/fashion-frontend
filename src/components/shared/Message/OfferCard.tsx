@@ -8,6 +8,8 @@ import moment from "moment";
 import { AcceptOffer } from "@/lib/Actions/Product.api";
 import { toast } from "sonner";
 import CounterOffer from "./CounterOffer";
+import OfferView from "./OfferView";
+import { useRouter } from "next/navigation";
 
 const VISIBLE_COUNT = 3;
 
@@ -16,6 +18,8 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
   const [open, setOpen] = useState(false);
 
   const [loadingAccept, setLoadingAccept] = useState(false);
+
+  const router = useRouter();
 
   const visibleItems = offer?.offerItems.slice(0, VISIBLE_COUNT);
   const remainingCount = offer?.offerItems.length - VISIBLE_COUNT;
@@ -33,7 +37,11 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
 
   const haveStockOutItem = offer?.offerItems?.some(item => item?.product?.stock === 0);
 
-  const isOfferExpired = moment().isAfter(moment(offer?.expiresAt));
+  const isOfferExpired =  !offer?.expiredAt || moment().isAfter(moment(offer?.expiredAt));
+
+  const handleBuyNow = (offerId: string) => {
+    router.push(`/checkout/offer/${offerId}`);
+  }
 
   return (
     <div className="rounded-xl min-w-48 bg-[#DFE1E3] border border-gray-200 p-4 space-y-1">
@@ -42,16 +50,16 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
       </p>
 
       <div className={cn(
-        "flex gap-2",
+        "flex gap-2 cursor-pointer",
         isSent ? "justify-end" : "justify-start"
-      )}>
+      )} onClick={() => setOpen(true)}>
         {visibleItems.map((item, i) => (
           <Image
             src={item?.product?.images[0]?.url || defaultImg?.product}
             alt={`item-${i}`}
             key={i}
-            width={50}
-            height={50}
+            width={500}
+            height={500}
             placeholder="blur"
             blurDataURL={defaultImg?.placeholderImg}
             className="h-14 w-14 rounded object-cover"
@@ -100,13 +108,22 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
               !isImSellerForThisOffer ? <>
 
                 {
-                  isOfferExpired ? <p className="text-sm text-yellow-700 font-medium text-right">Offer Expired</p> : haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <Button
-                    // onClick={() => acceptOfferhandler(offer?.id)}
-                    className={cn(
-                      "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors",
-                      loadingAccept ? "cursor-not-allowed opacity-50" : "")}>
-                    {loadingAccept ? <span className="loader" /> : "Buy Now"}
-                  </Button>
+                  isOfferExpired ? <p className="text-sm text-yellow-700 font-medium text-right">Offer Expired</p> : haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <div className="space-y-1">
+                    <Button
+                      onClick={() => handleBuyNow(offer?.id)}
+                      className={cn(
+                        "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors")}>
+                      Buy Now
+                    </Button>
+                    <p className="text-red-700 text-xs">
+                      Offer will expire {moment(offer?.expiredAt).calendar(null, {
+                        sameDay: "[today]",
+                        lastDay: "[yesterday]",
+                        nextDay: "[tomorrow]",
+                        sameElse: "MMM D, YYYY",
+                      })} at {moment(offer?.expiredAt).format("h:mm a")}
+                    </p>
+                  </div>
                 }
 
               </> : <p className="text-sm text-green-700 font-medium text-right">Offer Accepted</p>
@@ -124,13 +141,22 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
             isImSellerForThisOffer ? <p className="text-sm gray-800 font-medium text-right">Offer Sent</p> : <>
 
               {
-                isOfferExpired ? <p className="text-sm text-yellow-700 font-medium text-right">Offer Expired</p> : haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <Button
-                  // onClick={() => acceptOfferhandler(offer?.id)}
-                  className={cn(
-                    "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors",
-                    loadingAccept ? "cursor-not-allowed opacity-50" : "")}>
-                  {loadingAccept ? <span className="loader" /> : "Buy Now"}
-                </Button>
+                isOfferExpired ? <p className="text-sm text-yellow-700 font-medium text-right">Offer Expired</p> : haveStockOutItem ? <p className="text-sm text-yellow-700 font-medium text-right">Some items are sold out</p> : <div className="space-y-1">
+                  <Button
+                    onClick={() => handleBuyNow(offer?.id)}
+                    className={cn(
+                      "cursor-pointer bg-green-800 hover:bg-green-700 duration-150 transition-colors")}>
+                    Buy Now
+                  </Button>
+                  <p className="text-red-700 text-xs">
+                    Offer will expire {moment(offer?.expiredAt).calendar(null, {
+                      sameDay: "[today]",
+                      lastDay: "[yesterday]",
+                      nextDay: "[tomorrow]",
+                      sameElse: "MMM D, YYYY",
+                    })} at {moment(offer?.expiredAt).format("h:mm a")}
+                  </p>
+                </div>
               }
 
             </>
@@ -140,39 +166,8 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
 
       <p className="text-[10px] text-right text-gray-700">{moment(offer?.createdAt).format("h:mm a")}</p>
 
-      {/* {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/45"
-          onClick={() => setOpen(false)}
-        >
-          <div
-            className="w-72 rounded-xl border border-gray-200 bg-white p-5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <p className="text-[15px] font-medium text-gray-900">
-                All items
-              </p>
-              <button
-                aria-label="Close"
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-center rounded p-1 text-gray-500 hover:bg-gray-100"
-              >
-                <X size={18} />
-              </button>
-            </div>
+      <OfferView offerItems={offer?.offerItems} open={open} setOpen={setOpen} />
 
-            <div className="grid grid-cols-2 gap-3">
-              {items.map((item, i) => (
-                <div key={i} className="text-center">
-                  <div className="aspect-square w-full rounded-lg bg-gray-100" />
-                  <p className="mt-1.5 text-xs text-gray-700">{item.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }

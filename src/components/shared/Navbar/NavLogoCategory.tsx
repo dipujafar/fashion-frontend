@@ -27,12 +27,24 @@ const NavLogoCategory = () => {
       <Container className="flex flex-row-reverse md:flex-row justify-between items-center gap-x-5 lg:gap-x-10 xl:gap-x-16  py-4">
 
         {/* ======= Small Screen view ========== */}
-        <div className="flex items-center gap-x-2">
+        {user ? <div className="flex items-center gap-x-2">
           <div className="md:hidden ">
             <SearchAndNavIcon />
           </div>
           <SmallDeviceView />
-        </div>
+        </div> : <div className="flex items-center gap-x-4">
+
+          <Link href={"/sign-up"}>
+            <p className="font-medium">Sign Up</p>
+          </Link>
+
+          <Link href={"/sign-in"}>
+            <Button className="font-medium rounded-none" size={"sm"}>
+              Sign In
+            </Button>
+          </Link>
+
+        </div>}
 
         {/* ======= logo ========== */}
         <div className="flex justify-center items-center ">
@@ -60,7 +72,7 @@ const NavLogoCategory = () => {
                 Sell An Item
               </Button>
             </Link>}
-            
+
             <SearchAndNavIcon></SearchAndNavIcon>
           </div>
         </div> : <div className="flex-row gap-x-4 items-center hidden md:flex">

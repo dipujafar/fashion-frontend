@@ -2,9 +2,16 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { serverQueryWithReauth } from "./ReAuthRequest";
 
-export const makeOrder = async ({ payload }: { payload: { "cartGroupId": string, shipmentServiceId: string, treeGiftCount: number, allowedAuthentication: boolean } }) => {
+export const makeOrder = async ({ payload }: { payload: { cartGroupId: string, offerId: string, shipmentServiceId: string, treeGiftCount: number, allowedAuthentication: boolean } }) => {
 
     const res = await serverQueryWithReauth({ payload, endPoint: `/orders`, method: "POST" });
+
+    return res;
+}
+
+export const makeOfferOrder = async ({ payload }: { payload: { cartGroupId: string, offerId: string, shipmentServiceId: string, treeGiftCount: number, allowedAuthentication: boolean } }) => {
+
+    const res = await serverQueryWithReauth({ payload, endPoint: `/orders/offer`, method: "POST" });
 
     return res;
 }

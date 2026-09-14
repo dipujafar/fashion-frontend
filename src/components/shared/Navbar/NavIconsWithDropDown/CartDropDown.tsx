@@ -102,7 +102,7 @@ const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
                           <Link
                             href={`/shop/${item?.product?.id}`}
                             className="cursor-pointer"
-                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28 object-cover" />
+                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="h-28 w-28 object-cover" />
                           </Link>
                           <div>
                             <Link
@@ -110,7 +110,7 @@ const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
                               className="space-y-0.5"
                             >
                               <p className="text-base font-medium line-clamp-1 text-gray-800">{item?.product?.title}</p>
-                              <p className="text-lg font-bold">${item?.product?.finalPrice?.toFixed(2)}</p>
+                              <p className="text-lg font-semibold">${item?.product?.finalPrice?.toFixed(2)}</p>
                               <p className="text-sm text-gray-800">${item?.product?.size?.title}</p>
                             </Link>
                             <DltCart cartItemId={item?.id} productId={item?.product?.id} />
@@ -121,7 +121,7 @@ const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
 
                     ))
                   }
-                  <Link href={`/checkout/${cartGroup?.id}`}>
+                  <Link href={`/checkout/cart/${cartGroup?.id}`}>
                     <Button variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout</Button>
                   </Link>
                 </div>

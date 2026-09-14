@@ -123,9 +123,9 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
           user?.data?.badges?.length > 0 && <div className="mt-4 md:mt-5 lg:mt-6 flex flex-row flex-wrap items-center gap-4">
 
             {user?.data?.badges?.map((badgeItem) => (
-              <div key={badgeItem?.id} className="flex flex-row items-center gap-2 px-2.5 py-1 rounded-full bg-zinc-50">
+              <div key={badgeItem?.id} className="flex flex-row items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100">
                 <div
-                  className="h-4 w-4 bg-[#0000ff]"
+                  className="h-4.5 w-4.5 bg-green-800"
                   style={{
                     maskImage: `url(${badgeItem?.badge?.icon})`,
                     WebkitMaskImage: `url(${badgeItem?.badge?.icon})`,
@@ -137,7 +137,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                     WebkitMaskSize: "contain",
                   }}
                 />
-                <span className="text-sm text-[#0000ff]">{badgeItem?.badge?.name}</span>
+                <span className="text-sm text-green-800">{badgeItem?.badge?.name}</span>
               </div>
             ))}
 

@@ -175,7 +175,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                 )}
 
                                 {!haveAnyStockoutItems ? (
-                                    <Link href={`/checkout/${cartGroup?.id}`}>
+                                    <Link href={`/checkout/cart/${cartGroup?.id}`}>
                                         <Button variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout {cartGroup?.items.length} items</Button>
                                     </Link>
                                 ) : <Button disabled variant={"default"} className="w-full mt-2 rounded-none py-5 border-2 border-primary-black cursor-pointer font-semibold">Checkout {cartGroup?.items.length} items</Button>}

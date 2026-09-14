@@ -28,6 +28,45 @@ export const getCheckoutItems = async (cartGroupId: string) => {
     }
 };
 
+export const GetOfferItems = async (offerId  : string) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/offer/${offerId}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getOfferCheckoutSummary = async ({ offerId }: { offerId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/checkout/offer/${offerId}/summary`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getOfferShippingRates = async ({ offerId }: { offerId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/checkout/offer/${offerId}/shipping-rates`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
 export const getCartSummary = async ({ cartGroupId }: { cartGroupId: string }) => {
     try {
         const res = await serverQueryWithReauth({

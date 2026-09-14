@@ -91,7 +91,7 @@ export default function ProfileIcon() {
     {
       icon: <Wallet className="size-5" />,
       name: "Earnings & Wallet",
-      link: "/profile/payment/earnings",
+      link: "/profile/earnings",
     },
     {
       name: "Donate now",

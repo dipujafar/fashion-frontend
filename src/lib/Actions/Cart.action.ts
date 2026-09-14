@@ -42,7 +42,7 @@ export const updateShippingDetails = async (payload: IBillingDetails, cartGroupI
     revalidateTag(tags.shipping_rates);
     revalidatePath(`/profile/address`);
     if (cartGroupId) {
-        revalidatePath(`/checkout/${cartGroupId}`);
+        revalidatePath(`/checkout/cart/${cartGroupId}`);
     }
     return res;
 }

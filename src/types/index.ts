@@ -1,5 +1,15 @@
 import { IUserWithExtra } from "@/app/(public)/shop/[productId]/_components/ProductDetails/ProductDetails";
 
+export type TUser = {
+  _id: string;
+  name: string;
+  bio: string;
+  type: string;
+  image: string;
+  coverImage: string;
+  bestOn?: string;
+};
+
 // ======================================== integration --> real data ========================================================
 export interface IProductImage {
   id: string;
@@ -372,7 +382,9 @@ export type OrderSummeryType = {
   serviceFeeCost: number,
   bundleDiscountPercent: number,
   bundleDiscountAmount: number,
-  totalExtraDonation: number
+  totalExtraDonation: number,
+  itemsCount: number,
+  haveAnyUnavailableItems : boolean,
 }
 
 export interface IOrder {
@@ -383,7 +395,10 @@ export interface IOrder {
 
   itemsTotal: number,
   totalPrice: number,
-  totalDeliveryCost: number,
+  totalDelivery: number,
+  authenticationFee: number,
+  serviceFee: number,
+  treeCredit: number,
 
   sellerTotal: number,
   sellerItemsTotal: number,
@@ -394,13 +409,22 @@ export interface IOrder {
   currentShipTo: CurrentShipTo
   authStatus: OrderAuthStatus
 
+  pricingSource: OrderPricingSource
+
   sellerId: string,
   seller: IUser,
 
   billingDetails: IBillingDetails,
   createdAt: Date,
 
+  bundleDiscountPercent: number,
+
   payment: IPayment | null,
+}
+
+enum OrderPricingSource {
+  OFFER = "OFFER",
+  BUNDLE = "BUNDLE",
 }
 
 export enum CurrentShipTo {
@@ -443,10 +467,16 @@ export interface IOrderItem {
   product: IProduct,
   quantity: number,
   unitPrice: number,
+  unitAllocatedPrice: number,
+  sellerFinalUnitPrice: number,
   totalPrice: number,
   buyerRequestCancel: BuyerRequestCancelStatus,
   authResult: OrderAuthResult,
   isCancelled: boolean,
+
+  extra_donation: number,
+
+  sell_donation: number,
 
   cancelledBy: CancelledBy
   cancelReason: CancelReason
@@ -572,7 +602,7 @@ export interface IOffer {
   offeredPrice: number,
   actualPrice: number,
   actionAt: Date | null,
-  expiresAt: Date | null,
+  expiredAt: Date | null,
 }
 
 export interface IOfferItem {

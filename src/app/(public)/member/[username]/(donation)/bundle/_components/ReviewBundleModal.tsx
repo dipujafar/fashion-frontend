@@ -115,7 +115,7 @@ export default function ReviewBundleModal({
 
             <div className="mt-5 flex gap-2">
               <div className="flex-1">
-                <Link href={data?.cartGroupId ? `/checkout/${data?.cartGroupId}` : "/shopping-cart"}>
+                <Link href={data?.cartGroupId ? `/checkout/cart/${data?.cartGroupId}` : "/shopping-cart"}>
                   <Button
                     onClick={handleBuyNow}
                     className="w-full rounded-none border-primary-black cursor-pointer"

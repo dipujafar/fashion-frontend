@@ -1,4 +1,4 @@
-import Categories from "@/components/shared/Categories/Categories";
+
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { collectionTypes } from "@/lib/collectionType";
 import { brandsData } from "@/lib/brandsData";
@@ -11,10 +11,10 @@ export function SmallDeviceFilter() {
         <SlidersHorizontal />
       </SheetTrigger>
       <SheetContent side={"left"} className="h-screen overflow-scroll ">
-        <div className="2xl:space-y-10 space-y-6 mt-10 px-2 mb-10 ">
+        {/* <div className="2xl:space-y-10 space-y-6 mt-10 px-2 mb-10 ">
           <Categories title="COLLECTION" data={collectionTypes}></Categories>
           <Categories title="BRANDS" data={brandsData}></Categories>
-        </div>
+        </div> */}
       </SheetContent>
     </Sheet>
   );

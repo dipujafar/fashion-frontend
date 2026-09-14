@@ -1,5 +1,4 @@
 "use client";
-import BlogCard from "@/components/shared/Cards/BlogCard";
 import PaginationSection from "@/components/shared/Pagination/PaginationSection";
 import { blogsData } from "@/data/dummyData.tsx";
 import Link from "next/link";
@@ -35,16 +34,16 @@ const BlogPageContainer = () => {
         viewport={{ once: true }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-8 gap-4 xl:mt-8 mt-4"
       >
-        {blogsData?.map((blog) => (
+        {/* {blogsData?.map((blog) => (
           <motion.div variants={fadeUpVariants as any} key={blog?._id}>
             <Link href={`/blogs/${blog?._id}`}>
               <BlogCard data={blog}></BlogCard>
             </Link>
           </motion.div>
-        ))}
+        ))} */}
       </motion.div>
       {/* Pagination */}
-      <PaginationSection></PaginationSection>
+      {/* <PaginationSection></PaginationSection> */}
     </div>
   );
 };

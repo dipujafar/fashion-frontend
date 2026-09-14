@@ -1,5 +1,5 @@
 "use client"
-import BillingAddressModal from '@/app/(public)/checkout/[cartGroupId]/_components/Billing/BillingAddressModal';
+import BillingAddressModal from '@/app/(public)/checkout/cart/[cartGroupId]/_components/Billing/BillingAddressModal';
 import { updateSellingDetails } from '@/lib/Actions/Cart.action';
 import { IBillingDetails } from '@/types';
 import React, { useState } from 'react'

@@ -1,4 +1,4 @@
-import CharitySupportCards from "@/components/shared/Cards/CharitySupportCards";
+
 import Container from "@/components/shared/Container";
 import React from "react";
 
@@ -80,7 +80,8 @@ const defaultCharitySupportData = [
 export default function AllCharitiesPage() {
   return (
     <Container>
-      <CharitySupportCards charitySupportsData={defaultCharitySupportData} className="xl:grid-cols-4" />
+      <h1 className="text-2xl font-bold mb-4">All Charities</h1>
+      {/* <CharitySupportCards charitySupportsData={defaultCharitySupportData} className="xl:grid-cols-4" /> */}
     </Container>
   );
 }

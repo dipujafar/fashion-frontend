@@ -110,9 +110,9 @@ export default function SendOfferModal({
                     setIsCustomOffer(false);
                     setOfferPrice(item?.price);
                   }}
-                  className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer shadow-sm text-sm h-full font-medium text-gray-700", offerPrice === item?.price && "border-gray-600 bg-zinc-50")}
+                  className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer shadow-sm text-sm h-full font-medium text-gray-700", offerPrice === item?.price && " border-black bg-zinc-50")}
                 >
-                  <span className="font-semibold text-primary-black">${item?.price.toFixed(2)}</span> for <br /> {item?.discount}% off
+                  <span className="font-semibold ">${item?.price.toFixed(2)}</span> for <br /> {item?.discount}% off
                 </button>
               ))}
               <button
@@ -120,7 +120,7 @@ export default function SendOfferModal({
                   setIsCustomOffer(true);
                   setOfferPrice(0);
                 }}
-                className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer h-full shadow flex flex-col items-center justify-center tex-sm", isCustomOffer && "border-gray-600 bg-zinc-50")}
+                className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer h-full shadow flex flex-col items-center justify-center tex-sm", isCustomOffer && " border-black bg-zinc-50")}
               >
                 <Plus />
                 Custom
