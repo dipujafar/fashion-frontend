@@ -4,4 +4,3 @@ node_modules
 .gitignore
 Dockerfile
 docker-compose.yml
-.env
