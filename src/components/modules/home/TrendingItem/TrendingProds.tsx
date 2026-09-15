@@ -30,7 +30,7 @@ function TrendingProds({ productsData }: { productsData: IProduct[] }) {
       whileInView="animate"
       variants={fadeUpVariants as any}
       viewport={{ once: true }}
-      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-4 gap-3 xl:mt-8  md:mt-6 mt-4"
+      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-4 gap-3"
     >
       {productsData?.map((data) => (
         <motion.div key={data?.id} variants={fadeUpVariants as any}>

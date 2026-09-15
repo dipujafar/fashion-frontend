@@ -1,4 +1,4 @@
-import { Addresses, IBandleTier, IBillingDetails, IFolow, IMeta, IUser } from "@/types";
+import { Addresses, IBandleTier, IBillingDetails, IFolow, IMeta, IUser, IWalletPayout } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -12,7 +12,7 @@ const userApi = baseApi.injectEndpoints({
             }),
         }),
 
-        accountData : builder.query<{ data: { account_last_num: string } | null }, void>({
+        accountData: builder.query<{ data: { account_last_num: string } | null }, void>({
             query: () => ({
                 url: "/account/account-data",
                 method: "GET",
@@ -23,6 +23,21 @@ const userApi = baseApi.injectEndpoints({
             query: (payload) => ({
                 url: "/account/connect",
                 method: "PATCH",
+                body: payload
+            }),
+        }),
+
+        payouts: builder.query<{ data: { data: IWalletPayout[], meta: IMeta } }, {}>({
+            query: () => ({
+                url: "/account/payouts",
+                method: "GET",
+            }),
+        }),
+
+        requestWithdraw: builder.mutation<{ message: string }, { amount: string }>({
+            query: (payload) => ({
+                url: "/account/payouts",
+                method: "POST",
                 body: payload
             }),
         }),
@@ -93,4 +108,4 @@ const userApi = baseApi.injectEndpoints({
     }),
 })
 
-export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery, useLazyGetFolowingsQuery, useLazyGetFolowersQuery, useBalanceQuery, useAccountDataQuery, useConnectAccountMutation } = userApi;
+export const { useGetCharitiesQuery, useDefaultBillingDetailsQuery, useUpdateBillingDetailsMutation, useSellerBundleTiersQuery, useUserAddressesQuery, useGetUserByUsernameQuery, useLazyGetFolowingsQuery, useLazyGetFolowersQuery, useBalanceQuery, useAccountDataQuery, useConnectAccountMutation, usePayoutsQuery, useRequestWithdrawMutation } = userApi;

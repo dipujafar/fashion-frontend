@@ -4,6 +4,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { IProduct } from "@/types";
 import Autoplay from "embla-carousel-autoplay";
@@ -24,7 +26,7 @@ const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
           stopOnMouseEnter: true,
         }),
       ]}
-      className="overflow-hidden xl:mt-8  md:mt-6 mt-4"
+      className="overflow-hidden"
     >
       <CarouselContent>
         {productData?.slice(0, 8)?.map((data) => (
@@ -39,6 +41,8 @@ const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
           </CarouselItem>
         ))}
       </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
     </Carousel>
   );
 };

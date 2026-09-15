@@ -348,11 +348,6 @@ export interface IDirectDonation {
   amount: number
   currency: string
 
-  status: string
-
-  transactionId: string
-  paymentIntentId: string
-
   // anonymous donation
   isAnonymous: boolean
 
@@ -360,6 +355,7 @@ export interface IDirectDonation {
   message: string | null
 
   donatedAt: Date | null
+  createdAt: Date
 }
 
 export interface ITreeDonation {
@@ -719,4 +715,25 @@ export enum StripePaymentStatus {
   ESCROWED = "ESCROWED",
   RELEASED = "RELEASED",
   REFUNDED = "REFUNDED"
+}
+
+export interface IWalletPayout {
+  id: string,
+  walletId: string,
+  amount: number,
+  stripePayoutId: string | null,
+  status: PayoutStatus,
+  paidAt: Date | null,
+  connectAccountId: string,
+  stripeBalanceTransactionId: string | null,
+  payoutData: any | null,
+  userId: string,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export enum PayoutStatus {
+  PENDING = "PENDING",
+  PAID = "PAID",
+  FAILED = "FAILED"
 }

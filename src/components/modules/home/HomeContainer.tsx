@@ -15,23 +15,24 @@ import RecommendedProds from "./Recommended/Recommended";
 
 const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
   return (
-    <div className="xl:space-y-24 lg:space-y-16 space-y-10">
+    <div className="space-y-8 lg:space-y-14">
+
       <div className="lg:space-y-8 space-y-4">
         <HeroSection></HeroSection>
         <UserAvatar></UserAvatar>
-        <ClothesSection></ClothesSection>
+        {/* <ClothesSection></ClothesSection> */}
+
+        <FeatureProduct searchParams={searchParams}></FeatureProduct>
+
       </div>
-
-      <FeatureProduct searchParams={searchParams}></FeatureProduct>
-
 
       {/* ===============New Arrival============== */}
       <Container>
 
         <div>
-          <div className="flex justify-between items-center gap-x-4 mb-2 ">
-            <h4 className="section-name uppercase">{"New Arrival"}</h4>
-            {
+          <div className="flex justify-between items-center gap-x-4 mb-4 ">
+            <h4 className="text-2xl font-semibold">{"New Arrival"}</h4>
+            {/* {
               <Link
                 href={"/shop"}
                 className="flex gap-x-2 items-center font-bold group "
@@ -39,9 +40,9 @@ const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string
                 <p>{"View All"} </p>
                 <AnimatedArrow size={20}></AnimatedArrow>
               </Link>
-            }
+            } */}
           </div>
-          <hr />
+          {/* <hr /> */}
 
           <NewArrival />
 
@@ -61,9 +62,9 @@ const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string
       {/* ================Recent View==================== */}
       <Container>
         <div>
-          <div className="flex justify-between items-center gap-x-4 mb-2 ">
-            <h4 className="section-name uppercase">{"Recently Viewed"}</h4>
-            {
+          <div className="flex justify-between items-center gap-x-4 mb-4">
+            <h4 className="text-2xl font-semibold">{"Recently Viewed"}</h4>
+            {/* {
               <Link
                 href={"/shop"}
                 className="flex gap-x-2 items-center font-bold group "
@@ -71,9 +72,9 @@ const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string
                 <p>{"View All"} </p>
                 <AnimatedArrow size={20}></AnimatedArrow>
               </Link>
-            }
+            } */}
           </div>
-          <hr />
+          {/* <hr /> */}
 
           <RecentView />
 
@@ -81,7 +82,7 @@ const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string
       </Container>
 
       {/* ==================Recommende============= */}
-      <Container>
+      {/* <Container>
         <div>
           <div className="flex justify-between items-center gap-x-4 mb-2 ">
             <h4 className="section-name uppercase">{"You may also like"}</h4>
@@ -100,7 +101,7 @@ const HomeContainer = ({ searchParams }: { searchParams: { [key: string]: string
           <RecommendedProds />
 
         </div>
-      </Container>
+      </Container> */}
 
       <GetInTouch></GetInTouch>
     </div>

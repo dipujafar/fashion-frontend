@@ -1,10 +1,11 @@
 "use client"
-import { useAccountDataQuery, useBalanceQuery, useConnectAccountMutation } from '@/redux/api/userApi';
+import { useAccountDataQuery, useBalanceQuery, useConnectAccountMutation, useRequestWithdrawMutation } from '@/redux/api/userApi';
 import React from 'react'
 import { Banknote, CreditCard, Wallet } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import WithDraw from './WithDraw';
 
 function Balance() {
 
@@ -40,6 +41,8 @@ const Account = () => {
         }
     }
 
+
+
     return (
         <>
             <div className="mt-3 md:mt-4 lg:mt-5 flex flex-wrap items-center gap-3">
@@ -50,13 +53,7 @@ const Account = () => {
                     </>
                 ) : <>
 
-                    {data?.data?.account_last_num && <button
-                        // onClick={() => setWithdrawOpen(true)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-primary-foreground px-5 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary-foreground/90 cursor-pointer"
-                    >
-                        <Banknote className="size-4" />
-                        Withdraw
-                    </button>}
+                    {data?.data?.account_last_num && <WithDraw />}
                     <button
                         onClick={handleConnectAccount}
                         className="inline-flex items-center gap-2 rounded-lg bg-primary-foreground/10 px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/20 cursor-pointer"

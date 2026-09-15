@@ -108,7 +108,7 @@ const aboutData = [
 const AboutUsSection = () => {
   return (
     <Container>
-      <div className="flex justify-between items-center gap-x-4 mb-2 ">
+      {/* <div className="flex justify-between items-center gap-x-4 mb-2 ">
         <h4 className="section-name">ABOUT US</h4>
         <Link
           href={"/about-us"}
@@ -118,7 +118,7 @@ const AboutUsSection = () => {
           <AnimatedArrow size={20}></AnimatedArrow>
         </Link>
       </div>
-      <hr className=" border-primary-gray" />
+      <hr className=" border-primary-gray" /> */}
       {/* about us */}
       <motion.div
         key={"about_us"}

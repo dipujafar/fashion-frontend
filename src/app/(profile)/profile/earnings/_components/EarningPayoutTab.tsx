@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { SellerEarningPanel } from "./Earnings";
 import SellDonationPanel, { DirectDonationPanel } from "./Donation";
+import Payouts from "./Payouts";
 
 interface TabItem {
   key: string;
@@ -84,8 +85,8 @@ function DonationView() {
               key={key}
               onClick={() => setActive(key as DonationTabKey)}
               className={`flex items-center gap-1.5 border-b-2 pb-2 cursor-pointer px-1 text-sm transition-colors ${isActive
-                  ? "border-black font-medium text-black"
-                  : "border-transparent text-black/40 hover:text-black/70"
+                ? "border-black font-medium text-black"
+                : "border-transparent text-black/40 hover:text-black/70"
                 }`}
             >
               <Icon size={15} strokeWidth={2} />
@@ -119,8 +120,8 @@ function EarningsView({ showPanel }: { showPanel?: EarningsTabKey }) {
               key={key}
               onClick={() => setActive(key as EarningsTabKey)}
               className={`flex items-center gap-1.5 rounded-full px-3 cursor-pointer py-1.5 text-sm transition-colors border border-black/15 ${isActive
-                  ? "bg-black font-medium text-white border-black"
-                  : "text-black/50 hover:text-black"
+                ? "bg-black font-medium text-white border-black"
+                : "text-black/50 hover:text-black"
                 }`}
             >
               <Icon size={15} strokeWidth={2} />
@@ -130,36 +131,6 @@ function EarningsView({ showPanel }: { showPanel?: EarningsTabKey }) {
         })}
       </div>}
       {active === "seller" ? <SellerEarningPanel /> : <DonationView />}
-    </div>
-  );
-}
-
-/* ---------------------------------------------------------------
-   Level 1 content — Payouts panel
---------------------------------------------------------------- */
-
-function PayoutsPanel() {
-  const rows: RowData[] = [
-    { left: "Payout to •••• 4821", mid: "Sep 1, 2026", right: 612.75 },
-    { left: "Payout to •••• 4821", mid: "Aug 1, 2026", right: 548.2 },
-    { left: "Payout to •••• 4821", mid: "Jul 1, 2026", right: 701.4 },
-  ];
-  return (
-    <div>
-      <PanelHeading
-        action={
-          <button className="flex items-center gap-1 text-xs font-medium text-black/50 hover:text-black">
-            <Download size={13} /> Export
-          </button>
-        }
-      >
-        Payout history
-      </PanelHeading>
-      <div>
-        {rows.map((r, i) => (
-          <Row key={i} {...r} />
-        ))}
-      </div>
     </div>
   );
 }
@@ -192,8 +163,8 @@ export default function EarningsPayoutsTabs({ showPanel }: { showPanel?: Earning
               key={key}
               onClick={() => setActive(key as RootTabKey)}
               className={`flex items-center gap-1.5 border-b-2 pb-3 px-1 text-base cursor-pointer transition-colors ${isActive
-                  ? "border-black font-medium text-black"
-                  : "border-transparent text-black/40 hover:text-black/70"
+                ? "border-black font-medium text-black"
+                : "border-transparent text-black/40 hover:text-black/70"
                 }`}
             >
               <Icon size={17} strokeWidth={2} />
@@ -206,7 +177,7 @@ export default function EarningsPayoutsTabs({ showPanel }: { showPanel?: Earning
       {active === "earnings" ? (
         <EarningsView showPanel={showPanel} />
       ) : (
-        <PayoutsPanel />
+        <Payouts />
       )}
     </div>
   );

@@ -120,7 +120,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
 
         {/* Badges Section */}
         {
-          user?.data?.badges?.length > 0 && <div className="mt-4 md:mt-5 lg:mt-6 flex flex-row flex-wrap items-center gap-4">
+          user?.data?.badges?.length > 0 && <div className="mt-4 md:mt-5 lg:mt-6 flex flex-row flex-wrap items-center gap-2">
 
             {user?.data?.badges?.map((badgeItem) => (
               <div key={badgeItem?.id} className="flex flex-row items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100">

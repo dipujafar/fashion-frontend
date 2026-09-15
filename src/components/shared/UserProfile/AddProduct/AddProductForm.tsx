@@ -732,7 +732,7 @@ export default function AddProductForm() {
 
 
           <div className="flex gap-4">
-            <Button disabled={isLoading} type="submit" variant={"default"} className="flex-1 group cursor-pointer rounded-none py-5">
+            <Button disabled={isLoading} type="submit" variant={"default"} className="flex-1 group cursor-pointer rounded-none py-6">
               {isLoading ? <span className="loader" /> : "Ready to Submit"}
             </Button>
           </div>

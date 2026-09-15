@@ -1,8 +1,7 @@
 import { Wallet } from 'lucide-react'
 import React from 'react'
-
-import EarningsPayoutsTabs from './_components/EarningPayoutTab'
 import { AccountBalance } from './_components/Balance'
+import EarningPayoutContainer from './EarningPayoutContainer'
 
 function EarningPage() {
     return (
@@ -22,9 +21,9 @@ function EarningPage() {
 
             <div className='max-w-2xl space-y-8 lg:space-y-10'>
 
-                <AccountBalance/> 
+                <AccountBalance />
 
-                <EarningsPayoutsTabs />
+                <EarningPayoutContainer />
 
 
             </div>

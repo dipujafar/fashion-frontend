@@ -18,16 +18,16 @@ const FeatureProduct = async ({
 
   const type = searchParams.type;
 
-  if (type) {
-    query.type = type
-  }
+  // if (type) {
+  //   query.type = type
+  // }
 
   const prodPromise = GetProductsByType({ query });
 
   return (
     <Container className="lg:space-y-8 space-y-4">
 
-      <FeatureProdTitle />
+      {/* <FeatureProdTitle /> */}
 
       {/* --------------Products------------ */}
       <Suspense fallback={<ProductGridSkeleton />}>

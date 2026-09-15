@@ -45,6 +45,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { defaultImg } from "@/utils/defaultImg";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formSchema = z.object({
   charityId: z.string().min(1, "Please select a charity"),
@@ -128,7 +129,7 @@ export function CharityDonationFormDialog({
         )}
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md p-0 gap-0 rounded-none">
+      <DialogContent className="max-w-md p-0 gap-0 rounded-none">
         <DialogHeader className="p-6 pb-4">
           <div className="space-y-1">
             <DialogTitle className="text-base font-medium text-foreground">
@@ -159,7 +160,7 @@ export function CharityDonationFormDialog({
                           role="combobox"
                           aria-expanded={charityOpen}
                           disabled={charitiesLoading}
-                          className="w-full justify-between bg-transparent"
+                          className="justify-between bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black text-sm !py-5 px-3 w-full cursor-pointer"
                         >
                           {charitiesLoading ? (
                             <span className="flex items-center gap-2 text-muted-foreground">
@@ -218,8 +219,19 @@ export function CharityDonationFormDialog({
                                         : "opacity-0"
                                     )}
                                   />}
-                                  <Image alt="charity" src={charity.picture?.url || defaultImg.empty_user} width={32} height={32} className="rounded-full h-5 w-5 object-cover" />
-                                  {charity.fname} {charity.lname}
+
+                                  <Avatar className="h-6 w-6">
+                                    <AvatarImage
+                                      src={charity?.picture?.url}
+                                      alt="charity"
+                                    />
+                                    <AvatarFallback>
+                                      {charity.fname.charAt(0)}
+                                    </AvatarFallback>
+                                  </Avatar>
+
+                                  {charity?.fname} {charity?.lname}
+
                                 </CommandItem>
                               ))}
                             </CommandGroup>
@@ -247,7 +259,7 @@ export function CharityDonationFormDialog({
                         variant={
                           selectedPreset === amount ? "default" : "outline"
                         }
-                        className="flex-1"
+                        className="flex-1 cursor-pointer shadow-none"
                         onClick={() => handlePresetSelect(amount)}
                       >
                         ${amount}
@@ -268,7 +280,7 @@ export function CharityDonationFormDialog({
                       step="any"
                       min="1"
                       placeholder="Enter your amount"
-                      className=""
+                      className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black text-base !py-5 px-3.5"
                       value={customInputValue}
                       onChange={(e) =>
                         handleCustomAmountChange(e.target.value)
@@ -320,17 +332,10 @@ export function CharityDonationFormDialog({
               )}
             />
 
-            {/* Submit Button */}
-            <CommonButton className="w-full md:py-4" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Submitting…
-                </span>
-              ) : (
-                "Submit"
-              )}
-            </CommonButton>
+            <Button disabled={isSubmitting} type="submit" variant={"default"} className="flex-1 group cursor-pointer rounded-none py-6 w-full">
+              {isSubmitting ? <span className="loader" /> : "Donate Now"}
+            </Button>
+
           </form>
         </Form>
       </DialogContent>

@@ -20,7 +20,7 @@ const earningApi = baseApi.injectEndpoints({
         }),
         getDirectDonationRaised: builder.query<{ data: { data: IDirectDonation[], meta: IMeta } }, {}>({
             query: (query) => ({
-                url: "/payments/directDonationRaised",
+                url: "/payments/direct-donation-raised",
                 method: "GET",
                 params: query
             }),
