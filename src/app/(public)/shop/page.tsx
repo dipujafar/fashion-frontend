@@ -21,7 +21,7 @@ export const metadata = {
 const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
 
   const sspResult = await ssp;
-  const { category, sortBy: sort, brand, priceMin, priceMax, size, color, condition } = sspResult;
+  const { category, sortBy: sort, brand, priceMin, priceMax, size, color, condition, search } = sspResult;
 
   let sortBy = "createdAt";
   let orderBy = "desc"
@@ -61,6 +61,9 @@ const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: s
   if (condition) {
     query.conditions = condition
   }
+  if (search) {
+    query.searchTerm = search
+  }
 
   const prodsPromise = GetProducts({ query });
 
@@ -70,7 +73,7 @@ const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: s
       <div className="space-y-5 md:space-y-5">
 
         {/* ----------------------------------------- show filter option ------------------------------------- */}
-        <SelectCatBypath categoryId={category}/>
+        <SelectCatBypath categoryId={category} />
 
         {/* ----------------------lg filter-------------------------- */}
         <div className="hidden lg:flex flex-row justify-between gap-x-4 items-center mt-5">

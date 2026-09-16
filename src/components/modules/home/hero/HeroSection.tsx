@@ -45,41 +45,33 @@ const userRoles = [
 const HeroSection = () => {
   return (
     <div className="md:-translate-y-5 -translate-y-4 overflow-x-hidden">
-      <div className="grid xl:grid-cols-4 grid-cols-5">
+      <div className="grid grid-cols-5">
+
         <div className="flex xl:col-span-2 col-span-3 relative ">
           {/* <Image src={image4} alt="hero image" className="w-full md:h-[55vh] "></Image> */}
           <Image
             src={image1}
             alt="hero image"
-            className="w-full md:h-[55vh] h-[30vh] "
+            className="w-full h-[250px] md:h-[400px] lg:h-[500px] xl:h-[640px]  "
           ></Image>
-          {/* <div
-            className=" max-w-3xl absolute top-1/2 xl:-left-60 lg:-left-52 md:-left-40 sm:-left-36 -left-16 -translate-y-1/2  lg:px-28 lg:py-12 px-10 py-5 text-primary-white lg:text-5xl md:text-6xl text-xl font-semibold text-center w-full md:backdrop-blur-[7px] backdrop-blur-[4px] rotate-[270deg] rounded-lg flex justify-center items-center"
-            style={{
-              background: "rgba(217, 217, 217, 0.09)",
-            }}
-          >
-            <TextAnimation
-              reverse={true}
-              text="Redefining Style"
-              initialDelay={0.5}
-              className="2xl:text-7xl xl:text-6xl lg:text-5xl md:text-4xl  font-bold"
-            />
-          </div> */}
           <div className="absolute lg:top-1/3 xl:left-1/3 lg:left-[40%] top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2  hidden md:block">
             <PhilanthropistBox />
           </div>
         </div>
-        <Image
-          src={image2}
-          alt="hero image"
-          className="w-full md:h-[55vh]  h-[30vh] object-cover "
-        ></Image>
-        <Image
-          src={image3}
-          alt="hero image"
-          className="w-full md:h-[55vh]  h-[30vh] object-cover"
-        ></Image>
+
+        <div className="flex flex-row xl:col-span-3">
+          <Image
+            src={image2}
+            alt="hero image"
+            className="w-full h-[250px]md:h-[400px] lg:h-[500px] xl:h-[640px] object-cover "
+          ></Image>
+          <Image
+            src={image3}
+            alt="hero image"
+            className="w-full h-[250px] md:h-[400px] lg:h-[500px] xl:h-[640px]  object-cover"
+          ></Image>
+        </div>
+
       </div>
       <Marquee
         className="bg-black"

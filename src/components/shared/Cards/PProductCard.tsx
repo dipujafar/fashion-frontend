@@ -3,9 +3,12 @@ import FavouritesWithServer from "@/app/(public)/shop/[productId]/_components/Fa
 import { Card, CardContent } from "@/components/ui/card";
 import { IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
+import { BadgeCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
+
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const PProductCard = ({
     data,
@@ -34,9 +37,21 @@ const PProductCard = ({
                     </Link>
 
                     {/* ===================== favorite button ================ */}
-                    {!ownProduct && <div className="absolute top-2 right-2">
+                    {!ownProduct && <div className="absolute top-2 right-2 z-10">
                         <FavouritesWithServer id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavouritesWithServer>
                     </div>}
+
+                    {data?.assistentSellId && <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="absolute top-2 left-2 z-10 bg-primary-black rounded-xs px-1 py-1 text-xs font-medium text-white flex flex-row gap-x-1 items-center">
+                                <BadgeCheck className="size-5" />
+                            </div>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="rounded-none" side="top">
+                            Authenticated Product
+                        </TooltipContent>
+                    </Tooltip>}
 
                 </div>
 

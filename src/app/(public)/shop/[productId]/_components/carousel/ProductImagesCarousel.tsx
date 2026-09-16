@@ -7,7 +7,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { BadgeCheck, ChevronLeft, ChevronRight } from "lucide-react";
 
 type PropType = {
   product: IProduct;
@@ -94,7 +94,7 @@ const ProductImagesCarousel: React.FC<PropType> = ({ product, options }) => {
           <div className="embla__container">
             {slides?.map((data, index) => (
               <div className="embla__slide rounded" key={index}>
-                <div className="">
+                <div className="relative">
                   <Zoom>
                     <div className="relative h-100 md:h-[750px] lg:h-[430px] xl:h-[520px] 2xl:h-[700px] w-full">
                       <Image
@@ -108,6 +108,12 @@ const ProductImagesCarousel: React.FC<PropType> = ({ product, options }) => {
                       ></Image>
                     </div>
                   </Zoom>
+
+                  {product?.assistentSellId && <div className="absolute top-2 left-2 z-10 bg-primary-black rounded-xs px-2 py-1 text-sm font-medium text-white flex flex-row gap-x-1 items-center">
+                    <BadgeCheck className="size-5" />
+                    Authenticate
+                  </div>}
+
                 </div>
               </div>
             ))}

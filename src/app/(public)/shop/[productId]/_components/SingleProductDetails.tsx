@@ -1,20 +1,7 @@
 import React from "react";
 import ProductDetails, { IProductWithUser } from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
-import { IProduct, ISize, IUser } from "@/types";
 import { SMActionButtons } from "./ActionButtons";
-
-type IUserWithExtra = IUser & {
-  _count: {
-    products: number;
-  },
-  bundleDiscount: {
-    tiers: {
-      itemCount: number;
-      discountPercent: number;
-    }[]
-  } | null;
-};
 
 const SingleProductDetails = async ({ product }: { product: { data: IProductWithUser } }) => {
 

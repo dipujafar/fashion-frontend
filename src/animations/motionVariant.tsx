@@ -7,7 +7,7 @@ export const scaleUpVariant = {
     transition: {
       staggerChildren: 0.1,
       when: "beforeChildren",
-      delay: 0.3,
+      delay: 0,
     },
   },
 };

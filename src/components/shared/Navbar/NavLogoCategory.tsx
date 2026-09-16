@@ -47,15 +47,17 @@ const NavLogoCategory = () => {
         </div>}
 
         {/* ======= logo ========== */}
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-start items-center w-auto">
           <Link href={"/"}>
             <Image src={logo} alt="logo" className="w-32 md:w-auto"></Image>
           </Link>
         </div>
 
+
         <div className="relative hidden lg:block flex-1">
           <GlobalItemAndMemberSearch />
         </div>
+
 
         {/* ======= search and nav icon  ========== */}
         {user ? <div className="md:block hidden ">

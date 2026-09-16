@@ -1,28 +1,13 @@
-import ProductCard from "@/components/shared/Cards/ProductCard";
 import Container from "@/components/shared/Container";
-import { productsData } from "@/data/dummyData.tsx";
 import React, { Suspense } from "react";
-import { motion } from "framer-motion";
-import GetProductsByType from "@/lib/services/ProductsByType";
 import { IProduct } from "@/types";
 import { ProductGridSkeleton } from "@/components/skeletons/ProductsCardSkeleton";
 import FeatureProdcards from "./FeatureProdcards";
-import FeatureProdTitle from "./FeatureProdTitle";
+import GetTrendingProds from "@/lib/services/TrendingProds";
 
-const FeatureProduct = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined }
-}) => {
-  const query: { type?: string } = {};
+const FeatureProduct = async () => {
 
-  const type = searchParams.type;
-
-  // if (type) {
-  //   query.type = type
-  // }
-
-  const prodPromise = GetProductsByType({ query });
+  const prodPromise = GetTrendingProds();
 
   return (
     <Container className="lg:space-y-8 space-y-4">

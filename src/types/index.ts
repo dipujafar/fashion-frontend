@@ -94,6 +94,8 @@ export interface IProduct {
   charities: ICharity[],
   stock: number,
 
+  assistentSellId: string | null,
+
   weight_kg: number
   hight_cm: number // in cm, for shipping cost calculation
   width_cm: number // in cm, for shipping cost calculation
@@ -380,7 +382,7 @@ export type OrderSummeryType = {
   bundleDiscountAmount: number,
   totalExtraDonation: number,
   itemsCount: number,
-  haveAnyUnavailableItems : boolean,
+  haveAnyUnavailableItems: boolean,
 }
 
 export interface IOrder {

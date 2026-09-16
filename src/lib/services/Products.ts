@@ -6,6 +6,7 @@ const GetProducts = async ({ query }: { query: { [key: string]: string } }) => {
         const res = await serverQueryWithReauth({
             endPoint: `/products${queryString}`,
             method: "GET",
+            cache: "no-store"
             // revalidate: 3 * 60 // revalidate after 3 min
         });
         return res;
@@ -15,6 +16,20 @@ const GetProducts = async ({ query }: { query: { [key: string]: string } }) => {
 };
 
 export default GetProducts;
+
+export const GetAuthenticProducts = async ({ query }: { query: { [key: string]: string } }) => {
+    try {
+        const queryString = query ? `?${new URLSearchParams(query).toString()}` : "";
+        const res = await serverQueryWithReauth({
+            endPoint: `/products/authenticate${queryString}`,
+            method: "GET",
+            revalidate: 5 * 60 // revalidate after 5 min
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
 
 export const GetProductsByMember = async ({ query, userName }: { query: { [key: string]: string }, userName: string }) => {
     try {

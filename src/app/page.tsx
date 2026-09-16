@@ -5,17 +5,11 @@ export const metadata = {
   description:
     "Welcome to FASHI-ON. Your Fashion Hub is available now! Enjoy your shopping with Fashion!",
 };
-export default async function Home({
-  searchParams: ssp,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) {
-
-  const searchParams = await ssp;
+export default async function Home() {
 
   return (
     <>
-      <HomeContainer searchParams={searchParams}></HomeContainer>
+      <HomeContainer></HomeContainer>
     </>
   );
 }

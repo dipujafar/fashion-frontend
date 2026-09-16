@@ -1,10 +1,27 @@
-import { IChatUser, IMeta, IProduct, IUser } from "@/types";
+import { IChatUser, IMeta, IProduct, IUser, UserRole } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 import { IProductExtra } from "@/app/(profile)/profile/sell/products/_components/SellProdCard";
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+
+    searchKeywords: builder.query<{ data: { "displayName": string }[] }, { query: string }>({
+      query: (params) => ({
+        url: "/keywords/suggestions",
+        method: "GET",
+        params,
+      }),
+    }),
+
+    searchPeoples: builder.query<{ data: { "userName": string, profilePictureUrl: string, role: UserRole }[] }, { query: string }>({
+      query: (params) => ({
+        url: "/keywords/people",
+        method: "GET",
+        params,
+      }),
+    }),
+
     createProduct: builder.mutation({
       query: (data) => ({
         url: "/products",
@@ -87,4 +104,4 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation, useGetProductsQuery, useLazyProductsGetByMemberQuery, useLazyGetProductsQuery, useGetProductStatsQuery, useProductsByIdsQuery, useLazyMyProductsGetQuery } = productApi;
+export const { useCreateProductMutation, useGetProductsQuery, useLazyProductsGetByMemberQuery, useLazyGetProductsQuery, useGetProductStatsQuery, useProductsByIdsQuery, useLazyMyProductsGetQuery, useSearchKeywordsQuery, useSearchPeoplesQuery } = productApi;

@@ -1,7 +1,5 @@
 "use client";
-import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
 import Container from "@/components/shared/Container";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { scaleUpVariant } from "@/animations/motionVariant";
 import { childrenVariants } from "@/animations/FramerMotionValiants";
@@ -108,17 +106,6 @@ const aboutData = [
 const AboutUsSection = () => {
   return (
     <Container>
-      {/* <div className="flex justify-between items-center gap-x-4 mb-2 ">
-        <h4 className="section-name">ABOUT US</h4>
-        <Link
-          href={"/about-us"}
-          className="flex gap-x-2 items-center font-bold group "
-        >
-          <p> LEARN MORE</p>
-          <AnimatedArrow size={20}></AnimatedArrow>
-        </Link>
-      </div>
-      <hr className=" border-primary-gray" /> */}
       {/* about us */}
       <motion.div
         key={"about_us"}

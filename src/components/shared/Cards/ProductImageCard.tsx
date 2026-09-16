@@ -17,7 +17,7 @@ const ProductImageCard = ({ data }: { data: TProps }) => {
         height={1200}
         placeholder="blur"
         blurDataURL={defaultImg.placeholderImg}
-        className="mx-auto h-72 w-auto object-cover"
+        className="mx-auto h-[260px] w-auto object-cover"
       ></Image>
       <div
         className={cn(

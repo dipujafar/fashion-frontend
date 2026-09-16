@@ -1,5 +1,4 @@
 "use client";
-import ProductImageCard from "@/components/shared/Cards/ProductImageCard";
 import {
   Carousel,
   CarouselContent,
@@ -9,7 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import { IProduct } from "@/types";
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
+import PProductCard from "../Cards/PProductCard";
 
 const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
   return (
@@ -26,7 +25,7 @@ const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
           stopOnMouseEnter: true,
         }),
       ]}
-      className="overflow-hidden"
+    // className="overflow-hidden"
     >
       <CarouselContent>
         {productData?.slice(0, 8)?.map((data) => (
@@ -35,14 +34,12 @@ const PreviewProduct = ({ productData }: { productData: IProduct[] }) => {
             // grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4
             className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6"
           >
-            <Link href={`/shop/${data?.id}`}>
-              <ProductImageCard data={{ image: data?.images[0]?.url }} />
-            </Link>
+            <PProductCard data={data}></PProductCard>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="left-1 z-10" />
+      <CarouselNext className="right-1 z-10" />
     </Carousel>
   );
 };
