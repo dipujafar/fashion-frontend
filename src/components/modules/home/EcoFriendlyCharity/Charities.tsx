@@ -13,11 +13,11 @@ const Charities = () => {
     <div className="flex h-full w-full items-center justify-center">
       <div className="grid h-full w-full lg:gap-4 gap-2.5  grid-cols-4 grid-rows-4 ">
         <motion.div
-          initial={{ opacity: 0, x: "-10%" }}
-          whileInView={{ opacity: 1, x: "0" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          exit={{ opacity: 0, x: "-10%" }}
-          viewport={{ once: true }}
+          // initial={{ opacity: 0, x: "-10%" }}
+          // whileInView={{ opacity: 1, x: "0" }}
+          // transition={{ duration: 0.8, ease: "easeInOut" }}
+          // exit={{ opacity: 0, x: "-10%" }}
+          // viewport={{ once: true }}
           className="col-span-2 row-span-2 relative group cursor-pointer"
           onClick={() => router.push(`/charity/profile-preview`)}
         >
@@ -34,11 +34,11 @@ const Charities = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: "10%" }}
-          whileInView={{ opacity: 1, x: "0" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          exit={{ opacity: 0, x: "10%" }}
-          viewport={{ once: true }}
+          // initial={{ opacity: 0, x: "10%" }}
+          // whileInView={{ opacity: 1, x: "0" }}
+          // transition={{ duration: 0.8, ease: "easeInOut" }}
+          // exit={{ opacity: 0, x: "10%" }}
+          // viewport={{ once: true }}
           className="col-span-2 row-span-2 relative group cursor-pointer "
           onClick={() => router.push(`/charity/profile-preview`)}
         >
@@ -55,11 +55,11 @@ const Charities = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: "-10%" }}
-          whileInView={{ opacity: 1, x: "0" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          exit={{ opacity: 0, x: "-10%" }}
-          viewport={{ once: true }}
+          // initial={{ opacity: 0, x: "-10%" }}
+          // whileInView={{ opacity: 1, x: "0" }}
+          // transition={{ duration: 0.8, ease: "easeInOut" }}
+          // exit={{ opacity: 0, x: "-10%" }}
+          // viewport={{ once: true }}
           className="col-span-2 row-span-2 relative group cursor-pointer "
           onClick={() => router.push(`/charity/profile-preview`)}
         >
@@ -76,11 +76,11 @@ const Charities = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: "10%" }}
-          whileInView={{ opacity: 1, x: "0" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          exit={{ opacity: 0, x: "10%" }}
-          viewport={{ once: true }}
+          // initial={{ opacity: 0, x: "10%" }}
+          // whileInView={{ opacity: 1, x: "0" }}
+          // transition={{ duration: 0.8, ease: "easeInOut" }}
+          // exit={{ opacity: 0, x: "10%" }}
+          // viewport={{ once: true }}
           className="col-span-2 row-span-2 relative group cursor-pointer"
           onClick={() => router.push(`/charity/profile-preview`)}
         >

@@ -4,7 +4,7 @@ export const GetAssistedSellReqs = async ({ query }: { query: { [key: string]: s
     try {
         const queryString = query ? `?${new URLSearchParams(query).toString()}` : "";
         const res = await serverQueryWithReauth({
-            endPoint: `/assistent-sell${queryString}`,
+            endPoint: `/assistent-sell/requests${queryString}`,
             method: "GET",
             cache: "no-store"
         });

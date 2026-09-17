@@ -43,10 +43,10 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
 
           <div className='flex flex-col md:flex-row md:items-end gap-y-5 gap-x-0 md:gap-x-16 lg:gap-x-20'>
 
-            <div className="flex flex-row items-center gap-3 md:gap-5">
+            <div className="flex flex-row items-center gap-3 md:gap-5 shrink-0">
 
               {/* Avatar */}
-              <div className="relative">
+              <div className="relative shrink-0">
                 <Avatar className="h-24 md:h-28 w-24 md:w-28 shadow-sm">
                   <AvatarImage src={userData?.picture?.url} className='bg-card object-cover ring-4 ring-card shadow' />
                   <AvatarFallback className='text-3xl capitalize font-medium'>{userData?.userName.slice(0, 2)}</AvatarFallback>
@@ -55,9 +55,9 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
 
 
               {/* Profile Info */}
-              <div className="text-left">
+              <div className="text-left w-auto shrink-0">
 
-                <span className="inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[9px] font-medium uppercase text-white w-auto" style={{ backgroundColor: userRoleMapper(user?.data?.user?.auth?.role)?.color }}>
+                <span className="inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[9px] font-medium uppercase text-white " style={{ backgroundColor: userRoleMapper(user?.data?.user?.auth?.role)?.color }}>
                   {/* <Sparkles className="h-3 w-3 text-primary" />  */}
                   {userRoleMapper(user?.data?.user?.auth?.role)?.label}
                 </span>
@@ -67,14 +67,14 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                 </h2>
 
                 {/* Rating */}
-                {user?.data?.review?._count?.id > 0 ? <div className="flex items-center gap-2 mb-1">
+                {user?.data?.review?._count?.id > 0 ? <div className="flex items-center gap-2 mb-1 whitespace-nowrap">
                   <div className="flex gap-1">
                     <Rating rating={user?.data?.review?._avg?.rating} size={12}></Rating>
                   </div>
                   <span className="text-sm text-gray-600">{user?.data?.review?._count?.id} reviews</span>
-                </div> : <p className='mb-1 text-gray-700 text-sm'>No Reviews Yet</p>}
+                </div> : <p className='mb-1 text-gray-700 text-sm whitespace-nowrap'>No Reviews Yet</p>}
 
-                <p className='text-sm'>Joined {moment(userData?.createdAt).format('MMMM YYYY')}</p>
+                <p className='text-sm whitespace-nowrap'>Joined {moment(userData?.createdAt).format('MMMM YYYY')}</p>
 
               </div>
 

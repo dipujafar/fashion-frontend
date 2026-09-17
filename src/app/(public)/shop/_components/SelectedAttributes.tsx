@@ -16,7 +16,7 @@ const conditionMap: { [key: string]: string } = {
 
 function SelectedAttributes({ ssp }: { ssp: { [key: string]: string | undefined } }) {
 
-    const { category, brand, size, priceMin, priceMax, color, condition, search } = ssp;
+    const { category, brand, size, priceMin, priceMax, color, condition, search, stock } = ssp;
 
     const { data: filteredAttributes, isLoading, isError, isSuccess } = useFilteredAttributesQuery({ categoryId: category, brands: brand, sizes: size });
 
@@ -143,6 +143,13 @@ function SelectedAttributes({ ssp }: { ssp: { [key: string]: string | undefined 
                                 <button onClick={() => updateQueryParam('condition', condition)} className='cursor-pointer'><X className='size-4' /></button>
                             </div>))
                         }
+                    </div>
+                }
+
+                {
+                    stock && <div className='bg-zinc-100 rounded-full px-3.5 py-0.5 hover:bg-zinc-50 cursor-pointer flex-row gap-x-1 items-center inline-flex'>
+                        <p className='text-base text-gray-800'>{stock}</p>
+                        <button onClick={() => updateQueryParam('stock', stock)} className='cursor-pointer'><X className='size-4' /></button>
                     </div>
                 }
 

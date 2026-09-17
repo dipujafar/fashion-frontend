@@ -37,13 +37,13 @@ const PProductCard = ({
                     </Link>
 
                     {/* ===================== favorite button ================ */}
-                    {!ownProduct && <div className="absolute top-2 right-2 z-10">
+                    {!ownProduct && <div className="absolute top-2 right-2">
                         <FavouritesWithServer id={data?.id} count={data?._count?.favourites} includedProduct={data?.favourites}></FavouritesWithServer>
                     </div>}
 
                     {data?.assistentSellId && <Tooltip>
                         <TooltipTrigger asChild>
-                            <div className="absolute top-2 left-2 z-10 bg-primary-black rounded-xs px-1 py-1 text-xs font-medium text-white flex flex-row gap-x-1 items-center">
+                            <div className="absolute top-2 left-2 bg-primary-black rounded-xs px-1 py-1 text-xs font-medium text-white flex flex-row gap-x-1 items-center">
                                 <BadgeCheck className="size-5" />
                             </div>
                         </TooltipTrigger>

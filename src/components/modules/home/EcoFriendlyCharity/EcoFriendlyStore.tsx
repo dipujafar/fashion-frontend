@@ -8,11 +8,11 @@ import Link from "next/link";
 const EcoFriendlyStore = () => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: "10%" }}
-      whileInView={{ opacity: 1, x: "0" }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
-      exit={{ opacity: 0, x: "10%" }}
-      viewport={{ once: true }}
+      // initial={{ opacity: 0, x: "10%" }}
+      // whileInView={{ opacity: 1, x: "0" }}
+      // transition={{ duration: 0.8, ease: "easeInOut" }}
+      // exit={{ opacity: 0, x: "10%" }}
+      // viewport={{ once: true }}
       className="relative group"
     >
       <Image src={ecoFriendLyStoreImage} alt="ecoFriendly_store" className="lg:h-[600px] rounded-lg h-[450px]  object-cover"></Image>

@@ -47,9 +47,9 @@ export default function RootLayout({
               {children}
             </SocketProvider>
           </div>
-          <div className="bg-[#F6F6F6] lg:py-14 py-8">
-            <Footer></Footer>
-          </div>
+
+          <Footer></Footer>
+
 
           <NextTopLoader
             color="#000"

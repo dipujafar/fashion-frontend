@@ -5,7 +5,6 @@ import logo from "@/assets/images/common-image/logo.png";
 import Image from "next/image";
 import SmallDeviceView from "./SmallDeviceView";
 import SearchAndNavIcon from "./SearchAndNavIcon";
-import { Search } from "lucide-react";
 import GlobalItemAndMemberSearch from "./GlobalItemAndMemberSearch";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -49,7 +48,7 @@ const NavLogoCategory = () => {
         {/* ======= logo ========== */}
         <div className="flex justify-start items-center w-auto">
           <Link href={"/"}>
-            <Image src={logo} alt="logo" className="w-32 md:w-auto"></Image>
+            <Image src={logo} alt="logo" className="w-32 md:w-auto h-auto"></Image>
           </Link>
         </div>
 
