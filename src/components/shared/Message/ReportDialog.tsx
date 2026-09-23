@@ -77,7 +77,7 @@ export function ReportDialog({
           <p className='font-medium'>Report</p>
         </div>
       </DialogTrigger>
-      <DialogContent className="rounded-none sm:max-w-[425px]">
+      <DialogContent className="rounded-none sm:max-w-[425px] overflow-y-scroll max-h-screen">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             Report this user

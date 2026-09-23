@@ -37,7 +37,7 @@ export function ReturnProductModal({
 }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md overflow-y-scroll max-h-screen">
         <DialogHeader>
           <DialogTitle className="sr-only">Return Request Review</DialogTitle>
         </DialogHeader>

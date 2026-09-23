@@ -111,7 +111,7 @@ export function ReturnRequestModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md overflow-y-scroll max-h-screen">
         <DialogHeader className="relative">
           <DialogTitle className="text-lg font-medium text-left">
             Why are you return this item?

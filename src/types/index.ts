@@ -436,7 +436,7 @@ export enum OrderStatus {
   OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
   DELIVERED = "DELIVERED",
   COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
+  CANCELLED = "CANCELLED"
 }
 
 export enum OrderAuthStatus {

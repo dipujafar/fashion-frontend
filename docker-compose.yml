@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: admin-container
+    container_name: website-container
     ports :
       - '3000:3000'
     env_file : .env

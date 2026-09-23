@@ -120,7 +120,7 @@ export function CharityDonationSelectDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 gap-0 rounded-none">
+      <DialogContent className="p-0 gap-0 rounded-none overflow-y-scroll max-h-screen">
         <DialogHeader className="p-6 pb-4">
           <DialogTitle className="text-base font-medium text-gray-800">
             Which charities you want to add?

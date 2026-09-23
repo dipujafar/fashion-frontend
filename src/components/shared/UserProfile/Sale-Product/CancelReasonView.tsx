@@ -32,7 +32,7 @@ function CancelReasonView(props: CancelReasonModalProps) {
                 {props.trigger}
             </DialogTrigger>
 
-            <DialogContent className="rounded-none">
+            <DialogContent className="rounded-none overflow-y-scroll max-h-screen">
                 <DialogHeader className="border-b border-slate-100 pb-4">
                     <DialogTitle className="text-center text-base">Cancel Reason</DialogTitle>
                 </DialogHeader>

@@ -23,7 +23,7 @@ export function FolowerFolowing({ type, userName, actionBtn, folowerCount, folow
                 {actionBtn}
             </DialogTrigger>
 
-            <DialogContent className="max-w-lg p-0 rounded-none">
+            <DialogContent className="max-w-lg p-0 rounded-none overflow-y-scroll max-h-screen">
                 <DialogHeader className="border-b py-3">
                     <DialogTitle className="text-lg font-semibold capitalize text-center">{userName}</DialogTitle>
                 </DialogHeader>

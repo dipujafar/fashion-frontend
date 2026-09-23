@@ -11,7 +11,7 @@ export function SuccessModal({ open, setOpen, content }: DialogProps) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="w-md p-0 rounded-none">
+            <DialogContent className="w-md p-0 rounded-none overflow-y-scroll max-h-screen">
                 <DialogHeader></DialogHeader>
 
                 {content}

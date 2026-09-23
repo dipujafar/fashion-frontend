@@ -16,7 +16,7 @@ function OfferView({ offerItems, open,
     return (
         <Dialog open={open} onOpenChange={setOpen}>
 
-            <DialogContent className="w-[700px] rounded-none">
+            <DialogContent className="w-[700px] rounded-none overflow-y-scroll max-h-screen">
 
                 <DialogHeader className="border-b border-gray-200 pb-3.5">
                     <h2 className="text-base font-medium text-center">Offer items</h2>
