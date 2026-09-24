@@ -46,7 +46,7 @@ export default function ReviewBundleModal({
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="rounded-none overflow-y-scroll max-h-screen">
+        <DialogContent className="rounded-none overflow-y-auto max-h-screen">
           <DialogHeader>
             <DialogTitle className="border-b pb-4 text-base">
               Review Bundle

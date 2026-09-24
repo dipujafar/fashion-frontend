@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import SellProdCard, { IProductExtra } from "./SellProdCard";
 import { useLazyMyProductsGetQuery } from "@/redux/api/productApi";
+import Link from "next/link";
 
 const SellProducts = ({ query, initialData, initialMeta }: { query: { [key: string]: string | undefined }, initialData: IProductExtra[], initialMeta: IMeta }) => {
 
@@ -46,7 +47,11 @@ const SellProducts = ({ query, initialData, initialMeta }: { query: { [key: stri
                 data?.length === 0 && !isLoading && <div className="py-20 md:py-24 lg:py-28">
                     <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
                     <p className="text-center text-gray-700 text-sm lg:text-lg">No items available</p>
-                    <Button variant={"default"} className="rounded-none cursor-pointer mx-auto mt-2">List an Item</Button>
+                    <center>
+                        <Link href={"/sell"}>
+                            <Button variant={"default"} className="rounded-none cursor-pointer mx-auto mt-2">List an Item</Button>
+                        </Link>
+                    </center>
                 </div>
             }
 

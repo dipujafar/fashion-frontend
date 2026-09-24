@@ -69,7 +69,7 @@ export function CounterOffer({
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[450px] rounded-none overflow-y-scroll max-h-screen">
+            <DialogContent className="w-[450px] rounded-none overflow-y-auto max-h-screen">
 
                 <DialogHeader className="border-b border-gray-200 pb-3.5">
                     <h2 className="text-base font-medium text-center">Counter Offer</h2>

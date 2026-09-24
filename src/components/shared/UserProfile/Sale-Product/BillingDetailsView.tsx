@@ -48,7 +48,7 @@ function BillingDetailsView({
                 {trigger}
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-md overflow-y-scroll max-h-screen">
+            <DialogContent className="sm:max-w-md overflow-y-auto max-h-screen">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-x-2">
                         <MapPin size={18} />

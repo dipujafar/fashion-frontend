@@ -4,7 +4,16 @@ import { baseApi } from "./baseApi";
 const messageApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
 
-        getMyMessages: builder.mutation<{
+        totalUnreadMsgCount: builder.query<{
+            data: number
+        }, void>({
+            query: () => ({
+                url: `/messages/unread-count`,
+                method: "GET",
+            }),
+        }),
+
+        getMyMessages: builder.query<{
             data: {
                 data: IMessage[],
                 meta: IMeta
@@ -30,4 +39,4 @@ const messageApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useGetMyMessagesMutation, useSendNewMsgMutation } = messageApi;
+export const { useLazyGetMyMessagesQuery, useSendNewMsgMutation, useTotalUnreadMsgCountQuery } = messageApi;

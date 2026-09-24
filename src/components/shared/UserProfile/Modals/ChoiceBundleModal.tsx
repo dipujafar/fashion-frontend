@@ -20,7 +20,7 @@ export default function ChoiceBundleModal({ tiers, userName, btnTxt = "Create Bu
           {btnTxt}
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-none overflow-y-scroll max-h-screen">
+      <DialogContent className="rounded-none overflow-y-auto max-h-screen">
         <DialogHeader>
           <DialogTitle className=" text-2xl text-center text-[#1F2937]">
             Bundle Discount

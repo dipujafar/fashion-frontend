@@ -5,6 +5,9 @@ import Empty from "@/components/ui/empty"
 import PurchaseItem from "./PurchaseItem";
 import StatusFilterSelect from "../../Order/StatusFilterSelect";
 import { SellerProfileProductSorting } from "../../CategoryFilter/SellerProfileProductSorting";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 async function PurchaseProductContainer({ ssp }: { ssp: { [key: string]: string | undefined } }) {
 
@@ -86,7 +89,15 @@ async function PurchaseProductContainer({ ssp }: { ssp: { [key: string]: string 
                 }
 
                 {
-                    orders?.length === 0 && <Empty message="No orders found" className="my-10" />
+                    orders?.length === 0 && <div className="py-20 md:py-24 lg:py-28">
+                        <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
+                        <p className="text-center text-gray-700 text-sm lg:text-lg">No orders available</p>
+                        <center>
+                            <Link href={"/shop"}>
+                                <Button variant={"default"} className="rounded-none cursor-pointer mx-auto mt-2">Order an Item</Button>
+                            </Link>
+                        </center>
+                    </div>
                 }
             </div>
 

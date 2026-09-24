@@ -95,7 +95,7 @@ export function ImageUploadGuide() {
           </p>
         </div>
       </DialogTrigger>
-      <DialogContent className="!max-w-2xl p-0 gap-0 overflow-y-scroll max-h-screen">
+      <DialogContent className="!max-w-2xl p-0 gap-0 overflow-y-auto max-h-screen">
         <DialogHeader className="p-6 pb-4">
           <DialogTitle className="text-xl font-semibold  ">
             {slides[current]?.title}

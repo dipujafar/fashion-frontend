@@ -90,7 +90,7 @@ export function IndividualCharityDonationFormDialog({
           Donate Now <AnimatedArrow />
         </Button>}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] p-0 overflow-y-scroll max-h-screen">
+      <DialogContent className="sm:max-w-[500px] p-0 overflow-y-auto max-h-screen">
         <div className="relative p-6">
           <DialogHeader className="space-y-3 pr-8">
             <DialogTitle className="text-xl font-semibold">

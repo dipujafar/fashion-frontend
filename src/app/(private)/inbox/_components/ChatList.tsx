@@ -1,7 +1,6 @@
 "use client"
 import UserCard from '@/components/shared/Message/UserCard'
 import React, { useEffect, useState } from 'react'
-import user3Img from "@/assets/images/message/user1.png";
 import { useSocket } from '@/Context/SocketProvider';
 import { IChatUser } from '@/types';
 import { usePathname } from 'next/navigation';

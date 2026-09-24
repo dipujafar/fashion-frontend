@@ -129,7 +129,7 @@ export function CharityDonationFormDialog({
         )}
       </DialogTrigger>
 
-      <DialogContent className="max-w-md p-0 gap-0 rounded-none overflow-y-scroll max-h-screen">
+      <DialogContent className="max-w-md p-0 gap-0 rounded-none overflow-y-auto max-h-screen">
         <DialogHeader className="p-6 pb-4">
           <div className="space-y-1">
             <DialogTitle className="text-base font-medium text-foreground">

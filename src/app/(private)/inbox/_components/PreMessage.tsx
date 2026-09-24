@@ -2,8 +2,9 @@
 "use client"
 import OwnerMsgCard from '@/components/shared/Message/OwnerMsgCard';
 import ReceiverMsgCard from '@/components/shared/Message/ReceiverMsgCard';
+import { useSocket } from '@/Context/SocketProvider';
 import useLazyLoad from '@/hooks/useLazyLoad';
-import { useGetMyMessagesMutation } from '@/redux/api/message.api';
+import { useLazyGetMyMessagesQuery } from '@/redux/api/message.api';
 import { RootState } from '@/redux/store';
 import { IMessage } from '@/types';
 import moment from 'moment';
@@ -42,7 +43,8 @@ function PreMessage({
     containerRef: React.RefObject<HTMLDivElement | null>;
     updatedMsgs: IMessage[];
 }) {
-    const [loadProds, { isLoading }] = useGetMyMessagesMutation();
+    const { socket } = useSocket();
+    const [loadProds, { isLoading }] = useLazyGetMyMessagesQuery();
     const triggerRef = useRef(null);
 
     const isFirstLoad = useRef(true);
@@ -95,6 +97,10 @@ function PreMessage({
                 scrollToBottom("auto");
             }
             isFirstLoad.current = false;
+            const latestChatId = data[data.length - 1]?.chatId;
+            if (socket && latestChatId) {
+                socket?.emit("seen", { chatId: latestChatId });
+            }
             return;
         }
 
@@ -106,7 +112,7 @@ function PreMessage({
             const heightDiff = el.scrollHeight - prevScrollHeight.current;
             el.scrollTop = prevScrollTop.current + heightDiff;
         }
-    }, [data, scrollToBottom, containerRef]);
+    }, [data, scrollToBottom, containerRef, socket]);
 
     return (
         <>
