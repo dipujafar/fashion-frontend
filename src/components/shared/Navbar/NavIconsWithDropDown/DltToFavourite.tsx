@@ -15,8 +15,8 @@ function DltToFavourite({ prodId }: { prodId: string }) {
 
         try {
             const res = await DeleteToFavourite({ payload: { productId: prodId } });
-            if (res?.error) {
-                toast.error(res?.error);
+            if (!res.success) {
+                throw new Error(res.message);
             }
             dispatch(baseApi.util.invalidateTags([tagTypes.favorite]));
         }
@@ -24,7 +24,7 @@ function DltToFavourite({ prodId }: { prodId: string }) {
             if (isRedirectError(error)) {
                 throw error; // Let Next.js handle the redirect
             }
-            toast.error(error?.data?.message);
+            toast.error(error?.message || "Failed to remove from favourite");
         }
     }
 

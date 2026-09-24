@@ -49,7 +49,10 @@ export default function BillingAddressForm(
   { defaultValue,
     onOpenChange,
     updateAddressFn = async (data: any) => {
-      await updateShippingDetails(data);
+      const res = await updateShippingDetails(data);
+      if (!res.success) {
+        throw new Error(res.message);
+      }
     }
   }
     : {

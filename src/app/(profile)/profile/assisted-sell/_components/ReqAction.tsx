@@ -37,7 +37,10 @@ function ReqAction({ data }: { data: IAssitedSellRequest }) {
         setIsLoading(true)
         try {
             // Call your API to delete the request here
-            await DltAssitentSellReq({ id: reqId });
+            const res = await DltAssitentSellReq({ id: reqId });
+            if (!res.success) {
+                throw new Error(res.message);
+            }
             setCancelOpen(false); // Close the dialog on success
         } catch (error: any) {
             setError(error?.message || "Failed to delete the request. Please try again.");

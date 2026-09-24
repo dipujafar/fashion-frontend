@@ -138,7 +138,10 @@ export function AssistedSellerForm() {
         formData.append("images", img.file); // ✅ real File object
       });
 
-      await RequestNewAssitentSell({ payload: formData });
+      const res = await RequestNewAssitentSell({ payload: formData });
+      if (!res.success) {
+        throw new Error(res.message);
+      }
 
       //reset the form and uploaded images
       form.reset();

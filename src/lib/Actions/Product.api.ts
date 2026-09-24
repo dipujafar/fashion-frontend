@@ -1,40 +1,105 @@
 "use server"
 import { revalidatePath } from "next/cache";
 import { serverQueryWithReauth } from "./ReAuthRequest";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export const AddNewProduct = async ({ payload }: { payload: FormData }) => {
-
-    const res = await serverQueryWithReauth({ payload, endPoint: `/products`, method: "POST" });
-
-    return res;
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: `/products`, method: "POST" });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Product added successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to add product",
+            data: null,
+        };
+    }
 }
 
 export const AddNewOffer = async ({ payload }: { payload: { sellerId: string, offerPrice: number, productIds: string[] } }) => {
-
-    const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer`, method: "POST" });
-
-    return res;
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer`, method: "POST" });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Offer submitted successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to send offer",
+            data: null,
+        };
+    }
 }
 
 export const AcceptOffer = async ({ payload }: { payload: { offerId: string } }) => {
-
-    const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer/accept`, method: "POST" });
-
-    return res;
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer/accept`, method: "POST" });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Offer accepted successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to accept offer",
+            data: null,
+        };
+    }
 }
 
 export const DeclineOffer = async ({ payload }: { payload: { offerId: string, offerPrice: number } }) => {
-
-    const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer/decline`, method: "POST" });
-
-    return res;
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: `/products/offer/decline`, method: "POST" });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Offer declined successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to decline offer",
+            data: null,
+        };
+    }
 }
 
 export const DropPrice = async ({ payload }: { payload: { productId: string, newPrice: number } }) => {
-
-    const res = await serverQueryWithReauth({ payload, endPoint: `/products/price/drop`, method: "POST" });
-
-    revalidatePath("/profile/sell/products");
-
-    return res;
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: `/products/price/drop`, method: "POST" });
+        revalidatePath("/profile/sell/products");
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Price dropped successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to drop price",
+            data: null,
+        };
+    }
 }

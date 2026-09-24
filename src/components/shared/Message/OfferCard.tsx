@@ -27,7 +27,11 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
   const acceptOfferhandler = async (offerId: string) => {
     setLoadingAccept(true);
     try {
-      await AcceptOffer({ payload: { offerId } });
+      const res = await AcceptOffer({ payload: { offerId } });
+      if (!res.success) {
+        throw new Error(res.message);
+      }
+      toast.success(res.message || "Offer accepted successfully");
     } catch (err: any) {
       toast.error(err?.message || "Failed to accept offer");
     } finally {

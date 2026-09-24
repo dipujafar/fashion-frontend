@@ -102,9 +102,8 @@ export function CharityDonationSelectDialog({
 
     try {
       const res = await AddToCart({ payload, extraRevalidatePaths: [`/shop/${product?.id}`] });
-      if (res?.error) {
-        setError(res?.error);
-        return; // keep dialog open so the user can see the error
+      if (!res.success) {
+        throw new Error(res.message);
       }
       dispatch(baseApi.util.invalidateTags([tagTypes.cart])); // Invalidate cart tag to refresh cart state
       onOpenChange(false);

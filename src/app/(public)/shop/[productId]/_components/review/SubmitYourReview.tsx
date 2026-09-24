@@ -35,15 +35,17 @@ const SubmitYourReview = ({ className, prodId }: { className?: string, prodId: s
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const res = await AddQuestion({ payload: { productId: prodId, question: data?.question } });
-      if (res?.error) {
-        toast.error(res?.error);
+      if (!res.success) {
+        throw new Error(res.message);
       }
+      toast.success(res.message || "Question submitted successfully");
+      form.reset();
     }
     catch (error: any) {
       if (isRedirectError(error)) {
         throw error; // Let Next.js handle the redirect
       }
-      toast.error(error?.data?.message);
+      toast.error(error?.message || "Failed to submit question");
     }
   };
 

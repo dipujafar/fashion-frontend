@@ -32,6 +32,9 @@ function ProcessOrder({ cartGroupId, mode, haveAnyUnavailableItems }: { cartGrou
                         treeGiftCount: shippingcart?.treeCount
                     }
                 });
+                if (!res.success) {
+                    throw new Error(res.message);
+                }
                 router.replace(res?.data);
             } else {
                 const res = await makeOrder({
@@ -43,6 +46,9 @@ function ProcessOrder({ cartGroupId, mode, haveAnyUnavailableItems }: { cartGrou
                         treeGiftCount: shippingcart?.treeCount
                     }
                 });
+                if (!res.success) {
+                    throw new Error(res.message);
+                }
                 router.replace(res?.data);
             }
 

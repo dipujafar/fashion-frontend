@@ -15,12 +15,11 @@ function GetLabel({ ordeId }: { ordeId: string }) {
         // Implementation for getting label
         try {
             const res = await GetLebel({ payload: { orderId } });
-            if (res?.error) {
-                toast.error(res?.error || "Something went wrong, try again");
-            } else {
-                const url = res?.data?.labelUrl;
-                 window.open(url, "_blank", "noopener,noreferrer");
+            if (!res.success) {
+                throw new Error(res.message);
             }
+            const url = res?.data?.labelUrl;
+            window.open(url, "_blank", "noopener,noreferrer");
         }
         catch (error: any) {
             if (isRedirectError(error)) {

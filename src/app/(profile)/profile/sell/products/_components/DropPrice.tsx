@@ -43,7 +43,10 @@ export function DropPriceComponenet({
     const onSubmit = async () => {
         setIsLoading(true);
         try {
-            await DropPrice({ payload: { productId: product?.id, newPrice: Number(offerPrice) } });
+            const res = await DropPrice({ payload: { productId: product?.id, newPrice: Number(offerPrice) } });
+            if (!res.success) {
+                throw new Error(res.message);
+            }
             setOpen(false);
             setOfferPrice(0);
             setCustomPriceInput("");

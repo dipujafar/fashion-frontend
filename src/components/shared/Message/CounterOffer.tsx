@@ -49,7 +49,10 @@ export function CounterOffer({
 
     const onSubmit = async (data: ReportFormValues) => {
         try {
-            await DeclineOffer({ payload: { offerId: offer?.id, offerPrice: Number(data.offerPrice) } });
+            const res = await DeclineOffer({ payload: { offerId: offer?.id, offerPrice: Number(data.offerPrice) } });
+            if (!res.success) {
+                throw new Error(res.message);
+            }
             setOpen(false);
             form.reset();
         } catch (err: any) {

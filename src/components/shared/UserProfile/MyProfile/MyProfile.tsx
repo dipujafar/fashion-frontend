@@ -75,9 +75,12 @@ function MyProfile({ user }: { user: IUser }) {
                 form.append('charityImgs', charityImg);
             }
 
-            await UpdateProfile({ payload: form });
+            const res = await UpdateProfile({ payload: form });
+            if (!res.success) {
+                throw new Error(res.message);
+            }
 
-            toast.success("Profile Updated Successfully");
+            toast.success(res.message || "Profile Updated Successfully");
 
         } catch (error: any) {
             if (isRedirectError(error)) {

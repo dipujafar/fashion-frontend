@@ -35,18 +35,18 @@ function AddAnsForm({ prodId, questionId }: { prodId: string, questionId: string
     const onSubmitReply = async (data: z.infer<typeof replyFormSchema>) => {
         try {
             const res = await AddAnswerToQuestion({ payload: { questionId: questionId, answer: data?.reply }, prodId });
-            if (res?.error) {
-                toast.error(res?.error);
+            if (!res.success) {
+                throw new Error(res.message);
             }
 
-            console.log(res);
-            toast.success("Reply added successfully");
+            toast.success(res.message || "Reply added successfully");
+            replyForm.reset();
         }
         catch (error: any) {
             if (isRedirectError(error)) {
                 throw error; // Let Next.js handle the redirect
             }
-            toast.error(error?.data?.message);
+            toast.error(error?.message || "Failed to add reply");
         }
     };
 

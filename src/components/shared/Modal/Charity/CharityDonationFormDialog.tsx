@@ -98,9 +98,8 @@ export function CharityDonationFormDialog({
   const onSubmit = async (data: FormData) => {
     try {
       const res = await DonateDirectMoney({ payload: data });
-      if (res?.error) {
-        toast.error(res.error);
-        return;
+      if (!res.success) {
+        throw new Error(res.message);
       }
       router.replace(res?.data);
       form.reset();
@@ -109,7 +108,7 @@ export function CharityDonationFormDialog({
         throw error;
       }
       toast.error(
-        error?.data?.message ?? "Something went wrong. Please try again."
+        error?.message ?? "Something went wrong. Please try again."
       );
     }
   };

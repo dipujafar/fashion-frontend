@@ -8,8 +8,10 @@ function UpdateSellingAddress({ defaultdata, actionBtn, className }: { defaultda
     const [showEditAddress, setShowEditAddress] = useState<boolean>(false);
 
     const updateAddressFn = async (data: any) => {
-
-        await updateSellingDetails(data);
+        const res = await updateSellingDetails(data);
+        if (!res.success) {
+            throw new Error(res.message);
+        }
     }
 
     return (

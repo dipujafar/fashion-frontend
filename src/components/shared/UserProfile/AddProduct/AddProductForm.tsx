@@ -149,7 +149,10 @@ export default function AddProductForm() {
 
       formData.append("data", JSON.stringify(formattedValues));
       try {
-        await AddNewProduct({ payload: formData });
+        const res = await AddNewProduct({ payload: formData });
+        if (!res.success) {
+          throw new Error(res.message);
+        }
         form.reset();
         setImages([]);
         setOpenSuccessDialog(true);

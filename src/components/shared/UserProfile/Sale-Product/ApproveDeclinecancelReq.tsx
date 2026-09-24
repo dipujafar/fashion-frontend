@@ -27,9 +27,8 @@ function ApproveDeclinecancelReq({ itemId, ...props }: ApproveDeclineCancelReqPr
 
             const res = await ApproveCancelRequest({ payload: { orderItemId: itemId } });
 
-            if (res?.error) {
-                toast.error(res?.error || "Something went wrong. Please try again.");
-                return;
+            if (!res.success) {
+                throw new Error(res.message);
             }
         } catch (error: any) {
             if (isRedirectError(error)) {
@@ -46,9 +45,8 @@ function ApproveDeclinecancelReq({ itemId, ...props }: ApproveDeclineCancelReqPr
         try {
             const res = await DeclineCancelRequest({ payload: { orderItemId: itemId } });
 
-            if (res?.error) {
-                toast.error(res?.error || "Something went wrong. Please try again.");
-                return;
+            if (!res.success) {
+                throw new Error(res.message);
             }
         }
         catch (error: any) {

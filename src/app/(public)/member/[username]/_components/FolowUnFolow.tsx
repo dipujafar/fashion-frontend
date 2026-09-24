@@ -10,8 +10,8 @@ function FolowUnFolow({ isFolow, memberId }: { isFolow: boolean, memberId: strin
     const handleFolow = async () => {
         try {
             const res = await FolowMemeber({ payload: { memberId } });
-            if (res?.error) {
-                toast.error(res?.error);
+            if (!res.success) {
+                throw new Error(res.message);
             }
         }
         catch (error: any) {
@@ -25,8 +25,8 @@ function FolowUnFolow({ isFolow, memberId }: { isFolow: boolean, memberId: strin
     const handleUnFolow = async () => {
         try {
             const res = await UnFolowMemeber({ payload: { memberId } });
-            if (res?.error) {
-                toast.error(res?.error);
+            if (!res.success) {
+                throw new Error(res.message);
             }
         }
         catch (error: any) {

@@ -10,7 +10,10 @@ function VacationModeSwitcher({ defaultChecked }: { defaultChecked: boolean }) {
     const handleChange = async (checked: boolean) => {
         try {
 
-            await UpdateVacationMode({ payload: { vacationMode: checked } });
+            const res = await UpdateVacationMode({ payload: { vacationMode: checked } });
+            if (!res.success) {
+                throw new Error(res.message);
+            }
 
         } catch (error: any) {
             if (isRedirectError(error)) {

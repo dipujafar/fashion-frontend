@@ -16,9 +16,8 @@ function DltCart({ cartItemId, productId }: { cartItemId: string, productId: str
         setLoading(true);
         try {
             const res = await DeleteFromCart({ payload: { productId }, extraRevalidatePaths: ["shopping-cart", `/shop/${productId}`] });
-            if (res?.error) {
-                toast.error(res?.error);
-                return;
+            if (!res.success) {
+                throw new Error(res.message);
             }
             dispatch(baseApi.util.invalidateTags([tagTypes.cart]))
         }

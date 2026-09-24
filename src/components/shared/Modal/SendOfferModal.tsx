@@ -35,8 +35,11 @@ export default function SendOfferModal({
       };
 
       const res = await AddNewOffer({ payload });
+      if (!res.success) {
+        throw new Error(res.message);
+      }
 
-      toast.success("Offer sent successfully!");
+      toast.success(res.message || "Offer sent successfully!");
 
       setError(null);
       setOpen(false);

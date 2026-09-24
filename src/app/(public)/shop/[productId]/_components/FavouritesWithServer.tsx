@@ -26,11 +26,12 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
         if (isFavourited) {
             try {
                 const res = await DeleteToFavourite({ payload: { productId: id }, extraRevalidatePaths });
-                if (res?.error) {
-                    toast.error(res?.error);
+                if (!res.success) {
+                    throw new Error(res.message);
                 }
                 setFavouriteCount(prev => prev - 1);
                 dispatch(baseApi.util.invalidateTags([tagTypes.favorite]));
+                setIsFavourited(prev => !prev);
             }
             catch (error: any) {
                 if (isRedirectError(error)) {
@@ -42,11 +43,12 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
         else {
             try {
                 const res = await AddToFavourite({ payload: { productId: id }, extraRevalidatePaths });
-                if (res?.error) {
-                    toast.error(res?.error);
+                if (!res.success) {
+                    throw new Error(res.message);
                 }
                 setFavouriteCount(prev => prev + 1);
                 dispatch(baseApi.util.invalidateTags([tagTypes.favorite]));
+                setIsFavourited(prev => !prev);
             }
             catch (error: any) {
                 if (isRedirectError(error)) {
@@ -55,7 +57,6 @@ function FavouritesWithServer({ id, count, includedProduct, className, extraReva
                 toast.error(error?.message || "Something went wrong");
             }
         }
-        setIsFavourited(prev => !prev);
     }
 
     return (

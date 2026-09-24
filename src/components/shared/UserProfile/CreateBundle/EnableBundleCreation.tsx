@@ -92,8 +92,11 @@ export function EnableBundleCreation({ discounts }: { discounts: { enabled: bool
 
   async function onSubmit(values: BundleDiscountFormValues) {
     try {
-      await UpdateBundleDiscounts({ payload: values });
-      toast.success("Bundle discounts updated successfully!");
+      const res = await UpdateBundleDiscounts({ payload: values });
+      if (!res.success) {
+        throw new Error(res.message);
+      }
+      toast.success(res.message || "Bundle discounts updated successfully!");
     } catch (error: any) {
       if (isRedirectError(error)) {
         throw error; // Let Next.js handle the redirect

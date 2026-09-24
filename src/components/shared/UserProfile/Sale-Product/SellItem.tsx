@@ -87,9 +87,8 @@ function SellItem({ order }: { order: IOrder }) {
 
             const res = await CancelOrderItems({ payload: formData });
 
-            if (res?.error) {
-                toast.error(res?.error || "Failed to cancel selected items. Please try again.");
-                return;
+            if (!res.success) {
+                throw new Error(res.message);
             }
 
             setSelectedItemIds(new Set())

@@ -95,9 +95,8 @@ const AddRemoveBundleItems = ({ product }: { product: IProductCart }) => {
         try {
             const res = await DeleteFromCart({ payload: { productId } });
 
-            if (res?.error) {
-                toast.error(res?.error || "An error occurred while adding to bundle.");
-                return; // keep dialog open so the user can see the error
+            if (!res.success) {
+                throw new Error(res.message);
             }
 
             dispatch(baseApi.util.invalidateTags([tagTypes.cart]))
@@ -107,7 +106,7 @@ const AddRemoveBundleItems = ({ product }: { product: IProductCart }) => {
             if (isRedirectError(error)) {
                 throw error;
             }
-            toast.error(error?.message);
+            toast.error(error?.message || "An error occurred while removing from bundle.");
         } finally {
             setLoading(false);
         }
@@ -127,9 +126,8 @@ const AddRemoveBundleItems = ({ product }: { product: IProductCart }) => {
 
         try {
             const res = await AddToCart({ payload });
-            if (res?.error) {
-                toast.error(res?.error || "An error occurred while adding to bundle.");
-                return; // keep dialog open so the user can see the error
+            if (!res.success) {
+                throw new Error(res.message);
             }
             dispatch(baseApi.util.invalidateTags([tagTypes.cart]))
             setIsInBundle(true);

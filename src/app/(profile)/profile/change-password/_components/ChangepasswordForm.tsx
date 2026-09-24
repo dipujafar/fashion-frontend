@@ -50,9 +50,12 @@ function ChangepasswordForm() {
 
         try {
 
-            await ChangePassword({ payload: data });
+            const res = await ChangePassword({ payload: data });
+            if (!res.success) {
+                throw new Error(res.message);
+            }
 
-            toast.success("Password Updated Successfully");
+            toast.success(res.message || "Password Updated Successfully");
 
             form.reset();
 
