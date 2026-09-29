@@ -28,6 +28,7 @@ import {
     productFormSchema,
     ProductFormValues,
 } from "@/components/shared/UserProfile/AddProduct/schema";
+import { PriceOverview } from "@/components/shared/UserProfile/AddProduct/PriceOverview";
 import { cn } from "@/lib/utils";
 import { useGetCategoryQuery } from "@/redux/api/categoryApi";
 
@@ -234,8 +235,9 @@ function EditlistingForm({ product }: { product: IProduct }) {
         }
     }
 
-    const price = Number(form.watch("price"));
-    const discountPct = Number(form.watch("discountPct")) || 0;
+    const watchedPrice = form.watch("price");
+    const watchedDiscount = form.watch("discountPct");
+    const watchedDonation = form.watch("donation_percent");
 
     return (
         <div className="md:space-y-6 space-y-3 max-w-2xl mx-auto">
@@ -690,12 +692,13 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                 )}
                             />
 
-                            {!isNaN(price) && (
-                                <p className="text-green-700 font-medium">
-                                    Final Price: ${(price * (1 - discountPct / 100)).toFixed(2)}
-                                </p>
-                            )}
                         </div>
+                        {/* Price Overview: Buyer Price, Charity Donation, and Net Seller Earnings */}
+                        <PriceOverview
+                            price={watchedPrice}
+                            discountPct={watchedDiscount}
+                            donationPercent={watchedDonation}
+                        />
                     </div>
 
                     {/* ============Shipment================ */}

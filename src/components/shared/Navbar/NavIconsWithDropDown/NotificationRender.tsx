@@ -1,5 +1,4 @@
 import { INotification } from "@/types";
-import { NotificationBellIconWhite } from "@/icons";
 import Image from "next/image";
 import { defaultImg } from "@/utils/defaultImg";
 
@@ -15,7 +14,7 @@ export const NotificationRender = ({ notification }: { notification: INotificati
                     }
                 case "PRICE_DROP":
                     return {
-                        avatar: notification?.entityImgs?.length > 0 ? <Image src={notification?.entityImgs[0] || defaultImg?.empty_user} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" /> : <NotificationBellIconWhite className="size-4" />,
+                        avatar: notification?.entityImgs?.length > 0 ? <Image src={notification?.entityImgs[0] || defaultImg?.empty_user} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" /> : <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                         link: `/shop/${notification?.entityId}`,
                         postImg: null
                     }
@@ -24,13 +23,13 @@ export const NotificationRender = ({ notification }: { notification: INotificati
                         avatar: notification?.entityImgs?.length > 0 ? <div className="relative">
                             <Image src={notification?.entityImgs[0] || defaultImg?.empty_user} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />
                             <span className="text-xs bg-destructive text-white px-1 py-0.5 absolute top-1 left-0">Sold</span>
-                        </div> : <NotificationBellIconWhite className="size-4" />,
+                        </div> : <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                         link: `/shop/${notification?.entityId}`,
                         postImg: null
                     }
                 default:
                     return {
-                        avatar: <NotificationBellIconWhite className="size-4" />,
+                        avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                         link: null,
                         postImg: null
                     }
@@ -47,7 +46,7 @@ export const NotificationRender = ({ notification }: { notification: INotificati
         case "ORDER":
             // ORDER_PLACED, ORDER_STATUS_CHANGED, ORDER_COMPLETED, ORDER_ITEM_CANCELED all behave the same
             return {
-                avatar: <NotificationBellIconWhite className="size-4" />,
+                avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                 link: null,
                 postImg: notification?.entityImgs?.length > 0 && (
                     <div className="flex -space-x-2">
@@ -77,7 +76,7 @@ export const NotificationRender = ({ notification }: { notification: INotificati
                     }
                 default:
                     return {
-                        avatar: <NotificationBellIconWhite className="size-4" />,
+                        avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                         link: null,
                         postImg: null
                     }
@@ -85,29 +84,29 @@ export const NotificationRender = ({ notification }: { notification: INotificati
 
         case "DONATION":
             return {
-                avatar: <NotificationBellIconWhite className="size-4" />,
+                avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                 link: null,
                 postImg: null
             }
 
         case "RETURN":
             return {
-                avatar: <NotificationBellIconWhite className="size-4" />,
+                avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                 link: null,
                 postImg: null
             }
 
-            case "BADGE":
+        case "BADGE":
             // badge earned notification
             return {
-                avatar: <NotificationBellIconWhite className="size-4" />,
+                avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                 link: `/member/${notification?.entityId}`,
                 postImg: null
             }
 
         default:
             return {
-                avatar: <NotificationBellIconWhite className="size-4" />,
+                avatar: <Image src={defaultImg?.fashionIcon} alt="product image" width={1200} height={1200} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} className="w-10 h-10 rounded-full object-cover" />,
                 link: null,
                 postImg: null
             }

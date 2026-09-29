@@ -1,7 +1,6 @@
 "use client";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { NotificationBellIconWhite } from "@/icons";
+import { Avatar } from "@/components/ui/avatar";
 import { useNotificationsQuery, useReadAllNotificationsMutation } from "@/redux/api/notification.api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,7 @@ export default function NotificationContainer() {
 
   const [page, setPage] = useState(1);
 
-  const { data: notifications, isLoading, isSuccess } = useNotificationsQuery({});
+  const { data: notifications, isLoading, isSuccess } = useNotificationsQuery({ page: page, limit: 20 });
 
   const [updateReadAll, { isLoading: isUpdating }] = useReadAllNotificationsMutation();
 

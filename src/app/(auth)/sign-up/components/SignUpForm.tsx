@@ -1,5 +1,5 @@
 "use client";;
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,15 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Eye, EyeOff, Check, X, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useCreateUserMutation } from "@/redux/api/authApi";
+import { useCreateUserMutation, useCheckUsernameMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
-import formSchema from "./SignSchema";
+import formSchema, { userNameSchema } from "./SignSchema";
 import { useRouter } from "next/navigation";
-import { getFirstErrorMessage } from "@/utils/modifyFormError";
 import { Button } from "@/components/ui/button";
 
 import appleIcon from "@/assets/icons/apple.png";
@@ -34,19 +33,96 @@ import { auth } from "@/firebase.init";
 const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: UserRole }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [createAccount, { isLoading }] = useCreateUserMutation();
+  const [checkUsername] = useCheckUsernameMutation();
   const router = useRouter();
 
   const [isSignupWithEmail, setIsSignupWithEmail] = useState(false);
   const [socialLoginToken, setSocialLoginToken] = useState<{ token: string, name: string | null } | null>(null);
 
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [usernameMessage, setUsernameMessage] = useState<string>("");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
+  const watchedUsername = form.watch("userName");
+
+  useEffect(() => {
+    if (!watchedUsername || watchedUsername.trim() === "") {
+      setUsernameAvailable(null);
+      setUsernameMessage("");
+      setIsCheckingUsername(false);
+      return;
+    }
+
+    const trimmed = watchedUsername.trim();
+
+    // 1. Must pass username validation before calling API
+    const validationResult = userNameSchema.safeParse(trimmed);
+    if (!validationResult.success) {
+      setUsernameAvailable(null);
+      setUsernameMessage("");
+      setIsCheckingUsername(false);
+      return;
+    }
+
+    // 2. Debounce API call
+    setIsCheckingUsername(true);
+    setUsernameAvailable(null);
+    setUsernameMessage("");
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await checkUsername({ userName: trimmed }).unwrap();
+        const isUnavailable =
+          res?.data?.isAvailable === false ||
+          res?.data?.available === false ||
+          res?.success === false;
+
+        if (isUnavailable) {
+          const msg = res?.message || "Username is already taken";
+          setUsernameAvailable(false);
+          setUsernameMessage(msg);
+          form.setError("userName", { type: "manual", message: msg });
+        } else {
+          const msg = res?.message || "Username is available";
+          setUsernameAvailable(true);
+          setUsernameMessage(msg);
+          form.clearErrors("userName");
+        }
+      } catch (error: any) {
+        const msg = error?.data?.message || error?.message || "Username is already taken";
+        setUsernameAvailable(false);
+        setUsernameMessage(msg);
+        form.setError("userName", { type: "manual", message: msg });
+      } finally {
+        setIsCheckingUsername(false);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [watchedUsername, checkUsername, form]);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (isCheckingUsername) {
+      toast.info("Please wait while we verify your username.");
+      return;
+    }
+
+    if (usernameAvailable === false) {
+      form.setError("userName", {
+        type: "manual",
+        message: usernameMessage || "Username is already taken",
+      });
+      return;
+    }
 
     try {
-      const res = await createAccount({ ...data, role}).unwrap();
+      const res = await createAccount({ ...data, role }).unwrap();
       if (res?.data?.otpToken) {
         sessionStorage.setItem("verifyOtpToken", res?.data?.otpToken);
         toast.success("Account created successfully");
@@ -59,12 +135,6 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
       toast.error(error?.data?.message || "An error occurred while creating the account.");
     }
   };
-
-  const onError = (errors: any) => {
-    const firstErrorMessage = getFirstErrorMessage(errors);
-    toast.error(firstErrorMessage);
-  };
-
 
 
   const GoogleLogin = async () => {
@@ -134,12 +204,27 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Username"
-                        {...field}
-                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
-                      />
+                      <div className="relative">
+                        <Input
+                          placeholder="Username"
+                          {...field}
+                          type="text"
+                          className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5 pr-10"
+                        />
+                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+                          {isCheckingUsername && (
+                            <Loader2 className="size-4.5 animate-spin text-gray-400" />
+                          )}
+                          {!isCheckingUsername && usernameAvailable === true && (
+                            <Check className="size-4.5 text-green-600" />
+                          )}
+                          {!isCheckingUsername && usernameAvailable === false && (
+                            <X className="size-4.5 text-red-500" />
+                          )}
+                        </div>
+                      </div>
                     </FormControl>
+                    
                     <FormMessage />
                   </FormItem>
                 )}
@@ -153,7 +238,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
                     <FormLabel>Email Address</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Email Address"
+                        placeholder="abc@gmail.com"
                         {...field}
                         type="email"
                         className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
@@ -174,7 +259,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Strong Password"
+                          placeholder="******"
                           {...field}
                           className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                         />

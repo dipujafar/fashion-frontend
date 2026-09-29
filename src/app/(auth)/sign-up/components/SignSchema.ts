@@ -1,18 +1,21 @@
 import { z } from "zod";
+
+export const userNameSchema = z
+  .string()
+  .trim()
+  .min(3, "Username must be at least 3 characters")
+  .max(20, "Username must be at most 20 characters")
+  .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, and underscores are allowed")
+  .refine((val) => !/^\d/.test(val), {
+    message: "Username cannot start with a number",
+  });
+
 const formSchema = z.object({
   fname: z
     .string({ required_error: "Name is required" })
     .min(1, { message: "Name is required" }),
 
-  userName: z
-    .string()
-    .trim()
-    .min(3, "Username must be at least 3 characters")
-    .max(20, "Username must be at most 20 characters")
-    .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, and underscores are allowed")
-    .refine((val) => !/^\d/.test(val), {
-      message: "Username cannot start with a number",
-    }),
+  userName: userNameSchema,
 
   email: z
     .string({ required_error: "Email is required" })

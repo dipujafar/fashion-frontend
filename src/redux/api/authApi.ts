@@ -59,8 +59,27 @@ const authApi = baseApi.injectEndpoints({
         body: data,
       }),
       invalidatesTags: [tagTypes.user],
-    })
+    }),
+    checkUsername: builder.mutation<
+      { success: boolean; message?: string; data?: any },
+      { userName: string }
+    >({
+      query: (data) => ({
+        url: "/auth/check-username",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useVerifyOtpMutation, useLoginMutation, useForgotPasswordMutation, useResetPasswordMutation, useSocialSignupMutation, useSocialLoginMutation } = authApi;
+export const {
+  useCreateUserMutation,
+  useVerifyOtpMutation,
+  useLoginMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+  useSocialSignupMutation,
+  useSocialLoginMutation,
+  useCheckUsernameMutation,
+} = authApi;

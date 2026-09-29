@@ -2,8 +2,8 @@
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useState } from "react";
-import { X, Camera, CheckCircle2 } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { X, Camera, CheckCircle2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -32,6 +32,7 @@ import {
   ProductFormValues,
 } from "./schema";
 import { ImageUploadGuide } from "./ImageUploadGuide";
+import { PriceOverview } from "./PriceOverview";
 import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
 import InputCharityDonationInput from "./InputCharityDonationInput";
@@ -58,6 +59,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { role } from "@/lib/userRole";
 import { SuccessModal } from "../../Modal/SuccessModal";
+import dynamic from "next/dynamic";
+
+const ImageEditorModal = dynamic(() => import("../../ImageEditorModal"), {
+  ssr: false,
+});
 
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
@@ -67,6 +73,14 @@ export default function AddProductForm() {
   const [showCustomPicker, setShowCustomPicker] = useState(false);
 
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+
+  // Image Editor state
+  const [editorModalOpen, setEditorModalOpen] = useState(false);
+  const [editingImage, setEditingImage] = useState<{
+    file: Blob | File;
+    index: number | null;
+    name?: string;
+  } | null>(null);
 
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -99,17 +113,65 @@ export default function AddProductForm() {
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const incoming = Array.from(e.target.files || []).filter(
-      (f) => f.type === "image/jpeg" || f.type === "image/png"
+      (f) => f.type.startsWith("image/")
     );
-    if (incoming.length > 0) {
-      setImages((prev) => {
-        const room = MAX_PHOTOS - prev.length;
-        return [...prev, ...incoming.slice(0, Math.max(room, 0))];
-      });
-    }
-    // allow re-selecting the same file again later
     e.target.value = "";
+    if (incoming.length === 0) return;
+
+    const availableSlots = MAX_PHOTOS - images.length;
+    if (availableSlots <= 0) {
+      toast.error(`You can only upload up to ${MAX_PHOTOS} photos`);
+      return;
+    }
+
+    const filesToProcess = incoming.slice(0, availableSlots);
+
+    // If multiple images are selected at once, directly add them without opening the editor
+    if (filesToProcess.length > 1) {
+      setImages((prev) => [...prev, ...filesToProcess]);
+      toast.success(`${filesToProcess.length} photos added successfully`);
+      return;
+    }
+
+    // Single image uploaded: open image editor
+    const singleFile = filesToProcess[0];
+    setEditingImage({ file: singleFile, index: null, name: singleFile.name });
+    setEditorModalOpen(true);
   };
+
+  const handleEditExisting = (index: number) => {
+    const existingFile = images[index];
+    if (!existingFile) return;
+    setEditingImage({
+      file: existingFile,
+      index,
+      name: (existingFile as File).name || `product-photo-${index + 1}.jpg`,
+    });
+    setEditorModalOpen(true);
+  };
+
+  const handleSaveEditor = useCallback((blob: Blob) => {
+    const filename = editingImage?.name || `product-image-${Date.now()}.jpg`;
+    const finalFile = new File([blob], filename, { type: blob.type || "image/jpeg" });
+
+    if (editingImage?.index !== null && editingImage?.index !== undefined) {
+      // Editing existing image
+      setImages((prev) =>
+        prev.map((img, i) => (i === editingImage.index ? finalFile : img))
+      );
+    } else {
+      // New single image uploaded
+      setImages((prev) => [...prev, finalFile]);
+    }
+
+    setEditingImage(null);
+    setEditorModalOpen(false);
+  }, [editingImage]);
+
+  const handleCloseEditor = useCallback(() => {
+    setEditorModalOpen(false);
+    setEditingImage(null);
+  }, []);
 
   const removeFile = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
@@ -163,8 +225,9 @@ export default function AddProductForm() {
     }
   }
 
-  const price = Number(form.watch("price"));
-  const discountPct = Number(form.watch("discountPct")) || 0;
+  const watchedPrice = form.watch("price");
+  const watchedDiscount = form.watch("discountPct");
+  const watchedDonation = form.watch("donation_percent");
 
 
   return (
@@ -201,41 +264,31 @@ export default function AddProductForm() {
 
                 if (file) {
                   return (
-                    <div
+                    <PhotoBoxItem
                       key={i}
-                      className="group relative aspect-square rounded-lg border border-dashed border-gray-300 overflow-hidden"
-                    >
-                      <Image
-                        src={URL.createObjectURL(file)}
-                        alt="Product photo"
-                        className="w-full h-full object-cover"
-                        height={500}
-                        width={500}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeFile(i)}
-                        className="absolute top-1.5 right-1.5 bg-black/60 text-white rounded-full w-5 h-5 flex items-center justify-center transition-opacity cursor-pointer"
-                        aria-label="Remove photo"
-                      >
-                        <X size={12} strokeWidth={2.5} />
-                      </button>
-                    </div>
+                      file={file}
+                      index={i}
+                      onEdit={handleEditExisting}
+                      onRemove={removeFile}
+                    />
                   );
                 }
 
-                const isFull = images.length >= 8;
+                const isFull = images.length >= MAX_PHOTOS;
 
                 return (
                   <label
                     key={i}
                     htmlFor={isFull ? undefined : INPUT_ID}
-                    className={`aspect-square rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-gray-400 transition-colors ${isFull
+                    className={`aspect-square rounded border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 transition-all ${isFull
                       ? "opacity-40 cursor-not-allowed"
-                      : "cursor-pointer hover:border-gray-400 hover:bg-gray-50 hover:text-gray-500"
+                      : "cursor-pointer hover:border-black hover:text-black hover:bg-gray-50"
                       }`}
                   >
                     <Camera size={22} strokeWidth={1.75} />
+                    <span className="text-[11px] font-medium mt-1 text-gray-500">
+                      {i === 0 ? "Cover Photo" : "Add Photo"}
+                    </span>
                   </label>
                 );
               })}
@@ -613,12 +666,14 @@ export default function AddProductForm() {
                   <FormItem>
                     <FormLabel>Discount (%)</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Enter discount percentage"
-                        {...field}
-                        type="number"
-                        className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3"
-                      />
+
+                      <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
+                        <InputGroupInput type="number" placeholder="eg: 10" {...field} className="!text-base" />
+                        <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg" >
+                          %
+                        </InputGroupAddon>
+                      </InputGroup>
+
                     </FormControl>
                     <FormMessage />
                     <p className="text-sm text-muted-foreground">
@@ -630,14 +685,14 @@ export default function AddProductForm() {
 
 
 
-              {!isNaN(price) && (
-                <p className="text-green-700 font-medium">
-                  Final Price: ${(price * (1 - discountPct / 100)).toFixed(2)}
-                </p>
-              )}
-
             </div>
 
+            {/* Price Overview: Buyer Price, Charity Donation, and Net Seller Earnings */}
+            <PriceOverview
+              price={watchedPrice}
+              discountPct={watchedDiscount}
+              donationPercent={watchedDonation || 0}
+            />
           </div>
 
 
@@ -773,6 +828,82 @@ export default function AddProductForm() {
           </div>
         }
       />
+
+      <ImageEditorModal
+        isOpen={editorModalOpen}
+        onClose={handleCloseEditor}
+        image={editingImage?.file ?? null}
+        onSave={handleSaveEditor}
+      />
+    </div>
+  );
+}
+
+function PhotoBoxItem({
+  file,
+  index,
+  onEdit,
+  onRemove,
+}: {
+  file: File | Blob;
+  index: number;
+  onEdit: (index: number) => void;
+  onRemove: (index: number) => void;
+}) {
+  const [objectUrl, setObjectUrl] = useState<string>("");
+
+  useEffect(() => {
+    const url = URL.createObjectURL(file);
+    setObjectUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
+
+  return (
+    <div className="group relative aspect-square rounded border border-gray-200 transition-colors overflow-hidden bg-white shadow-xs">
+
+      {objectUrl && (
+        <Image
+          src={objectUrl}
+          alt={`Product photo ${index + 1}`}
+          className="w-full h-full object-cover "
+          height={500}
+          width={500}
+          unoptimized
+        />
+      )}
+
+      {/* Top right remove button */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(index);
+        }}
+        className="absolute top-1.5 right-1.5 bg-black text-white hover:bg-neutral-800 rounded-full w-6 h-6 flex items-center justify-center shadow-md transition-opacity cursor-pointer z-10"
+        aria-label="Remove photo"
+      >
+        <X size={13} strokeWidth={2.5} />
+      </button>
+
+      {/* Primary photo indicator on index 0 */}
+      {index === 0 && (
+        <span className="absolute top-1.5 left-1.5 bg-black text-white text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded shadow-sm z-10 pointer-events-none">
+          Cover
+        </span>
+      )}
+
+      {/* Overlay on hover */}
+      <button
+        type="button"
+        onClick={() => onEdit(index)}
+        className=" text-white px-2.5 py-1 text-xs font-medium flex items-center gap-1 shadow-md transition-transform cursor-pointer absolute bottom-0 left-0 bg-black/70 w-full justify-center"
+        title="Edit photo"
+      >
+        <Pencil size={12} strokeWidth={2} />
+        <span>Adjust Photo</span>
+      </button>
 
 
     </div>
