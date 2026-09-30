@@ -79,24 +79,6 @@ function SellreqCard({ data }: { data: IAssitedSellRequest }) {
                         {data?.priceType == PriceType.TARGET_AMOUNT && <p className='text-base font-semibold'>${data?.targetPrice?.toFixed(2)}</p>}
                     </div>
 
-                    {data?.shipment?.trackingNumber && (
-                        <p className='text-xs text-gray-600'>
-                            Tracking:{" "}
-                            {data.shipment.trackingUrl ? (
-                                <a
-                                    href={data.shipment.trackingUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-primary-black underline font-medium hover:text-gray-700"
-                                >
-                                    {data.shipment.trackingNumber}
-                                </a>
-                            ) : (
-                                <span className="font-medium text-primary-black">{data.shipment.trackingNumber}</span>
-                            )}
-                        </p>
-                    )}
-
                 </div>
             </div>
 

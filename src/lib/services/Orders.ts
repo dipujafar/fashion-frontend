@@ -30,4 +30,21 @@ export const GetOrdersByBuyer = async ({ query }: { query: { [key: string]: stri
     }
 };
 
+export const GetOrderDetailsByCode = async ({ orderCode }: { orderCode: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/orders/details/${encodeURIComponent(orderCode)}`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err: any) {
+        return {
+            success: false,
+            message: err?.message || "Failed to fetch order details",
+            data: null
+        };
+    }
+};
+
 export default GetOrdersBySeller;

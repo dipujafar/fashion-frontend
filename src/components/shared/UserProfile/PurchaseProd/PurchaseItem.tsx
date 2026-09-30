@@ -32,6 +32,7 @@ import { toast } from 'sonner';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import CancelReasonView from '../Sale-Product/CancelReasonView';
 import CancelOrderForm from '../Sale-Product/CancelOrderForm';
+import PurchaseAction from './PurchaseAction';
 
 function PurchaseItem({ order }: { order: IOrder }) {
 
@@ -263,7 +264,7 @@ function PurchaseItem({ order }: { order: IOrder }) {
                             </Button>
                         </Link>
 
-                        {/* {order?.status === OrderStatus.CANCELLED && <SellActions order={order} />} */}
+                        <PurchaseAction order={order} />
                     </div>
                 </div>
 
@@ -387,7 +388,7 @@ function PurchaseItem({ order }: { order: IOrder }) {
 
                 </Collapsible>
 
-                
+
 
             </div>
         </div>

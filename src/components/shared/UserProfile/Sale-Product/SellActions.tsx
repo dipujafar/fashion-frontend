@@ -17,17 +17,19 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-import { RefreshCw, EllipsisVertical } from 'lucide-react'
+import { RefreshCw, EllipsisVertical, Truck, Headphones } from 'lucide-react'
 import { IOrder, OrderStatus } from "@/types"
 import { toast } from "sonner"
 import { isRedirectError } from "next/dist/client/components/redirect-error"
 import CancelOrderForm, { CancelOrderFormValues } from "./CancelOrderForm"
+import { useRouter } from "next/navigation"
 
 type DialogKey = "confirm" | "cancel" | "ship" | null;
 
 export default function SellActions({ order }: { order: IOrder }) {
     const [loadingAction, setLoadingAction] = useState<DialogKey>(null)
-    const [cancelOpen, setCancelOpen] = useState(false) // <-- controlled state
+    const [cancelOpen, setCancelOpen] = useState(false)
+    const router = useRouter();
     const isLoading = loadingAction !== null
 
     const handleCancelOrder = async (data: CancelOrderFormValues) => {
@@ -43,6 +45,8 @@ export default function SellActions({ order }: { order: IOrder }) {
         }
     }
 
+    const orderNumberWithoutHash = (order?.orderNumber ?? "").replace(/^#/, "");
+
     return (
         <>
             <DropdownMenu>
@@ -54,24 +58,30 @@ export default function SellActions({ order }: { order: IOrder }) {
 
                 <DropdownMenuContent className="w-40 rounded-none p-0" align="end">
                     <DropdownMenuGroup>
-                        {/* {order?.status === OrderStatus.PENDING && (
-                            <>
-                                <DropdownMenuSeparator className="my-0" />
-                                <DropdownMenuItem
-                                    onSelect={() => setCancelOpen(true)} // let the menu close, then open dialog
-                                    className="cursor-pointer p-2 rounded-none text-red-600 hover:!text-red-600"
-                                >
-                                    <CircleX size={16} className="text-destructive" />
-                                    Cancel Order
-                                </DropdownMenuItem>
-                            </>
-                        )} */}
-                        {order?.status === OrderStatus.CANCELLED && (
+
+                        <DropdownMenuItem
+                            onSelect={() => router.push(`/order-tracking?orderCode=${orderNumberWithoutHash}`)}
+                            className="cursor-pointer p-2 rounded-none"
+                        >
+                            <Truck size={16} />
+                            Track Order
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem
+                            onSelect={() => router.push(`/contact-us`)}
+                            className="cursor-pointer p-2 rounded-none"
+                        >
+                            <Headphones size={16} />
+                            Contact Support
+                        </DropdownMenuItem>
+
+                        {/* {order?.status === OrderStatus.CANCELLED && (
                             <DropdownMenuItem onSelect={() => { }} className="cursor-pointer p-2 rounded-none">
                                 <RefreshCw size={16} />
                                 Relist Product
                             </DropdownMenuItem>
-                        )}
+                        )} */}
+
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>

@@ -127,7 +127,7 @@ export const getOrderStatusFormat = (
         case OrderStatus.CANCELLED:
             return {
                 label: "Cancelled",
-                color: "bg-red-500",
+                color: "bg-red-500 text-white",
                 details: "Order has been cancelled.",
             }
 

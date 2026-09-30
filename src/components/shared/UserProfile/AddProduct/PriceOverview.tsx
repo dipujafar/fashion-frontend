@@ -3,9 +3,9 @@
 import React from "react";
 
 interface PriceOverviewProps {
-  price: number | string;
-  discountPct: number | string;
-  donationPercent: number | string;
+  price?: number | string;
+  discountPct?: number | string;
+  donationPercent?: number | string;
 }
 
 export function PriceOverview({

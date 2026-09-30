@@ -267,7 +267,7 @@ function SellItem({ order }: { order: IOrder }) {
                             </Button>
                         </Link>
 
-                        {order?.status === OrderStatus.CANCELLED && <SellActions order={order} />}
+                        <SellActions order={order} />
                     </div>
                 </div>
 
