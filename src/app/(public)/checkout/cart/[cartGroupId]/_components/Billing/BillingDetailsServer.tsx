@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GetUserBillingDetails } from '@/lib/services/UserDetails';
 import EditBillingDetails from './EditBillingDetails';
-import { Addresses, IBillingDetails } from '@/types';
+import { Addresses } from '@/types';
 
 function BillingDetailsServer() {
 

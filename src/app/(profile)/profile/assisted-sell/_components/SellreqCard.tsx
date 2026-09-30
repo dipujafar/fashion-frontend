@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { cn } from '@/lib/utils'
-import { IAssitedSellRequest, PriceType } from '@/types'
+import { IAssitedSellRequest, PriceType, ShipmentStatus } from '@/types'
 import { defaultImg } from '@/utils/defaultImg'
 import { getAssitedPriceTypeFormat, getAssitedSellingStatusFormat, getBundleOrderStatusFormat } from '@/utils/EnumFormater'
 import { Package } from 'lucide-react'
@@ -35,15 +35,15 @@ function SellreqCard({ data }: { data: IAssitedSellRequest }) {
                                 <TooltipTrigger>
                                     <Badge
                                         variant={data?.status == "REJECTED" ? "destructive" : "outline"}
-                                        className={(data?.status == "APPROVED" && data?.order && data?.order?.status !== "PENDING") ? cn(getBundleOrderStatusFormat(data?.order?.status)?.color, "font-semibold rounded-none") : cn(getAssitedSellingStatusFormat(data?.status)?.color, "font-semibold rounded-none")}>
+                                        className={(data?.status == "APPROVED" && data?.shipment && data?.shipment?.status !== ShipmentStatus.PENDING) ? cn(getBundleOrderStatusFormat(data?.shipment?.status)?.color, "font-semibold rounded-none") : cn(getAssitedSellingStatusFormat(data?.status)?.color, "font-semibold rounded-none")}>
 
-                                        {(data?.status == "APPROVED" && data?.order && data?.order?.status !== "PENDING") ? getBundleOrderStatusFormat(data?.order?.status)?.label : getAssitedSellingStatusFormat(data?.status)?.label}
+                                        {(data?.status == "APPROVED" && data?.shipment && data?.shipment?.status !== ShipmentStatus.PENDING) ? getBundleOrderStatusFormat(data?.shipment?.status)?.label : getAssitedSellingStatusFormat(data?.status)?.label}
 
                                     </Badge>
                                 </TooltipTrigger>
 
                                 <TooltipContent className="rounded-none" side="top">
-                                    <p className="text-xs">{(data?.status == "APPROVED" && data?.order && data?.order?.status !== "PENDING") ? getBundleOrderStatusFormat(data?.order?.status)?.details : getAssitedSellingStatusFormat(data?.status)?.details}</p>
+                                    <p className="text-xs">{(data?.status == "APPROVED" && data?.shipment && data?.shipment?.status !== ShipmentStatus.PENDING) ? getBundleOrderStatusFormat(data?.shipment?.status)?.details : getAssitedSellingStatusFormat(data?.status)?.details}</p>
                                 </TooltipContent>
                             </Tooltip>
 
@@ -78,6 +78,24 @@ function SellreqCard({ data }: { data: IAssitedSellRequest }) {
                         </Tooltip>
                         {data?.priceType == PriceType.TARGET_AMOUNT && <p className='text-base font-semibold'>${data?.targetPrice?.toFixed(2)}</p>}
                     </div>
+
+                    {data?.shipment?.trackingNumber && (
+                        <p className='text-xs text-gray-600'>
+                            Tracking:{" "}
+                            {data.shipment.trackingUrl ? (
+                                <a
+                                    href={data.shipment.trackingUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary-black underline font-medium hover:text-gray-700"
+                                >
+                                    {data.shipment.trackingNumber}
+                                </a>
+                            ) : (
+                                <span className="font-medium text-primary-black">{data.shipment.trackingNumber}</span>
+                            )}
+                        </p>
+                    )}
 
                 </div>
             </div>

@@ -5,12 +5,16 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import React from 'react'
 import { toast } from 'sonner';
 
-function GetLabel({ ordeId }: { ordeId: string }) {
+function GetLabel({ ordeId, labelUrl }: { ordeId: string; labelUrl?: string | null }) {
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 
     const handleGetLebel = async (orderId: string) => {
+        if (labelUrl) {
+            window.open(labelUrl, "_blank", "noopener,noreferrer");
+            return;
+        }
         setIsLoading(true);
         // Implementation for getting label
         try {

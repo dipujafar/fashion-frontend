@@ -1,11 +1,15 @@
-import { OrderStatus, CurrentShipTo, OrderAuthStatus, CancelReason, AssistentSellStatus, PriceType, IBadgeType, PaymentStatus, StripePaymentStatus } from "@/types"
+import { OrderStatus, CurrentShipTo, OrderAuthStatus, CancelReason, AssistentSellStatus, PriceType, IBadgeType, PaymentStatus, StripePaymentStatus, ShipmentStatus, IShipment, IOrder } from "@/types"
 
 export const getOrderStatusFormat = (
-    status: OrderStatus,
-    currentShipTo?: CurrentShipTo,
-    authStatus?: OrderAuthStatus
+    order : IOrder
 ): { label: string; color: string; details: string } => {
-    const isAuthCenter = currentShipTo === CurrentShipTo.AUTHENTICATION_CENTER
+
+    const {status, shipment, authShipment, currentShipTo, allowedAuthentication, authStatus} = order;
+
+    const isAuthCenter = currentShipTo === CurrentShipTo.AUTHENTICATION_CENTER;
+
+    //authentication allow & current going to buyer, shipment will be auth shipment, else shipment will be buyer shipment
+    const currentShipment = (allowedAuthentication && !isAuthCenter) ? authShipment : shipment;
 
     switch (status) {
         case OrderStatus.PENDING:
@@ -15,67 +19,103 @@ export const getOrderStatusFormat = (
                 details: "Order has been placed and is awaiting processing.",
             }
 
-        case OrderStatus.SHIPPED:
-            return isAuthCenter
-                ? {
-                    label: "Shipped to Auth",
-                    color: "bg-blue-100 text-blue-800",
-                    details: "Item has shipped and is on its way to the Authentication Center.",
-                }
-                : {
-                    label: "Shipped",
-                    color: "bg-blue-100 text-blue-800",
-                    details: "Item has shipped and is on its way to the buyer.",
-                }
-
-        case OrderStatus.OUT_FOR_DELIVERY:
-            return isAuthCenter
-                ? {
-                    label: "In Transit",
-                    color: "bg-indigo-100 text-indigo-800",
-                    details: "Item is in transit and out for delivery to the Authentication Center.",
-                }
-                : {
-                    label: "In Transit",
-                    color: "bg-indigo-100 text-indigo-800",
-                    details: "Item is in transit and out for delivery to the buyer.",
-                }
-
-        case OrderStatus.DELIVERED:
-            if (!isAuthCenter) {
-                return {
-                    label: "Delivered",
-                    color: "bg-purple-100 text-purple-800",
-                    details: "Item has been delivered to the buyer.",
+        case OrderStatus.SHIPPING:
+            if (currentShipment) {
+                switch (currentShipment?.status) {
+                    case ShipmentStatus.PICKED_UP:
+                        return isAuthCenter
+                            ? {
+                                label: "Picked Up for Auth",
+                                color: "bg-blue-100 text-blue-800",
+                                details: "Item has been picked up and is on its way to the Authentication Center.",
+                            }
+                            : {
+                                label: "Picked Up",
+                                color: "bg-blue-100 text-blue-800",
+                                details: "Item has been picked up by the courier.",
+                            }
+                    case ShipmentStatus.IN_TRANSIT:
+                        return isAuthCenter
+                            ? {
+                                label: "In Transit to Auth",
+                                color: "bg-indigo-100 text-indigo-800",
+                                details: "Item is in transit to the Authentication Center.",
+                            }
+                            : {
+                                label: "In Transit",
+                                color: "bg-indigo-100 text-indigo-800",
+                                details: "Item is in transit and out for delivery to the buyer.",
+                            }
+                    case ShipmentStatus.OUT_FOR_DELIVERY:
+                        return isAuthCenter
+                            ? {
+                                label: "Out for Delivery to Auth",
+                                color: "bg-purple-100 text-purple-800",
+                                details: "Item is out for delivery to the Authentication Center.",
+                            }
+                            : {
+                                label: "Out for Delivery",
+                                color: "bg-purple-100 text-purple-800",
+                                details: "Item is out for delivery to the buyer.",
+                            }
+                    case ShipmentStatus.DELIVERED:
+                        if (!isAuthCenter) {
+                            return {
+                                label: "Delivered",
+                                color: "bg-purple-100 text-purple-800",
+                                details: "Item has been delivered to the buyer.",
+                            }
+                        }
+                        switch (authStatus) {
+                            case OrderAuthStatus.ITEM_RECEIVED:
+                                return {
+                                    label: "Auth: Received",
+                                    color: "bg-purple-100 text-purple-800",
+                                    details: "Item has been received at the Authentication Center and is awaiting review.",
+                                }
+                            case OrderAuthStatus.IN_PROGRESS:
+                                return {
+                                    label: "Auth: In Progress",
+                                    color: "bg-purple-100 text-purple-800",
+                                    details: "Item is currently being authenticated.",
+                                }
+                            case OrderAuthStatus.RESPONDED:
+                                return {
+                                    label: "Auth: Responded",
+                                    color: "bg-purple-100 text-purple-800",
+                                    details: "Authentication has been completed and a response has been issued.",
+                                }
+                            case OrderAuthStatus.NOT_STARTED:
+                            default:
+                                return {
+                                    label: "Delivered to Auth",
+                                    color: "bg-purple-100 text-purple-800",
+                                    details: "Item has been delivered to the Authentication Center. Review has not started yet.",
+                                }
+                        }
+                    case ShipmentStatus.CANCELLED:
+                        return {
+                            label: "Shipment Cancelled",
+                            color: "bg-red-500",
+                            details: "Shipment has been cancelled.",
+                        }
+                    case ShipmentStatus.PENDING:
+                    default:
+                        break;
                 }
             }
-            switch (authStatus) {
-                case OrderAuthStatus.ITEM_RECEIVED:
-                    return {
-                        label: "Auth: Received",
-                        color: "bg-purple-100 text-purple-800",
-                        details: "Item has been received at the Authentication Center and is awaiting review.",
-                    }
-                case OrderAuthStatus.IN_PROGRESS:
-                    return {
-                        label: "Auth: In Progress",
-                        color: "bg-purple-100 text-purple-800",
-                        details: "Item is currently being authenticated.",
-                    }
-                case OrderAuthStatus.RESPONDED:
-                    return {
-                        label: "Auth: Responded",
-                        color: "bg-purple-100 text-purple-800",
-                        details: "Authentication has been completed and a response has been issued.",
-                    }
-                case OrderAuthStatus.NOT_STARTED:
-                default:
-                    return {
-                        label: "Delivered to Auth",
-                        color: "bg-purple-100 text-purple-800",
-                        details: "Item has been delivered to the Authentication Center. Review has not started yet.",
-                    }
-            }
+
+            return isAuthCenter
+                ? {
+                    label: "Shipping to Auth",
+                    color: "bg-blue-100 text-blue-800",
+                    details: "Item is shipping and on its way to the Authentication Center.",
+                }
+                : {
+                    label: "Shipping",
+                    color: "bg-blue-100 text-blue-800",
+                    details: "Item is shipping and on its way to the buyer.",
+                }
 
         case OrderStatus.COMPLETED:
             return {
@@ -129,47 +169,101 @@ export const CancelReasonFormat: Record<CancelReason, { label: string; color: st
     OTHER: { label: "Other", color: "bg-gray-100 text-gray-800" },
 }
 
-export const getBundleOrderStatusFormat = (
-    status: OrderStatus,
+export const getShipmentStatusFormat = (
+    status: ShipmentStatus,
 ): { label: string; color: string; details: string } => {
-
     switch (status) {
-        case OrderStatus.PENDING:
+        case ShipmentStatus.PENDING:
+            return {
+                label: "Pending",
+                color: "bg-yellow-100 text-yellow-800",
+                details: "Shipment is waiting for processing.",
+            }
+
+        case ShipmentStatus.PICKED_UP:
+            return {
+                label: "Picked Up",
+                color: "bg-blue-100 text-blue-800",
+                details: "Package has been picked up by the courier.",
+            }
+
+        case ShipmentStatus.IN_TRANSIT:
+            return {
+                label: "In Transit",
+                color: "bg-indigo-100 text-indigo-800",
+                details: "Package is in transit.",
+            }
+
+        case ShipmentStatus.OUT_FOR_DELIVERY:
+            return {
+                label: "Out for Delivery",
+                color: "bg-purple-100 text-purple-800",
+                details: "Package is out for delivery.",
+            }
+
+        case ShipmentStatus.DELIVERED:
+            return {
+                label: "Delivered",
+                color: "bg-purple-100 text-purple-800",
+                details: "Package has been delivered.",
+            }
+
+        case ShipmentStatus.CANCELLED:
+            return {
+                label: "Cancelled",
+                color: "bg-red-500",
+                details: "Shipment has been cancelled.",
+            }
+
+        default:
+            return {
+                label: "Unknown",
+                color: "bg-gray-100 text-gray-800",
+                details: "Status unavailable.",
+            }
+    }
+}
+
+export const getBundleOrderStatusFormat = (
+    status: ShipmentStatus,
+): { label: string; color: string; details: string } => {
+    switch (status) {
+        case ShipmentStatus.PENDING:
             return {
                 label: "Pending",
                 color: "bg-yellow-100 text-yellow-800",
                 details: "Request shipment is waiting for processing.",
             }
 
-        case OrderStatus.SHIPPED:
+        case ShipmentStatus.PICKED_UP:
             return {
-                label: "Shipped",
+                label: "Picked Up",
                 color: "bg-blue-100 text-blue-800",
-                details: "Items have shipped and is on its way to the FASHI-ON team.",
+                details: "Items have been picked up and are on their way to the FASHI-ON team.",
             }
 
-        case OrderStatus.OUT_FOR_DELIVERY:
+        case ShipmentStatus.IN_TRANSIT:
             return {
                 label: "In Transit",
                 color: "bg-indigo-100 text-indigo-800",
+                details: "Item is in transit and on its way to the FASHI-ON team.",
+            }
+
+        case ShipmentStatus.OUT_FOR_DELIVERY:
+            return {
+                label: "Out for Delivery",
+                color: "bg-purple-100 text-purple-800",
                 details: "Item is in transit and out for delivery to the FASHI-ON team.",
             }
 
-        case OrderStatus.DELIVERED:
+        case ShipmentStatus.DELIVERED:
             return {
                 label: "Delivered",
                 color: "bg-purple-100 text-purple-800",
                 details: "Item has been delivered to the FASHI-ON team.",
             }
 
-        case OrderStatus.COMPLETED:
-            return {
-                label: "Completed",
-                color: "bg-green-500",
-                details: "Shipment has been completed.",
-            }
-
-        case OrderStatus.CANCELLED:
+        case ShipmentStatus.CANCELLED:
             return {
                 label: "Cancelled",
                 color: "bg-red-500",

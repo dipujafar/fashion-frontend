@@ -1,7 +1,8 @@
 "use client"
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button';
-import { Camera, X } from 'lucide-react';
+import { Camera, X, CheckCircle2, Phone } from 'lucide-react';
+import { PhoneVerificationModal } from './PhoneVerificationModal';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +27,7 @@ function MyProfile({ user }: { user: IUser }) {
     const [defaultCharityImgs, setDefaultCharityImgs] = useState<{ id: string, url: string }[]>(user?.charityGalleries || []);
     const [charityImgs, setCharityImgs] = useState<File[]>([]);
     const [dltCharityImgIds, setDltCharityImgIds] = useState<string[]>([]);
+    const [openPhoneModal, setOpenPhoneModal] = useState(false);
 
     const isCharity = user?.auth?.role == UserRole.CHARITABLE_ORGANIZATION || user?.auth?.role == UserRole.CHARITY_SHOP
 
@@ -265,15 +267,40 @@ function MyProfile({ user }: { user: IUser }) {
                                     name="phoneNumber"
                                     render={({ field }) => (
                                         <FormItem className=''>
-                                            <FormLabel className='text-gray-800 font-normal'>Phone number</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Enter Your Phone Number"
-                                                    {...field}
-                                                    type='tel'
-                                                    className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4"
-                                                />
-                                            </FormControl>
+                                            <div className="flex items-center justify-between">
+                                                <FormLabel className='text-gray-800 font-normal'>Phone Number</FormLabel>
+                                                {field.value && (
+                                                    <span className="inline-flex items-center gap-1 text-xs text-neutral-900 font-medium">
+                                                        <CheckCircle2 className="w-3.5 h-3.5 text-neutral-900" />
+                                                        Verified
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="No phone number added"
+                                                        value={field.value || ""}
+                                                        readOnly
+                                                        disabled
+                                                        className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 flex-1 select-none"
+                                                    />
+                                                </FormControl>
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() => setOpenPhoneModal(true)}
+                                                    className="h-12 px-4 rounded border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors text-sm font-medium whitespace-nowrap cursor-pointer"
+                                                >
+                                                    <Phone className="w-4 h-4 mr-1.5" />
+                                                    {field.value ? "Change" : "Add Phone"}
+                                                </Button>
+                                            </div>
+                                            <p className="text-xs text-neutral-500">
+                                                {field.value 
+                                                    ? "Phone number is verified. To change it, verification with a 6-digit OTP is required." 
+                                                    : "Phone number cannot be entered directly. 6-digit OTP verification is required."}
+                                            </p>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -542,6 +569,15 @@ function MyProfile({ user }: { user: IUser }) {
                 <Button size={"lg"} type='submit' className="cursor-pointer gap-2 disabled:cursor-not-allowed rounded-none mt-5" disabled={isLoading}>
                     {isLoading ? <span className="loader" /> : "Save Changes "}
                 </Button>
+
+                <PhoneVerificationModal
+                    open={openPhoneModal}
+                    onOpenChange={setOpenPhoneModal}
+                    currentPhone={form.getValues("phoneNumber")}
+                    onPhoneVerified={(newPhone) => {
+                        form.setValue("phoneNumber", newPhone, { shouldDirty: true, shouldValidate: true });
+                    }}
+                />
 
             </form>
         </Form>

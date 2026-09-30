@@ -412,10 +412,22 @@ export interface IOrder {
   sellerId: string,
   seller: IUser,
 
-  billingDetails: IBillingDetails,
+  originDetailsId: string,
+  originDetails: IBillingDetails, //origin address
+
+  billingDetails: IBillingDetails, //destination address
   createdAt: Date,
 
+  extraDonation: number,
+  allowedAuthentication : boolean,
+
   bundleDiscountPercent: number,
+
+  shipmentId: string,
+  shipment: IShipment
+
+  authShipmentId: string | null,
+  authShipment: IShipment | null,
 
   payment: IPayment | null,
 }
@@ -432,9 +444,7 @@ export enum CurrentShipTo {
 
 export enum OrderStatus {
   PENDING = "PENDING",
-  SHIPPED = "SHIPPED",
-  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
-  DELIVERED = "DELIVERED",
+  SHIPPING = "SHIPPING",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED"
 }
@@ -636,7 +646,7 @@ export interface IAssitedSellRequest {
   deliveryCharge: number | null,
   status: AssistentSellStatus,
   listings: IProduct[],
-  order: IOrder | null,
+  shipment : IShipment | null,
   sellerId: string,
   seller: IUser,
   createdAt: Date,
@@ -738,4 +748,52 @@ export enum PayoutStatus {
   PENDING = "PENDING",
   PAID = "PAID",
   FAILED = "FAILED"
+}
+
+export interface IShipment {
+  id: string,
+  order : IOrder | null,
+  authOrder : IOrder | null,
+  assitentSellId: string | null,
+  assitentSell: IAssitedSellRequest | null,
+  returnId: string | null,
+  // return: IReturn | null,
+  courier_service_id: string,
+  shippingId: string,
+  isLebelGenerated: boolean,
+  lebelUrl: string | null,
+  parcelId: string | null,
+  trackingNumber: string | null,
+  trackingUrl: string | null,
+  deliveryCharge: number,
+  originId: string,
+  origin: IBillingDetails,
+  destinationId: string,
+  destination: IBillingDetails,
+  status: ShipmentStatus,
+  events: IShipmentEvent[],
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export enum ShipmentStatus {
+  PENDING = "PENDING",
+  PICKED_UP = "PICKED_UP",
+  IN_TRANSIT = "IN_TRANSIT",
+  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED"
+}
+
+export interface IShipmentEvent {
+  id: string,
+  shipmentId: string,
+  shipment: IShipment,
+  shipmentStatus: ShipmentStatus,
+  eventType: string,
+  eventDescription: string | null,
+  eventLocation: string | null,
+  eventTime: Date,
+  createdAt: Date,
+  updatedAt: Date
 }

@@ -56,16 +56,8 @@ async function PurchaseProductContainer({ ssp }: { ssp: { [key: string]: string 
                         label: "Pending"
                     },
                     {
-                        id: "SHIPPED",
-                        label: "Shipped"
-                    },
-                    {
-                        id: "OUT_FOR_DELIVERY",
-                        label: "Out for Delivery"
-                    },
-                    {
-                        id: "DELIVERED",
-                        label: "Delivered"
+                        id: "SHIPPING",
+                        label: "Shipping"
                     },
                     {
                         id: "COMPLETED",

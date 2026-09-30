@@ -3,9 +3,13 @@ import { Addresses } from '@/types';
 import { Pencil } from 'lucide-react';
 import React, { useState } from 'react'
 import BillingAddressModal from './BillingAddressModal';
+import { usePathname } from 'next/navigation';
+import { invalidatePath } from '@/lib/Actions/Revalidate.action';
 
 function EditBillingDetails({ data: address }: { data: { data: Addresses } }) {
     const [showEditAddress, setShowEditAddress] = useState<boolean>(false);
+
+    const path = usePathname();
 
     const buyingAddress = address?.data?.buyingAddress
 
@@ -21,6 +25,10 @@ function EditBillingDetails({ data: address }: { data: { data: Addresses } }) {
     ].filter(Boolean);
 
     const locationLine = locationParts.join(", ");
+
+    const handleUpdateCallback = ()=>{
+        invalidatePath(path);
+    }
 
     return (
         <>
@@ -59,6 +67,7 @@ function EditBillingDetails({ data: address }: { data: { data: Addresses } }) {
             <BillingAddressModal
                 open={showEditAddress}
                 onOpenChange={setShowEditAddress}
+                callbackFn={handleUpdateCallback}
                 defaultValue={data?.data || null}
             />
         </>

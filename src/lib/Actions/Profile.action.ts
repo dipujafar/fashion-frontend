@@ -24,6 +24,85 @@ export const UpdateProfile = async ({ payload }: { payload: FormData }) => {
     }
 }
 
+export const SendPhoneVerificationOtp = async ({ payload }: { payload: { phone: string } }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            payload,
+            endPoint: "/users/send-phone-otp",
+            method: "POST"
+        });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Verification code sent to your phone",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        // Fallback endpoint if route is under /auth
+        try {
+            const fallbackRes = await serverQueryWithReauth({
+                payload,
+                endPoint: "/auth/send-phone-otp",
+                method: "POST"
+            });
+            return {
+                success: fallbackRes?.success !== undefined ? Boolean(fallbackRes.success) : true,
+                message: fallbackRes?.message || "Verification code sent to your phone",
+                data: fallbackRes?.data !== undefined ? fallbackRes.data : (fallbackRes ?? null),
+            };
+        } catch {
+            return {
+                success: false,
+                message: error?.message || "Failed to send verification code",
+                data: null,
+            };
+        }
+    }
+}
+
+export const VerifyPhoneOtpAction = async ({ payload }: { payload: { phone: string; otp: string } }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            payload,
+            endPoint: "/users/verify-phone-otp",
+            method: "POST"
+        });
+        revalidatePath(`/profile`);
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Phone number verified successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        // Fallback endpoint if route is under /auth
+        try {
+            const fallbackRes = await serverQueryWithReauth({
+                payload,
+                endPoint: "/auth/verify-phone-otp",
+                method: "POST"
+            });
+            revalidatePath(`/profile`);
+            return {
+                success: fallbackRes?.success !== undefined ? Boolean(fallbackRes.success) : true,
+                message: fallbackRes?.message || "Phone number verified successfully",
+                data: fallbackRes?.data !== undefined ? fallbackRes.data : (fallbackRes ?? null),
+            };
+        } catch {
+            return {
+                success: false,
+                message: error?.message || "Invalid or expired verification code",
+                data: null,
+            };
+        }
+    }
+}
+
+
 export const ChangePassword = async ({ payload }: { payload: { oldPassword: string; newPassword: string, confirmPassword: string } }) => {
     try {
         const res = await serverQueryWithReauth({ payload, endPoint: "/auth/change-password", method: "PATCH" });

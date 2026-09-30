@@ -26,12 +26,14 @@ export const makeOrder = async ({ payload }: { payload: { cartGroupId: string, o
 export const makeOfferOrder = async ({ payload }: { payload: { cartGroupId: string, offerId: string, shipmentServiceId: string, treeGiftCount: number, allowedAuthentication: boolean } }) => {
     try {
         const res = await serverQueryWithReauth({ payload, endPoint: `/orders/offer`, method: "POST" });
+
         return {
             success: res?.success !== undefined ? Boolean(res.success) : true,
             message: res?.message || "Offer order created successfully",
             data: res?.data !== undefined ? res.data : (res ?? null),
         };
     } catch (error: any) {
+
         if (isRedirectError(error)) {
             throw error;
         }

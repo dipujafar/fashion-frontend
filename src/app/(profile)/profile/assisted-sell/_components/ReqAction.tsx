@@ -52,7 +52,7 @@ function ReqAction({ data }: { data: IAssitedSellRequest }) {
     return (
         <div>
 
-            {(data?.status !== "APPROVED" || data?.order) && <DropdownMenu>
+            {(data?.status !== "APPROVED" || data?.shipment) && <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="cursor-pointer flex flex-row items-center gap-x-1 shadow-none">
                         <EllipsisVertical />

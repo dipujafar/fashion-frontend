@@ -241,13 +241,13 @@ function PurchaseItem({ order }: { order: IOrder }) {
 
                     <Tooltip>
                         <TooltipTrigger>
-                            <Badge variant={["CANCELLED", "COMPLETED"].includes(order?.status) ? "destructive" : "outline"} className={cn(getOrderStatusFormat(order?.status, order?.currentShipTo, order?.authStatus)?.color, "font-semibold rounded-none")}>
-                                {getOrderStatusFormat(order?.status, order?.currentShipTo, order?.authStatus)?.label}
+                            <Badge variant={["CANCELLED", "COMPLETED"].includes(order?.status) ? "destructive" : "outline"} className={cn(getOrderStatusFormat(order)?.color, "font-semibold rounded-none")}>
+                                {getOrderStatusFormat(order)?.label}
                             </Badge>
                         </TooltipTrigger>
 
                         <TooltipContent className="rounded-none" side="top">
-                            <p className="text-xs">{getOrderStatusFormat(order?.status, order?.currentShipTo, order?.authStatus)?.details}</p>
+                            <p className="text-xs">{getOrderStatusFormat(order)?.details}</p>
                         </TooltipContent>
                     </Tooltip>
 
@@ -386,6 +386,8 @@ function PurchaseItem({ order }: { order: IOrder }) {
                     </CollapsibleContent>
 
                 </Collapsible>
+
+                
 
             </div>
         </div>

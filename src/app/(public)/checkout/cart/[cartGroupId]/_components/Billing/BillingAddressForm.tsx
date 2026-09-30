@@ -48,6 +48,7 @@ type FormData = z.infer<typeof formSchema>;
 export default function BillingAddressForm(
   { defaultValue,
     onOpenChange,
+    callbackFn,
     updateAddressFn = async (data: any) => {
       const res = await updateShippingDetails(data);
       if (!res.success) {
@@ -58,7 +59,8 @@ export default function BillingAddressForm(
     : {
       defaultValue: IBillingDetails | null;
       onOpenChange: (open: boolean) => void,
-      updateAddressFn?: (data: any) => Promise<void>
+      updateAddressFn?: (data: any) => Promise<void>,
+      callbackFn?: () => void
     }) {
   // const [handleUpdate, { isLoading }] = useUpdateBillingDetailsMutation();
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +104,7 @@ export default function BillingAddressForm(
       dispatch(clearCart());
       dispatch(baseApi.util.invalidateTags([tagTypes.user_billing]));
 
+      callbackFn?.();
       onOpenChange(false);
     } catch (error: any) {
       if (isRedirectError(error)) {

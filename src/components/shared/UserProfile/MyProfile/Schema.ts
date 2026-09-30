@@ -9,8 +9,10 @@ const profileUpdateSchema = z.object({
         .optional(),
 
     phoneNumber: z
-        .string({ required_error: "Phone Number is required" })
-        .min(1, { message: "Phone Number is required" }),
+        .string()
+        .trim()
+        .optional()
+        .or(z.literal("")),
 
     bio: z
         .string()
