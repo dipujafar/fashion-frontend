@@ -292,7 +292,7 @@ export function ShipmentSteps({ order, events = [] }: ShipmentStepsProps) {
                 >
                   <div className="font-mono text-neutral-500 shrink-0 sm:w-36 text-xs flex items-center gap-1.5">
                     <span>
-                      {moment(evt.eventTime || evt.createdAt).format("DD-MM-YY hh:mm A")}
+                      {moment(evt.eventTime || evt.createdAt).format("MM-DD-YYYY hh:mm A")}
                     </span>
                   </div>
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { IOrder } from "@/types";
-import { Receipt, CheckCircle2 } from "lucide-react";
+import { Receipt } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface BuyerPriceOverviewProps {
