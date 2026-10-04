@@ -103,7 +103,8 @@ const SIgnInForm = () => {
     const provider = new GoogleAuthProvider();
 
     const res = await signInWithPopup(auth, provider);
-    const token = await res.user.getIdToken();
+    const token = await res.user.getIdToken(true);
+    console.log(token);
     setSocialLoginMethod("google");
 
     await handleSocialLogin(token);
@@ -114,7 +115,7 @@ const SIgnInForm = () => {
 
     const result = await signInWithPopup(auth, provider);
 
-    const token = await result.user.getIdToken();
+    const token = await result.user.getIdToken(true);
     setSocialLoginMethod("apple");
 
     await handleSocialLogin(token);

@@ -173,7 +173,7 @@ export function CharityDonationFormDialog({
                               );
                               // FIX: use userName consistently as the display name
                               return match
-                                ? match.fname + " " + match.lname
+                                ? match.fname + " " + (match?.lname ?? "")
                                 : "Select type of charity";
                             })()
                           ) : (
@@ -229,7 +229,7 @@ export function CharityDonationFormDialog({
                                     </AvatarFallback>
                                   </Avatar>
 
-                                  {charity?.fname} {charity?.lname}
+                                  {charity?.fname} {charity?.lname ?? ""}
 
                                 </CommandItem>
                               ))}

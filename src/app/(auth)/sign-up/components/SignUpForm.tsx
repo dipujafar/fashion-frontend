@@ -142,7 +142,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
 
     const res = await signInWithPopup(auth, provider);
     const { displayName, email, photoURL } = res.user;
-    const token = await res.user.getIdToken();
+    const token = await res.user.getIdToken(true);
 
     setSocialLoginToken({ token, name: displayName });
 
@@ -155,7 +155,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
 
     const { displayName, email, photoURL } = result.user;
 
-    const token = await result.user.getIdToken();
+    const token = await result.user.getIdToken(true);
 
     setSocialLoginToken({ token, name: displayName });
 

@@ -35,7 +35,7 @@ function CharityMultiSelect({
     ? charities.filter(
       (c) =>
         c.fname.toLowerCase().includes(search.toLowerCase()) ||
-        c.lname.toLowerCase().includes(search.toLowerCase()) ||
+        c.lname?.toLowerCase().includes(search.toLowerCase()) ||
         c.userName.toLowerCase().includes(search.toLowerCase())
     )
     : charities;
@@ -128,7 +128,7 @@ function CharityMultiSelect({
                   </AvatarFallback>
                 </Avatar>
                 <span className="text-base text-foreground">
-                  {charity.fname} {charity.lname}
+                  {charity.fname} {charity?.lname ?? ""}
                 </span>
               </div>
               <Checkbox
@@ -148,7 +148,7 @@ function CharityMultiSelect({
     selectedCharities.length === 0
       ? "Select charities"
       : selectedCharities.length === 1
-        ? `${selectedCharities[0].fname} ${selectedCharities[0].lname}`
+        ? `${selectedCharities[0].fname} ${selectedCharities[0]?.lname || ""}`
         : `${selectedCharities.length} charities selected`;
 
   return (

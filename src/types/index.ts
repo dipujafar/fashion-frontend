@@ -150,7 +150,7 @@ export interface IUserAuth {
 export interface IUser {
   id: string;
   fname: string;
-  lname: string;
+  lname: string | null;
   email: string;
   userName: string;
   phone: string;

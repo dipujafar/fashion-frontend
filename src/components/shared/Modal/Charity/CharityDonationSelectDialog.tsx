@@ -161,7 +161,7 @@ export function CharityDonationSelectDialog({
                       className="text-sm font-normal cursor-pointer"
                     >
                       {/* Show userName, fallback to full name */}
-                      {item.charity.userName ?? `${item.charity.fname} ${item.charity.lname}`}
+                      {item.charity.userName ?? `${item.charity.fname} ${item.charity?.lname}`}
                     </Label>
                     <span className="text-sm text-muted-foreground">
                       $
