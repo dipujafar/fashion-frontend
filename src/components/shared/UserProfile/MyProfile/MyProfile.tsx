@@ -1,5 +1,6 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Camera, X, CheckCircle2, Phone } from 'lucide-react';
 import { PhoneVerificationModal } from './PhoneVerificationModal';
@@ -17,6 +18,10 @@ import { UpdateProfile } from '@/lib/Actions/Profile.action';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import profileUpdateSchema, { charitySchema } from './Schema';
 
+const ImageEditorModal = dynamic(() => import('@/components/shared/ImageEditorModal'), {
+    ssr: false,
+});
+
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
 
@@ -24,10 +29,22 @@ function MyProfile({ user }: { user: IUser }) {
 
     const [image, setImage] = useState<File | null>(null);
 
+    // Image Editor modal states
+    const [editorModalOpen, setEditorModalOpen] = useState(false);
+    const [editingImage, setEditingImage] = useState<{
+        file: Blob | File;
+        name?: string;
+    } | null>(null);
+
+    const [phone, setPhone] = useState(user?.phone ?? "");
     const [defaultCharityImgs, setDefaultCharityImgs] = useState<{ id: string, url: string }[]>(user?.charityGalleries || []);
     const [charityImgs, setCharityImgs] = useState<File[]>([]);
     const [dltCharityImgIds, setDltCharityImgIds] = useState<string[]>([]);
     const [openPhoneModal, setOpenPhoneModal] = useState(false);
+
+    useEffect(() => {
+        setPhone(user?.phone ?? "");
+    }, [user?.phone]);
 
     const isCharity = user?.auth?.role == UserRole.CHARITABLE_ORGANIZATION || user?.auth?.role == UserRole.CHARITY_SHOP
 
@@ -38,10 +55,7 @@ function MyProfile({ user }: { user: IUser }) {
         defaultValues: {
             firstName: user?.fname ?? "",
             lastName: user?.lname ?? "",
-            phoneNumber: user?.phone ?? "",
             bio: user.bio ?? "",
-            userName: user?.userName ?? "",
-            email: user?.email ?? "",
             website: user?.website ?? "",
             description: user?.description ?? "",
             facebook: user?.facebook ?? "",
@@ -57,10 +71,11 @@ function MyProfile({ user }: { user: IUser }) {
 
         try {
 
-            const { phoneNumber, firstName, lastName, ...more } = data;
+            const { firstName, lastName, ...more } = data;
 
             const payload = {
-                phone: phoneNumber, fname: firstName, lname: lastName,
+                fname: firstName,
+                lname: lastName,
                 dltGalleries: dltCharityImgIds,
                 ...more
             }
@@ -97,11 +112,47 @@ function MyProfile({ user }: { user: IUser }) {
 
     const fileonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files as File[] | null;
-        if (!fileList) {
+        if (!fileList || fileList.length === 0) {
             return;
         }
-        setImage(fileList[0])
+        const file = fileList[0];
+        if (!file.type.startsWith("image/")) {
+            toast.error("Please select a valid image file");
+            e.target.value = "";
+            return;
+        }
+
+        setEditingImage({
+            file,
+            name: file.name || `profile-${Date.now()}.jpg`,
+        });
+        setEditorModalOpen(true);
         e.target.value = "";
+    };
+
+    const handleSaveEditor = useCallback((blob: Blob) => {
+        const filename = editingImage?.name || `profile-${Date.now()}.jpg`;
+        const finalFile = new File([blob], filename, {
+            type: blob.type || "image/jpeg",
+        });
+
+        setImage(finalFile);
+        setEditingImage(null);
+        setEditorModalOpen(false);
+    }, [editingImage]);
+
+    const handleCloseEditor = useCallback(() => {
+        setEditorModalOpen(false);
+        setEditingImage(null);
+    }, []);
+
+    const handleAdjustPhoto = () => {
+        if (!image) return;
+        setEditingImage({
+            file: image,
+            name: image.name,
+        });
+        setEditorModalOpen(true);
     };
 
     const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,92 +182,119 @@ function MyProfile({ user }: { user: IUser }) {
     const boxes = Array.from({ length: 8 });
 
     return (
-        <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="md:space-y-6 space-y-4 max-w-4xl">
+        <div className="md:space-y-8 space-y-6 max-w-4xl">
 
-                <div className="">
+            <div className="flex pb-4">
+                <div className="flex items-center gap-4">
+                    <Image
+                        alt="profile img"
+                        className="size-28 object-cover rounded-full"
+                        height={1000}
+                        width={1000}
+                        placeholder='blur'
+                        blurDataURL={defaultImg?.placeholderImg}
+                        src={image ? URL.createObjectURL(image) : (user?.picture?.url || defaultImg.empty_user)}
+                    />
 
-                    <div className="flex pb-4">
-                        <div className="flex items-center gap-4">
-                            <Image
-                                alt="profile img"
-                                className="size-28 object-cover rounded-full"
-                                height={1000}
-                                width={1000}
-                                placeholder='blur'
-                                blurDataURL={defaultImg?.placeholderImg}
-                                src={image ? URL.createObjectURL(image) : (user?.picture?.url || defaultImg.empty_user)}
-                            />
+                    <div className="flex flex-wrap items-center gap-2">
+                        <label htmlFor="chosePhoto" className="cursor-pointer">
+                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90">
+                                <Camera className="size-4" />
+                                Edit Photo
+                            </span>
+                        </label>
 
-                            <label htmlFor="chosePhoto" className="cursor-pointer">
-                                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90">
-                                    <Camera className="size-4" />
-                                    Edit Photo
-                                </span>
-                            </label>
+                        {image && (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={handleAdjustPhoto}
+                                className="cursor-pointer text-xs h-9"
+                            >
+                                Adjust Photo
+                            </Button>
+                        )}
 
-                            <input
-                                onChange={fileonChange}
-                                multiple={false}
-                                type="file"
-                                name="chosePhoto"
-                                id="chosePhoto"
-                                className="hidden"
-                                accept="image/*"
-                            />
-                        </div>
+                        <input
+                            onChange={fileonChange}
+                            multiple={false}
+                            type="file"
+                            name="chosePhoto"
+                            id="chosePhoto"
+                            className="hidden"
+                            accept="image/*"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p className="text-xl font-semibold mb-6">User Details</p>
+
+                <div className='space-y-7 max-w-lg mb-8'>
+                    <div className="flex-1">
+                        <label className='text-sm text-gray-800 font-normal block mb-2'>Username</label>
+                        <Input
+                            value={user?.userName || ""}
+                            disabled
+                            className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 select-none"
+                        />
                     </div>
 
-                    <div className="mt-5">
+                    <div className="flex-1">
+                        <label className='text-sm text-gray-800 font-normal block mb-2'>Email</label>
+                        <Input
+                            type='email'
+                            value={user?.email || ""}
+                            disabled
+                            className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 select-none"
+                        />
+                    </div>
 
-                        <p className="text-xl font-semibold mb-6">User Details</p>
-
-                        <div className='space-y-7 max-w-lg mb-8'>
-                            <div className="flex-1">
-                                <FormField
-                                    control={form.control}
-                                    name="userName"
-                                    render={({ field }) => (
-                                        <FormItem className=''>
-                                            <FormLabel className='text-gray-800 font-normal'>Username</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    disabled
-                                                    className="border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4 "
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-
-                            <div className="flex-1">
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem className=''>
-                                            <FormLabel className='text-gray-800 font-normal'>Email</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    type='email'
-                                                    disabled
-                                                    className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
+                    <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                            <label className='text-sm text-gray-800 font-normal'>Phone Number</label>
+                            {phone && (
+                                <span className="inline-flex items-center gap-1 text-xs text-neutral-900 font-medium">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-neutral-900" />
+                                    Verified
+                                </span>
+                            )}
                         </div>
+                        <div className="flex items-center gap-2">
+                            <Input
+                                placeholder="No phone number added"
+                                value={phone || ""}
+                                readOnly
+                                disabled
+                                className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 flex-1 select-none"
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setOpenPhoneModal(true)}
+                                className="h-12 px-4 rounded border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors text-sm font-medium whitespace-nowrap cursor-pointer"
+                            >
+                                <Phone className="w-4 h-4 mr-1.5" />
+                                {phone ? "Change" : "Add Phone"}
+                            </Button>
+                        </div>
+                        <p className="text-xs text-neutral-500 mt-1.5">
+                            {phone 
+                                ? "Phone number is verified. To change it, verification with a 6-digit OTP is required." 
+                                : "Phone number cannot be entered directly. 6-digit OTP verification is required."}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="md:space-y-6 space-y-4">
 
+                    <div className="">
                         <p className="text-xl font-semibold mb-6">About me</p>
 
                         <div className='space-y-7 max-w-lg'>
@@ -255,52 +333,6 @@ function MyProfile({ user }: { user: IUser }) {
                                                     className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4"
                                                 />
                                             </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-
-                            <div className="flex-1">
-                                <FormField
-                                    control={form.control}
-                                    name="phoneNumber"
-                                    render={({ field }) => (
-                                        <FormItem className=''>
-                                            <div className="flex items-center justify-between">
-                                                <FormLabel className='text-gray-800 font-normal'>Phone Number</FormLabel>
-                                                {field.value && (
-                                                    <span className="inline-flex items-center gap-1 text-xs text-neutral-900 font-medium">
-                                                        <CheckCircle2 className="w-3.5 h-3.5 text-neutral-900" />
-                                                        Verified
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="No phone number added"
-                                                        value={field.value || ""}
-                                                        readOnly
-                                                        disabled
-                                                        className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 flex-1 select-none"
-                                                    />
-                                                </FormControl>
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    onClick={() => setOpenPhoneModal(true)}
-                                                    className="h-12 px-4 rounded border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors text-sm font-medium whitespace-nowrap cursor-pointer"
-                                                >
-                                                    <Phone className="w-4 h-4 mr-1.5" />
-                                                    {field.value ? "Change" : "Add Phone"}
-                                                </Button>
-                                            </div>
-                                            <p className="text-xs text-neutral-500">
-                                                {field.value 
-                                                    ? "Phone number is verified. To change it, verification with a 6-digit OTP is required." 
-                                                    : "Phone number cannot be entered directly. 6-digit OTP verification is required."}
-                                            </p>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -564,23 +596,31 @@ function MyProfile({ user }: { user: IUser }) {
                         </div>
 
                     </div>
-                </div>
 
-                <Button size={"lg"} type='submit' className="cursor-pointer gap-2 disabled:cursor-not-allowed rounded-none mt-5" disabled={isLoading}>
-                    {isLoading ? <span className="loader" /> : "Save Changes "}
-                </Button>
+                    <Button size={"lg"} type='submit' className="cursor-pointer gap-2 disabled:cursor-not-allowed rounded-none mt-5" disabled={isLoading}>
+                        {isLoading ? <span className="loader" /> : "Save Changes "}
+                    </Button>
 
-                <PhoneVerificationModal
-                    open={openPhoneModal}
-                    onOpenChange={setOpenPhoneModal}
-                    currentPhone={form.getValues("phoneNumber")}
-                    onPhoneVerified={(newPhone) => {
-                        form.setValue("phoneNumber", newPhone, { shouldDirty: true, shouldValidate: true });
-                    }}
-                />
+                </form>
+            </Form>
 
-            </form>
-        </Form>
+            <PhoneVerificationModal
+                open={openPhoneModal}
+                onOpenChange={setOpenPhoneModal}
+                currentPhone={phone}
+                onPhoneVerified={(newPhone) => {
+                    setPhone(newPhone);
+                }}
+            />
+
+            <ImageEditorModal
+                isOpen={editorModalOpen}
+                onClose={handleCloseEditor}
+                image={editingImage?.file ?? null}
+                onSave={handleSaveEditor}
+            />
+
+        </div>
     )
 }
 
