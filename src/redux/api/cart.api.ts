@@ -18,6 +18,7 @@ const cartApi = baseApi.injectEndpoints({
             data: {
                 items: { product: IProduct, id : string }[]
                 subTotal: number,
+                sellerId: string,
                 total: number,
                 bundleDiscountPercent: number,
                 bundleDiscountAmount: number,

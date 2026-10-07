@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { IBandleTier } from "@/types";
+import { PackageOpen, Tag } from "lucide-react";
 import Link from "next/link";
 
 export default function ChoiceBundleModal({ tiers, userName, btnTxt = "Create Bundle" }: { tiers: IBandleTier[]; userName: string; btnTxt?: string }) {
@@ -43,6 +44,29 @@ export default function ChoiceBundleModal({ tiers, userName, btnTxt = "Create Bu
             </div>
           ))}
         </div>
+
+        {tiers?.length === 0 && (
+          <div className="mx-auto flex w-full flex-col items-center py-4 text-center">
+            {/* Icon */}
+            <div className="relative mb-5">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-gray-200">
+                <PackageOpen className="h-8 w-8 text-gray-400" strokeWidth={1.5} />
+              </div>
+              <div className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-black ring-2 ring-gray-50">
+                <Tag className="h-3 w-3 text-white" />
+              </div>
+            </div>
+
+            {/* Text */}
+            <h5 className="text-lg font-semibold text-gray-900">
+              No bundle discounts yet
+            </h5>
+            <p className="text-sm text-gray-600">
+              Send the seller an offer and start your own bundle.
+            </p>
+          </div>
+        )}
+
         <Link
           href={`/member/${userName}/bundle`}
           className="w-full"
@@ -55,7 +79,7 @@ export default function ChoiceBundleModal({ tiers, userName, btnTxt = "Create Bu
             Create a bundle
           </Button>
         </Link>
-        <p className="text-lg font-medium text-center">Save on shipping fees</p>
+        <p className="text-lg font-medium text-center text-green-800">Save on shipping fees</p>
       </DialogContent>
     </Dialog>
   );

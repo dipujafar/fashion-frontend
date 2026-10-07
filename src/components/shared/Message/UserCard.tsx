@@ -2,7 +2,9 @@ import CustomAvatar from "@/components/shared/CustomAvatar";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/redux/store";
 import { IChatUser } from "@/types";
+import { defaultImg } from "@/utils/defaultImg";
 import moment from "moment";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -19,9 +21,53 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
 
   const unreadCount = chat?._count?.messages || 0;
 
-  const offerStatusMsg = chat?.messages[0]?.offer ? chat?.messages[0]?.offer?.status === "ACCEPTED" ? "🏷️Offer Accepted" : chat?.messages[0]?.offer?.status === "REJECTED" ? "🏷️Offer Rejected" : chat?.messages[0]?.offer?.status === "PENDING" ? "🏷️Waiting for offer response" : "🏷️Offer cancelled" : "";
+  const offer = chat?.messages[0]?.offer;
+  const isOfferSentMeAsSeller = offer?.sellerId === user?.id;
 
-  const lastmsg = chat?.messages[0]?.text ? chat?.messages[0]?.text : chat?.messages[0]?.files?.length > 0 ? "Sent an attachment" : chat?.messages[0]?.offer ? offerStatusMsg : "No messages yet";
+  const offerStatusMsg = offer ?
+    offer?.status === "ACCEPTED" ? (isOfferSentMeAsSeller ? "🏷️Counter offer sent" : "🏷️Offer Accepted") :
+      offer?.status === "REJECTED" ? "🏷️Offer Rejected" :
+        offer?.status === "PENDING" ? "🏷️Waiting for offer response" : "🏷️Offer cancelled" : "";
+
+  const lastFullMsg = chat?.messages[0];
+  const remainingCount = (offer?.offerItems || []).length - 3;
+
+  console.log(offer);
+
+  const lastmsg = lastFullMsg?.text ? <p className="line-clamp-1 text-sm text-black/60">{lastFullMsg?.text}</p> : lastFullMsg?.files?.length > 0 ? <p className="line-clamp-1 text-sm text-black/60">Sent an attachment</p> : offer ?
+    <div>
+      <p className="text-sm text-black/60">{offerStatusMsg}</p>
+
+      <div className={cn(
+        "flex gap-2 cursor-pointer justify-start"
+      )}>
+        {offer?.offerItems.map((item, i) => (
+          <Image
+            src={item?.product?.images[0]?.url || defaultImg?.product}
+            alt={`item-${i}`}
+            key={i}
+            width={500}
+            height={500}
+            placeholder="blur"
+            blurDataURL={defaultImg?.placeholderImg}
+            className="h-10 w-10 rounded object-cover"
+          />
+        ))}
+
+        {remainingCount > 0 && (
+          <button
+            // onClick={() => setOpen(true)}
+            className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100"
+          >
+            <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-sm font-medium text-white">
+              +{remainingCount}
+            </span>
+          </button>
+        )}
+      </div>
+
+    </div>
+    : <p className="line-clamp-1 text-sm text-black/60">No messages yet</p>;
 
   return (
     <Link
@@ -48,7 +94,7 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="line-clamp-1 text-sm text-black/60">{lastmsg}</p>
+            {lastmsg}
             {unreadCount > 0 && <p className={`text-xs w-5 h-5 flex justify-center items-center rounded-full font-semibold text-secondary-2  bg-primary-black text-white`}>{unreadCount}</p>}
 
           </div>

@@ -2,14 +2,18 @@ import React from "react";
 import ProductDetails, { IProductWithUser } from "./ProductDetails/ProductDetails";
 import ProductImages from "./ProductImages";
 import { SMActionButtons } from "./ActionButtons";
+import CategoryBreadcrump from "./ProductDetails/CategoryBreadcrump";
 
 const SingleProductDetails = async ({ product }: { product: { data: IProductWithUser } }) => {
 
   const isStockOut = product?.data?.stock === 0;
 
+  const categoryId = product?.data?.category?.id;
+
   return (
 
     <div>
+      <CategoryBreadcrump categoryId={categoryId} />
 
       <div className="flex flex-col lg:flex-row xl:gap-x-8 gap-x-5 gap-y-5">
 

@@ -1,3 +1,4 @@
+"use client"
 import { useGetCategoryparentChainQuery } from '@/redux/api/categoryApi'
 import React from 'react'
 import Link from "next/link";

@@ -34,7 +34,7 @@ const formSchema = z.object({
   phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
   country: z.string().min(1, "Please select a country"),
   countryCode: z.string().min(1, "Please select a country"),
-  streetAddress: z.string().min(5, "Street address is required"),
+  streetAddress: z.string().min(2, "Street address is required").max(35, "Street address must be less than 35 characters"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   zipCode: z.string().min(3, "Zip code must be at least 3 characters"),

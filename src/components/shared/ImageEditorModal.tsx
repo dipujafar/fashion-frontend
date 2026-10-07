@@ -202,7 +202,7 @@ export default function ImageEditorModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="p-0 gap-0 rounded-none max-w-4xl md:min-w-xl lg:min-w-2xl overflow-hidden bg-white border border-gray-200 shadow-2xl">
+      <DialogContent className="p-0 gap-0 rounded-none max-w-4xl md:min-w-xl lg:min-w-2xl overflow-hidden bg-white border border-gray-200 shadow-2xl max-h-screen">
         {/* Custom Black & White Theme Styles for Jodit Image Editor */}
         <style
           dangerouslySetInnerHTML={{

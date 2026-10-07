@@ -184,7 +184,7 @@ export function PhoneVerificationModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-6  rounded-none">
+      <DialogContent className="max-w-md p-6  rounded-none max-h-screen">
         {step === "phone" ? (
           /* ================= STEP 1: Phone Input Form ================= */
           <div className="space-y-5">

@@ -58,7 +58,6 @@ export default function NotificationIcon() {
               <span className="loaderDark !w-10"> </span>
             </div>) : isSuccess ? <>
 
-
               {notifications?.data?.data?.map((notification) => {
 
                 const renderNotification = NotificationRender({ notification });

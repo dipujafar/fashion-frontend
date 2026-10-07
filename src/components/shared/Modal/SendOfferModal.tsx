@@ -5,7 +5,7 @@ import { AddNewOffer } from "@/lib/Actions/Product.api";
 import { cn } from "@/lib/utils";
 import { IProduct } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
-import { Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -13,11 +13,13 @@ import { toast } from "sonner";
 export default function SendOfferModal({
   open,
   setOpen,
-  product
+  products,
+  sellerId
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  product: IProduct;
+  products: IProduct[];
+  sellerId: string;
 }) {
 
   const [offerPrice, setOfferPrice] = useState<number>(0);
@@ -25,13 +27,15 @@ export default function SendOfferModal({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [expanded, setIsExpanded] = useState<boolean>(false);
+
   const handleSendOffer = async () => {
     setIsLoading(true);
     try {
       const payload = {
-        sellerId: product?.userId,
+        sellerId,
         offerPrice: offerPrice,
-        productIds: [product?.id]
+        productIds: products?.map((product) => product?.id),
       };
 
       const res = await AddNewOffer({ payload });
@@ -51,23 +55,29 @@ export default function SendOfferModal({
     }
   };
 
+  const totalPrice = products?.reduce((acc, product) => acc + product?.finalPrice, 0);
+
   const offerData = [
     {
       id: 1,
       discount: 5,
-      price: product?.finalPrice - (product?.finalPrice * 5) / 100,
+      price: totalPrice - (totalPrice * 5) / 100,
     },
     {
       id: 2,
       discount: 10,
-      price: product?.finalPrice - (product?.finalPrice * 10) / 100,
+      price: totalPrice - (totalPrice * 10) / 100,
     },
     {
       id: 3,
       discount: 15,
-      price: product?.finalPrice - (product?.finalPrice * 15) / 100,
+      price: totalPrice - (totalPrice * 15) / 100,
     },
   ];
+
+  const images = products?.map((product) => product?.images?.[0]).filter(Boolean);
+  const visibleImages = images.slice(0, 3);
+  const remainingCount = images.length - visibleImages.length;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -79,30 +89,47 @@ export default function SendOfferModal({
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="flex md:flex-row flex-col  gap-x-4">
-            <div className="relative">
-              <Image
-                src={product?.images[0]?.url || defaultImg?.product}
-                alt="hero image"
-                width={500}
-                height={500}
-                placeholder="blur"
-                blurDataURL={defaultImg?.placeholderImg}
-                className="h-28 w-28 rounded object-cover "
-              />
 
+          <div className="border-b border-gray-200 pb-4">
+            <div className="">
+              {(expanded ? products : products.slice(0, 3)).map((product, index) => <div className="flex md:flex-row flex-col  gap-x-4">
+                <div className="relative">
+                  <Image
+                    src={product?.images[0]?.url || defaultImg?.product}
+                    alt="hero image"
+                    width={500}
+                    height={500}
+                    placeholder="blur"
+                    blurDataURL={defaultImg?.placeholderImg}
+                    className="h-28 w-28 rounded object-cover "
+                  />
+
+                </div>
+
+                <div className="text-base">
+                  <p className="text-base">
+                    {product?.title}
+                  </p>
+                  <p className="text-gray-700">{product?.size?.title}</p>
+                  <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">${product?.finalPrice?.toFixed(2)}</span></p>
+
+                  {/* <p className="text-[#E12728]">Offer Expire in 24 hrs</p> */}
+                </div>
+              </div>)}
             </div>
 
-            <div className="text-base">
-              <p className="text-base">
-                {product?.title}
-              </p>
-              <p className="text-gray-700">{product?.size?.title}</p>
-              <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">${product?.finalPrice?.toFixed(2)}</span></p>
+            {products.length > 3 && <Button variant="ghost" className="more-products" aria-expanded={expanded} aria-controls="bundle-products" onClick={() => setIsExpanded(!expanded)}>
+              {expanded ? <>Show less <ChevronUp /></> : <>+{products.length - 3} more products <ChevronDown /></>}
+            </Button>}
 
-              {/* <p className="text-[#E12728]">Offer Expire in 24 hrs</p> */}
-            </div>
           </div>
+
+          <div className="flex flex-row items-center justify-between gap-x-2">
+            <span>
+              Total price <span className="text-muted-foreground">({products.length} products)</span>
+            </span>
+            <strong>${totalPrice.toFixed(2)}</strong></div>
+
           <div className="">
 
             <div className={cn("grid grid-cols-4 items-center gap-3 flex-wrap")}>

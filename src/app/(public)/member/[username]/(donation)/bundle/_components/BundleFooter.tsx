@@ -15,7 +15,7 @@ function BundleFooter({ userName }: { userName: string }) {
     const { isLoading, isSuccess, isError, data, isFetching } = useGetSingleSellerCartItemsQuery({ sellerUserName: userName });
 
     return (
-        isSuccess && <div className="fixed bottom-0 z-30 border-t bg-card/85 backdrop-blur-xl w-full border-y border-zinc-200">
+        isSuccess && <div className="fixed bottom-0 z-30 border-t bg-card/85 backdrop-blur-xl w-full border-zinc-200">
             <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5">
 
                 {

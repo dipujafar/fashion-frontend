@@ -15,7 +15,7 @@ export default function Sizechart({ sizes }: { sizes: ISize[] }) {
             <DialogTrigger className="cursor-pointer underline text-primary-light-blue">
                 Size Guide
             </DialogTrigger>
-            <DialogContent className="overflow-y-auto scroll-hide rounded-none">
+            <DialogContent className="overflow-y-auto scroll-hide rounded-none max-h-screen">
                 <DialogHeader className=" border-b border-gray-200 pb-4">
                     <DialogTitle className="text-balance text-center">
                         Size Guide

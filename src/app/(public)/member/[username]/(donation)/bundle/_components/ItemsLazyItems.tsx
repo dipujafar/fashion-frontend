@@ -13,6 +13,8 @@ import { useAppDispatch } from "@/redux/hooks";
 import { baseApi } from "@/redux/api/baseApi";
 import { tagTypes } from "@/redux/tagTypes";
 import { useLazyProductsGetByMemberQuery } from "@/redux/api/productApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface IProductCart extends IProduct {
     cartItems: {}[]
@@ -90,6 +92,8 @@ const AddRemoveBundleItems = ({ product }: { product: IProductCart }) => {
     const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
 
+    const cUserId = useSelector((state : RootState) => state?.auth?.user?.id);
+
     const handleDltTocart = async (productId: string) => {
         setLoading(true);
         try {
@@ -142,7 +146,9 @@ const AddRemoveBundleItems = ({ product }: { product: IProductCart }) => {
         }
     }
 
-    return <div className="md:-translate-y-2 -translate-y-1">
+    const isOwner = product?.userId === cUserId;
+
+    return !isOwner && <div className="md:-translate-y-2 -translate-y-1">
         {isInbundle ? (
             <Button
                 onClick={() =>

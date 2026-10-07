@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { defaultImg } from '@/utils/defaultImg';
 import moment from 'moment';
 import Link from 'next/link';
+import CustomAvatar from '@/components/shared/CustomAvatar';
 
 function formatLastActive(date: Date | string) {
     const activeDate = moment(date);
@@ -42,15 +43,7 @@ function ChatHeader({ userName }: { userName: string }) {
                 <div className="flex items-center gap-x-3">
 
                     <Link href={`/member/${userData?.data?.user?.userName}`}>
-                        <Image
-                            src={userData?.data?.user?.picture?.url || defaultImg?.empty_user}
-                            alt="user image"
-                            height={500}
-                            placeholder='blur'
-                            blurDataURL={defaultImg?.placeholderImg}
-                            width={500}
-                            className="h-12 w-12 object-cover rounded-full"
-                        />
+                        <CustomAvatar img={userData?.data?.user?.picture?.url} name={userData?.data?.user?.userName || 'Unknown'}  className="md:size-12 size-10" fallbackClass="text-base md:text-base" />
                     </Link>
 
                     <Link href={`/member/${userData?.data?.user?.userName}`}>

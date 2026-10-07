@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { defaultImg } from "@/utils/defaultImg";
 import Link from "next/link";
+import SendOfferModal from "@/components/shared/Modal/SendOfferModal";
 
 export default function ReviewBundleModal({
   open,
@@ -25,7 +26,8 @@ export default function ReviewBundleModal({
     total: number,
     bundleDiscountPercent: number,
     bundleDiscountAmount: number,
-    cartGroupId: string | null
+    cartGroupId: string | null,
+    sellerId : string
   }
 }) {
 
@@ -42,6 +44,8 @@ export default function ReviewBundleModal({
   }
 
   const haveAnyStockoutItems = data?.items?.some(item => item?.product?.stock < 1);
+
+  const products = data?.items?.map(item => item?.product);
 
   return (
     <>
@@ -118,7 +122,7 @@ export default function ReviewBundleModal({
                 <Link href={data?.cartGroupId ? `/checkout/cart/${data?.cartGroupId}` : "/shopping-cart"}>
                   <Button
                     onClick={handleBuyNow}
-                    className="w-full rounded-none border-primary-black cursor-pointer"
+                    className="w-full rounded-none border-primary-black cursor-pointer !h-11"
                     variant={"outline"}
                     disabled={haveAnyStockoutItems}
                   >
@@ -126,14 +130,16 @@ export default function ReviewBundleModal({
                   </Button>
                 </Link>
               </div>
-              <Button onClick={handleSendOffer} className="flex-1 rounded-none cursor-pointer" disabled={haveAnyStockoutItems}>
+              <Button onClick={handleSendOffer} className="flex-1 rounded-none cursor-pointer !h-11" disabled={haveAnyStockoutItems}>
                 Make an Offer
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
-      {/* <SendOfferModal open={openOfferModal} setOpen={setOpenOfferModal} selectedProducts={selectedProducts} /> */}
+
+      <SendOfferModal open={openOfferModal} setOpen={setOpenOfferModal} products={products} sellerId={data?.sellerId} />
+
     </>
   );
 }
