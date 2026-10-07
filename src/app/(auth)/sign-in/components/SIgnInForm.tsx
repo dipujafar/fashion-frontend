@@ -30,6 +30,7 @@ import { setUser } from "@/redux/features/authSlice";
 import { Button } from "@/components/ui/button";
 import { GoogleAuthProvider, OAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase.init";
+import { AccountStatusModal, AccountApprovalStatus } from "./AccountStatusModal";
 
 const formSchema = z.object({
   email: z
@@ -55,6 +56,91 @@ const SIgnInForm = () => {
   });
   const callbackUrl = useSearchParams().get("callbackUrl");
 
+  const [approvalModal, setApprovalModal] = useState<{
+    open: boolean;
+    status: AccountApprovalStatus;
+    message?: string;
+  }>({
+    open: false,
+    status: "pending",
+    message: "",
+  });
+
+  const handleAuthError = (error: any) => {
+    const code = error?.data?.err?.code ?? error?.data?.code;
+    const status = error?.data?.status || error?.data?.err?.status;
+    const suspendedCode = 603;
+    const rejectedCode = 604;
+    const pendingCode = 605;
+    const deletedCode = 606;
+
+    const isPending =
+      code == pendingCode ||
+      code === "pending" ||
+      code === "PENDING" ||
+      status === "pending" ||
+      status === "PENDING";
+
+    const isRejected =
+      code == rejectedCode ||
+      code === "rejected" ||
+      code === "REJECTED" ||
+      status === "rejected" ||
+      status === "REJECTED";
+
+    const isSuspended =
+      code == suspendedCode ||
+      code === "suspended" ||
+      code === "SUSPENDED" ||
+      status === "suspended" ||
+      status === "SUSPENDED";
+
+    const isDeleted =
+      code == deletedCode ||
+      code === "deleted" ||
+      code === "DELETED" ||
+      status === "deleted" ||
+      status === "DELETED";
+
+    if (isPending) {
+      setApprovalModal({
+        open: true,
+        status: "pending",
+        message: error?.data?.message,
+      });
+      return;
+    }
+
+    if (isRejected) {
+      setApprovalModal({
+        open: true,
+        status: "rejected",
+        message: error?.data?.message,
+      });
+      return;
+    }
+
+    if (isSuspended) {
+      setApprovalModal({
+        open: true,
+        status: "suspended",
+        message: error?.data?.message,
+      });
+      return;
+    }
+
+    if (isDeleted) {
+      setApprovalModal({
+        open: true,
+        status: "deleted",
+        message: error?.data?.message,
+      });
+      return;
+    }
+
+    toast.error(error?.data?.message || "Something went wrong");
+  };
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const res = await login(data).unwrap();
@@ -73,7 +159,7 @@ const SIgnInForm = () => {
           router.replace("/profile");
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Something went wrong");
+      handleAuthError(error);
     }
   };
 
@@ -95,9 +181,9 @@ const SIgnInForm = () => {
           router.replace("/profile");
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Something went wrong");
+      handleAuthError(error);
     }
-  }
+  };
 
   const GoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -123,8 +209,9 @@ const SIgnInForm = () => {
   };
 
   return (
-    <Card
-      className="max-w-lg mx-auto shadow-none border-none">
+    <>
+      <Card
+        className="max-w-lg mx-auto shadow-none border-none">
 
       <CardContent>
 
@@ -244,6 +331,14 @@ const SIgnInForm = () => {
         </div>
       </CardFooter>
     </Card>
+
+    <AccountStatusModal
+      open={approvalModal.open}
+      onOpenChange={(open) => setApprovalModal((prev) => ({ ...prev, open }))}
+      status={approvalModal.status}
+      message={approvalModal.message}
+    />
+  </>
   );
 };
 
