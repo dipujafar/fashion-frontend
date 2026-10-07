@@ -70,8 +70,8 @@ const SIgnInForm = () => {
     const code = error?.data?.err?.code ?? error?.data?.code;
     const status = error?.data?.status || error?.data?.err?.status;
     const suspendedCode = 603;
-    const rejectedCode = 604;
-    const pendingCode = 605;
+    const rejectedCode = 605;
+    const pendingCode = 604;
     const deletedCode = 606;
 
     const isPending =
