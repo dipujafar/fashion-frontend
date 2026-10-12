@@ -36,15 +36,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import CommonButton from "@/components/ui/common-button";
 import { cn } from "@/lib/utils";
 import { useGetCharitiesQuery } from "@/redux/api/userApi";
 import { DonateDirectMoney } from "@/lib/Actions/Donation.action";
 import { toast } from "sonner";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { defaultImg } from "@/utils/defaultImg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formSchema = z.object({
@@ -105,6 +102,7 @@ export function CharityDonationFormDialog({
       form.reset();
     } catch (error: any) {
       if (isRedirectError(error)) {
+        setOpen(false);
         throw error;
       }
       toast.error(

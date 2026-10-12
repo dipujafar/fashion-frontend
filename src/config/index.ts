@@ -5,5 +5,6 @@ export const EnvConfig = {
   serverBaseUrl : process.env.SERVER_BASE_API,
   serverRootUrl : process.env.SERVER_ROOT,
   MAP_KEY : process.env.NEXT_PUBLIC_MAP_KEY,
-  hasSSL : process.env.HAS_SSL
+  hasSSL : process.env.HAS_SSL,
+  ratesApiBaseUrl : process.env.RATES_API_BASE_URL,
 };

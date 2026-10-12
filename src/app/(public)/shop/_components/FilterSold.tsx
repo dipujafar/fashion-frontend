@@ -42,25 +42,25 @@ function FilterSold() {
     );
 
     const handleSelect = () => {
-        updateQueryParam("stock", "sold")
+        updateQueryParam("stock", "on-sale")
     }
 
-    const isSold = selectedStock === "sold"
+    const isSale = selectedStock === "on-sale";
 
     return (
         <div
             onClick={handleSelect}
             className={cn(
                 "justify-between hover:bg-zinc-50 duration-150 border border-gray-300 shadow-none cursor-pointer rounded px-2.5 h-8 flex flex-row items-center gap-2",
-                isSold && "border-gray-700"
+                isSale && "border-gray-700"
             )}
         >
             <Checkbox
                 className='rounded-xs border-gray-500 data-[state=checked]:text-white'
-                checked={isSold}
+                checked={isSale}
                 onCheckedChange={handleSelect}
             />
-            <p>Sold</p>
+            <p>In Sale</p>
         </div>
     )
 }

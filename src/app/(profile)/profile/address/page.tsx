@@ -44,14 +44,16 @@ const AddressList = async ({ addressesPromise }: { addressesPromise: Promise<{ d
                     />}
                 </div>
                 <p className="mt-1 text-sm text-gray-600">
-                    Manage the addresses used for selling and buying.
+                    Manage the addresses used for selling or buying.
                 </p>
             </div>
 
             {noAddressExists ? <p className='text-gray-700 text-center mt-20'>No addresses saved yet.</p>
 
                 : <div className='space-y-5 mt-10 max-w-xs'>
-                    <AddressCard accent='selling' label='Selling Address' address={data?.data?.sellingAddress} kind='Selling' />
+
+                    <AddressCard accent='selling' label='Selling Address' address={data?.data?.sellingAddress} kind='Selling' allowedCountries={["GB"]} />
+
                     <AddressCard accent='buying' label='Buying Address' address={data?.data?.buyingAddress} kind='Buying' />
                 </div>
             }
@@ -67,11 +69,13 @@ function AddressCard({
     accent,
     label,
     address,
+    allowedCountries
 }: {
     kind: string;
     accent: "selling" | "buying";
     label: string;
     address: IBillingDetails | null;
+    allowedCountries ?: string[]
 }) {
     if (!address) {
         return (

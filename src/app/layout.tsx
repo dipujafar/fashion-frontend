@@ -9,6 +9,8 @@ import NextTopLoader from "nextjs-toploader";
 import Providers from "@/lib/provider/Providers";
 import { Toaster } from "sonner";
 import SocketProvider from "@/Context/SocketProvider";
+import { GetRates } from "@/lib/services/Rates.api";
+import SetRates from "@/components/shared/SetRates";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -25,16 +27,29 @@ export const metadata: Metadata = {
   description: "The Best Fashion Store. The Official website for fashion.",
 };
 
-export default function RootLayout({
+type Rate = {
+  base: string;
+  quote: string;
+  rate: number;
+};
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const rates = await GetRates();
+
   return (
     <html lang="en">
       <body className={`${figtree.className} antialiased`}>
         <Providers>
+
           {/* <TopInfo></TopInfo> */}
+
+          <SetRates rates={rates || []} />
+
           <div className="sticky top-0 z-50 ">
             <Navbar></Navbar>
           </div>

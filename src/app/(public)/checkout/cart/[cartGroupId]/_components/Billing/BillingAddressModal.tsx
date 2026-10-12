@@ -15,7 +15,8 @@ interface Props {
     defaultValue: IBillingDetails | null;
     title?: string;
     updateAddressFn?: (data: any) => Promise<void>,
-    callbackFn ?: () => void
+    callbackFn?: () => void,
+    allowedCountries?: string[]
 }
 
 function BillingAddressModal({
@@ -24,7 +25,8 @@ function BillingAddressModal({
     defaultValue,
     title = "Shipping Details",
     updateAddressFn,
-    callbackFn
+    callbackFn,
+    allowedCountries
 }: Props) {
 
     return (
@@ -37,7 +39,7 @@ function BillingAddressModal({
                 </DialogHeader>
 
                 <div className="px-6 space-y-4 py-5">
-                    <BillingAddressForm defaultValue={defaultValue} onOpenChange={onOpenChange} updateAddressFn={updateAddressFn} callbackFn={callbackFn} />
+                    <BillingAddressForm defaultValue={defaultValue} onOpenChange={onOpenChange} updateAddressFn={updateAddressFn} callbackFn={callbackFn} allowedCountries={allowedCountries} />
                 </div>
             </DialogContent>
         </Dialog>

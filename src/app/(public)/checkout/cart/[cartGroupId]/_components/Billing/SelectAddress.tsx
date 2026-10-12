@@ -28,7 +28,7 @@ function buildDisplayName(place: google.maps.places.PlaceResult): string {
         c.types.includes("sublocality") || c.types.includes("neighborhood")
     )?.long_name;
 
-    return [name, route, area]
+    return [name, route]
         .filter(Boolean)
         .filter((val, idx, arr) => arr.indexOf(val) === idx)
         .join(", ");
@@ -38,6 +38,7 @@ function SelectAddress({
 
     control,
     setValue,
+    allowedCountries
 }: any) {
     const [options, setOptions] = useState<{ value: string; label: string; placeId: string }[]>([]);
 
@@ -76,6 +77,9 @@ function SelectAddress({
             {
                 input: value,
                 // componentRestrictions: { country: "us" } // Restrict to a specific country if needed
+                ...(allowedCountries ? {
+                    componentRestrictions: { country: allowedCountries }
+                } : {})
             },
             (predictions, status) => {
                 if (

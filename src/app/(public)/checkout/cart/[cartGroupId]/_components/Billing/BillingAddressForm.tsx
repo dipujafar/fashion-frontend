@@ -26,6 +26,7 @@ import { clearCart } from "@/redux/features/cart.slice";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { baseApi } from "@/redux/api/baseApi";
 import { tagTypes } from "@/redux/tagTypes";
+import Alert from "@/components/ui/Alert";
 
 const GOOGLE_MAPS_API_KEY = EnvConfig.MAP_KEY!
 
@@ -54,13 +55,15 @@ export default function BillingAddressForm(
       if (!res.success) {
         throw new Error(res.message);
       }
-    }
+    },
+    allowedCountries
   }
     : {
       defaultValue: IBillingDetails | null;
       onOpenChange: (open: boolean) => void,
       updateAddressFn?: (data: any) => Promise<void>,
-      callbackFn?: () => void
+      callbackFn?: () => void,
+      allowedCountries?: string[]
     }) {
   // const [handleUpdate, { isLoading }] = useUpdateBillingDetailsMutation();
   const [isLoading, setIsLoading] = useState(false);
@@ -86,6 +89,7 @@ export default function BillingAddressForm(
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
+    setError(null);
     try {
       const body: IBillingDetails = {
         address1: data?.streetAddress,
@@ -162,12 +166,13 @@ export default function BillingAddressForm(
             )}
           />
 
-          <SelectAddress control={control} setValue={form.setValue} />
+          <SelectAddress control={control} setValue={form.setValue} allowedCountries={allowedCountries} />
 
           {/* Country */}
           <SelectCountry
             control={control}
             setValue={form.setValue}
+            allowedCountries={allowedCountries}
           />
 
           {/* State */}
@@ -252,11 +257,7 @@ export default function BillingAddressForm(
             )}
           />
 
-          {error && (
-            <div className="rounded border border-red-300 bg-red-50 px-3 py-2">
-              <p className="text-sm text-red-600">{error}</p>
-            </div>
-          )}
+          <Alert show={Boolean(error)} message={error || ""} type="error" />
 
           <div className="flex gap-4">
             <Button size={"lg"} type="button" onClick={form.handleSubmit(onSubmit)} disabled={isLoading} className="flex-1 group cursor-pointer rounded-none py-6 text-base font-semibold">
@@ -264,6 +265,7 @@ export default function BillingAddressForm(
               {/* <AnimatedArrow /> */}
             </Button>
           </div>
+
         </form>
       </Form>
     </LoadScriptNext>

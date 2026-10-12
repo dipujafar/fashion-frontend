@@ -27,6 +27,7 @@ function UpdateSellingAddress({ defaultdata, actionBtn, className }: { defaultda
                 defaultValue={defaultdata}
                 title='Selling Address'
                 updateAddressFn={updateAddressFn}
+                allowedCountries={["GB"]}
             />
         </div>
     )

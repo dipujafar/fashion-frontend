@@ -5,6 +5,7 @@ import apple_store from "@/assets/images/common-image/Apple_Store.webp";
 import { Facebook, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import CountryCurrencyModal from "./CountryCurrencyModal";
 
 const BuyLinks = [
   {
@@ -132,8 +133,8 @@ const Footer = () => {
           </div>
 
           <div className="border-t border-neutral-800">
-            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
-              <p className="text-sm text-gray-400">
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-gray-400 text-center md:text-left">
                 Copyright &copy; {new Date().getFullYear()}{" "}
                 <Link
                   href="#"
@@ -144,17 +145,21 @@ const Footer = () => {
                 All Rights Reserved
               </p>
 
-              <div className="flex flex-row items-center gap-3">
-                {socialIcons.map(({ icon: Icon, label }) => (
-                  <Link
-                    key={label}
-                    href="#"
-                    aria-label={label}
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors group"
-                  >
-                    <Icon className="w-3.5 h-3.5 text-white " />
-                  </Link>
-                ))}
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                <CountryCurrencyModal />
+
+                <div className="flex flex-row items-center gap-3">
+                  {socialIcons.map(({ icon: Icon, label }) => (
+                    <Link
+                      key={label}
+                      href="#"
+                      aria-label={label}
+                      className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors group"
+                    >
+                      <Icon className="w-3.5 h-3.5 text-white " />
+                    </Link>
+                  ))}
+                </div>
               </div>
 
             </div>
