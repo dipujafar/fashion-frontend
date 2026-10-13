@@ -177,7 +177,8 @@ function EditlistingForm({ product }: { product: IProduct }) {
         });
     };
 
-    const boxes = Array.from({ length: 8 });
+    const visibleSlots = Math.min(photoSlots.length + 1, MAX_PHOTOS);
+    const boxes = Array.from({ length: visibleSlots });
 
     function handleCategorySelect(cat: Category) {
         setSelectedCategory(cat);
@@ -310,13 +311,13 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                 return (
                                     <label
                                         key={i}
-                                        htmlFor={isFull ? undefined : INPUT_ID}
-                                        className={`aspect-square rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-gray-400 transition-colors ${isFull
-                                            ? "opacity-40 cursor-not-allowed"
-                                            : "cursor-pointer hover:border-gray-400 hover:bg-gray-50 hover:text-gray-500"
-                                            }`}
+                                        htmlFor={INPUT_ID}
+                                        className="aspect-square rounded-lg border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 transition-colors cursor-pointer hover:border-gray-400 hover:bg-gray-50 hover:text-gray-500"
                                     >
                                         <Camera size={22} strokeWidth={1.75} />
+                                        <span className="text-[11px] font-medium mt-1 text-gray-500">
+                                            {i === 0 ? "Add Photo" : "Add More"}
+                                        </span>
                                     </label>
                                 );
                             })}
@@ -737,7 +738,7 @@ function EditlistingForm({ product }: { product: IProduct }) {
                                             <FormLabel>Height (cm)</FormLabel>
                                             <FormControl>
                                                 <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
-                                                    <InputGroupInput type="number" step="any"  placeholder="eg: 10" {...field} className="!text-base" />
+                                                    <InputGroupInput type="number" step="any" placeholder="eg: 10" {...field} className="!text-base" />
                                                     <InputGroupAddon align={"inline-end"} className="text-primary-black text-lg">
                                                         cm
                                                     </InputGroupAddon>

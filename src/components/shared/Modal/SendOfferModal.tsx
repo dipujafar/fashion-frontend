@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -9,6 +11,7 @@ import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function SendOfferModal({
   open,
@@ -21,6 +24,7 @@ export default function SendOfferModal({
   products: IProduct[];
   sellerId: string;
 }) {
+  const { format } = useCurrency();
 
   const [offerPrice, setOfferPrice] = useState<number>(0);
   const [isCustomOffer, setIsCustomOffer] = useState<boolean>(false);
@@ -111,7 +115,7 @@ export default function SendOfferModal({
                     {product?.title}
                   </p>
                   <p className="text-gray-700">{product?.size?.title}</p>
-                  <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">${product?.finalPrice?.toFixed(2)}</span></p>
+                  <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">{format(product?.finalPrice)}</span></p>
 
                   {/* <p className="text-[#E12728]">Offer Expire in 24 hrs</p> */}
                 </div>
@@ -128,7 +132,7 @@ export default function SendOfferModal({
             <span>
               Total price <span className="text-muted-foreground">({products.length} products)</span>
             </span>
-            <strong>${totalPrice.toFixed(2)}</strong></div>
+            <strong>{format(totalPrice)}</strong></div>
 
           <div className="">
 
@@ -142,7 +146,7 @@ export default function SendOfferModal({
                   }}
                   className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer shadow-sm text-sm h-full font-medium text-gray-700", offerPrice === item?.price && " border-black bg-zinc-50")}
                 >
-                  <span className="font-semibold ">${item?.price.toFixed(2)}</span> for <br /> {item?.discount}% off
+                  <span className="font-semibold ">{format(item?.price)}</span> for <br /> {item?.discount}% off
                 </button>
               ))}
               <button

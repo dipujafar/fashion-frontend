@@ -323,7 +323,7 @@ export const getAssitedSellingStatusFormat = (
 
 export const getAssitedPriceTypeFormat = (
     status: PriceType,
-    targetAmount?: number,
+    targetAmount?: number | string,
 ): { label: string; color: string; details: string } => {
 
     switch (status) {
@@ -335,10 +335,11 @@ export const getAssitedPriceTypeFormat = (
             }
 
         case PriceType.TARGET_AMOUNT:
+            const displayAmount = typeof targetAmount === "string" ? targetAmount : `$${targetAmount?.toFixed(2)}`;
             return {
                 label: "Target Amount",
                 color: "bg-green-100 text-green-800",
-                details: `Want to earn minimum $${targetAmount?.toFixed(2)} amount from the sale.`,
+                details: `Want to earn minimum ${displayAmount} amount from the sale.`,
             }
 
         case PriceType.MARKET_PRICE:

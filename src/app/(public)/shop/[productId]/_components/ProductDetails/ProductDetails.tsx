@@ -35,7 +35,7 @@ const ProductDetails = ({ product }: { product: IProductWithUser }) => {
   const isDeleted = product?.isDeleted;
 
   return (
-    <div className="lg:my-5 space-y-2 lg:space-y-3">
+    <div className="space-y-2 lg:space-y-3">
       {/* --------- product header ---------- */}
       <div >
         <ProductDetailsHeader product={product} isMyProduct={product?.isMyProduct} />

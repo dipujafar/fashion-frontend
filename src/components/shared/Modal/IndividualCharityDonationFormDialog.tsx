@@ -25,6 +25,7 @@ import { X, ArrowRight } from "lucide-react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import CommonButton from "@/components/ui/common-button";
 import AnimatedArrow from "@/components/animatedArrows/AnimatedArrow";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const donationSchema = z.object({
   amount: z.number().min(1, "Amount must be at least $1"),
@@ -47,6 +48,7 @@ export function IndividualCharityDonationFormDialog({
   open,
   setOpen,
 }: CharityDonationDialogProps) {
+  const { format } = useCurrency();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [useCustomAmount, setUseCustomAmount] = useState(false);
 
@@ -119,7 +121,7 @@ export function IndividualCharityDonationFormDialog({
                       className="flex-1 h-12"
                       onClick={() => handlePresetAmountClick(amount)}
                     >
-                      ${amount}
+                      {format(amount)}
                     </Button>
                   ))}
                 </div>

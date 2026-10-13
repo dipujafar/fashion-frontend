@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import DltCart from '@/components/shared/Navbar/NavIconsWithDropDown/DltCart';
+import FormatCurrency from '@/components/shared/FormatCurrency';
 
 function ShopingCart() {
     const cartPromise = GetCartProds();
@@ -122,12 +123,12 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                                             className="space-y-1">
                                                             <p className="text-lg line-clamp-1 text-gray-700">{item?.product?.title}</p>
                                                             <div className='flex flex-row items-center gap-x-2'>
-                                                                <p className="text-lg font-bold">${item?.product?.finalPrice?.toFixed(2)}</p>
+                                                                <p className="text-lg font-bold"><FormatCurrency amount={item?.product?.finalPrice} /></p>
                                                                 {item?.extraDonation > 0 && (
-                                                                    <p className="text-sm font-bold">+ {item?.extraDonation?.toFixed(2)} (extra donation)</p>
+                                                                    <p className="text-sm font-bold">+ <FormatCurrency amount={item?.extraDonation} /> (extra donation)</p>
                                                                 )}
                                                             </div>
-                                                            <p className="text-sm text-gray-700">${item?.product?.size?.title}</p>
+                                                            <p className="text-sm text-gray-700">{item?.product?.size?.title}</p>
                                                         </Link>
                                                         <DltCart cartItemId={item?.id} productId={item?.product?.id} />
                                                     </div>
@@ -144,7 +145,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                             <div className="flex-1 w-full">
                                 <div className="flex justify-between items-center pb-3 ">
                                     <span className="font-semibold text-neutral-900">Item(s)</span>
-                                    <span className="font-bold text-neutral-900">${itemTotal.toFixed(2)}</span>
+                                    <span className="font-bold text-neutral-900"><FormatCurrency amount={itemTotal} /></span>
                                 </div>
 
                                 {bundleDiscountAmount > 0 && (
@@ -153,19 +154,19 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                             <span className="bg-green-600/20 text-green-600 rounded px-1 py-0.5 ml-1 text-sm">
                                                 {bundleDiscountPercent}%
                                             </span> :</p>
-                                        <p className="font-medium text-green-600">-${bundleDiscountAmount?.toFixed(2)}</p>
+                                        <p className="font-medium text-green-600">-<FormatCurrency amount={bundleDiscountAmount} /></p>
                                     </div>
                                 )}
 
                                 <div className="flex justify-between items-center pb-3 ">
                                     <span className="font-semibold text-neutral-900">Extra Donation</span>
-                                    <span className="font-bold text-neutral-900">${totalExtraDonation.toFixed(2)}</span>
+                                    <span className="font-bold text-neutral-900"><FormatCurrency amount={totalExtraDonation} /></span>
                                 </div>
                                 <p className="text-gray-700 text-sm mb-3">Shipping calculated at checkout</p>
 
                                 <div className="flex justify-between items-center py-3 border-t border-neutral-200">
                                     <span className="font-bold text-neutral-900">Total</span>
-                                    <span className="font-bold text-neutral-900">${subTotal.toFixed(2)}</span>
+                                    <span className="font-bold text-neutral-900"><FormatCurrency amount={subTotal} /></span>
                                 </div>
 
                                 {haveAnyStockoutItems && (

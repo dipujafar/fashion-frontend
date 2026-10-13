@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { CartIcon } from '@/icons'
@@ -9,6 +11,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import DropPrice from './DropPrice'
+import { useCurrency } from '@/hooks/useCurrency'
 
 export type IProductExtra = Omit<IProduct, "_count"> & {
     _count: {
@@ -19,6 +22,7 @@ export type IProductExtra = Omit<IProduct, "_count"> & {
 };
 
 function SellProdCard({ data }: { data: IProductExtra }) {
+    const { format } = useCurrency();
     return (
         <div className='space-y-3 border border-gray-200 p-2'>
 
@@ -43,7 +47,7 @@ function SellProdCard({ data }: { data: IProductExtra }) {
                 <div className='space-y-1 w-full'>
                     <div className='flex flex-row justify-between items-center gap-x-0.5'>
                         <p className='text-xs text-gray-600'>{moment(data?.createdAt).fromNow()}</p>
-                        <p className='text-base font-semibold line-clamp-1'>${data?.finalPrice?.toFixed(2)}</p>
+                        <p className='text-base font-semibold line-clamp-1'>{format(data?.finalPrice)}</p>
                     </div>
                     <p className='text-base font-semibold line-clamp-1'>{data?.title}</p>
                     <p className='text-sm text-gray-500 line-clamp-1'>{data?.size?.title}</p>

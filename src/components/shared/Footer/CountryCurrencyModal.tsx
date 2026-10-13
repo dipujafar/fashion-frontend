@@ -35,6 +35,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setUserRate } from "@/redux/features/rateSlice";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Flag from "../Flag";
 
 type SupportedCurrency = "USD" | "EUR" | "GBP";
 
@@ -173,8 +175,9 @@ export default function CountryCurrencyModal() {
                               setSelectedCountry(country.name);
                               setCountryOpen(false);
                             }}
-                            className="cursor-pointer py-2.5 rounded-none hover:bg-zinc-100 border-b border-b-gray-200"
+                            className="cursor-pointer py-2.5 rounded-none hover:bg-zinc-100 border-b border-b-gray-200 flex flex-row gap-x-2 items-center px-3 text-sm md:text-base"
                           >
+                            <Flag code={country.code} name={country.name} />
                             <span className="text-sm text-gray-800">
                               {country.name}
                             </span>

@@ -24,6 +24,7 @@ import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import Link from "next/link";
 import { DeclineOffer } from "@/lib/Actions/Product.api";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const reportSchema = z.object({
     offerPrice: z.string({ required_error: "Price is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
@@ -40,6 +41,7 @@ interface ReportUserDialogProps {
 export function CounterOffer({
     offer
 }: ReportUserDialogProps) {
+    const { format } = useCurrency();
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -81,8 +83,8 @@ export function CounterOffer({
                 <div className="space-y-4">
 
                     <div className="flex flex-row gap-x-3 items-center">
-                        <p className="text-base text-gray-900"><span className="font-semibold text-primary-black" >Total Price :</span> ${offer?.actualPrice?.toFixed(2)}</p>
-                        <p className="text-base text-gray-900"><span className="text-primary-black font-semibold" >Offered Price :</span> ${offer?.offeredPrice?.toFixed(2)}</p>
+                        <p className="text-base text-gray-900"><span className="font-semibold text-primary-black" >Total Price :</span> {format(offer?.actualPrice)}</p>
+                        <p className="text-base text-gray-900"><span className="text-primary-black font-semibold" >Offered Price :</span> {format(offer?.offeredPrice)}</p>
                     </div>
 
                     <div>
@@ -108,7 +110,7 @@ export function CounterOffer({
                                             {item?.product?.title}
                                         </p>
                                         <span className="text-sm text-primary-black font-semibold">
-                                            ${item?.product?.finalPrice?.toFixed(2)}
+                                            {format(item?.product?.finalPrice)}
                                         </span>
                                     </div>
                                 </Link>
@@ -155,7 +157,7 @@ export function CounterOffer({
                         </form>
                     </Form>
 
-                    <p className="text-gray-700 text-sm"><span className="text-primary-black font-semibold">Note : </span>Buyer respond better to higher discount offers. Try offering a discount between <span className="font-semibold text-primary-black">${Math.ceil(after_20_percent)} - ${Math.ceil(after_5_Percent)}</span></p>
+                    <p className="text-gray-700 text-sm"><span className="text-primary-black font-semibold">Note : </span>Buyer respond better to higher discount offers. Try offering a discount between <span className="font-semibold text-primary-black">{format(after_20_percent)} - {format(after_5_Percent)}</span></p>
 
                 </div>
             </DialogContent>

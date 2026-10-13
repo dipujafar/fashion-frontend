@@ -18,21 +18,24 @@ export const useCurrency = () => {
   const rates = useSelector(selectRates);
   const user = useSelector(selectUser);
 
-  const code: CurrencyCode = user.rate;
-  const symbol = rates[code].currency;
+  const code: CurrencyCode = user?.rate ?? "USD";
+  const symbol = rates?.[code]?.currency ?? "$";
 
   /** Convert a USD amount to the target currency (number only) */
   const convert = useCallback(
-    (usdAmount: number, target: CurrencyCode = code): number => {
-      if (target === "USD") return usdAmount;
-      return usdAmount * rates[target].rate;
+    (usdAmount?: number | string | null, target: CurrencyCode = code): number => {
+      const num = typeof usdAmount === "string" ? parseFloat(usdAmount) : (usdAmount ?? 0);
+      const safeAmount = isNaN(num) ? 0 : num;
+      if (target === "USD") return safeAmount;
+      const rate = rates?.[target]?.rate ?? 1;
+      return safeAmount * rate;
     },
     [rates, code]
   );
 
   /** Convert and format with symbol: 100 -> "£79.00" */
   const format = useCallback(
-    (usdAmount: number, options: FormatOptions = {}): string => {
+    (usdAmount?: number | string | null, options: FormatOptions = {}): string => {
       const { currency = code, decimals = 2, raw = false } = options;
       const value = convert(usdAmount, currency);
 
@@ -41,13 +44,14 @@ export const useCurrency = () => {
         maximumFractionDigits: decimals,
       }).format(value);
 
-      return raw ? formatted : `${rates[currency].currency}${formatted}`;
+      const currSymbol = rates?.[currency]?.currency ?? "$";
+      return raw ? formatted : `${currSymbol}${formatted}`;
     },
     [convert, rates, code]
   );
 
   return useMemo(
-    () => ({ convert, format, symbol, code, country: user.country }),
-    [convert, format, symbol, code, user.country]
+    () => ({ convert, format, symbol, code, country: user?.country ?? "United States" }),
+    [convert, format, symbol, code, user?.country]
   );
 };

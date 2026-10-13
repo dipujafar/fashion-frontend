@@ -11,9 +11,10 @@ import { ICartGroup } from "@/types";
 import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import DltCart from "./DltCart";
 import { useGetMyCartItemsQuery } from "@/redux/api/cart.api";
+import { useCurrency } from "@/hooks/useCurrency";
+import React from "react";
 
 export default function CartDropDown() {
 
@@ -56,6 +57,8 @@ export default function CartDropDown() {
 }
 
 const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
+
+  const { format } = useCurrency();
 
   return <>
     {
@@ -110,8 +113,8 @@ const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
                               className="space-y-0.5"
                             >
                               <p className="text-base font-medium line-clamp-1 text-gray-800">{item?.product?.title}</p>
-                              <p className="text-lg font-semibold">${item?.product?.finalPrice?.toFixed(2)}</p>
-                              <p className="text-sm text-gray-800">${item?.product?.size?.title}</p>
+                              <p className="text-lg font-semibold">{format(item?.product?.finalPrice)}</p>
+                              <p className="text-sm text-gray-800">{item?.product?.size?.title}</p>
                             </Link>
                             <DltCart cartItemId={item?.id} productId={item?.product?.id} />
                           </div>

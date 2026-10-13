@@ -12,6 +12,7 @@ import Link from "next/link";
 import DltToFavourite from "./DltToFavourite";
 import { useMyFavoriteProductsQuery } from "@/redux/api/favoriteProductApi";
 import { IFavoriteItem } from "@/app/(public)/favourites/_components/WishListContainer";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export default function WishListDropDown() {
 
@@ -38,6 +39,7 @@ export default function WishListDropDown() {
 };
 
 const FavProds = ({ favoriteProds }: { favoriteProds: IFavoriteItem[] }) => {
+  const { format } = useCurrency();
 
   return <div>
     <div className="overflow-y-auto max-h-[450px] space-y-2 mt-2 px-1">
@@ -72,7 +74,7 @@ const FavProds = ({ favoriteProds }: { favoriteProds: IFavoriteItem[] }) => {
 
 
                       <span className="text-sm whitespace-nowrap">
-                        ${product?.product?.finalPrice}
+                        {format(product?.product?.finalPrice)}
                       </span>
                     </div>
                   </div>

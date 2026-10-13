@@ -6,6 +6,7 @@ import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const ProductCard = ({
   data,
@@ -16,6 +17,7 @@ const ProductCard = ({
   ownProduct?: boolean;
   children?: ReactNode;
 }) => {
+  const { format } = useCurrency();
 
   return (
     <Card className="border-none shadow-none p-0">
@@ -61,8 +63,8 @@ const ProductCard = ({
               <p className="md:text-base text-primary-black">{data?.size?.title}</p>
             </div>
             <div className='flex flex-row gap-x-2 items-center'>
-              <p className="font-medium text-gray-600 line-through text-sm">${data?.price?.toFixed(2)}</p>
-              <p className="font-bold text-primary-black">${data?.finalPrice?.toFixed(2)}</p>
+              <p className="font-medium text-gray-600 line-through text-sm">{format(data?.price)}</p>
+              <p className="font-bold text-primary-black">{format(data?.finalPrice)}</p>
             </div>
           </Link>
         </div>

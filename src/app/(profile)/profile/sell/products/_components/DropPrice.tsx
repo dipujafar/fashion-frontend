@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { DropPrice } from "@/lib/Actions/Product.api";
 import { cn } from "@/lib/utils";
 import { MoveDown, Plus } from "lucide-react";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const reportSchema = z.object({
     offerPrice: z.string({ required_error: "Price is required." }).refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
@@ -31,7 +32,7 @@ interface ReportUserDialogProps {
 export function DropPriceComponenet({
     product
 }: ReportUserDialogProps) {
-
+    const { format } = useCurrency();
     const [open, setOpen] = useState(false);
     const [offerPrice, setOfferPrice] = useState<number>(0);
     const [customPriceInput, setCustomPriceInput] = useState<string>("");
@@ -97,7 +98,7 @@ export function DropPriceComponenet({
         }
 
         if (numericValue >= product?.finalPrice) {
-            return `Offer must be lower than the current price of $${product?.finalPrice?.toFixed(2)}.`;
+            return `Offer must be lower than the current price of ${format(product?.finalPrice)}.`;
         }
 
         return null;
@@ -128,7 +129,7 @@ export function DropPriceComponenet({
 
                 <div className="space-y-4">
 
-                    <p className="text-base text-gray-900"><span className="font-semibold text-primary-black" >Current Price :</span> ${product?.finalPrice?.toFixed(2)}</p>
+                    <p className="text-base text-gray-900"><span className="font-semibold text-primary-black" >Current Price :</span> {format(product?.finalPrice)}</p>
 
 
                     <p className="text-sm text-gray-800"> Drop the price and notify your followers and interested buyers automatically.</p>
@@ -150,7 +151,7 @@ export function DropPriceComponenet({
                                         <MoveDown className="size-3" />
                                         {item?.discount}%
                                     </div>
-                                    <span className="font-semibold text-primary-black">${item?.price.toFixed(2)}</span>
+                                    <span className="font-semibold text-primary-black">{format(item?.price)}</span>
                                 </button>
                             ))}
                             <button

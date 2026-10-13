@@ -240,7 +240,7 @@ function SellItem({ order }: { order: IOrder }) {
             </div>
 
             {/* Right: shipping details + order actions */}
-            <div className="space-y-2 lg:space-y-3 min-w-80 order-1 md:order-2 pb-5 md:pb-0">
+            <div className="space-y-2 lg:space-y-3 min-w-80 order-1 md:order-2 pb-5 md:pb-0 max-w-xs">
 
                 <div className="flex flex-row justify-between items-center">
 

@@ -25,6 +25,7 @@ import { DltAssitentSellReq } from "@/lib/Actions/AssistentSell.action"
 import Image from "next/image"
 import { defaultImg } from "@/utils/defaultImg"
 import Link from "next/link"
+import { useCurrency } from "@/hooks/useCurrency"
 
 function ReqAction({ data }: { data: IAssitedSellRequest }) {
 
@@ -121,6 +122,7 @@ function ReqAction({ data }: { data: IAssitedSellRequest }) {
 export default ReqAction;
 
 const Listings = ({ listings }: { listings: IProduct[] }) => {
+    const { format } = useCurrency();
     return (
         <div className="">
             {listings?.map((product) => (
@@ -144,7 +146,7 @@ const Listings = ({ listings }: { listings: IProduct[] }) => {
                                     {product?.title}
                                 </p>
                                 <p className="text-gray-700">{product?.size?.title}</p>
-                                <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">${product?.finalPrice?.toFixed(2)}</span></p>
+                                <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">{format(product?.finalPrice)}</span></p>
 
                                 {/* <p className="text-[#E12728]">Offer Expire in 24 hrs</p> */}
                             </div>

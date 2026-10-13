@@ -3,6 +3,7 @@ import { GetProductCharitySupport } from "@/lib/services/Products";
 import { IUser } from "@/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import FormatCurrency from "@/components/shared/FormatCurrency";
 
 async function CharityImpact({ params }: { params: Promise<{ productId: string }> }) {
 
@@ -37,7 +38,7 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                         <strong className="font-semibold text-foreground">
                             {GLOBAL_DONATION_PERCENT.toFixed(2)}% of every sale
                         </strong>{" "}
-                        of this item — about ${donation.toFixed(2)} from this order.
+                        of this item — about <FormatCurrency amount={donation} /> from this order.
                     </p>
                 </div>
             </div>
@@ -58,7 +59,7 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                             <div className="min-w-0">
                                 <p className="truncate text-base font-semibold">{c?.charity.fname} {c?.charity?.lname}</p>
                                 <p className="text-sm text-muted-foreground">
-                                    {splitPercent.toFixed(2)}% of the donation · ${((donation * splitPercent) / 100).toFixed(2)}
+                                    {splitPercent.toFixed(2)}% of the donation · <FormatCurrency amount={(donation * splitPercent) / 100} />
                                 </p>
                             </div>
                         </Link>

@@ -145,6 +145,8 @@ export enum UserRole {
 
 export interface IUserAuth {
   role: UserRole;
+  isPhoneVerified: boolean;
+  isverified: boolean;
 }
 
 export interface IUser {

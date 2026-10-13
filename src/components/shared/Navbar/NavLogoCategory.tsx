@@ -48,7 +48,7 @@ const NavLogoCategory = () => {
         {/* ======= logo ========== */}
         <div className="flex justify-start items-center w-auto">
           <Link href={"/"}>
-            <Image src={logo} alt="logo" className="w-32 md:w-auto h-auto"></Image>
+            <Image src={logo} alt="logo" className="w-32 md:w-36 lg:w-w-40 xl:w-44 h-auto"></Image>
           </Link>
         </div>
 

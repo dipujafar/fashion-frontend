@@ -1,4 +1,18 @@
 import { z } from "zod";
+
+const optionalUrl = z
+    .string()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+        (value) =>
+            !value ||
+            z.string().url().safeParse(
+                value.startsWith("www.") ? `https://${value}` : value
+            ).success,
+        { message: "Please enter a valid URL" }
+    );
+
 const profileUpdateSchema = z.object({
     firstName: z
         .string({ required_error: "First Name is required" })
@@ -13,6 +27,10 @@ const profileUpdateSchema = z.object({
         .trim()
         .optional()
         .or(z.literal("")),
+
+    country: z
+        .string({ required_error: "Country is required" })
+        .min(1, { message: "Country is required" }),
 
     bio: z
         .string()
@@ -42,29 +60,13 @@ const profileUpdateSchema = z.object({
         .optional()
         .or(z.literal("")),
 
-    website: z
-        .string()
-        .url({ message: "Please enter a valid URL" })
-        .optional()
-        .or(z.literal("")),
+    website: optionalUrl,
 
-    facebook: z
-        .string()
-        .url({ message: "Please enter a valid URL" })
-        .optional()
-        .or(z.literal("")),
+    facebook: optionalUrl,
 
-    instagram: z
-        .string()
-        .url({ message: "Please enter a valid URL" })
-        .optional()
-        .or(z.literal("")),
+    instagram: optionalUrl,
 
-    twitter: z
-        .string()
-        .url({ message: "Please enter a valid URL" })
-        .optional()
-        .or(z.literal("")),
+    twitter: optionalUrl,
 
 });
 

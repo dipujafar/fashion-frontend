@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { IOffer } from "@/types";
 import { cn } from "@/lib/utils";
@@ -10,11 +11,12 @@ import { toast } from "sonner";
 import CounterOffer from "./CounterOffer";
 import OfferView from "./OfferView";
 import { useRouter } from "next/navigation";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const VISIBLE_COUNT = 3;
 
 function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, isSent: boolean, isImSellerForThisOffer: boolean }) {
-
+  const { format } = useCurrency();
   const [open, setOpen] = useState(false);
 
   const [loadingAccept, setLoadingAccept] = useState(false);
@@ -87,10 +89,10 @@ function OfferCard({ offer, isSent, isImSellerForThisOffer }: { offer: IOffer, i
         isSent ? "justify-end" : "justify-start"
       )}>
         <span className="text-sm text-gray-700 line-through">
-          ${offer?.actualPrice?.toFixed(2)}
+          {format(offer?.actualPrice)}
         </span>
         <span className="text-base font-semibold text-gray-900">
-          ${offer?.offeredPrice?.toFixed(2)}
+          {format(offer?.offeredPrice)}
         </span>
       </div>
 

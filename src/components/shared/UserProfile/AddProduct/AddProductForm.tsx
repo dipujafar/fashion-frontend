@@ -3,8 +3,10 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useEffect, useCallback } from "react";
-import { X, Camera, CheckCircle2, Pencil } from "lucide-react";
+import { X, Camera, CheckCircle2, Pencil, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Form,
   FormControl,
@@ -60,6 +62,7 @@ import { RootState } from "@/redux/store";
 import { role } from "@/lib/userRole";
 import { SuccessModal } from "../../Modal/SuccessModal";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const ImageEditorModal = dynamic(() => import("../../ImageEditorModal"), {
   ssr: false,
@@ -129,7 +132,6 @@ export default function AddProductForm() {
     // If multiple images are selected at once, directly add them without opening the editor
     if (filesToProcess.length > 1) {
       setImages((prev) => [...prev, ...filesToProcess]);
-      toast.success(`${filesToProcess.length} photos added successfully`);
       return;
     }
 
@@ -177,7 +179,9 @@ export default function AddProductForm() {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const boxes = Array.from({ length: 8 });
+  // Show uploaded images + exactly one empty upload slot (until max is reached)
+  const visibleSlots = Math.min(images.length + 1, MAX_PHOTOS);
+  const boxes = Array.from({ length: visibleSlots });
 
   // ====================================== set selected category data ============================
   function handleCategorySelect(cat: Category) {
@@ -279,15 +283,12 @@ export default function AddProductForm() {
                 return (
                   <label
                     key={i}
-                    htmlFor={isFull ? undefined : INPUT_ID}
-                    className={`aspect-square rounded border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 transition-all ${isFull
-                      ? "opacity-40 cursor-not-allowed"
-                      : "cursor-pointer hover:border-black hover:text-black hover:bg-gray-50"
-                      }`}
+                    htmlFor={INPUT_ID}
+                    className="aspect-square rounded border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 transition-all cursor-pointer hover:border-black hover:text-black hover:bg-gray-50"
                   >
                     <Camera size={22} strokeWidth={1.75} />
                     <span className="text-[11px] font-medium mt-1 text-gray-500">
-                      {i === 0 ? "Cover Photo" : "Add Photo"}
+                      {i === 0 ? "Add Photo" : "Add More"}
                     </span>
                   </label>
                 );
@@ -542,17 +543,58 @@ export default function AddProductForm() {
 
             <>
               {/* ======================================== donation input ============================================== */}
-              <div className="space-y-4 mt-12">
-                <div>
-                  <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+              <div className="space-y-4 mt-16">
 
-                  <>
-                    <span className="text-xs">
-                      {required_Charity ? "(Minimum 5% donation required)" : "(Optional donation)"}
-                    </span>
-                    {/* <SelectDonationOption /> */}
-                  </>
+                <div className="flex lg:flex-row flex-col justify-between items-start gap-2 mb-6">
+                  <div>
+                    <div className="flex flex-row gap-x-0.5 items-center">
+                      <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm")}>
+                            <Info size={16} className="text-gray-600" />
+                          </button>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="rounded-none max-w-xs py-4" side="bottom">
+                          <p className="text-sm">
+                            {required_Charity ? "As a seller, you are required to donate a minimum of 5% of your product's price to charity. Please select a charity and specify the donation percentage." : "You have the option to donate a portion of your product's price to charity. Please select a charity and specify the donation percentage if you wish to contribute."}
+                          </p>
+                        </TooltipContent>
+
+                      </Tooltip>
+
+                    </div>
+                    <>
+                      <span className="text-xs">
+                        {required_Charity ? "(Minimum 5% donation required)" : "(Optional donation)"}
+                      </span>
+                      {/* <SelectDonationOption /> */}
+                    </>
+                  </div>
+
+                  <div className="flex items-start gap-2 rounded-lg bg-blue-50 px-4 py-4 sm:px-5 sm:py-5 max-w-md">
+                    <Info
+                      className="mt-0.5 size-6 shrink-0 fill-blue-400 text-white"
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                    <p className="text-sm text-gray-800">
+                      Your chosen percentage will be donated to the selected charity once the item is sold.{" "}
+                      <Link
+                        href="/help/donations"
+                        className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700"
+                      >
+                        Learn more about donations
+                      </Link>
+                      .
+                    </p>
+                  </div>
+
                 </div>
+
 
                 <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
                   <FormField
@@ -561,25 +603,30 @@ export default function AddProductForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Donation Percent (%)</FormLabel>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
+                        <div className="flex items-center bg-white border border-[#e1e1e1] rounded focus-within:border-primary-black">
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer">
+                              <SelectTrigger className="flex-1 border-0 shadow-none rounded focus-visible:ring-0 focus:ring-0 !text-base !py-5 px-3 cursor-pointer">
                                 <SelectValue placeholder="Select Donation Percent" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="rounded-none p-0">
                               {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
-                                <SelectItem value={item.toString()} key={item} className="rounded-none cursor-pointer">
+                                <SelectItem
+                                  value={item.toString()}
+                                  key={item}
+                                  className="rounded-none cursor-pointer"
+                                >
                                   {item}
                                 </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
-                        </FormControl>
+
+                          <span className="pr-3 text-lg text-primary-black pointer-events-none select-none">
+                            %
+                          </span>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}

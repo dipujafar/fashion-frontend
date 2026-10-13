@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const PProductCard = ({
     data,
@@ -19,6 +20,7 @@ const PProductCard = ({
     ownProduct?: boolean;
     children?: ReactNode;
 }) => {
+    const { format } = useCurrency();
     return (
         <Card className="border-none shadow-none p-0">
             <CardContent className="md:space-y-4 space-y-2 p-0">
@@ -70,8 +72,8 @@ const PProductCard = ({
                             <p className="md:text-base text-primary-black">{data?.size?.title}</p>
                         </div>
                         <div className='flex flex-row gap-x-2 items-center'>
-                            <p className="font-medium text-gray-600 line-through text-sm">${data?.price?.toFixed(2)}</p>
-                            <p className="font-bold text-primary-black">${data?.finalPrice?.toFixed(2)}</p>
+                            <p className="font-medium text-gray-600 line-through text-sm">{format(data?.price)}</p>
+                            <p className="font-bold text-primary-black">{format(data?.finalPrice)}</p>
                         </div>
                     </Link>
                 </div>

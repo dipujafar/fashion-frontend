@@ -1,9 +1,12 @@
+"use client";
+
 import { IOfferItem } from '@/types'
 import { defaultImg } from '@/utils/defaultImg'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useCurrency } from '@/hooks/useCurrency'
 
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 
@@ -12,6 +15,7 @@ function OfferView({ offerItems, open,
         offerItems: IOfferItem[], open: boolean;
         setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     }) {
+    const { format } = useCurrency();
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -44,7 +48,7 @@ function OfferView({ offerItems, open,
                                         {item?.product?.title}
                                     </p>
                                     <p className="text-gray-700">{item?.product?.size?.title}</p>
-                                    <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">${item?.product?.finalPrice?.toFixed(2)}</span></p>
+                                    <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">{format(item?.product?.finalPrice)}</span></p>
                                 </div>
                             </div>
 

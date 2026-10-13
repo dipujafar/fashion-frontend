@@ -1,7 +1,6 @@
 import PaginationSection from "@/components/shared/Pagination/PaginationSection"
-import GetOrdersBySeller, { GetOrdersByBuyer } from "@/lib/services/Orders"
+import { GetOrdersByBuyer } from "@/lib/services/Orders"
 import { IMeta, IOrder } from "@/types"
-import Empty from "@/components/ui/empty"
 import PurchaseItem from "./PurchaseItem";
 import StatusFilterSelect from "../../Order/StatusFilterSelect";
 import { SellerProfileProductSorting } from "../../CategoryFilter/SellerProfileProductSorting";
@@ -81,9 +80,10 @@ async function PurchaseProductContainer({ ssp }: { ssp: { [key: string]: string 
                 }
 
                 {
-                    orders?.length === 0 && <div className="py-20 md:py-24 lg:py-28">
+                    orders?.length === 0 && <div className="py-20 md:py-24 lg:py-28 max-w-xs mx-auto">
                         <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
-                        <p className="text-center text-gray-700 text-sm lg:text-lg">No orders available</p>
+                        <p className="text-center text-gray-900 text-base font-semibold lg:text-lg my-0.5">No orders available</p>
+                        <p className="text-center text-gray-500 text-sm">You haven't placed any orders yet. Start exploring and find something you love.</p>
                         <center>
                             <Link href={"/shop"}>
                                 <Button variant={"default"} className="rounded-none cursor-pointer mx-auto mt-2">Order an Item</Button>

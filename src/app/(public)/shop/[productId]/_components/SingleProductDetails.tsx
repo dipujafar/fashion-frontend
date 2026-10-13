@@ -24,7 +24,7 @@ const SingleProductDetails = async ({ product }: { product: { data: IProductWith
           <ProductImages product={product?.data}></ProductImages>
         </div>
 
-        <div className="flex-1 xl:mt-5">
+        <div className="flex-1">
           <ProductDetails product={product?.data} />
         </div>
 

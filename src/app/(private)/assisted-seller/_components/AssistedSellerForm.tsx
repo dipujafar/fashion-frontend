@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { formattedAssistedSellerData } from "./util";
 import { SuccessModal } from "@/components/shared/Modal/SuccessModal";
 import Link from "next/link";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export const formSchema = z.object({
   itemsTitle: z.string({ required_error: "Item title is required." }).min(1, {
@@ -87,6 +88,7 @@ type FormValues = z.infer<typeof formSchema>
 export function AssistedSellerForm() {
   const { data: charitiesData } = useGetCharitiesQuery();
   const user = useSelector((state: RootState) => state.auth.user);
+  const { symbol } = useCurrency();
   type UploadedImage = {
     file: File
     previewUrl: string
@@ -380,7 +382,7 @@ export function AssistedSellerForm() {
                                         <InputGroup className="bg-white border-[#e1e1e1] rounded shadow-none has-[[data-slot=input-group-control]:focus-visible]:ring-0 focus:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border has-[[data-slot=input-group-control]:focus-visible]:border-primary-black !py-5">
                                           <InputGroupInput type="number" step="any" placeholder="eg: 100" {...field} className="!text-base" />
                                           <InputGroupAddon align={"inline-start"} className="text-primary-black text-lg" >
-                                            $
+                                            {symbol}
                                           </InputGroupAddon>
                                         </InputGroup>
                                       </FormControl>

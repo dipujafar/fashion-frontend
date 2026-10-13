@@ -9,6 +9,9 @@ import FolowUnFolow from '@/app/(public)/member/[username]/_components/FolowUnFo
 import { CharityDonationFormDialog } from '../Modal/Charity/CharityDonationFormDialog';
 import { Button } from '@/components/ui/button';
 import FolowerFolowing from '@/app/(public)/member/[username]/_components/FolowerFolowing';
+import { Check } from 'lucide-react';
+import { countries } from '@/utils/constant';
+import Flag from '../Flag';
 
 type User = {
   data:
@@ -34,6 +37,11 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
     return notFound()
   }
 
+  const isEmailVerified = userData?.auth?.isverified;
+  const isphoneVerified = userData?.auth?.isPhoneVerified;
+
+  const countryCode = countries.find((country) => country.name === userData?.country)?.code;
+
   return (
     <div className='pt-5'>
 
@@ -43,7 +51,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
 
           <div className='flex flex-col md:flex-row md:items-end gap-y-5 gap-x-0 md:gap-x-16 lg:gap-x-20'>
 
-            <div className="flex flex-row items-center gap-3 md:gap-5 shrink-0">
+            <div className="flex flex-row items-start gap-3 md:gap-5 shrink-0">
 
               {/* Avatar */}
               <div className="relative shrink-0">
@@ -65,6 +73,31 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground my-0.5 block">
                   {userData?.userName}
                 </h2>
+
+                {countryCode && <div className='flex items-center gap-2 my-0.5 whitespace-nowrap'>
+                  <Flag code={countryCode} name={userData?.country} />
+                  <p className='text-sm font-medium'>{userData?.country}</p>
+                </div>}
+
+                <div className='flex flex-row gap-x-3 items-center my-0.5'>
+                  {isEmailVerified && (
+                    <span className="inline-flex items-center gap-1 text-sm font-medium ">
+                      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-white">
+                        <Check size={11} strokeWidth={3} />
+                      </span>
+                      Email Verified
+                    </span>
+                  )}
+
+                  {isphoneVerified && (
+                    <span className="inline-flex items-center gap-1 text-sm font-medium ">
+                      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-white">
+                        <Check size={11} strokeWidth={3} />
+                      </span>
+                      Phone Verified
+                    </span>
+                  )}
+                </div>
 
                 {/* Rating */}
                 {user?.data?.review?._count?.id > 0 ? <div className="flex items-center gap-2 mb-1 whitespace-nowrap">

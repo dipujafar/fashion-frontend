@@ -17,6 +17,11 @@ import { defaultImg } from '@/utils/defaultImg';
 import { UpdateProfile } from '@/lib/Actions/Profile.action';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import profileUpdateSchema, { charitySchema } from './Schema';
+import { PhoneInput } from '@/components/ui/PhoneInput';
+import { Info } from "lucide-react";
+import { cn } from '@/lib/utils';
+import SelectCountry from '@/app/(public)/checkout/cart/[cartGroupId]/_components/Billing/SelectCountry';
+
 
 const ImageEditorModal = dynamic(() => import('@/components/shared/ImageEditorModal'), {
     ssr: false,
@@ -55,13 +60,17 @@ function MyProfile({ user }: { user: IUser }) {
         defaultValues: {
             firstName: user?.fname ?? "",
             lastName: user?.lname ?? "",
+            phoneNumber: user?.phone ?? "",
             bio: user.bio ?? "",
+            userName: user?.userName ?? "",
+            email: user?.email ?? "",
             website: user?.website ?? "",
             description: user?.description ?? "",
             facebook: user?.facebook ?? "",
             instagram: user?.instagram ?? "",
             twitter: user?.twitter ?? "",
             support_email: user?.support_email ?? "",
+            country: user?.country ?? "",
         },
     });
 
@@ -71,11 +80,10 @@ function MyProfile({ user }: { user: IUser }) {
 
         try {
 
-            const { firstName, lastName, ...more } = data;
+            const { firstName, phoneNumber, lastName, ...more } = data;
 
             const payload = {
-                fname: firstName,
-                lname: lastName,
+                phone: phoneNumber, fname: firstName, lname: lastName,
                 dltGalleries: dltCharityImgIds,
                 ...more
             }
@@ -181,6 +189,9 @@ function MyProfile({ user }: { user: IUser }) {
 
     const boxes = Array.from({ length: 8 });
 
+    const isPhoneVerified = user?.auth?.isPhoneVerified;
+    const havePhone = user?.phone;
+
     return (
         <div className="md:space-y-8 space-y-6 max-w-4xl">
 
@@ -229,70 +240,109 @@ function MyProfile({ user }: { user: IUser }) {
                 </div>
             </div>
 
-            <div>
-                <p className="text-xl font-semibold mb-6">User Details</p>
-
-                <div className='space-y-7 max-w-lg mb-8'>
-                    <div className="flex-1">
-                        <label className='text-sm text-gray-800 font-normal block mb-2'>Username</label>
-                        <Input
-                            value={user?.userName || ""}
-                            disabled
-                            className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 select-none"
-                        />
-                    </div>
-
-                    <div className="flex-1">
-                        <label className='text-sm text-gray-800 font-normal block mb-2'>Email</label>
-                        <Input
-                            type='email'
-                            value={user?.email || ""}
-                            disabled
-                            className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 select-none"
-                        />
-                    </div>
-
-                    <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                            <label className='text-sm text-gray-800 font-normal'>Phone Number</label>
-                            {phone && (
-                                <span className="inline-flex items-center gap-1 text-xs text-neutral-900 font-medium">
-                                    <CheckCircle2 className="w-3.5 h-3.5 text-neutral-900" />
-                                    Verified
-                                </span>
-                            )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Input
-                                placeholder="No phone number added"
-                                value={phone || ""}
-                                readOnly
-                                disabled
-                                className="bg-neutral-50 border-[#e1e1e1] rounded shadow-none text-neutral-700 cursor-not-allowed !text-base !py-6 px-4 flex-1 select-none"
-                            />
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => setOpenPhoneModal(true)}
-                                className="h-12 px-4 rounded border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors text-sm font-medium whitespace-nowrap cursor-pointer"
-                            >
-                                <Phone className="w-4 h-4 mr-1.5" />
-                                {phone ? "Change" : "Add Phone"}
-                            </Button>
-                        </div>
-                        <p className="text-xs text-neutral-500 mt-1.5">
-                            {phone 
-                                ? "Phone number is verified. To change it, verification with a 6-digit OTP is required." 
-                                : "Phone number cannot be entered directly. 6-digit OTP verification is required."}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="md:space-y-6 space-y-4">
+                    className="md:space-y-8 space-y-6 max-w-4xl">
+
+                    <div>
+                        <p className="text-xl font-semibold mb-6">User Details</p>
+
+                        <div className='space-y-7 max-w-lg mb-8'>
+                            <div className="flex-1">
+                                <FormField
+                                    control={form.control}
+                                    name="userName"
+                                    render={({ field }) => (
+                                        <FormItem className=''>
+                                            <FormLabel className='text-gray-800 font-normal'>Username</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled
+                                                    className="border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4 "
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <div className="flex-1">
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem className=''>
+                                            <FormLabel className='text-gray-800 font-normal'>Email</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type='email'
+                                                    disabled
+                                                    className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <div className="flex-1">
+
+                                <FormField
+                                    control={form.control}
+                                    name="phoneNumber"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-gray-800 font-normal">Phone Number</FormLabel>
+
+                                            {/* Single bordered container */}
+                                            <div className="flex items-center gap-2 rounded border border-[#e1e1e1] bg-white pr-2 focus-within:border-neutral-900 transition-colors py-1">
+                                                <FormControl>
+                                                    <PhoneInput
+                                                        // @ts-ignore
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        international
+                                                        defaultCountry="US"
+                                                        disabled
+                                                        className={cn(
+                                                            "flex-1",
+                                                            // strip inner borders/backgrounds so it looks like one field
+                                                            "[&_button]:!border-0 [&_button]:!bg-transparent [&_button]:!shadow-none [&_button]:!rounded-none",
+                                                            "[&_input]:!border-0 [&_input]:!bg-transparent [&_input]:!shadow-none [&_input]:!rounded-none"
+                                                        )}
+                                                    />
+                                                </FormControl>
+
+                                                {/* Right side: status icon + button */}
+                                                <>
+                                                    {!isPhoneVerified && <Info className="size-5 text-yellow-700 shrink-0" />}
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => setOpenPhoneModal(true)}
+                                                        className="h-9 bg-transparent px-4 text-sm rounded font-medium whitespace-nowrap cursor-pointer shadow-none"
+                                                    >
+                                                        {isPhoneVerified ? "Change Phone" : havePhone ? "Verify Phone" : "Add Phone"}
+                                                    </Button>
+                                                </>
+                                            </div>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <SelectCountry setValue={form.setValue} control={form.control} />
+
+                        </div>
+                    </div>
 
                     <div className="">
                         <p className="text-xl font-semibold mb-6">About me</p>
@@ -608,9 +658,7 @@ function MyProfile({ user }: { user: IUser }) {
                 open={openPhoneModal}
                 onOpenChange={setOpenPhoneModal}
                 currentPhone={phone}
-                onPhoneVerified={(newPhone) => {
-                    setPhone(newPhone);
-                }}
+                title={isPhoneVerified ? "Change Phone Number" : havePhone ? "Verify Phone Number" : "Add Phone Number"}
             />
 
             <ImageEditorModal

@@ -18,6 +18,7 @@ import { tags } from "@/utils/serverTags";
 import { useDispatch } from "react-redux";
 import { baseApi } from "@/redux/api/baseApi";
 import { tagTypes } from "@/redux/tagTypes";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface CharityDonationFormData {
   selectedCharities: string[];
@@ -54,6 +55,7 @@ export function CharityDonationSelectDialog({
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+  const { format, symbol } = useCurrency();
 
   const { handleSubmit, control, watch } = useForm<CharityDonationFormData>({
     defaultValues: {
@@ -130,10 +132,10 @@ export function CharityDonationSelectDialog({
           {/* Purchase Info */}
           <div className="flex gap-2">
             <div className="flex-1 bg-black text-white rounded-4xl px-4 py-3 text-center text-sm font-medium">
-              Purchase Price: ${purchasePrice}
+              Purchase Price: {format(purchasePrice)}
             </div>
             <div className="flex-1 bg-black text-white rounded-4xl px-4 py-3 text-center text-sm font-medium">
-              Total Donation ({donationPercentage}%): ${totalDonation.toFixed(2)}
+              Total Donation ({donationPercentage}%): {format(totalDonation)}
             </div>
           </div>
 
@@ -164,10 +166,9 @@ export function CharityDonationSelectDialog({
                       {item.charity.userName ?? `${item.charity.fname} ${item.charity?.lname}`}
                     </Label>
                     <span className="text-sm text-muted-foreground">
-                      $
                       {selectedCharityIds.includes(item.charityId)
-                        ? perCharityAmount.toFixed(2)
-                        : "0.00"}
+                        ? format(perCharityAmount)
+                        : format(0)}
                     </span>
                   </div>
                 </div>
@@ -188,7 +189,7 @@ export function CharityDonationSelectDialog({
               </Label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">
-                  $
+                  {symbol}
                 </span>
                 <Input
                   type="number"

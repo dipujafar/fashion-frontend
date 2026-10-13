@@ -5,6 +5,8 @@ import { useSocket } from '@/Context/SocketProvider';
 import { IChatUser } from '@/types';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import emptyChat from "@/assets/images/chat/empty-chat-icon.png"
 
 function ChatList({ userName }: { userName?: string }) {
 
@@ -73,6 +75,14 @@ function ChatList({ userName }: { userName?: string }) {
                             userName={userName}
                         />
                     ))}
+
+                    {/* //empty state */}
+                    {!isLoading && chatList.length === 0 && <div className='h-full flex flex-col items-center justify-center px-10'>
+                        <Image src={emptyChat} alt="Empty chat" className='h-10 w-auto' />
+                        <p className='text-gray-900 text-lg font-medium my-2'>No conversations yet</p>
+                        <p className='text-gray-600 text-sm text-center'>Your messages with other FASHI-ON members will appear here.</p>
+                    </div>}
+
                 </div>
             </div>
         </div>
