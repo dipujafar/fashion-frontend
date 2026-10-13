@@ -1,4 +1,4 @@
-import { IBrand, ICategory, ISize } from "@/types";
+import { IBrand, ICategory, IParcelSuggestion, ISize } from "@/types";
 import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
@@ -44,8 +44,21 @@ const categoryApi = baseApi.injectEndpoints({
         method: "GET",
         params: query,
       }),
-    })
+    }),
+    getParcelSuggestion: builder.query<{ data: IParcelSuggestion }, string>({
+      query: (categoryId) => ({
+        url: `/parcel-suggestions/${categoryId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetCategoryQuery, useGetCategorySizeQuery, useGetCategoryBrandsQuery, useFilteredAttributesQuery, useGetCategoryparentChainQuery } = categoryApi;
+export const {
+  useGetCategoryQuery,
+  useGetCategorySizeQuery,
+  useGetCategoryBrandsQuery,
+  useFilteredAttributesQuery,
+  useGetCategoryparentChainQuery,
+  useGetParcelSuggestionQuery,
+} = categoryApi;

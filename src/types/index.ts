@@ -50,6 +50,21 @@ export interface ICategory {
   children: ICategory[];
 }
 
+export interface IParcelSuggestion {
+  id: string;
+  weight_kg: number;
+  height_cm: number;
+  width_cm: number;
+  length_cm: number;
+  categoryId: string;
+  category?: {
+    id: string;
+    name: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export type ICondition = string;
 
 export type ICareInstruction = string;

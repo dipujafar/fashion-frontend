@@ -29,6 +29,8 @@ import {
     ProductFormValues,
 } from "@/components/shared/UserProfile/AddProduct/schema";
 import { PriceOverview } from "@/components/shared/UserProfile/AddProduct/PriceOverview";
+import { ParcelSizeSuggestion } from "@/components/shared/UserProfile/AddProduct/ParcelSizeSuggestion";
+import { IParcelSuggestion } from "@/types";
 import { cn } from "@/lib/utils";
 import { useGetCategoryQuery } from "@/redux/api/categoryApi";
 
@@ -187,6 +189,15 @@ function EditlistingForm({ product }: { product: IProduct }) {
         form.setValue("sizeId", "", { shouldValidate: false });
         form.setValue("brandId", "", { shouldValidate: false });
     }
+
+    const handleApplySuggestedParcel = (suggestion: IParcelSuggestion) => {
+        const heightVal = suggestion.height_cm ?? (suggestion as any).hight_cm;
+        form.setValue("weight_kg", String(suggestion.weight_kg), { shouldValidate: true, shouldDirty: true });
+        form.setValue("hight_cm", String(heightVal), { shouldValidate: true, shouldDirty: true });
+        form.setValue("width_cm", String(suggestion.width_cm), { shouldValidate: true, shouldDirty: true });
+        form.setValue("length_cm", String(suggestion.length_cm), { shouldValidate: true, shouldDirty: true });
+        toast.success("Applied suggested parcel size");
+    };
 
     const categories = categoriesData?.data || [];
     const sizes = sizeData?.data || [];
@@ -709,6 +720,12 @@ function EditlistingForm({ product }: { product: IProduct }) {
 
                         <div className="mt-8">
                             <p className="text-lg lg:text-xl font-semibold text-gray-900 mb-5">Parcel Size</p>
+
+                            <ParcelSizeSuggestion
+                                categoryId={selectedCategory?.id || form.watch("categoryId") || product?.categoryId}
+                                categoryName={selectedCategory?.name}
+                                onApply={handleApplySuggestedParcel}
+                            />
 
                             <div className="grid grid-cols-2 md:gap-4 gap-2 items-start">
                                 <FormField

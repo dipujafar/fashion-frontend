@@ -35,6 +35,8 @@ import {
 } from "./schema";
 import { ImageUploadGuide } from "./ImageUploadGuide";
 import { PriceOverview } from "./PriceOverview";
+import { ParcelSizeSuggestion } from "./ParcelSizeSuggestion";
+import { IParcelSuggestion } from "@/types";
 import { cn } from "@/lib/utils";
 import { TagInput } from "./FormComponent/TagInput";
 import InputCharityDonationInput from "./InputCharityDonationInput";
@@ -188,6 +190,15 @@ export default function AddProductForm() {
     setSelectedCategory(cat);
     form.setValue("categoryId", cat.id, { shouldValidate: true });
   }
+
+  const handleApplySuggestedParcel = (suggestion: IParcelSuggestion) => {
+    const heightVal = suggestion.height_cm ?? (suggestion as any).hight_cm;
+    form.setValue("weight_kg", String(suggestion.weight_kg), { shouldValidate: true, shouldDirty: true });
+    form.setValue("hight_cm", String(heightVal), { shouldValidate: true, shouldDirty: true });
+    form.setValue("width_cm", String(suggestion.width_cm), { shouldValidate: true, shouldDirty: true });
+    form.setValue("length_cm", String(suggestion.length_cm), { shouldValidate: true, shouldDirty: true });
+  };
+
   const categories = categoriesData?.data || [];
   const sizes = sizeData?.data || [];
   const brands = brandData?.data || [];
@@ -751,6 +762,12 @@ export default function AddProductForm() {
 
             <div className="mt-8">
               <p className="text-lg lg:text-xl font-semibold text-gray-900 mb-5">Parcel Size</p>
+
+              <ParcelSizeSuggestion
+                categoryId={selectedCategory?.id || form.watch("categoryId")}
+                categoryName={selectedCategory?.name}
+                onApply={handleApplySuggestedParcel}
+              />
 
               {/* ========================================= Price and Discount ============================== */}
               <div className="grid grid-cols-2 md:gap-4 gap-2 items-start">
