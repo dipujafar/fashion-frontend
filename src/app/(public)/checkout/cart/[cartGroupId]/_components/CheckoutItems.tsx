@@ -37,7 +37,7 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
 
                             <Link
                                 href={`/member/${cartGroup?.seller?.userName}`}
-                                className="cursor-pointer"
+                                className="cursor-pointer shrink-0"
                             >
                                 <CustomAvatar image={cartGroup?.seller?.picture?.url || null} name={cartGroup?.seller?.userName} className="!size-10"></CustomAvatar>
                             </Link>
@@ -61,8 +61,8 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                         <div className="flex flex-row gap-x-2 items-start">
                                             <Link
                                                 href={`/shop/${item?.product?.id}`}
-                                                className="cursor-pointer"
-                                            ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="h-28 w-28" />
+                                                className="cursor-pointer shrink-0"
+                                            ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="size-28 object-cover" />
                                             </Link>
                                             <div>
                                                 <Link

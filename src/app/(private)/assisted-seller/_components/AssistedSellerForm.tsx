@@ -1,6 +1,5 @@
 "use client";
-import type React from "react"
-import { useState } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -11,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Camera, CheckCircle2, Info, X } from "lucide-react";
+import { Camera, CheckCircle2, Info, Pencil, X } from "lucide-react";
 import InputCharityDonationInput from "@/components/shared/UserProfile/AddProduct/InputCharityDonationInput"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { useGetCharitiesQuery } from "@/redux/api/userApi";
@@ -30,6 +29,17 @@ import Link from "next/link";
 import { useCurrency } from "@/hooks/useCurrency";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+import { ImageUploadGuide } from "@/components/shared/UserProfile/AddProduct/ImageUploadGuide";
+import { getFirstErrorMessage } from "@/utils/modifyFormError";
+import { AssistedParcelSizeGuide, ParcelDimensions } from "./AssistedParcelSizeGuide";
+
+const ImageEditorModal = dynamic(() => import("@/components/shared/ImageEditorModal"), {
+  ssr: false,
+});
+
+const MAX_PHOTOS = 8;
+const INPUT_ID = "assisted-photo-uploader-input";
 
 export const formSchema = z.object({
   itemsTitle: z.string({ required_error: "Item title is required." }).min(1, {
@@ -91,16 +101,17 @@ export function AssistedSellerForm() {
   const { data: charitiesData } = useGetCharitiesQuery();
   const user = useSelector((state: RootState) => state.auth.user);
   const { symbol } = useCurrency();
-  type UploadedImage = {
-    file: File
-    previewUrl: string
-  }
-
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
 
-  const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([])
+  const [images, setImages] = useState<File[]>([]);
+  const [editorModalOpen, setEditorModalOpen] = useState(false);
+  const [editingImage, setEditingImage] = useState<{
+    file: Blob | File;
+    index: number | null;
+    name?: string;
+  } | null>(null);
 
   const required_Charity = user?.auth?.role !== UserRole.ECO_FRIENDLY_STORE;
 
@@ -130,16 +141,26 @@ export function AssistedSellerForm() {
     },
   })
 
+  const onError = (errors: any) => {
+    const firstErrorMessage = getFirstErrorMessage(errors);
+    if (firstErrorMessage) {
+      toast.error(firstErrorMessage);
+    }
+  };
 
   async function onSubmit(values: FormValues) {
     setError(null);
+    if (images.length === 0) {
+      toast.error("Please upload at least one image");
+      return;
+    }
     try {
       const formData = new FormData();
 
       formData.append("data", JSON.stringify(formattedAssistedSellerData(values)));
 
-      uploadedImages.forEach((img) => {
-        formData.append("images", img.file); // ✅ real File object
+      images.forEach((file) => {
+        formData.append("images", file); // ✅ real File object
       });
 
       const res = await RequestNewAssitentSell({ payload: formData });
@@ -149,7 +170,7 @@ export function AssistedSellerForm() {
 
       //reset the form and uploaded images
       form.reset();
-      setUploadedImages([]);
+      setImages([]);
 
       setOpenSuccessDialog(true);
 
@@ -159,49 +180,101 @@ export function AssistedSellerForm() {
     }
   }
 
-  const MAX_IMAGES = 8
+  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const incoming = Array.from(e.target.files || []).filter(
+      (f) => f.type.startsWith("image/")
+    );
+    e.target.value = "";
+    if (incoming.length === 0) return;
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files || files.length === 0) return
-
-    const newImages: UploadedImage[] = Array.from(files).map((file) => ({
-      file,
-      previewUrl: URL.createObjectURL(file),
-    }))
-
-    const combined = [...uploadedImages, ...newImages]
-
-    // Cap at MAX_IMAGES, dropping oldest first
-    const overflowCount = combined.length - MAX_IMAGES
-    const finalImages = overflowCount > 0 ? combined.slice(overflowCount) : combined
-
-    // Revoke object URLs for anything evicted, to avoid memory leaks
-    if (overflowCount > 0) {
-      combined.slice(0, overflowCount).forEach((img) => URL.revokeObjectURL(img.previewUrl))
+    const availableSlots = MAX_PHOTOS - images.length;
+    if (availableSlots <= 0) {
+      toast.error(`You can only upload up to ${MAX_PHOTOS} photos`);
+      return;
     }
 
-    setUploadedImages(finalImages)
+    const filesToProcess = incoming.slice(0, availableSlots);
+
+    // If multiple images are selected at once, directly add them without opening the editor
+    if (filesToProcess.length > 1) {
+      const nextImages = [...images, ...filesToProcess];
+      setImages(nextImages);
+      form.setValue(
+        "images",
+        nextImages.map((f) => f.name),
+        { shouldValidate: true }
+      );
+      return;
+    }
+
+    // Single image uploaded: open image editor
+    const singleFile = filesToProcess[0];
+    setEditingImage({ file: singleFile, index: null, name: singleFile.name });
+    setEditorModalOpen(true);
+  };
+
+  const handleEditExisting = (index: number) => {
+    const existingFile = images[index];
+    if (!existingFile) return;
+    setEditingImage({
+      file: existingFile,
+      index,
+      name: (existingFile as File).name || `assisted-photo-${index + 1}.jpg`,
+    });
+    setEditorModalOpen(true);
+  };
+
+  const handleSaveEditor = useCallback(
+    (blob: Blob) => {
+      const filename = editingImage?.name || `assisted-photo-${Date.now()}.jpg`;
+      const finalFile = new File([blob], filename, { type: blob.type || "image/jpeg" });
+
+      let nextImages: File[];
+      if (editingImage?.index !== null && editingImage?.index !== undefined) {
+        // Editing existing image
+        nextImages = images.map((img, i) => (i === editingImage.index ? finalFile : img));
+      } else {
+        // New single image uploaded
+        nextImages = [...images, finalFile];
+      }
+
+      setImages(nextImages);
+      form.setValue(
+        "images",
+        nextImages.map((f) => f.name),
+        { shouldValidate: true }
+      );
+
+      setEditingImage(null);
+      setEditorModalOpen(false);
+    },
+    [editingImage, images, form]
+  );
+
+  const handleCloseEditor = useCallback(() => {
+    setEditorModalOpen(false);
+    setEditingImage(null);
+  }, []);
+
+  const removeFile = (index: number) => {
+    const nextImages = images.filter((_, i) => i !== index);
+    setImages(nextImages);
     form.setValue(
       "images",
-      finalImages.map((img) => img.file.name),
+      nextImages.map((f) => f.name),
       { shouldValidate: true }
-    )
+    );
+  };
 
-    e.target.value = ""
-  }
+  const visibleSlots = Math.min(images.length + 1, MAX_PHOTOS);
+  const boxes = Array.from({ length: visibleSlots });
 
-  const handleRemoveImage = (indexToRemove: number) => {
-    URL.revokeObjectURL(uploadedImages[indexToRemove].previewUrl)
-
-    const updatedImages = uploadedImages.filter((_, idx) => idx !== indexToRemove)
-    setUploadedImages(updatedImages)
-    form.setValue(
-      "images",
-      updatedImages.map((img) => img.file.name),
-      { shouldValidate: true }
-    )
-  }
+  const handleApplySuggestedParcel = (dimensions: ParcelDimensions) => {
+    form.setValue("weight_kg", dimensions.weight_kg, { shouldValidate: true, shouldDirty: true });
+    form.setValue("length_cm", dimensions.length_cm, { shouldValidate: true, shouldDirty: true });
+    form.setValue("width_cm", dimensions.width_cm, { shouldValidate: true, shouldDirty: true });
+    form.setValue("hight_cm", dimensions.hight_cm, { shouldValidate: true, shouldDirty: true });
+  };
 
   const priceType = form.watch("priceType")
 
@@ -213,7 +286,7 @@ export function AssistedSellerForm() {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
           {/* Items Count */}
           <FormField
             control={form.control}
@@ -235,58 +308,55 @@ export function AssistedSellerForm() {
             name="images"
             render={() => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-gray-900">Items Bundle Picture</FormLabel>
-                <FormControl>
-                  <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:bg-zinc-100 transition-colors cursor-pointer bg-zinc-50">
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      id="image-upload"
-                    />
-                    <label htmlFor="image-upload" className="cursor-pointer block space-y-1 mx-auto text-center flex flex-col justify-center items-center">
-                      <Camera size={32} strokeWidth={1.75} />
+                <div className="flex flex-col md:flex-row justify-between items-start gap-3">
+                  <div>
+                    <FormLabel className="text-base font-semibold text-gray-900">BundlePhotos</FormLabel>
+                    <p className="text-sm text-gray-500">Add your listing bundle photos here.</p>
+                  </div>
+                </div>
 
-                      <span className="text-xs text-gray-700 text-center px-2 hidden md:block mt-3">
-                        Accept JPG, PNG, WEBP, SVG. Max size 10MB.
-                      </span>
-                      <span className="text-xs text-gray-700 text-center px-2 hidden md:block">
-                        Max 8 images allowed. Please ensure the image clearly shows items in the bundle.
-                      </span>
-                      <span className="text-xs text-destructive text-center px-2 hidden md:block">
-                        (Minimum 1 image required)
-                      </span>
-                    </label>
-                  </div>
+                <FormControl>
+                  <input
+                    id={INPUT_ID}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/jpg"
+                    multiple
+                    className="hidden"
+                    onChange={handleFiles}
+                  />
                 </FormControl>
-                <FormMessage />
-                {uploadedImages.length > 0 && (
-                  <div className="flex gap-2 mt-4 flex-wrap">
-                    {uploadedImages.map((img, idx) => (
-                      <div key={idx} className="relative group">
-                        <Image
-                          src={img.previewUrl || defaultImg?.product}
-                          alt={`Preview ${idx}`}
-                          height={200}
-                          width={200}
-                          placeholder="blur"
-                          blurDataURL={defaultImg?.placeholderImg}
-                          className="h-20 w-20 object-cover rounded-sm"
+
+                <div className="mt-4 grid grid-cols-3 md:grid-cols-4 gap-4">
+                  {boxes.map((_, i) => {
+                    const file = images[i];
+
+                    if (file) {
+                      return (
+                        <PhotoBoxItem
+                          key={i}
+                          file={file}
+                          index={i}
+                          onEdit={handleEditExisting}
+                          onRemove={removeFile}
                         />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveImage(idx)}
-                          className="absolute top-1.5 right-1.5 bg-black/60 text-white rounded-full w-5 h-5 flex items-center justify-center transition-opacity cursor-pointer"
-                          aria-label="Remove photo"
-                        >
-                          <X size={12} strokeWidth={2.5} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      );
+                    }
+
+                    return (
+                      <label
+                        key={i}
+                        htmlFor={INPUT_ID}
+                        className="aspect-square rounded border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 transition-all cursor-pointer hover:border-black hover:text-black hover:bg-gray-50"
+                      >
+                        <Camera size={22} strokeWidth={1.75} />
+                        <span className="text-[11px] font-medium mt-1 text-gray-500">
+                          {i === 0 ? "Add A Bundle Photo" : "Add More"}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -573,6 +643,8 @@ export function AssistedSellerForm() {
             <div className="mt-8">
               <p className="text-lg lg:text-xl font-semibold text-gray-900 mb-5">Parcel Size</p>
 
+              <AssistedParcelSizeGuide onApply={handleApplySuggestedParcel} />
+
               {/* ========================================= Price and Discount ============================== */}
               <div className="grid grid-cols-2 md:gap-4 gap-2 items-start">
 
@@ -656,14 +728,36 @@ export function AssistedSellerForm() {
 
           </div>
 
-          <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-lg p-4 mb-6 mt-12">
-            <p className="text-sm text-red-700 dark:text-red-400">
-              <strong>Please note:</strong> Our assisted seller service fee is{" "}
-              <strong>30% of the final sale price</strong>, before your chosen charity donation. We will confirm all
-              details and pricing with you before we list your items. We will aim to sell your items within 30 days;
-              after this period you may request to have your items returned (return shipping may apply). Terms and
-              conditions apply.
-            </p>
+          <div className="flex items-start gap-2 lg:gap-4 rounded-lg bg-blue-50 px-4 py-4 sm:px-5 sm:py-5">
+            <Info
+              className="mt-0.5 size-7 shrink-0 fill-blue-400 text-white"
+              strokeWidth={2.5}
+              aria-hidden="true"
+            />
+            <div>
+              <p className="font-semibold text-base">Assisted Seller Service</p>
+              <p className="text-sm text-gray-800">
+                Our assisted seller fee is 30% of the each sale price, before your chosen charity donation.
+
+                <br />
+
+                We’ll confirm the listing details and price with you before your items go live.
+
+                <br />
+
+                Please package your items securely. You can send single items or multiple items in one parcel.
+
+                <br />
+
+                We aim to sell items within 30 days. After this, you can request their return (return shipping may apply).
+                <Link
+                  href="/help/donations"
+                  className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700"
+                >
+                  Terms & Conditions apply
+                </Link>
+              </p>
+            </div>
           </div>
 
           {error && (
@@ -732,6 +826,81 @@ export function AssistedSellerForm() {
         </div>
       </div>} />
 
+      <ImageEditorModal
+        isOpen={editorModalOpen}
+        onClose={handleCloseEditor}
+        image={editingImage?.file ?? null}
+        onSave={handleSaveEditor}
+      />
+
     </div>
   )
+}
+
+function PhotoBoxItem({
+  file,
+  index,
+  onEdit,
+  onRemove,
+}: {
+  file: File | Blob;
+  index: number;
+  onEdit: (index: number) => void;
+  onRemove: (index: number) => void;
+}) {
+  const [objectUrl, setObjectUrl] = useState<string>("");
+
+  useEffect(() => {
+    const url = URL.createObjectURL(file);
+    setObjectUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
+
+  return (
+    <div className="group relative aspect-square rounded border border-gray-200 transition-colors overflow-hidden bg-white shadow-xs">
+      {objectUrl && (
+        <Image
+          src={objectUrl}
+          alt={`Assisted item photo ${index + 1}`}
+          className="w-full h-full object-cover"
+          height={500}
+          width={500}
+          unoptimized
+        />
+      )}
+
+      {/* Top right remove button */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(index);
+        }}
+        className="absolute top-1.5 right-1.5 bg-black text-white hover:bg-neutral-800 rounded-full w-6 h-6 flex items-center justify-center shadow-md transition-opacity cursor-pointer z-10"
+        aria-label="Remove photo"
+      >
+        <X size={13} strokeWidth={2.5} />
+      </button>
+
+      {/* Primary photo indicator on index 0 */}
+      {index === 0 && (
+        <span className="absolute top-1.5 left-1.5 bg-black text-white text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded shadow-sm z-10 pointer-events-none">
+          Cover
+        </span>
+      )}
+
+      {/* Overlay on hover */}
+      <button
+        type="button"
+        onClick={() => onEdit(index)}
+        className="text-white px-2.5 py-1 text-xs font-medium flex items-center gap-1 shadow-md transition-transform cursor-pointer absolute bottom-0 left-0 bg-black/70 w-full justify-center"
+        title="Edit photo"
+      >
+        <Pencil size={12} strokeWidth={2} />
+        <span>Adjust Photo</span>
+      </button>
+    </div>
+  );
 }

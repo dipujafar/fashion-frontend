@@ -10,8 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 function CourierServiceCards({ rates, cartGroupId }: { rates: ICourierServiceRates[]; cartGroupId: string }) {
 
-  console.log(rates)
-
   const carts = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
   const selectedcartShipment = carts?.carts?.find((cart) => cart?.cartGroupId === cartGroupId)?.shipment;

@@ -61,10 +61,10 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: IOffer 
                                         <div className="flex flex-row gap-x-2 items-start">
                                             <Link
                                                 href={`/shop/${item?.product?.id}`}
-                                                className="cursor-pointer"
+                                                className="cursor-pointer shrink-0"
                                             >
                                                 <div className='relative'>
-                                                    <Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="h-28 w-28" />
+                                                    <Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="size-28 object-cover" />
 
                                                     {(item?.product?.stock <= 0 || item?.product?.isDeleted) && <div className='absolute top-0 left-0 h-full w-full bg-transparent flex justify-center items-center'>
                                                         <span className='py-1 text-xs bg-primary-black/60 text-white text-center w-full flex-1'>{item?.product?.isDeleted ? 'Not Available' : 'SOLD OUT'}</span>

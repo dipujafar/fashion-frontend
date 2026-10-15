@@ -104,8 +104,8 @@ const CartProds = ({ cart }: { cart: ICartGroup[] }) => {
                         <div className="flex flex-row gap-x-2 items-start">
                           <Link
                             href={`/shop/${item?.product?.id}`}
-                            className="cursor-pointer"
-                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="h-28 w-28 object-cover" />
+                            className="cursor-pointer shrink-0"
+                          ><Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={1000} height={1000} className="size-28 object-cover" />
                           </Link>
                           <div>
                             <Link

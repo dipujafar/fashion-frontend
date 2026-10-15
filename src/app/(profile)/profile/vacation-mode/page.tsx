@@ -3,6 +3,8 @@ import VacationModeSwitcher from './_components/VacationModeSwitcher'
 import { GetMyProfile } from '@/lib/services/UserDetails';
 import { IUser } from '@/types';
 import { notFound } from 'next/navigation';
+import vacationModeImg from '@/assets/images/placeholder/vacationMode.jpg'
+import Image from 'next/image';
 
 async function VacationModePage() {
     const profile = await GetMyProfile() as { data: IUser };
@@ -14,6 +16,8 @@ async function VacationModePage() {
 
     return (
         <div className="space-y-5">
+
+            <Image src={vacationModeImg} alt="Vacation Mode" className="w-full h-auto" />
 
             <div className='mt-5'>
                 <div className="flex items-center justify-between">

@@ -66,6 +66,18 @@ export const getOfferShippingRates = async ({ offerId }: { offerId: string }) =>
         throw err;
     }
 };
+export const getProductShippingRates = async ({ productId }: { productId: string }) => {
+    try {
+        const res = await serverQueryWithReauth({
+            endPoint: `/carts/checkout/product/${productId}/shipping-rates`,
+            method: "GET",
+            cache: "no-store"
+        });
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
 
 export const getCartSummary = async ({ cartGroupId }: { cartGroupId: string }) => {
     try {
