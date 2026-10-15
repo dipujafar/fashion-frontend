@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Camera, CheckCircle2, X } from "lucide-react";
+import { Camera, CheckCircle2, Info, X } from "lucide-react";
 import InputCharityDonationInput from "@/components/shared/UserProfile/AddProduct/InputCharityDonationInput"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { useGetCharitiesQuery } from "@/redux/api/userApi";
@@ -28,6 +28,8 @@ import { formattedAssistedSellerData } from "./util";
 import { SuccessModal } from "@/components/shared/Modal/SuccessModal";
 import Link from "next/link";
 import { useCurrency } from "@/hooks/useCurrency";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export const formSchema = z.object({
   itemsTitle: z.string({ required_error: "Item title is required." }).min(1, {
@@ -421,14 +423,55 @@ export function AssistedSellerForm() {
             {/* =================donation================== */}
             <div className="space-y-4 mt-12">
               <div>
-                <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+                <div className="flex lg:flex-row flex-col justify-between items-start gap-2 mb-6">
 
-                <>
-                  <span className="text-xs">
-                    (Minimum 5% donation required)
-                  </span>
-                  {/* <SelectDonationOption /> */}
-                </>
+                  <div>
+                    <div className="flex flex-row gap-x-0.5 items-center">
+                      <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm")}>
+                            <Info size={16} className="text-gray-600" />
+                          </button>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="rounded-none max-w-xs py-4" side="bottom">
+                          <p className="text-sm">
+                            {required_Charity ? "As a seller, you are required to donate a minimum of 5% of your product's price to charity. Please select a charity and specify the donation percentage." : "You have the option to donate a portion of your product's price to charity. Please select a charity and specify the donation percentage if you wish to contribute."}
+                          </p>
+                        </TooltipContent>
+
+                      </Tooltip>
+                    </div>
+                    <>
+                      <span className="text-xs">
+                        (Minimum 5% donation required)
+                      </span>
+                      {/* <SelectDonationOption /> */}
+                    </>
+                  </div>
+
+                  <div className="flex items-start gap-2 rounded-lg bg-blue-50 px-4 py-4 sm:px-5 sm:py-5 max-w-md">
+                    <Info
+                      className="mt-0.5 size-6 shrink-0 fill-blue-400 text-white"
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                    <p className="text-sm text-gray-800">
+                      Your chosen percentage will be donated to the selected charity once the item is sold.{" "}
+                      <Link
+                        href="/help/donations"
+                        className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700"
+                      >
+                        Learn more about donations
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                </div>
+
               </div>
 
               <div className="my-5 space-y-3 grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">

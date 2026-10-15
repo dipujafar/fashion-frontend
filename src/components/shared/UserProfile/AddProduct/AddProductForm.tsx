@@ -1,7 +1,7 @@
 "use client";;
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState, useEffect, useCallback } from "react";
 import { X, Camera, CheckCircle2, Pencil, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";

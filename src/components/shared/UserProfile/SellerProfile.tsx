@@ -12,6 +12,7 @@ import FolowerFolowing from '@/app/(public)/member/[username]/_components/Folowe
 import { Check } from 'lucide-react';
 import { countries } from '@/utils/constant';
 import Flag from '../Flag';
+import CountrySellNotAvaialbleAlert from './CountrySellNotAvaialbleAlert';
 
 type User = {
   data:
@@ -24,7 +25,8 @@ type User = {
     badges: {
       id: string,
       badge: IBadge,
-    }[]
+    }[],
+    countryAvaialblity: { name: string, code: string } | null
   }
 }
 
@@ -40,7 +42,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
   const isEmailVerified = userData?.auth?.isverified;
   const isphoneVerified = userData?.auth?.isPhoneVerified;
 
-  const countryCode = countries.find((country) => country.name === userData?.country)?.code;
+  const country = countries.find((country) => country.code === userData?.country);
 
   return (
     <div className='pt-5'>
@@ -74,9 +76,9 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                   {userData?.userName}
                 </h2>
 
-                {countryCode && <div className='flex items-center gap-2 my-0.5 whitespace-nowrap'>
-                  <Flag code={countryCode} name={userData?.country} />
-                  <p className='text-sm font-medium'>{userData?.country}</p>
+                {country?.code && <div className='flex items-center gap-2 my-0.5 whitespace-nowrap'>
+                  <Flag code={country?.code} name={userData?.country} />
+                  <p className='text-sm font-medium'>{country?.name}</p>
                 </div>}
 
                 <div className='flex flex-row gap-x-3 items-center my-0.5'>
@@ -186,6 +188,12 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
           </div>
         }
 
+        {/* //count sell avaialbity alert */}
+        {
+          user?.data?.isCurrentUser && country && !user?.data?.countryAvaialblity && <div className='mt-4'>
+            <CountrySellNotAvaialbleAlert currentCountry={country?.name} />
+          </div>
+        }
 
 
       </> : <div className="">

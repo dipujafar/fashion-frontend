@@ -12,19 +12,13 @@ export async function generateMetadata({
     params: Promise<{ productId: string }>;
 }) {
 
-    const fallback = {
-        title: "Not Found",
-        description: "Listing you are looking for is not available.",
-        // metadataBase: new URL('https://google.com'),
-    };
-
     try {
         const { productId } = await params;
 
         const { data } = (await GetProductDetails({ id: productId })) as { data: IProduct };
 
         if (!data) {
-            return fallback;
+            return notFound();
         }
 
         const productUrl = `/shop/${data?.id}`;
@@ -66,8 +60,8 @@ export async function generateMetadata({
                 images: [image],
             },
         };
-    } catch {
-        return fallback
+    } catch(err: any) {
+        throw err;
     }
 }
 

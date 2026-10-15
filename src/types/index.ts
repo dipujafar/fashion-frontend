@@ -201,7 +201,8 @@ export interface IUser {
   }
   charityGalleries: { id: string, url: string, caption: string }[]
   vacationMode: boolean,
-  lastOnlineAt: Date | null
+  lastOnlineAt: Date | null,
+  countryAvaialblity : {name : string, code : string} | null
 }
 
 export interface INotification {

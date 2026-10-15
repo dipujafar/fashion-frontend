@@ -21,6 +21,8 @@ import { PhoneInput } from '@/components/ui/PhoneInput';
 import { Info } from "lucide-react";
 import { cn } from '@/lib/utils';
 import SelectCountry from '@/app/(public)/checkout/cart/[cartGroupId]/_components/Billing/SelectCountry';
+import { countries } from '@/utils/constant';
+import CountrySellNotAvaialbleAlert from '../CountrySellNotAvaialbleAlert';
 
 
 const ImageEditorModal = dynamic(() => import('@/components/shared/ImageEditorModal'), {
@@ -55,6 +57,8 @@ function MyProfile({ user }: { user: IUser }) {
 
     const profileSchema = isCharity ? profileUpdateSchema.merge(charitySchema) : profileUpdateSchema;
 
+    const country = countries.find((c) => c.code === user?.country)
+
     const form = useForm<z.infer<typeof profileSchema>>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
@@ -70,7 +74,7 @@ function MyProfile({ user }: { user: IUser }) {
             instagram: user?.instagram ?? "",
             twitter: user?.twitter ?? "",
             support_email: user?.support_email ?? "",
-            country: user?.country ?? "",
+            country: country?.name || "",
         },
     });
 
@@ -80,10 +84,13 @@ function MyProfile({ user }: { user: IUser }) {
 
         try {
 
-            const { firstName, phoneNumber, lastName, ...more } = data;
+            const { firstName, phoneNumber, lastName, country, ...more } = data;
+
+            const countryDetail = countries.find((c) => c.name === country);
 
             const payload = {
                 phone: phoneNumber, fname: firstName, lname: lastName,
+                country: countryDetail?.code || "",
                 dltGalleries: dltCharityImgIds,
                 ...more
             }
@@ -340,6 +347,10 @@ function MyProfile({ user }: { user: IUser }) {
                             </div>
 
                             <SelectCountry setValue={form.setValue} control={form.control} />
+
+                            {
+                                country && !user?.countryAvaialblity && <CountrySellNotAvaialbleAlert currentCountry={country?.name} />
+                            }
 
                         </div>
                     </div>

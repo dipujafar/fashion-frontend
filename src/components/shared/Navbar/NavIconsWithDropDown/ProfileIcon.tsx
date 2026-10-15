@@ -89,6 +89,7 @@ export default function ProfileIcon() {
 
   const handleLogout = () => {
     dispatch(logout());
+    router.refresh();
     dispatch(baseApi.util.resetApiState());
     router.refresh();
   };

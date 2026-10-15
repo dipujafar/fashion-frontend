@@ -153,10 +153,7 @@ const SIgnInForm = () => {
           })
         );
         toast.success("Login successful");
-        if (callbackUrl)
-          router.replace(callbackUrl);
-        else
-          router.replace("/profile");
+        window.location.href = callbackUrl || "/profile";
       }
     } catch (error: any) {
       handleAuthError(error);
@@ -175,10 +172,7 @@ const SIgnInForm = () => {
           })
         );
         toast.success("Login successful");
-        if (callbackUrl)
-          router.replace(callbackUrl);
-        else
-          router.replace("/profile");
+        window.location.href = callbackUrl || "/profile";
       }
     } catch (error: any) {
       handleAuthError(error);
@@ -213,132 +207,132 @@ const SIgnInForm = () => {
       <Card
         className="max-w-lg mx-auto shadow-none border-none">
 
-      <CardContent>
+        <CardContent>
 
-        <h3 className="text-2xl md:text-3xl font-bold text-center my-5 lg:mb-8">Welcome Back</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-center my-5 lg:mb-8">Welcome Back</h3>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="md:space-y-6 space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter Your Email"
-                      {...field}
-                      className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="md:space-y-6 space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
                       <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter Your Password"
+                        placeholder="Enter Your Email"
                         {...field}
                         className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
                       />
-                      <div className="absolute right-2 top-1/2 -translate-y-1/2">
-                        {showPassword ? (
-                          <div
-                            onClick={() => setShowPassword(false)}
-                            className="cursor-pointer"
-                          >
-                            <Eye color="#A5A7A9" className="size-5" />
-                          </div>
-                        ) : (
-                          <div
-                            onClick={() => setShowPassword(true)}
-                            className="cursor-pointer"
-                          >
-                            <EyeOff color="#A5A7A9" className="size-5" />
-                          </div>
-                        )}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter Your Password"
+                          {...field}
+                          className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-6 px-3.5"
+                        />
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                          {showPassword ? (
+                            <div
+                              onClick={() => setShowPassword(false)}
+                              className="cursor-pointer"
+                            >
+                              <Eye color="#A5A7A9" className="size-5" />
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => setShowPassword(true)}
+                              className="cursor-pointer"
+                            >
+                              <EyeOff color="#A5A7A9" className="size-5" />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div>
-              <Link href="/forget-password">
-                <p className="text-gray-700 font-medium hover:text-black duration-500">Forgot Password</p>
-              </Link>
-            </div>
+              <div>
+                <Link href="/forget-password">
+                  <p className="text-gray-700 font-medium hover:text-black duration-500">Forgot Password</p>
+                </Link>
+              </div>
 
-            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Sign In"}</Button>
+              <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Sign In"}</Button>
 
-            <div className="flex justify-center gap-x-2 items-center">
-              <p className="text-secondary-gray">Don&apos;t have an account?</p>
-              <Link href={"/sign-up"}>
-                <span className="text-lg text-primary-red font-medium underline">
-                  Sign Up
-                </span>
-              </Link>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="flex-col gap-y-3">
-        <div className="flex  items-center justify-center w-full gap-x-2 text-primary-gray">
-          <span className="w-16 h-[0.5px] bg-primary-gray"></span>
-          <p className="w-fit">Or, Log in with </p>
-          <span className="w-16   h-[0.5px] bg-primary-gray"></span>
-        </div>
-        <div className="space-y-2 w-full">
-          <button onClick={GoogleLogin} disabled={isSocialLoading && socialLoginMethod === "google"} className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-3 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:border-gray-200">
+              <div className="flex justify-center gap-x-2 items-center">
+                <p className="text-secondary-gray">Don&apos;t have an account?</p>
+                <Link href={"/sign-up"}>
+                  <span className="text-lg text-primary-red font-medium underline">
+                    Sign Up
+                  </span>
+                </Link>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter className="flex-col gap-y-3">
+          <div className="flex  items-center justify-center w-full gap-x-2 text-primary-gray">
+            <span className="w-16 h-[0.5px] bg-primary-gray"></span>
+            <p className="w-fit">Or, Log in with </p>
+            <span className="w-16   h-[0.5px] bg-primary-gray"></span>
+          </div>
+          <div className="space-y-2 w-full">
+            <button onClick={GoogleLogin} disabled={isSocialLoading && socialLoginMethod === "google"} className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-3 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:border-gray-200">
 
-            <Image
-              src={googleIcon}
-              alt="google_icon"
-              className="size-5 cursor-pointer"
-            ></Image>
-
-
-            {(isSocialLoading && socialLoginMethod == "google") ? <span className="loaderDark !w-8"></span> : <p className="text-base font-medium">Continue with Google</p>}
-          </button>
-
-          <button onClick={AppleLogin} disabled={isSocialLoading && socialLoginMethod === "apple"} className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-3 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:border-gray-200">
-
-            <Image
-              src={appleIcon}
-              alt="apple_icon"
-              className="size-6 cursor-pointer"
-            ></Image>
+              <Image
+                src={googleIcon}
+                alt="google_icon"
+                className="size-5 cursor-pointer"
+              ></Image>
 
 
-            {(isSocialLoading && socialLoginMethod === "apple") ? <span className="loaderDark !w-8"></span> : <p className="text-base font-medium">Continue with Apple</p>}
+              {(isSocialLoading && socialLoginMethod == "google") ? <span className="loaderDark !w-8"></span> : <p className="text-base font-medium">Continue with Google</p>}
+            </button>
 
-          </button>
+            <button onClick={AppleLogin} disabled={isSocialLoading && socialLoginMethod === "apple"} className="flex items-center gap-x-2 justify-center border border-gray-200 rounded-full px-4 py-3 hover:bg-zinc-50 hover:border-primary-black transition-colors duration-300 w-full shadow-xs cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:border-gray-200">
 
-        </div>
-      </CardFooter>
-    </Card>
+              <Image
+                src={appleIcon}
+                alt="apple_icon"
+                className="size-6 cursor-pointer"
+              ></Image>
 
-    <AccountStatusModal
-      open={approvalModal.open}
-      onOpenChange={(open) => setApprovalModal((prev) => ({ ...prev, open }))}
-      status={approvalModal.status}
-      message={approvalModal.message}
-    />
-  </>
+
+              {(isSocialLoading && socialLoginMethod === "apple") ? <span className="loaderDark !w-8"></span> : <p className="text-base font-medium">Continue with Apple</p>}
+
+            </button>
+
+          </div>
+        </CardFooter>
+      </Card>
+
+      <AccountStatusModal
+        open={approvalModal.open}
+        onOpenChange={(open) => setApprovalModal((prev) => ({ ...prev, open }))}
+        status={approvalModal.status}
+        message={approvalModal.message}
+      />
+    </>
   );
 };
 
