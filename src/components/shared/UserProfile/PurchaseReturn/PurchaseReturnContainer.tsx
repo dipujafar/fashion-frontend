@@ -5,7 +5,7 @@ import { SellerProfileProductSorting } from "../../CategoryFilter/SellerProfileP
 import PurchaseReturnitem from "./PurchaseReturnitem";
 import { GetReturnsByBuyer } from "@/lib/services/Returns";
 import Image from "next/image";
-import returnbox from "@/assets/profile/return-box.jpg"
+import returnbox from "@/assets/images/return-box.jpg"
 
 async function SellReturnContainer({ ssp }: { ssp: { [key: string]: string | undefined } }) {
 

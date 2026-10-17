@@ -4,7 +4,7 @@ import StatusFilterSelect from "../../Order/StatusFilterSelect";
 import { SellerProfileProductSorting } from "../../CategoryFilter/SellerProfileProductSorting";
 import SellReturnitem from "./SellReturnitem";
 import GetReturnsBySeller from "@/lib/services/Returns";
-import returnbox from "@/assets/profile/return-box.jpg"
+import returnbox from "@/assets/images/return-box.jpg"
 import Image from "next/image";
 
 async function PurchaseReturnContainer({ ssp }: { ssp: { [key: string]: string | undefined } }) {
