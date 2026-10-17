@@ -57,6 +57,8 @@ import { TagInput } from "@/components/shared/UserProfile/AddProduct/FormCompone
 import { formattedData } from "@/components/shared/UserProfile/AddProduct/utils";
 import InputCharityDonationInput from "@/components/shared/UserProfile/AddProduct/InputCharityDonationInput";
 import UpdateShippingAddress from "@/components/shared/UserProfile/AddProduct/UpdateShippingAddress";
+import DonationAbout from "@/components/shared/DonationAbout";
+import DonationPrivacyAbout from "@/components/shared/DonationPrivacyAbout";
 
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
@@ -576,7 +578,12 @@ function EditlistingForm({ product }: { product: IProduct }) {
 
                         <div className="space-y-4 mt-12">
                             <div>
-                                <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+                                <div className="flex flex-row gap-x-0.5 items-center">
+                                    <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
+
+                                    <DonationAbout />
+
+                                </div>
                                 <span className="text-xs">(Minimum 5% donation required)</span>
                             </div>
 
@@ -623,8 +630,9 @@ function EditlistingForm({ product }: { product: IProduct }) {
                         </div>
 
                         <div>
-                            <p className="mb-5 font-medium">
+                            <p className="mb-5 font-medium flex flex-row gap-1 items-center">
                                 Donation Privacy: Would you like to remain anonymous?
+                                <DonationPrivacyAbout />
                             </p>
                             <FormField
                                 control={form.control}

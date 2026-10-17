@@ -27,12 +27,11 @@ import { formattedAssistedSellerData } from "./util";
 import { SuccessModal } from "@/components/shared/Modal/SuccessModal";
 import Link from "next/link";
 import { useCurrency } from "@/hooks/useCurrency";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { ImageUploadGuide } from "@/components/shared/UserProfile/AddProduct/ImageUploadGuide";
 import { getFirstErrorMessage } from "@/utils/modifyFormError";
 import { AssistedParcelSizeGuide, ParcelDimensions } from "./AssistedParcelSizeGuide";
+import DonationPrivacyAbout from "@/components/shared/DonationPrivacyAbout";
+import DonationAbout from "@/components/shared/DonationAbout";
 
 const ImageEditorModal = dynamic(() => import("@/components/shared/ImageEditorModal"), {
   ssr: false,
@@ -498,22 +497,9 @@ export function AssistedSellerForm() {
                   <div>
                     <div className="flex flex-row gap-x-0.5 items-center">
                       <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm")}>
-                            <Info size={16} className="text-gray-600" />
-                          </button>
-                        </TooltipTrigger>
 
-                        <TooltipContent className="rounded-none max-w-xs py-4" side="bottom">
-                          <p className="text-sm">
-                            {required_Charity ? "As a seller, you are required to donate a minimum of 5% of your product's price to charity. Please select a charity and specify the donation percentage." : "You have the option to donate a portion of your product's price to charity. Please select a charity and specify the donation percentage if you wish to contribute."}
-                          </p>
-                        </TooltipContent>
+                      <DonationAbout />
 
-                      </Tooltip>
                     </div>
                     <>
                       <span className="text-xs">
@@ -584,8 +570,9 @@ export function AssistedSellerForm() {
 
             {/* Donation Privacy */}
             <div>
-              <p className="mb-5 font-medium">
+              <p className="mb-5 font-medium flex flex-row gap-1 items-center">
                 Donation Privacy: Would you like to remain anonymous?
+                <DonationPrivacyAbout />
               </p>
               <FormField
                 control={form.control}

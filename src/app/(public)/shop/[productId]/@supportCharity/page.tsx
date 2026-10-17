@@ -4,6 +4,7 @@ import { IUser } from "@/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import FormatCurrency from "@/components/shared/FormatCurrency";
+import { ProductDonationAbout } from "@/components/shared/DonationAbout";
 
 async function CharityImpact({ params }: { params: Promise<{ productId: string }> }) {
 
@@ -30,8 +31,9 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                     <HeartHandshake className="size-5" aria-hidden />
                 </span>
                 <div>
-                    <h2 id="charity-heading" className="text-lg lg:text-xl font-semibold tracking-tight text-foreground">
+                    <h2 id="charity-heading" className="text-lg lg:text-xl font-semibold tracking-tight text-foreground flex flex-row gap-x-1 items-center">
                         Where your purchase gives back
+                        <ProductDonationAbout percentage={GLOBAL_DONATION_PERCENT} />
                     </h2>
                     <p className="mt-1 text-sm text-muted-foreground">
                         The seller donates{" "}

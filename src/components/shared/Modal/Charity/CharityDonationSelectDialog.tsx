@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { baseApi } from "@/redux/api/baseApi";
 import { tagTypes } from "@/redux/tagTypes";
 import { useCurrency } from "@/hooks/useCurrency";
+import { TPayload } from "@/app/(public)/shop/[productId]/_components/ActionButtons";
 
 interface CharityDonationFormData {
   selectedCharities: string[];
@@ -36,6 +37,9 @@ interface CharityDonationDialogProps {
   product: IProduct;
   charities: ICharity[]; // ✅ use ICharity directly
   buyMode: "cart" | "buy";
+  onSubmit: (payload: TPayload) => Promise<void>;
+  loading: boolean;
+  error: string | null;
 }
 
 export function CharityDonationSelectDialog({
@@ -46,15 +50,14 @@ export function CharityDonationSelectDialog({
   product,
   charities,
   buyMode,
+  onSubmit : onSubmitHandler,
+  error,
+  loading,
 }: CharityDonationDialogProps) {
   const [selectedCharityIds, setSelectedCharityIds] = useState<string[]>(
     charities.map((c) => c.charityId) // pre-select all by default
   );
   const [additionalDonation, setAdditionalDonation] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const dispatch = useDispatch();
   const { format, symbol } = useCurrency();
 
   const { handleSubmit, control, watch } = useForm<CharityDonationFormData>({
@@ -86,9 +89,6 @@ export function CharityDonationSelectDialog({
   };
 
   const onSubmit = async (data: CharityDonationFormData) => {
-    setLoading(true);
-    setError(null);
-
     const selectedCharities = charities.filter((c) =>
       selectedCharityIds.includes(c.charityId)
     );
@@ -102,21 +102,7 @@ export function CharityDonationSelectDialog({
       charities: selectedCharities.map((c) => ({ charityId: c.charityId })),
     };
 
-    try {
-      const res = await AddToCart({ payload, extraRevalidatePaths: [`/shop/${product?.id}`] });
-      if (!res.success) {
-        throw new Error(res.message);
-      }
-      dispatch(baseApi.util.invalidateTags([tagTypes.cart])); // Invalidate cart tag to refresh cart state
-      onOpenChange(false);
-    } catch (error: any) {
-      if (isRedirectError(error)) {
-        throw error; // Let Next.js handle the redirect
-      }
-      setError(error?.message || "An error occurred while adding to cart.");
-    } finally {
-      setLoading(false);
-    }
+    await onSubmitHandler(payload); // Call the passed in onSubmit handler
   };
 
   return (

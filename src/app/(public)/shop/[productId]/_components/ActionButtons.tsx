@@ -6,18 +6,74 @@ import SendOfferModal from "@/components/shared/Modal/SendOfferModal";
 import { CharityDonationSelectDialog } from "@/components/shared/Modal/Charity/CharityDonationSelectDialog";
 import { IProductWithUser } from "./ProductDetails/ProductDetails";
 import { Check } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { AddToCart } from "@/lib/Actions/Cart.action";
+import { useDispatch } from "react-redux";
+import { baseApi } from "@/redux/api/baseApi";
+import { tagTypes } from "@/redux/tagTypes";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+
+export type TPayload = {
+  productId: string;
+  quantity: number;
+  extraDonation: number;
+  extraDonationAnonymous: boolean;
+  charities: {
+    charityId: string;
+  }[];
+};
 
 const ActionButtons = ({ product }: { product: IProductWithUser }) => {
+  const router = useRouter();
   const [showOpenOfferModal, setShowOpenOfferModal] = useState<boolean>(false);
   const [showOpenOpenCharityModal, setShowOpenOpenCharityModal] = useState<boolean>(false);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
 
   const [buyMode, setBuyMode] = useState<"cart" | "buy">("cart");
 
   const isInCart = product?._count?.cartItems > 0 || false;
 
-  const handleCharitySelectByCart = () => {
-    setBuyMode("cart");
-    setShowOpenOpenCharityModal(true);
+  const handleCharitySelectByCart = async () => {
+
+    //if seller allowed donation then open charity modal otherwise add to cart directly
+    if (product?.donation_percent > 0 && product?.charities?.length > 0) {
+      setBuyMode("cart");
+      setShowOpenOpenCharityModal(true);
+    } else {
+      const payload: TPayload = {
+        productId: product?.id,
+        quantity: 1,
+        extraDonation: 0,
+        extraDonationAnonymous: false,
+        charities: [],
+      };
+      await onSubmit(payload);
+    }
+  };
+
+  const onSubmit = async (payload: TPayload) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await AddToCart({ payload, extraRevalidatePaths: [`/shop/${product?.id}`] });
+      if (!res.success) {
+        throw new Error(res.message);
+      }
+      dispatch(baseApi.util.invalidateTags([tagTypes.cart])); // Invalidate cart tag to refresh cart state
+      setShowOpenOpenCharityModal(false);
+    } catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
+      setError(error?.message || "An error occurred while adding to cart.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,10 +92,15 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
             Make an offer <OfferIcon2 className="size-5 text-white"></OfferIcon2>
           </Button>
 
-          {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5">
-            <Check />
-            <p className="text-lg font-medium">Added</p>
-          </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer w-full" variant={"outline"} disabled={isInCart}>ADD TO CART</Button>}
+          <div className="flex flex-row gap-x-3 items-center">
+            {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5">
+              <Check />
+              <p className="text-lg font-medium">Added to Cart</p>
+            </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1" variant={"outline"} disabled={isInCart}>ADD TO CART</Button>}
+
+            <Button onClick={() => { router.push(`/checkout/listing/${product?.id}`) }} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1" variant={"outline"}>BUY NOW</Button>
+
+          </div>
 
         </div>
       </div>
@@ -57,6 +118,9 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
         donationPercentage={product?.donation_percent}
         charities={product?.charities}
         buyMode={buyMode}
+        onSubmit={onSubmit}
+        loading={loading}
+        error={error}
       />
     </>
   );
@@ -65,16 +129,56 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
 export default ActionButtons;
 
 export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProductWithUser; isSold: boolean; isDeleted: boolean }) => {
+  const router = useRouter();
   const [showOpenOfferModal, setShowOpenOfferModal] = useState<boolean>(false);
   const [showOpenOpenCharityModal, setShowOpenOpenCharityModal] = useState<boolean>(false);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
 
   const [buyMode, setBuyMode] = useState<"cart" | "buy">("cart");
 
   const isInCart = product?._count?.cartItems > 0 || false;
 
-  const handleCharitySelectByCart = () => {
-    setBuyMode("cart");
-    setShowOpenOpenCharityModal(true);
+  const handleCharitySelectByCart = async () => {
+
+    //if seller allowed donation then open charity modal otherwise add to cart directly
+    if (product?.donation_percent > 0 && product?.charities?.length > 0) {
+      setBuyMode("cart");
+      setShowOpenOpenCharityModal(true);
+    } else {
+      const payload: TPayload = {
+        productId: product?.id,
+        quantity: 1,
+        extraDonation: 0,
+        extraDonationAnonymous: false,
+        charities: [],
+      };
+      await onSubmit(payload);
+    }
+  };
+
+  const onSubmit = async (payload: TPayload) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await AddToCart({ payload, extraRevalidatePaths: [`/shop/${product?.id}`] });
+      if (!res.success) {
+        throw new Error(res.message);
+      }
+      dispatch(baseApi.util.invalidateTags([tagTypes.cart])); // Invalidate cart tag to refresh cart state
+      setShowOpenOpenCharityModal(false);
+    } catch (error: any) {
+      if (isRedirectError(error)) {
+        throw error; // Let Next.js handle the redirect
+      }
+      setError(error?.message || "An error occurred while adding to cart.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -92,10 +196,17 @@ export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProd
             onClick={() => setShowOpenOfferModal(true)}
             className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer" variant={"outline"}>Make an offer <OfferIcon className="size-5"></OfferIcon></Button>
 
-          {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5 flex-1">
-            <Check />
-            <p className="text-lg font-medium">Added</p>
-          </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Add to Cart</Button>}</div>
+          <div className="flex flex-row gap-x-2 items-center justify-center flex-1">
+            {/* {isInCart ? <div className="flex flex-row gap-x-2 items-center justify-center py-1.5 flex-1">
+              <Check />
+              <p className="text-lg font-medium">Added</p>
+            </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Add to Cart</Button>} */}
+
+            <Button onClick={() => { router.push(`/checkout/listing/${product?.id}`) }} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">BUY NOW</Button>
+
+          </div>
+
+        </div>
         }
 
       </div>
@@ -114,6 +225,9 @@ export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProd
         donationPercentage={product?.donation_percent}
         charities={product?.charities}
         buyMode={buyMode}
+        onSubmit={onSubmit}
+        loading={loading}
+        error={error}
       />
     </>
   );

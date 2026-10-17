@@ -34,15 +34,15 @@ export function AccountStatusModal({
           icon: <Clock className="h-8 w-8 animate-pulse" strokeWidth={2} />,
           iconBg: "bg-amber-100 text-amber-600 ring-8 ring-amber-50",
           title: "Account Approval Pending",
-          subtitle: "Your account is waiting for FASHI-ON team approval.",
+          subtitle: "Thank you for registering with FASHI-ON",
           description: (
             <p>
-              Thank you for registering with <span className="font-semibold text-gray-900">FASHI-ON</span>.
-              Your account details are currently under review by our administration team. You will be able to sign in once your account has been approved.
+              Your account is currently under review by our team. We appreciate your patience during this process.
+              We will notify you via email once your account has been approved.
             </p>
           ),
           showSupportBtn: false,
-          confirmBtnText: "Understood",
+          confirmBtnText: "Got it",
         };
       case "rejected":
         return {

@@ -3,10 +3,8 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useCallback } from "react";
-import { X, Camera, CheckCircle2, Pencil, Info } from "lucide-react";
+import { X, Camera, CheckCircle2, Pencil, Info, } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Form,
   FormControl,
@@ -65,6 +63,8 @@ import { role } from "@/lib/userRole";
 import { SuccessModal } from "../../Modal/SuccessModal";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import DonationAbout from "../../DonationAbout";
+import DonationPrivacyAbout from "../../DonationPrivacyAbout";
 
 const ImageEditorModal = dynamic(() => import("../../ImageEditorModal"), {
   ssr: false,
@@ -560,22 +560,8 @@ export default function AddProductForm() {
                   <div>
                     <div className="flex flex-row gap-x-0.5 items-center">
                       <p className="text-lg lg:text-2xl font-bold text-gray-900">Donation</p>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className={cn("bg-primary-white py-1.5 px-1.5 flex justify-center items-center gap-x-1 rounded-full cursor-pointer group duration-500 md:text-base text-sm")}>
-                            <Info size={16} className="text-gray-600" />
-                          </button>
-                        </TooltipTrigger>
 
-                        <TooltipContent className="rounded-none max-w-xs py-4" side="bottom">
-                          <p className="text-sm">
-                            {required_Charity ? "As a seller, you are required to donate a minimum of 5% of your product's price to charity. Please select a charity and specify the donation percentage." : "You have the option to donate a portion of your product's price to charity. Please select a charity and specify the donation percentage if you wish to contribute."}
-                          </p>
-                        </TooltipContent>
-
-                      </Tooltip>
+                      <DonationAbout />
 
                     </div>
                     <>
@@ -652,8 +638,9 @@ export default function AddProductForm() {
 
               {/* Donation Privacy */}
               <div>
-                <p className="mb-5 font-medium">
+                <p className="mb-5 font-medium flex flex-row gap-1 items-center">
                   Donation Privacy: Would you like to remain anonymous?
+                  <DonationPrivacyAbout />
                 </p>
                 <FormField
                   control={form.control}

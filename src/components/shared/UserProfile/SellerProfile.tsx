@@ -13,6 +13,11 @@ import { Check } from 'lucide-react';
 import { countries } from '@/utils/constant';
 import Flag from '../Flag';
 import CountrySellNotAvaialbleAlert from './CountrySellNotAvaialbleAlert';
+import fb from "@/assets/icons/facebook.png"
+import wb from "@/assets/icons/web-logo.png"
+import insta from "@/assets/icons/instagram.png"
+import tw from "@/assets/icons/twitter.png"
+import Image from 'next/image';
 
 type User = {
   data:
@@ -44,6 +49,13 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
 
   const country = countries.find((country) => country.code === userData?.country);
 
+  const socialLinks = [
+    { name: 'Facebook', url: userData?.facebook, icon: fb },
+    { name: 'Instagram', url: userData?.instagram, icon: insta },
+    { name: 'Twitter', url: userData?.twitter, icon: tw },
+    { name: 'Website', url: userData?.website, icon: wb },
+  ].filter((link) => link.url);
+
   return (
     <div className='pt-5'>
 
@@ -51,7 +63,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
         {/* Profile Header Section */}
         <div className='flex flex-col lg:flex-row lg:justify-between items-start lg:items-center gap-5'>
 
-          <div className='flex flex-col md:flex-row md:items-end gap-y-5 gap-x-0 md:gap-x-16 lg:gap-x-20'>
+          <div className='flex flex-col md:flex-row md:items-center gap-y-5 gap-x-0 md:gap-x-16 lg:gap-x-20'>
 
             <div className="flex flex-row items-start gap-3 md:gap-5 shrink-0">
 
@@ -110,6 +122,15 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                 </div> : <p className='mb-1 text-gray-700 text-sm whitespace-nowrap'>No Reviews Yet</p>}
 
                 <p className='text-sm whitespace-nowrap'>Joined {moment(userData?.createdAt).format('MMMM YYYY')}</p>
+
+                {/* //social links */}
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {socialLinks.map((link) => (
+                    <Link key={link.name} href={link?.url || ""} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary">
+                      <Image src={link.icon} alt={link.name} className="h-5 w-5" />
+                    </Link>
+                  ))}
+                </div>
 
               </div>
 
