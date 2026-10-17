@@ -105,9 +105,9 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: ICartGr
                                                 <div className="flex flex-row gap-x-2 items-start">
                                                     <Link
                                                         href={`/shop/${item?.product?.id}`}
-                                                        className="cursor-pointer">
+                                                        className="cursor-pointer shrink-0">
                                                         <div className='relative'>
-                                                            <Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="h-28 w-28 object-cover" />
+                                                            <Image src={item?.product?.images?.[0]?.url || defaultImg?.product} alt={item?.product?.title} placeholder="blur" blurDataURL={defaultImg?.placeholderImg} width={200} height={200} className="size-28 object-cover" />
 
                                                             {item?.product?.stock < 1 && <div className="h-full w-full flex justify-center items-center absolute bottom-0 left-0">
                                                                 <span className=" text-white text-[10px] py-0.5 w-full flex items-center justify-center bg-destructive">
