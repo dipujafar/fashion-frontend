@@ -182,6 +182,10 @@ const SIgnInForm = () => {
   const GoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
 
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
+
     const res = await signInWithPopup(auth, provider);
     const token = await res.user.getIdToken(true);
     console.log(token);
@@ -192,6 +196,10 @@ const SIgnInForm = () => {
 
   const AppleLogin = async () => {
     const provider = new OAuthProvider("apple.com");
+
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
 
     const result = await signInWithPopup(auth, provider);
 

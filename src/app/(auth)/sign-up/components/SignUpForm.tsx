@@ -140,6 +140,10 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
   const GoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
 
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
+
     const res = await signInWithPopup(auth, provider);
     const { displayName, email, photoURL } = res.user;
     const token = await res.user.getIdToken(true);
@@ -150,6 +154,10 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
 
   const AppleLogin = async () => {
     const provider = new OAuthProvider("apple.com");
+
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
 
     const result = await signInWithPopup(auth, provider);
 
@@ -224,7 +232,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
                         </div>
                       </div>
                     </FormControl>
-                    
+
                     <FormMessage />
                   </FormItem>
                 )}
