@@ -29,7 +29,7 @@ function DonationPrivacyAbout() {
                     <Info size={16} className="text-gray-600" />
                 </button>
             </PopoverTrigger>
-            <PopoverContent className="w-sm">
+            <PopoverContent className="xs:w-sm sm:w-md">
                 <div>
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50">
                         <Lock className="h-6 w-6 text-emerald-800" strokeWidth={1.75} />

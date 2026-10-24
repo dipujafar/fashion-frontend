@@ -47,7 +47,7 @@ const SummaryOverview = async ({ summeryPromise, offerId }: { summeryPromise: Pr
         itemTotal: details?.finalPrice,
         bundleDiscountAmount: 0,
         bundleDiscountPercent: 0,
-        serviceFeeCost: 0,
+        serviceFeeCost: 2.30,
         haveAnyUnavailableItems: false,
         itemsCount: 1,
         subTotal: details?.finalPrice,

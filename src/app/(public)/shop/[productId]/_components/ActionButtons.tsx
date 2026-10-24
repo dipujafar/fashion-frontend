@@ -1,7 +1,7 @@
 "use client";
 import { MessageIcon, OfferIcon, OfferIcon2 } from "@/icons";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import SendOfferModal from "@/components/shared/Modal/SendOfferModal";
 import { CharityDonationSelectDialog } from "@/components/shared/Modal/Charity/CharityDonationSelectDialog";
 import { IProductWithUser } from "./ProductDetails/ProductDetails";
@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { baseApi } from "@/redux/api/baseApi";
 import { tagTypes } from "@/redux/tagTypes";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import Link from "next/link";
 
 export type TPayload = {
   productId: string;
@@ -33,9 +34,11 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
 
   const dispatch = useDispatch();
 
+  const [isPending, startTransition] = useTransition();
+
   const [buyMode, setBuyMode] = useState<"cart" | "buy">("cart");
 
-  const isInCart = product?._count?.cartItems > 0 || false;
+  const isInCart = product?.cartItems?.length > 0 || false;
 
   const handleCharitySelectByCart = async () => {
 
@@ -98,7 +101,11 @@ const ActionButtons = ({ product }: { product: IProductWithUser }) => {
               <p className="text-lg font-medium">Added to Cart</p>
             </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1" variant={"outline"} disabled={isInCart}>ADD TO CART</Button>}
 
-            <Button onClick={() => { router.push(`/checkout/listing/${product?.id}`) }} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1" variant={"outline"}>BUY NOW</Button>
+            <Button onClick={() => {
+              startTransition(() => {
+                router.push(`/checkout/listing/${product?.id}`)
+              });
+            }} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1" variant={"outline"}>{isPending ? <div className="w-5 aspect-square rounded-full border-[2px] border-primary-black border-r-gray-500 animate-spin"></div> : "BUY NOW"}</Button>
 
           </div>
 
@@ -133,6 +140,8 @@ export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProd
   const [showOpenOfferModal, setShowOpenOfferModal] = useState<boolean>(false);
   const [showOpenOpenCharityModal, setShowOpenOpenCharityModal] = useState<boolean>(false);
 
+  const [isPending, startTransition] = useTransition();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -140,7 +149,7 @@ export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProd
 
   const [buyMode, setBuyMode] = useState<"cart" | "buy">("cart");
 
-  const isInCart = product?._count?.cartItems > 0 || false;
+  const isInCart = product?.cartItems?.length > 0 || false;
 
   const handleCharitySelectByCart = async () => {
 
@@ -185,7 +194,9 @@ export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProd
     <>
       <div className="max-w-6xl mx-auto flex items-center gap-3">
 
-        <button><MessageIcon className="size-10" /></button>
+        <Link href={`/inbox/${product?.user?.userName}`}>
+          <MessageIcon className="size-10" />
+        </Link>
 
         {isSold ? <div className="py-2.5 bg-yellow-700 px-5 flex-1">
           <p className="text-center text-white">Item Sold Out</p>
@@ -202,7 +213,13 @@ export const SMActionButtons = ({ product, isSold, isDeleted }: { product: IProd
               <p className="text-lg font-medium">Added</p>
             </div> : <Button onClick={handleCharitySelectByCart} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">Add to Cart</Button>} */}
 
-            <Button onClick={() => { router.push(`/checkout/listing/${product?.id}`) }} className="py-5 border-2 border-primary-black rounded-none font-semibold cursor-pointer flex-1">BUY NOW</Button>
+            <Button onClick={() => {
+              startTransition(() => {
+                router.push(`/checkout/listing/${product?.id}`)
+              })
+            }} className="py-5 border-2 border-primary-black rounded-none font-medium cursor-pointer flex-1">
+              {isPending ? <div className="w-5 aspect-square rounded-full border-[2px] border-white border-r-gray-600 animate-spin"></div> : "Buy Now"}
+            </Button>
 
           </div>
 

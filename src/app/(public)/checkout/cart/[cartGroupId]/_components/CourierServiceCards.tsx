@@ -14,6 +14,15 @@ function CourierServiceCards({ rates, cartGroupId }: { rates: ICourierServiceRat
   const dispatch = useDispatch();
   const selectedcartShipment = carts?.carts?.find((cart) => cart?.cartGroupId === cartGroupId)?.shipment;
 
+  // handle empty state
+  if (!rates || rates.length === 0) {
+    return (
+      <div className="flex-center h-28 bg-white">
+        <p className="text-gray-500">No shipping services available for this product.</p>
+      </div>
+    )
+  }
+
   return (
     <RadioGroup defaultValue={selectedcartShipment?.serviceId || ""} className="grid grid-cols-2 gap-3">
       {rates?.map((rate) => (

@@ -25,7 +25,7 @@ function ProductSummeryTotal({ summery, cartGroupId }: { summery: OrderSummeryTy
             <div className="space-y-3 mt-4">
                 <div className="flex justify-between ">
                     <p className="text-gray-700">Price:</p>
-                    <p className="font-medium">${summery?.itemTotal}</p>
+                    <p className="font-medium">${summery?.itemTotal.toFixed(2)}</p>
                 </div>
 
                 <div className="flex justify-between ">

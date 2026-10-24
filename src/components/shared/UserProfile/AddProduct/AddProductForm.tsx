@@ -105,9 +105,9 @@ export default function AddProductForm() {
   // =============================== product api ==============================
   // const [uploadProduct, { isLoading }] = useCreateProductMutation();
 
-  const required_Charity = !(user?.auth?.role == role.ECO_FRIENDLY_STORE || user?.auth?.role == role.CHARITY_SHOP);
+  const required_donation = !(user?.auth?.role == role.ECO_FRIENDLY_STORE || user?.auth?.role == role.CHARITY_SHOP);
 
-  const productSchema = required_Charity ? productFormSchema.merge(CharityFormSchema) : productFormSchema;
+  const productSchema = required_donation ? productFormSchema.merge(CharityFormSchema) : productFormSchema;
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -566,7 +566,7 @@ export default function AddProductForm() {
                     </div>
                     <>
                       <span className="text-xs">
-                        {required_Charity ? "(Minimum 5% donation required)" : "(Optional donation)"}
+                        {required_donation ? "(Minimum 5% donation required)" : "(Optional donation)"}
                       </span>
                       {/* <SelectDonationOption /> */}
                     </>
@@ -608,6 +608,7 @@ export default function AddProductForm() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="rounded-none p-0">
+                              
                               {Array.from({ length: 20 }, (_, i) => (i + 1) * 5).map((item) => (
                                 <SelectItem
                                   value={item.toString()}

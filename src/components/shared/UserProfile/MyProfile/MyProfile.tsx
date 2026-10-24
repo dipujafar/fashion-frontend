@@ -199,6 +199,9 @@ function MyProfile({ user }: { user: IUser }) {
     const isPhoneVerified = user?.auth?.isPhoneVerified;
     const havePhone = user?.phone;
 
+    const isCharityOrg = user?.auth?.role === UserRole.CHARITABLE_ORGANIZATION;
+    const isCharityShop = user?.auth?.role === UserRole.CHARITY_SHOP;
+
     return (
         <div className="md:space-y-8 space-y-6 max-w-4xl">
 
@@ -253,7 +256,9 @@ function MyProfile({ user }: { user: IUser }) {
                     className="md:space-y-8 space-y-6 max-w-4xl">
 
                     <div>
-                        <p className="text-xl font-semibold mb-6">User Details</p>
+                        <p className="text-xl font-semibold mb-6">
+                            {isCharityOrg ? "Charity Details" : isCharityShop ? "Charity Shop Details" : "User Details"}
+                        </p>
 
                         <div className='space-y-7 max-w-lg mb-8'>
                             <div className="flex-1">

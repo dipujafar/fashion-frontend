@@ -23,7 +23,7 @@ function DonationAbout() {
                     <Info size={16} className="text-gray-600" />
                 </button>
             </PopoverTrigger>
-            <PopoverContent className="w-md">
+            <PopoverContent className="xs:w-sm sm:w-md">
                 <div>
                     <div className="flex items-start gap-4">
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50">
@@ -101,7 +101,7 @@ export function ProductDonationAbout({ percentage }: { percentage: number }) {
                     <Info size={16} className="text-gray-600" />
                 </button>
             </PopoverTrigger>
-            <PopoverContent className="w-md">
+            <PopoverContent className="xs:w-sm sm:w-md">
                 <div className="p-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50">
                         <HandHeart className="h-6 w-6 text-emerald-800" strokeWidth={1.75} />

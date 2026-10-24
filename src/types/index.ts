@@ -101,6 +101,9 @@ export interface IProduct {
   favourites: {
     id: string;
   }[];
+  cartItems: {
+    id: string;
+  }[];
   donation_percent: number,
   donationAnonymous: boolean,
 

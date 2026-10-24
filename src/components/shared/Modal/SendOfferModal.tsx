@@ -96,7 +96,7 @@ export default function SendOfferModal({
 
           <div className="border-b border-gray-200 pb-4">
             <div className="">
-              {(expanded ? products : products.slice(0, 3)).map((product, index) => <div className="flex md:flex-row flex-col  gap-x-4">
+              {(expanded ? products : products.slice(0, 3)).map((product, index) => <div className="flex flex-row  gap-x-4">
                 <div className="relative">
                   <Image
                     src={product?.images[0]?.url || defaultImg?.product}
@@ -105,16 +105,15 @@ export default function SendOfferModal({
                     height={500}
                     placeholder="blur"
                     blurDataURL={defaultImg?.placeholderImg}
-                    className="h-28 w-28 rounded object-cover "
+                    className="size-24 rounded object-cover"
                   />
-
                 </div>
 
-                <div className="text-base">
-                  <p className="text-base">
+                <div className="">
+                  <p className="text-base line-clamp-1">
                     {product?.title}
                   </p>
-                  <p className="text-gray-700">{product?.size?.title}</p>
+                  <p className="text-gray-700 ">{product?.size?.title}</p>
                   <p className="text-gray-700">Price: <span className="font-semibold text-primary-black">{format(product?.finalPrice)}</span></p>
 
                   {/* <p className="text-[#E12728]">Offer Expire in 24 hrs</p> */}
@@ -136,7 +135,7 @@ export default function SendOfferModal({
 
           <div className="">
 
-            <div className={cn("grid grid-cols-4 items-center gap-3 flex-wrap")}>
+            <div className={cn("grid grid-cols-2 lg:grid-cols-4 items-center gap-3 flex-wrap")}>
               {offerData?.map((item) => (
                 <button
                   key={item?.id}
@@ -144,7 +143,7 @@ export default function SendOfferModal({
                     setIsCustomOffer(false);
                     setOfferPrice(item?.price);
                   }}
-                  className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer shadow-sm text-sm h-full font-medium text-gray-700", offerPrice === item?.price && " border-black bg-zinc-50")}
+                  className={cn("text-center py-2 px-5 rounded border border-gray-200 cursor-pointer shadow-sm text-sm h-full font-medium text-gray-700", offerPrice === item?.price && " bg-black text-zinc-50")}
                 >
                   <span className="font-semibold ">{format(item?.price)}</span> for <br /> {item?.discount}% off
                 </button>
