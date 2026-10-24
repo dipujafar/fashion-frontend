@@ -38,20 +38,20 @@ export function PriceOverview({
       <p className="text-gray-900">
         Final Price:{" "}
         <span className="font-semibold text-green-700">
-          ${finalPrice}
+          ${finalPrice.toFixed(2)}
         </span>
       </p>
       <p className="text-gray-900">
         Donation Amount:{" "}
         <span className="font-semibold text-red-500">
-          ${donationAmount}
+          ${donationAmount.toFixed(2)}
           {numericDonationPct > 0 ? ` (${numericDonationPct}%)` : ""}
         </span>
       </p>
       <p className="text-gray-900">
         Seller Earning:{" "}
         <span className="font-bold text-green-700">
-          ${sellerEarnings}
+          ${sellerEarnings.toFixed(2)}
         </span>
       </p>
     </div>

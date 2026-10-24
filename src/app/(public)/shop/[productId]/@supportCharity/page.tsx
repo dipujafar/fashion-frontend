@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import FormatCurrency from "@/components/shared/FormatCurrency";
 import { ProductDonationAbout } from "@/components/shared/DonationAbout";
+import Image from "next/image";
+import { defaultImg } from "@/utils/defaultImg";
 
 async function CharityImpact({ params }: { params: Promise<{ productId: string }> }) {
 
@@ -52,16 +54,21 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                         className="flex items-center gap-3 rounded-md border border-border bg-card/80 p-3 backdrop-blur"
                     >
                         <Link href={`/member/${c?.charity.userName}`}>
-                            <Avatar className="h-12 w-12 shadow-sm">
-                                <AvatarImage src={c?.charity?.picture?.url} className='bg-card object-cover ring-4 ring-card shadow' />
-                                <AvatarFallback className='text-lg capitalize font-medium'>{c?.charity?.fname.slice(0, 1)}{c?.charity?.lname?.slice(0, 1)}</AvatarFallback>
-                            </Avatar>
+                            <Image
+                                src={c?.charity.charityThumbnail?.url || "/not-found.png"}
+                                alt="Charity thumbnail"
+                                className="object-cover w-28 h-16 rounded-md"
+                                width={800}
+                                height={600}
+                                placeholder="blur"
+                                blurDataURL={defaultImg?.placeholderImg}
+                            />
                         </Link>
                         <Link href={`/member/${c?.charity.userName}`}>
                             <div className="min-w-0">
                                 <p className="truncate text-base font-semibold">{c?.charity.fname} {c?.charity?.lname}</p>
                                 <p className="text-sm text-muted-foreground">
-                                    {splitPercent.toFixed(2)}% of the donation · <FormatCurrency amount={(donation * splitPercent) / 100} />
+                                    {splitPercent.toFixed(2)}% of the donation · <FormatCurrency amount={(donation / (res?.data?.charities?.length || 0)).toFixed(2)} />
                                 </p>
                             </div>
                         </Link>

@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronRight, Gift, Heart, Info } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,22 +14,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ICharity, IProduct } from "@/types";
-import { AddToCart } from "@/lib/Actions/Cart.action";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { tags } from "@/utils/serverTags";
-import { useDispatch } from "react-redux";
-import { baseApi } from "@/redux/api/baseApi";
-import { tagTypes } from "@/redux/tagTypes";
 import { useCurrency } from "@/hooks/useCurrency";
 import { TPayload } from "@/app/(public)/shop/[productId]/_components/ActionButtons";
-
-interface CharityDonationFormData {
-  selectedCharities: string[];
-  additionalDonation: number;
-  extraDonationAnonymous: boolean;
-}
-
-// Remove ICharityWithDetails entirely, ICharity is enough now
+import { defaultImg } from "@/utils/defaultImg";
+import { userRoleMapper } from "@/utils/userRoleMapper";
+import { cn } from "@/lib/utils";
 
 interface CharityDonationDialogProps {
   open: boolean;
@@ -35,12 +26,14 @@ interface CharityDonationDialogProps {
   purchasePrice: number;
   donationPercentage: number;
   product: IProduct;
-  charities: ICharity[]; // ✅ use ICharity directly
+  charities: ICharity[];
   buyMode: "cart" | "buy";
   onSubmit: (payload: TPayload) => Promise<void>;
   loading: boolean;
   error: string | null;
 }
+
+const PRESET_AMOUNTS = [0, 1, 2, 5];
 
 export function CharityDonationSelectDialog({
   open,
@@ -50,203 +43,253 @@ export function CharityDonationSelectDialog({
   product,
   charities,
   buyMode,
-  onSubmit : onSubmitHandler,
+  onSubmit: onSubmitHandler,
   error,
   loading,
 }: CharityDonationDialogProps) {
-  const [selectedCharityIds, setSelectedCharityIds] = useState<string[]>(
-    charities.map((c) => c.charityId) // pre-select all by default
-  );
+  const { format } = useCurrency();
+
+  // number = a preset, "other" = custom input visible
+  const [selectedPreset, setSelectedPreset] = useState<number | "other">(0);
   const [additionalDonation, setAdditionalDonation] = useState<number>(0);
-  const { format, symbol } = useCurrency();
-
-  const { handleSubmit, control, watch } = useForm<CharityDonationFormData>({
-    defaultValues: {
-      selectedCharities: charities.map((c) => c.charityId),
-      additionalDonation: 0,
-      extraDonationAnonymous: false,
-    },
-  });
-
-  const extraDonationAnonymous = watch("extraDonationAnonymous");
+  const [extraDonationAnonymous, setExtraDonationAnonymous] = useState(false);
 
   const totalDonation = (purchasePrice * donationPercentage) / 100;
-
-  // Split total donation equally among selected charities
-  const perCharityAmount =
-    selectedCharityIds.length > 0
-      ? totalDonation / selectedCharityIds.length // 👈 split among selected only
-      : 0;
-
   const finalTotal = totalDonation + additionalDonation;
 
-  const handleCharityToggle = (charityId: string) => {
-    setSelectedCharityIds((prev) =>
-      prev.includes(charityId)
-        ? prev.filter((id) => id !== charityId)
-        : [...prev, charityId]
-    );
+  // Everything is split equally between all of the seller's charities
+  const perCharityAmount =
+    charities.length > 0 ? finalTotal / charities.length : 0;
+
+  const handlePreset = (amount: number) => {
+    setSelectedPreset(amount);
+    setAdditionalDonation(amount);
+    if (amount === 0) setExtraDonationAnonymous(false);
   };
 
-  const onSubmit = async (data: CharityDonationFormData) => {
-    const selectedCharities = charities.filter((c) =>
-      selectedCharityIds.includes(c.charityId)
-    );
+  const handleOther = () => {
+    setSelectedPreset("other");
+    setAdditionalDonation(0);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     const payload = {
       productId: product?.id,
       quantity: 1,
       extraDonation: additionalDonation,
       extraDonationAnonymous:
-        additionalDonation > 0 ? data.extraDonationAnonymous : false,
-      charities: selectedCharities.map((c) => ({ charityId: c.charityId })),
+        additionalDonation > 0 ? extraDonationAnonymous : false,
     };
 
-    await onSubmitHandler(payload); // Call the passed in onSubmit handler
+    await onSubmitHandler(payload as TPayload);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 gap-0 rounded-none overflow-y-auto max-h-screen">
-        <DialogHeader className="p-6 pb-4">
-          <DialogTitle className="text-base font-medium text-gray-800">
-            Which charities you want to add?
+      <DialogContent className="max-w-2xl p-0 gap-0 overflow-y-auto max-h-[95vh] rounded-none">
+        <DialogHeader className="px-6 pt-6 pb-4">
+          <DialogTitle className="flex items-center gap-2 text-xl font-semibold text-gray-900">
+            Your Purchase Makes a Difference
+            <Heart className="size-6 fill-green-700 text-green-700" />
           </DialogTitle>
         </DialogHeader>
 
-        <div className="px-6 space-y-4">
+        <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-3">
           {/* Purchase Info */}
-          <div className="flex gap-2">
-            <div className="flex-1 bg-black text-white rounded-4xl px-4 py-3 text-center text-sm font-medium">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="bg-black text-white rounded-full px-4 py-2.5 text-center text-sm font-medium">
               Purchase Price: {format(purchasePrice)}
             </div>
-            <div className="flex-1 bg-black text-white rounded-4xl px-4 py-3 text-center text-sm font-medium">
+            <div className="bg-black text-white rounded-full px-4 py-2.5 text-center text-sm font-medium">
               Total Donation ({donationPercentage}%): {format(totalDonation)}
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground">
-            Seller has pledged {donationPercentage}% of this purchase to
-            charity. Choose from the charity/charities they've selected to
-            decide where the donation goes.
+          <p className="text-sm text-gray-500">
+            By purchasing this item, you&apos;re helping support these
+            charities. The seller has pledged {donationPercentage}% of the sale
+            to charity, and your purchase makes this contribution possible.
           </p>
 
-          {/* Charity Options */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-3">
-              {charities.map((item) => (
-                <div key={item.id} className="flex items-center space-x-3">
-                  <Checkbox
-                    id={item.charityId}
-                    checked={selectedCharityIds.includes(item.charityId)}
-                    onCheckedChange={() => handleCharityToggle(item.charityId)}
-                    className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+          {/* Charity cards */}
+          <div className="space-y-3 max-h-96 overflow-y-auto">
+            {charities.map((item) => {
+              const charity = item.charity;
+              const displayName =
+                charity?.userName ||
+                `${charity?.fname ?? ""} ${charity?.lname ?? ""}`.trim();
+
+              return (
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 sm:gap-4 rounded border border-gray-200 bg-white px-2 py-1.5"
+                >
+                  <Image
+                    src={charity?.charityThumbnail?.url || "/not-found.png"}
+                    alt={displayName}
+                    width={800}
+                    height={600}
+                    placeholder="blur"
+                    blurDataURL={defaultImg?.placeholderImg}
+                    className="object-cover w-24 h-14 rounded"
                   />
-                  <div className="flex-1 flex items-center justify-between">
-                    <Label
-                      htmlFor={item.charityId}
-                      className="text-sm font-normal cursor-pointer"
+
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base font-semibold text-gray-900 truncate">
+                      {displayName}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {userRoleMapper(charity?.auth?.role)?.label}
+                    </p>
+                    {charity?.bio && (
+                      <p className="mt-0.5 text-sm text-gray-500 line-clamp-2">
+                        {charity?.bio}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="shrink-0 text-right">
+                    <p className="text-base font-semibold text-gray-900">
+                      {format(perCharityAmount)}
+                    </p>
+                    <Link
+                      href={`/member/${charity?.userName}`}
+                      onClick={() => onOpenChange(false)}
+                      className="mt-1 inline-flex items-center underline text-sm text-gray-700 hover:text-black"
                     >
-                      {/* Show userName, fallback to full name */}
-                      {item.charity.userName ?? `${item.charity.fname} ${item.charity?.lname}`}
-                    </Label>
-                    <span className="text-sm text-muted-foreground">
-                      {selectedCharityIds.includes(item.charityId)
-                        ? format(perCharityAmount)
-                        : format(0)}
-                    </span>
+                      View Charity
+                      <ChevronRight className="size-4" />
+                    </Link>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
 
-            {/* Empty state */}
             {charities.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-gray-500 text-center py-4">
                 No charities available for this product.
               </p>
             )}
+          </div>
 
-            {/* Additional Donation */}
-            <div className="space-y-2">
-              <Label className="text-sm font-normal">
-                Add an additional donation? (Optional)
+          <div className="border-t border-gray-200" />
+
+          {/* Extra donation */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-1.5">
+              <Label className="text-base font-semibold text-gray-900">
+                Would you like to add an extra donation? (Optional)
               </Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">
-                  {symbol}
-                </span>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder="0.00"
-                  className="pl-6 pr-10 rounded-md focus-visible:ring-0 focus:ring-0 focus:border-2 focus-visible:border-black text-lg md:text-base py-5 border-gray-400"
-                  value={additionalDonation || ""}
-                  onChange={(e) =>
-                    setAdditionalDonation(parseFloat(e.target.value) || 0)
-                  }
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  ↑↓
-                </span>
-              </div>
+              <Info
+                className="size-4 text-gray-400"
+                aria-label="More information"
+              />
             </div>
+            <p className="text-sm text-gray-500">
+              Any additional donation will be shared equally between the
+              selected charities.
+            </p>
 
-            {/* Anonymous extra donation option — only relevant once they've entered an amount */}
-            {additionalDonation > 0 && (
-              <div className="flex items-center space-x-3">
-                <Controller
-                  name="extraDonationAnonymous"
-                  control={control}
-                  render={({ field }) => (
-                    <Checkbox
-                      id="extraDonationAnonymous"
-                      checked={field.value}
-                      onCheckedChange={(checked) =>
-                        field.onChange(checked === true)
-                      }
-                      className="data-[state=checked]:bg-black data-[state=checked]:border-black"
-                    />
-                  )}
-                />
-                <Label
-                  htmlFor="extraDonationAnonymous"
-                  className="text-sm font-normal cursor-pointer"
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 pt-1">
+              {PRESET_AMOUNTS.map((amount) => (
+                <Button
+                  key={amount}
+                  type="button"
+                  variant={selectedPreset === amount ? "default" : "outline"}
+                  onClick={() => handlePreset(amount)}
+                  className="cursor-pointer rounded-md shadow-none font-medium"
                 >
-                  Make my additional donation anonymous
-                </Label>
-              </div>
-            )}
-
-            {/* Total */}
-            <div className="pt-2">
-              <p className="text-sm font-medium">
-                Total Donation to Charities: ${finalTotal.toFixed(2)}
-              </p>
-            </div>
-
-            {/* Error message */}
-            {error && (
-              <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3">
-                <p className="text-sm text-red-600">{error}</p>
-              </div>
-            )}
-
-            {/* Submit */}
-            <div className="pt-2 pb-6">
+                  {format(amount)}
+                </Button>
+              ))}
               <Button
-                type="submit"
-                disabled={(donationPercentage > 0 && selectedCharityIds.length === 0) || loading}
-                variant={"default"}
-                className="w-full py-6 font-medium rounded-none cursor-pointer"
+                type="button"
+                variant={selectedPreset === "other" ? "default" : "outline"}
+                onClick={handleOther}
+                className="cursor-pointer rounded-md shadow-none font-medium"
               >
-                {loading ? <span className="loader" /> : buyMode === "cart" ? "Save to Cart" : "Continue to Checkout"}
+                Other
               </Button>
             </div>
-          </form>
-        </div>
+
+            {selectedPreset === "other" && (
+              <Input
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="Enter your amount"
+                autoFocus
+                className="mt-2 rounded-md focus-visible:ring-0 focus:ring-0 focus-visible:border-black text-base py-5 border-gray-300"
+                value={additionalDonation || ""}
+                onChange={(e) =>
+                  setAdditionalDonation(parseFloat(e.target.value) || 0)
+                }
+              />
+            )}
+          </div>
+
+          {/* Anonymous option: only once an extra amount is set */}
+          {additionalDonation > 0 && (
+            <div className="flex items-center space-x-3">
+              <Checkbox
+                id="extraDonationAnonymous"
+                checked={extraDonationAnonymous}
+                onCheckedChange={(checked) =>
+                  setExtraDonationAnonymous(checked === true)
+                }
+                className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+              />
+              <Label
+                htmlFor="extraDonationAnonymous"
+                className="text-sm font-normal cursor-pointer"
+              >
+                Make my additional donation anonymous
+              </Label>
+            </div>
+          )}
+
+          {/* Total */}
+          <div className="flex items-center gap-3 rounded-lg bg-green-50 px-4 py-3">
+            <Gift className="size-6 shrink-0 text-green-800" />
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                Total Donation to Charities: {format(finalTotal)}
+              </p>
+              <p className="text-xs text-gray-500">
+                ({format(totalDonation)} from seller +{" "}
+                {format(additionalDonation)} extra donation)
+              </p>
+            </div>
+          </div>
+
+          {/* Error message */}
+          {error && (
+            <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
+          {/* Submit */}
+          <Button
+            type="submit"
+            disabled={loading}
+            variant="default"
+            className={cn(
+              "w-full py-6 font-medium rounded-none cursor-pointer text-base"
+            )}
+          >
+            {loading ? (
+              <span className="loader" />
+            ) : buyMode === "cart" ? (
+              "Continue to Cart"
+            ) : (
+              "Continue to Checkout"
+            )}
+          </Button>
+        </form>
       </DialogContent>
     </Dialog>
   );

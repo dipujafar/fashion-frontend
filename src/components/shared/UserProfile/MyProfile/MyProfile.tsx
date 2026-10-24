@@ -40,16 +40,25 @@ const ImageEditorModal = dynamic(() => import('@/components/shared/ImageEditorMo
 
 const MAX_PHOTOS = 8;
 const INPUT_ID = "photo-uploader-input";
+const THUMBNAIL_INPUT_ID = "charity-thumbnail-input";
+
+type EditorTarget = "profile" | "thumbnail";
 
 function MyProfile({ user }: { user: IUser }) {
 
     const [image, setImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string>("");
 
-    // Image Editor modal states
+    // Charity thumbnail
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
+
+    // Image Editor modal states (shared by profile photo + charity thumbnail)
     const [editorModalOpen, setEditorModalOpen] = useState(false);
     const [editingImage, setEditingImage] = useState<{
         file: Blob | File;
         name?: string;
+        target: EditorTarget;
     } | null>(null);
 
     const [phone, setPhone] = useState(user?.phone ?? "");
@@ -61,6 +70,28 @@ function MyProfile({ user }: { user: IUser }) {
     useEffect(() => {
         setPhone(user?.phone ?? "");
     }, [user?.phone]);
+
+    // Profile photo preview URL (created once per file, revoked on change)
+    useEffect(() => {
+        if (!image) {
+            setImagePreview("");
+            return;
+        }
+        const url = URL.createObjectURL(image);
+        setImagePreview(url);
+        return () => URL.revokeObjectURL(url);
+    }, [image]);
+
+    // Thumbnail preview URL
+    useEffect(() => {
+        if (!thumbnail) {
+            setThumbnailPreview("");
+            return;
+        }
+        const url = URL.createObjectURL(thumbnail);
+        setThumbnailPreview(url);
+        return () => URL.revokeObjectURL(url);
+    }, [thumbnail]);
 
     const isCharity = user?.auth?.role == UserRole.CHARITABLE_ORGANIZATION || user?.auth?.role == UserRole.CHARITY_SHOP
 
@@ -112,6 +143,10 @@ function MyProfile({ user }: { user: IUser }) {
                 form.append('picture', image);
             }
 
+            if (isCharity && thumbnail) {
+                form.append('charityThumbnail', thumbnail);
+            }
+
             for (let charityImg of charityImgs) {
                 form.append('charityImgs', charityImg);
             }
@@ -134,6 +169,7 @@ function MyProfile({ user }: { user: IUser }) {
 
     const totalCount = defaultCharityImgs.length + charityImgs.length;
 
+    // ---------------- Profile photo ----------------
     const fileonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files as File[] | null;
         if (!fileList || fileList.length === 0) {
@@ -149,18 +185,68 @@ function MyProfile({ user }: { user: IUser }) {
         setEditingImage({
             file,
             name: file.name || `profile-${Date.now()}.jpg`,
+            target: "profile",
         });
         setEditorModalOpen(true);
         e.target.value = "";
     };
 
+    const handleAdjustPhoto = () => {
+        if (!image) return;
+        setEditingImage({
+            file: image,
+            name: image.name,
+            target: "profile",
+        });
+        setEditorModalOpen(true);
+    };
+
+    // ---------------- Charity thumbnail ----------------
+    const thumbnailOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+            toast.error("Please select a valid image file");
+            return;
+        }
+
+        setEditingImage({
+            file,
+            name: file.name || `charity-thumbnail-${Date.now()}.jpg`,
+            target: "thumbnail",
+        });
+        setEditorModalOpen(true);
+    };
+
+    const handleAdjustThumbnail = () => {
+        if (!thumbnail) return;
+        setEditingImage({
+            file: thumbnail,
+            name: thumbnail.name,
+            target: "thumbnail",
+        });
+        setEditorModalOpen(true);
+    };
+
+    // ---------------- Shared editor handlers ----------------
     const handleSaveEditor = useCallback((blob: Blob) => {
-        const filename = editingImage?.name || `profile-${Date.now()}.jpg`;
+        const isThumb = editingImage?.target === "thumbnail";
+        const filename =
+            editingImage?.name ||
+            (isThumb ? `charity-thumbnail-${Date.now()}.jpg` : `profile-${Date.now()}.jpg`);
+
         const finalFile = new File([blob], filename, {
             type: blob.type || "image/jpeg",
         });
 
-        setImage(finalFile);
+        if (isThumb) {
+            setThumbnail(finalFile);
+        } else {
+            setImage(finalFile);
+        }
+
         setEditingImage(null);
         setEditorModalOpen(false);
     }, [editingImage]);
@@ -170,15 +256,7 @@ function MyProfile({ user }: { user: IUser }) {
         setEditingImage(null);
     }, []);
 
-    const handleAdjustPhoto = () => {
-        if (!image) return;
-        setEditingImage({
-            file: image,
-            name: image.name,
-        });
-        setEditorModalOpen(true);
-    };
-
+    // ---------------- Gallery ----------------
     const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         const incoming = Array.from(e.target.files || []);
@@ -213,6 +291,9 @@ function MyProfile({ user }: { user: IUser }) {
 
     const isCharityEco = user?.auth?.role === UserRole.ECO_FRIENDLY_STORE || isCharityOrg || isCharityShop;
 
+    // Thumbnail shown in the upload box + preview card (new file wins over saved one)
+    const thumbnailSrc: string = thumbnailPreview || user?.charityThumbnail?.url || "";
+
     return (
         <div className="md:space-y-8 space-y-6 max-w-4xl">
 
@@ -225,7 +306,7 @@ function MyProfile({ user }: { user: IUser }) {
                         width={1000}
                         placeholder='blur'
                         blurDataURL={defaultImg?.placeholderImg}
-                        src={image ? URL.createObjectURL(image) : (user?.picture?.url || defaultImg.empty_user)}
+                        src={imagePreview || user?.picture?.url || defaultImg.empty_user}
                     />
 
                     <div className="flex flex-wrap items-center gap-2">
@@ -463,9 +544,6 @@ function MyProfile({ user }: { user: IUser }) {
 
                         {isCharity && (
                             <div className='mt-8'>
-                                {/* <p className="text-xl font-semibold mb-6">
-                                    <AboutMe user={user} />
-                                </p> */}
 
                                 <div className='space-y-7 max-w-lg'>
 
@@ -490,6 +568,82 @@ function MyProfile({ user }: { user: IUser }) {
                                         />
                                     </div>
 
+                                    {/* ================= Charity Listing Thumbnail ================= */}
+                                    <div>
+                                        <h2 className="text-lg lg:text-xl font-semibold text-gray-900">Charity Listing Thumbnail</h2>
+                                        <p className="text-sm mt-1 text-gray-600">
+                                            This image will be shown when your charity or charity shop appears on listings and in search results.
+                                            Choose a clear image that represents your charity (e.g. logo, store front or charity work).
+                                        </p>
+
+                                        <input
+                                            id={THUMBNAIL_INPUT_ID}
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            className="hidden"
+                                            onChange={thumbnailOnChange}
+                                        />
+
+                                        <div className="mt-4 w-72 h-40">
+                                            {/* Upload box */}
+                                            <div>
+                                                {thumbnailSrc ? (
+                                                    <div className="relative w-60 h-40 rounded-lg border border-gray-200 overflow-hidden bg-white">
+                                                        <Image
+                                                            src={thumbnailSrc}
+                                                            alt="Charity thumbnail"
+                                                            className="w-full h-full object-cover"
+                                                            width={800}
+                                                            height={600}
+                                                            unoptimized
+                                                        />
+                                                        <div className="absolute bottom-0 left-0 w-full flex bg-black/70 text-white text-xs font-medium">
+                                                            <label
+                                                                htmlFor={THUMBNAIL_INPUT_ID}
+                                                                className="flex-1 flex items-center justify-center gap-1 py-2 cursor-pointer hover:bg-black/80"
+                                                            >
+                                                                <Camera size={12} />
+                                                                Change
+                                                            </label>
+                                                            {thumbnail && (
+                                                                <>
+                                                                    <span className="w-px bg-white/30" />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={handleAdjustThumbnail}
+                                                                        className="flex-1 py-2 cursor-pointer hover:bg-black/80"
+                                                                    >
+                                                                        Adjust Photo
+                                                                    </button>
+                                                                    <span className="w-px bg-white/30" />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setThumbnail(null)}
+                                                                        className="flex-1 py-2 cursor-pointer hover:bg-black/80"
+                                                                    >
+                                                                        Remove
+                                                                    </button>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <label
+                                                        htmlFor={THUMBNAIL_INPUT_ID}
+                                                        className="w-60 h-40 rounded-lg border border-dashed border-gray-300 flex flex-col items-center justify-center text-center px-4 cursor-pointer text-gray-400 hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                                                    >
+                                                        <Camera size={24} strokeWidth={1.5} />
+                                                        <span className="mt-2 text-sm font-medium text-gray-800">Upload Charity Thumbnail</span>
+                                                        <span className="mt-1 text-xs text-gray-500">Recommended size: 800 × 600px</span>
+                                                        <span className="text-xs text-gray-500">JPG, PNG or WebP</span>
+                                                    </label>
+                                                )}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    {/* ================= Gallery ================= */}
                                     <div className="">
                                         <div>
                                             <h2 className="text-lg lg:text-xl font-bold text-gray-900">Gallery</h2>

@@ -52,7 +52,7 @@ const pagesLinks = [
   },
   {
     id: 2,
-    name: "Expore Roles",
+    name: "Explore Roles",
     link: "/user-details"
   },
   {

@@ -43,6 +43,10 @@ import { toast } from "sonner";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
+import { defaultImg } from "@/utils/defaultImg";
+import { userRoleMapper } from "@/utils/userRoleMapper";
+import Link from "next/link";
 
 const formSchema = z.object({
   charityId: z.string().min(1, "Please select a charity"),
@@ -183,7 +187,7 @@ export function CharityDonationFormDialog({
                         </Button>
                       </PopoverTrigger>
 
-                      <PopoverContent className="w-full p-0" align="start">
+                      <PopoverContent className="p-0 w-(--radix-popover-trigger-width)" align="start">
                         <Command>
                           <CommandInput placeholder="Search charities..." />
                           <CommandList>
@@ -206,28 +210,50 @@ export function CharityDonationFormDialog({
                                     );
                                     setCharityOpen(false);
                                   }}
-                                  className="cursor-pointer"
+                                  className="cursor-pointer w-full flex flex-row gap-x-3 items-center justify-between"
                                 >
-                                  {field.value && <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      field.value === charity.id
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />}
 
-                                  <Avatar className="h-6 w-6">
-                                    <AvatarImage
-                                      src={charity?.picture?.url}
-                                      alt="charity"
-                                    />
-                                    <AvatarFallback>
-                                      {charity.fname.charAt(0)}
-                                    </AvatarFallback>
-                                  </Avatar>
+                                  <div className="flex flex-row gap-x-3 items-center">
+                                    {field.value && <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        field.value === charity.id
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />}
 
-                                  {charity?.fname} {charity?.lname ?? ""}
+                                    <div className="flex flex-row gap-x-2 items-center">
+                                      <Image
+                                        src={charity.charityThumbnail?.url || "/not-found.png"}
+                                        alt="Charity thumbnail"
+                                        className="object-cover w-16 h-11 rounded"
+                                        width={800}
+                                        height={600}
+                                        placeholder="blur"
+                                        blurDataURL={defaultImg?.placeholderImg}
+                                      />
+                                      <div>
+                                        <span className="text-sm font-medium text-foreground">
+                                          {charity.fname} {charity?.lname ?? ""}
+                                        </span>
+                                        <p className="text-xs text-gray-600">
+                                          {userRoleMapper(charity?.auth?.role)?.label}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <Link
+                                    onClick={(e) => {
+                                      e.stopPropagation();      // don't trigger the item's onSelect
+                                      setCharityOpen(false);    // close the charity popover
+                                      setOpen(false);           // close the dialog
+                                    }}
+                                    onPointerDown={(e) => e.stopPropagation()}
+                                    href={`/member/${charity?.userName}`} className="text-sm text-green-600 underline">
+                                    View Charity
+                                  </Link>
 
                                 </CommandItem>
                               ))}

@@ -12,6 +12,10 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { IUser } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
+import { defaultImg } from "@/utils/defaultImg";
+import { userRoleMapper } from "@/utils/userRoleMapper";
+import Link from "next/link";
 
 // ─── Charity Multi Select ──────────────────────────────────────────────────
 
@@ -118,19 +122,30 @@ function CharityMultiSelect({
                 }`}
             >
               <div className="flex flex-row gap-x-2 items-center">
-                <Avatar className="h-9 w-9">
-                  <AvatarImage
-                    src={charity.picture?.url}
-                    className="bg-card object-cover ring-4 ring-card"
-                  />
-                  <AvatarFallback className="text-sm capitalize font-medium">
-                    {charity.fname.slice(0, 1)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-base text-foreground">
-                  {charity.fname} {charity?.lname ?? ""}
-                </span>
+                <Image
+                  src={charity.charityThumbnail?.url || "/not-found.png"}
+                  alt="Charity thumbnail"
+                  className="object-cover w-16 h-11 rounded"
+                  width={800}
+                  height={600}
+                  placeholder="blur"
+                  blurDataURL={defaultImg?.placeholderImg}
+                />
+                <div>
+                  <span className="text-sm font-medium text-foreground">
+                    {charity.fname} {charity?.lname ?? ""}
+                  </span>
+                  <p className="text-xs text-gray-600">
+                    {userRoleMapper(charity?.auth?.role)?.label}
+                  </p>
+                </div>
               </div>
+              <Link
+                onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
+                href={`/member/${charity?.userName}`} className="text-sm underline text-green-700">
+                View Charity
+              </Link>
               <Checkbox
                 checked={isChecked}
                 onCheckedChange={() => toggle(charity)}
