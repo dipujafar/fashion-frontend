@@ -1,5 +1,5 @@
 "use client";;
-import React from "react";
+import React, { useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useCallback } from "react";
@@ -24,6 +24,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  buildProductSchema,
   CharityFormSchema,
   colors,
   conditionOptions,
@@ -107,7 +108,7 @@ export default function AddProductForm() {
 
   const required_donation = !(user?.auth?.role == role.ECO_FRIENDLY_STORE || user?.auth?.role == role.CHARITY_SHOP);
 
-  const productSchema = required_donation ? productFormSchema.merge(CharityFormSchema) : productFormSchema;
+  const productSchema = useMemo(() => buildProductSchema(required_donation), [required_donation]);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),

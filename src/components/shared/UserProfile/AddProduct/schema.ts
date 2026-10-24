@@ -89,6 +89,39 @@ export const CharityFormSchema = z.object({
   }),
 })
 
+export const buildProductSchema = (requiredDonation: boolean) =>
+  productFormSchema.superRefine((data, ctx) => {
+    const hasCharity = (data.charities?.length ?? 0) > 0;
+    const hasPercent = !!data.donation_percent && Number(data.donation_percent) > 0;
+
+    // Required mode: both always needed.
+    // Optional mode: each one is needed only if the other is chosen.
+    const donationActive = requiredDonation || hasCharity || hasPercent;
+    if (!donationActive) return;
+
+    if (!hasPercent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["donation_percent"],
+        message: "Donation Percent is required.",
+      });
+    } else if (requiredDonation && Number(data.donation_percent) < 5) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["donation_percent"],
+        message: "Minimum 5% donation is required.",
+      });
+    }
+
+    if (!hasCharity) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["charities"],
+        message: "Please select at least one charity.",
+      });
+    }
+  });
+
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 
 export const productFormDefaultValues: ProductFormValues = {

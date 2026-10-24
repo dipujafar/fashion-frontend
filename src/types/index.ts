@@ -198,6 +198,7 @@ export interface IUser {
   auth: IUserAuth;
   avgRating: number;
   picture: { key: string, url: string } | null;
+  charityThumbnail: { key: string, url: string } | null;
   _count: {
     following: number,
     followers: number,

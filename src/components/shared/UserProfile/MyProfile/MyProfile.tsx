@@ -24,6 +24,15 @@ import SelectCountry from '@/app/(public)/checkout/cart/[cartGroupId]/_component
 import { countries } from '@/utils/constant';
 import CountrySellNotAvaialbleAlert from '../CountrySellNotAvaialbleAlert';
 
+const AboutMe = ({ user }: { user: IUser }) => {
+    const role = user?.auth?.role;
+    if (role === UserRole.CHARITABLE_ORGANIZATION || role === UserRole.CHARITY_SHOP || role === UserRole.ECO_FRIENDLY_STORE) {
+        return "About Organization";
+    } else {
+        return "About Me";
+    }
+}
+
 
 const ImageEditorModal = dynamic(() => import('@/components/shared/ImageEditorModal'), {
     ssr: false,
@@ -202,6 +211,8 @@ function MyProfile({ user }: { user: IUser }) {
     const isCharityOrg = user?.auth?.role === UserRole.CHARITABLE_ORGANIZATION;
     const isCharityShop = user?.auth?.role === UserRole.CHARITY_SHOP;
 
+    const isCharityEco = user?.auth?.role === UserRole.ECO_FRIENDLY_STORE || isCharityOrg || isCharityShop;
+
     return (
         <div className="md:space-y-8 space-y-6 max-w-4xl">
 
@@ -361,7 +372,9 @@ function MyProfile({ user }: { user: IUser }) {
                     </div>
 
                     <div className="">
-                        <p className="text-xl font-semibold mb-6">About me</p>
+                        <p className="text-xl font-semibold mb-6">
+                            <AboutMe user={user} />
+                        </p>
 
                         <div className='space-y-7 max-w-lg'>
 
@@ -371,10 +384,10 @@ function MyProfile({ user }: { user: IUser }) {
                                     name="firstName"
                                     render={({ field }) => (
                                         <FormItem className=''>
-                                            <FormLabel className='text-gray-800 font-normal'>First Name</FormLabel>
+                                            <FormLabel className='text-gray-800 font-normal'>{isCharityEco ? "Organization Name" : "First Name"}</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="Enter Your First Name"
+                                                    placeholder={isCharityEco ? "Enter Organization Name" : "Enter Your First Name"}
                                                     {...field}
                                                     className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 border focus-visible:border-primary-black !text-base !py-6 px-4"
                                                 />
@@ -385,7 +398,7 @@ function MyProfile({ user }: { user: IUser }) {
                                 />
                             </div>
 
-                            <div className="flex-1">
+                            {!isCharityEco && <div className="flex-1">
                                 <FormField
                                     control={form.control}
                                     name="lastName"
@@ -403,7 +416,7 @@ function MyProfile({ user }: { user: IUser }) {
                                         </FormItem>
                                     )}
                                 />
-                            </div>
+                            </div>}
 
                             {isCharity && <div className="flex-1">
                                 <FormField
@@ -450,7 +463,9 @@ function MyProfile({ user }: { user: IUser }) {
 
                         {isCharity && (
                             <div className='mt-8'>
-                                <p className="text-xl font-semibold mb-6">About Charity</p>
+                                {/* <p className="text-xl font-semibold mb-6">
+                                    <AboutMe user={user} />
+                                </p> */}
 
                                 <div className='space-y-7 max-w-lg'>
 
