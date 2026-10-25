@@ -1,6 +1,8 @@
 import React from "react";
 import ProductsListContainer from "../ProductsList/ProductsListContainer";
 import { GetProductsByMember } from "@/lib/services/Products";
+import GetUserDetails from "@/lib/services/UserDetails";
+import { UserRole } from "@/types";
 
 const ProfileFeatures = async ({
   userName,
@@ -56,9 +58,13 @@ const ProfileFeatures = async ({
 
   const prodData = await GetProductsByMember({ query, userName });
 
+  const user = await GetUserDetails({ userName });
+
+  const isCharityShop = user?.data?.user?.auth?.role === UserRole.CHARITY_SHOP;
+
   return (
     <div>
-      <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)} />
+      <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)} isCharityShop={isCharityShop} />
     </div>
   );
 };

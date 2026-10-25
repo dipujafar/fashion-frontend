@@ -1,4 +1,4 @@
-import { HeartHandshake } from "lucide-react";
+import { ChevronRight, HeartHandshake } from "lucide-react";
 import { GetProductCharitySupport } from "@/lib/services/Products";
 import { IUser } from "@/types";
 import Link from "next/link";
@@ -47,11 +47,11 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                 </div>
             </div>
 
-            <ul className="mt-6 grid gap-3 sm:grid-cols-3">
+            <ul className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {res?.data?.charities?.map((c) => (
                     <li
                         key={c?.charity.fname + c?.charity.lname}
-                        className="flex items-center gap-3 rounded-md border border-border bg-card/80 p-3 backdrop-blur"
+                        className="flex items-start gap-3 rounded-md border border-border bg-card/80 p-3 backdrop-blur"
                     >
                         <Link href={`/member/${c?.charity.userName}`}>
                             <Image
@@ -64,14 +64,24 @@ async function CharityImpact({ params }: { params: Promise<{ productId: string }
                                 blurDataURL={defaultImg?.placeholderImg}
                             />
                         </Link>
-                        <Link href={`/member/${c?.charity.userName}`}>
-                            <div className="min-w-0">
-                                <p className="truncate text-base font-semibold">{c?.charity.fname} {c?.charity?.lname}</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {splitPercent.toFixed(2)}% of the donation · <FormatCurrency amount={(donation / (res?.data?.charities?.length || 0)).toFixed(2)} />
-                                </p>
-                            </div>
-                        </Link>
+                        <div>
+                            <Link href={`/member/${c?.charity.userName}`}>
+                                <div className="min-w-0">
+                                    <p className="truncate text-base font-semibold">{c?.charity.fname} {c?.charity?.lname}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {splitPercent.toFixed(2)}% of the donation · <FormatCurrency amount={(donation / (res?.data?.charities?.length || 0)).toFixed(2)} />
+                                    </p>
+                                </div>
+                            </Link>
+                            <Link
+                                href={`/member/${c?.charity?.userName}`}
+                                // onClick={() => onOpenChange(false)}
+                                className="inline-flex items-center underline text-sm text-green-700"
+                            >
+                                View Charity
+                                <ChevronRight className="size-4" />
+                            </Link>
+                        </div>
                     </li>
                 ))}
             </ul>

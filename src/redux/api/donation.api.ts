@@ -11,9 +11,14 @@ const donationApi = baseApi.injectEndpoints({
                 totalCharitiesToSupport: number,
                 donationsByCharity: {
                     "charityId": string,
+                    charityBio : string | null,
                     "charityName": string,
+                    lname: string,
+                    fname: string,
+                    userName : string,
                     "charityImage": string,
-                    "totalDonation": number
+                    "totalDonation": number,
+                    productsSupported : number
                 }[]
             }
         }, { userName: string }>({

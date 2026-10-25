@@ -18,7 +18,8 @@ function ReviewStats({ userName }: { userName: string }) {
             <p className='text-base lg:font-bold text-gray-800'>Seller Score</p>
             <p className='text-3xl md:text-4xl font-semibold text-gray-800 my-1 md:my-1.5 lg:my-2'>{data?.data?.averageRating || 0}<span className='text-lg md:text-xl text-gray-600'>/5</span></p>
             <Rating rating={data?.data?.averageRating || 0} size={22}></Rating>
-            <p className='text-sm text-gray-600 mt-2'>{data?.data?.totalReviews || 0} Reviews</p>
+            <p className='text-base text-gray-600 mt-2'>{data?.data?.totalReviews || 0} Reviews</p>
+            {!data?.data?.totalReviews && <p className='text-sm text-gray-600 mt-2'>This seller hasn't received any reviews yet Reviews will appear here once buyers leave reviews.</p>}
         </div>
     )
 }
