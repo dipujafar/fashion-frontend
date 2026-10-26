@@ -6,6 +6,7 @@ import SellerProfile from '@/components/shared/UserProfile/SellerProfile';
 import Tabs from '../_components/Tabs';
 import { UserRole } from '@/types';
 import CharityProfile from '../_components/CharityProfile';
+import CharityProfile1 from '../_components/CharityProfile1';
 
 async function MemberLayout({
     params,
@@ -33,12 +34,13 @@ async function MemberLayout({
 
                 <Container>
 
-                    <div className="space-y-5 lg:space-y-8">
-                        <SellerProfile user={user} isCharity={isCharity} isCharityShop={isCharityShop} />
-                    </div>
-
                     {
                         !isCharity ? <>
+
+                            <div className="space-y-5 lg:space-y-8">
+                                <SellerProfile user={user} isCharity={isCharity} isCharityShop={isCharityShop} />
+                            </div>
+
                             <div className='mt-5 lg:mt-8'>
                                 <Tabs userName={username} isCharityShop={isCharityShop} />
                             </div>
@@ -46,7 +48,7 @@ async function MemberLayout({
                             <div className='mt-5 lg:mt-8'>
                                 {children}
                             </div>
-                        </> : <CharityProfile userName={username} />
+                        </> : <CharityProfile1 user={user} />
                     }
 
                 </Container>

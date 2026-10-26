@@ -62,8 +62,13 @@ const ProfileFeatures = async ({
 
   const isCharityShop = user?.data?.user?.auth?.role === UserRole.CHARITY_SHOP;
 
+  const isMyProfile = user?.data?.isCurrentUser;
+
+  const totalProducts = prodData?.data?.meta?.total || 0;
+
   return (
     <div>
+      {totalProducts > 0 && <p className="font-semibold mb-3">{totalProducts} Items Available</p>}
       <ProductsListContainer initialData={prodData?.data?.data} initialMeta={prodData?.data?.meta} query={query} userName={userName} key={JSON.stringify(query)} isCharityShop={isCharityShop} />
     </div>
   );

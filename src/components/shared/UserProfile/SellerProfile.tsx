@@ -1,3 +1,4 @@
+"use client"
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { IBadge, IUser } from '@/types'
 import { notFound } from 'next/navigation'
@@ -6,10 +7,9 @@ import moment from 'moment'
 import { userRoleMapper } from '@/utils/userRoleMapper'
 import Link from 'next/link';
 import FolowUnFolow from '@/app/(public)/member/[username]/_components/FolowUnFolow';
-import { CharityDonationFormDialog } from '../Modal/Charity/CharityDonationFormDialog';
 import { Button } from '@/components/ui/button';
 import FolowerFolowing from '@/app/(public)/member/[username]/_components/FolowerFolowing';
-import { Check } from 'lucide-react';
+import { Check, Heart } from 'lucide-react';
 import { countries } from '@/utils/constant';
 import Flag from '../Flag';
 import CountrySellNotAvaialbleAlert from './CountrySellNotAvaialbleAlert';
@@ -18,6 +18,8 @@ import wb from "@/assets/icons/web-logo.png"
 import insta from "@/assets/icons/instagram.png"
 import tw from "@/assets/icons/twitter.png"
 import Image from 'next/image';
+import { useCurrency } from '@/hooks/useCurrency';
+import { DonationFromProfile } from '@/app/(public)/member/[username]/_components/DonationFromProfile';
 
 type User = {
   data:
@@ -27,6 +29,8 @@ type User = {
     isfolowing: boolean,
     totalDonation: number,
     isCurrentUser: boolean,
+    totalSells: number,
+    totalRaisedDonation: number,
     badges: {
       id: string,
       badge: IBadge,
@@ -36,7 +40,9 @@ type User = {
 }
 
 
-export default async function SellerProfile({ user, isCharity, isCharityShop }: { user: User, isCharity: boolean, isCharityShop: boolean }) {
+export default function SellerProfile({ user, isCharity, isCharityShop }: { user: User, isCharity: boolean, isCharityShop: boolean }) {
+
+  const { format, symbol } = useCurrency();
 
   const userData = user?.data?.user;
 
@@ -136,7 +142,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
 
             </div>
 
-            <div className='flex flex-row items-center gap-8 lg:gap-10'>
+            <div className='flex flex-row flex-wrap lg:flex-nowrap items-center gap-8 lg:gap-10'>
 
               <div className=''>
                 <FolowerFolowing type='following' folowerCount={userData?._count?.followers || 0} folowingCount={userData?._count?.following || 0} actionBtn={<div className=''>
@@ -153,6 +159,16 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
                 </div>} userName={userData?.userName} />
               </div>
 
+              {!isCharity && <div className='border-r border-gray-200 pr-8 lg:pr-10'>
+                <p className='font-semibold'>{user?.data?.totalSells}</p>
+                <p className='text-gray-700'>Sales</p>
+              </div>}
+
+              {(isCharityShop || isCharity) && <div className=''>
+                <p className='font-semibold'>{format(user?.data?.totalRaisedDonation || 0, { decimals: 1 })}</p>
+                <p className='text-gray-700'>Raised</p>
+              </div>}
+
               {!(isCharityShop || isCharity) && <Link href={`/member/${userData?.userName}/donations`} className=''>
                 <p className='font-semibold'>{user?.data?.totalDonation}</p>
                 <p className='text-gray-700'>Donated</p>
@@ -165,11 +181,12 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
             <FolowUnFolow isFolow={user?.data?.isfolowing} memberId={userData?.id} />
             {isCharityShop && (
               <div className='lg:w-auto w-full'>
-                <CharityDonationFormDialog>
-                  <Button className=" text-white font-semibold px-6 cursor-pointer rounded-none w-full md:w-1/2 lg:w-28 bg-green-800 hover:bg-green-700 duration-200 transition-colors">
+                <DonationFromProfile charity={user?.data?.user}>
+                  <Button className=" text-white font-semibold px-6 cursor-pointer rounded-none w-full md:w-1/2 lg:w-36 bg-green-800 hover:bg-green-700 duration-200 transition-colors flex flex-row gap-x-1.5 items-center justify-center">
+                    <Heart size={20} />
                     Donate Now
                   </Button>
-                </CharityDonationFormDialog>
+                </DonationFromProfile>
               </div>)}
           </div>}
         </div>
@@ -203,7 +220,7 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
         {/* Bio Section */}
         {
           userData?.bio && <div className="mt-5 md:mt-8 lg:mt-10">
-            <pre className="text-foreground leading-relaxed md:text-lg max-w-xl whitespace-pre-wrap break-words">
+            <pre className="text-foreground leading-relaxed md:text-lg max-w-xl whitespace-pre-wrap break-words font-figtree">
               {userData?.bio}
             </pre>
           </div>
@@ -242,11 +259,11 @@ export default async function SellerProfile({ user, isCharity, isCharityShop }: 
           </div>
 
           <div className='md:w-auto w-full'>
-            <CharityDonationFormDialog>
+            <DonationFromProfile charity={user?.data?.user}>
               <Button className=" text-white font-semibold px-10 lg:px-20 py-5 lg:py-6 cursor-pointer rounded-none w-full lg:w-28 bg-green-800 hover:bg-green-700 duration-200 transition-colors">
                 Donate Now
               </Button>
-            </CharityDonationFormDialog>
+            </DonationFromProfile>
           </div>
 
         </div>

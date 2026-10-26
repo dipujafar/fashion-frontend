@@ -23,7 +23,7 @@ async function SellerProducts({ params, searchParams }: { params: Promise<{ user
   const { category } = ssp;
 
   return (
-    <div className='space-y-5 lg:space-y-8'>
+    <div className='space-y-5'>
 
       <SellerBundleTiers userName={username} />
 
@@ -54,7 +54,7 @@ async function SellerProducts({ params, searchParams }: { params: Promise<{ user
 
         </div>
 
-        <div className="lg:hidden flex justify-end mt-5 items-center">
+        <div className="lg:hidden flex justify-end items-center">
           <SmallDeviceFilter categoryId={category} sspResult={ssp}></SmallDeviceFilter>
         </div>
 

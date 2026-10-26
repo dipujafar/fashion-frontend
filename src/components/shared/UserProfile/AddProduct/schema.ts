@@ -189,6 +189,7 @@ export const colors = [
 ];
 
 export const conditionOptions = [
+  { value: "new-with-tags", label: "New with Tags", description: "Original packaging and tags are still attached." },
   { value: "new", label: "New", description: "Brand new, unused, and in perfect condition." },
   { value: "like-new", label: "Like New", description: "Gently used, well-maintained, and in excellent condition." },
   { value: "3-months-used", label: "3 Months Used", description: "Has been used for approximately 3 months." },

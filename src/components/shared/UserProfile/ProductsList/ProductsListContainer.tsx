@@ -51,7 +51,7 @@ const ProductsListContainer = ({ query, userName, initialData, initialMeta, isCh
     <div>
 
       {
-        data?.length === 0 && !isLoading && (isCharityShop ? <EmptyCharityShop /> : <div className="py-20 md:py-24 lg:py-28 max-w-sm mx-auto">
+        data?.length === 0 && !isLoading && (isCharityShop ? <EmptyCharityShop /> : <div className="py-20 md:py-24 lg:py-28 max-w-md mx-auto">
           <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
 
           <p className="text-center text-gray-900 font-semibold text-base lg:text-xl mb-2">No items available</p>
@@ -82,7 +82,7 @@ const ProductsListContainer = ({ query, userName, initialData, initialMeta, isCh
 export default ProductsListContainer;
 
 const EmptyCharityShop = () => {
-  return <div className="py-20 md:py-24 lg:py-28 max-w-sm mx-auto">
+  return <div className="py-20 md:py-24 lg:py-28 max-w-md mx-auto">
     <Image src={"/emty-box.png"} unoptimized alt="empty-cart" className="h-16 lg:h-24 w-auto mx-auto" height={500} width={500} />
     <p className="text-center text-gray-900 font-semibold text-base lg:text-xl mb-2">No items available</p>
 

@@ -4,6 +4,7 @@ import { ICartGroup, IOffer } from '@/types';
 import { defaultImg } from '@/utils/defaultImg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import React, { Suspense } from 'react'
 
 async function OfferCheckoutItems({ offerId }: { offerId: string }) {
@@ -25,6 +26,12 @@ const CartProds = async ({ cartPromise }: { cartPromise: Promise<{ data: IOffer 
     const cartProds = await cartPromise;
 
     const cartGroup = cartProds?.data;
+
+    const haveItem = cartGroup?.offerItems && cartGroup?.offerItems.length > 0;
+
+    if (!haveItem) {
+        return notFound();
+    }
 
     return <>
         {

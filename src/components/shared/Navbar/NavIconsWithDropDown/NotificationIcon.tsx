@@ -29,15 +29,14 @@ export default function NotificationIcon() {
     }
   };
 
-
+  const unreadCount = notifications?.data?.unReadCount || 0;
 
   return (
     <>
       <MenubarTrigger className="cursor-pointer relative">
         <NotificationBellIcon className="size-5 lg:size-6" />
 
-        {(isSuccess && notifications?.data?.unReadCount > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 px-[3px] py-0.5 text-[10px] text-white">{notifications?.data?.unReadCount}</span>}
-
+        {(isSuccess && notifications?.data?.unReadCount > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 px-[3px] py-0.5 text-[10px] text-white">{unreadCount < 100 ? unreadCount : `100+`}</span>}
       </MenubarTrigger>
       <MenubarContent className="rounded-none w-[340px]">
 

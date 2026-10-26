@@ -70,10 +70,12 @@ const ShopPage = async ({ searchParams: ssp }: { searchParams: Promise<{ [key: s
   return (
 
     <Container>
-      <div className="space-y-5 md:space-y-5">
+      <div className="space-y-5">
 
         {/* ----------------------------------------- show filter option ------------------------------------- */}
-        <SelectCatBypath categoryId={category} />
+        <div className="pt-5">
+          <SelectCatBypath categoryId={category} />
+        </div>
 
         {/* ----------------------lg filter-------------------------- */}
         <div className="hidden lg:flex flex-row justify-between gap-x-4 items-center mt-5">

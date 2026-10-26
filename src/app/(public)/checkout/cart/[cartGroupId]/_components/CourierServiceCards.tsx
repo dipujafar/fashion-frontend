@@ -4,6 +4,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { addShipmentToCart } from "@/redux/features/cart.slice";
 import { RootState } from "@/redux/store";
 import { ICourierServiceRates } from "@/types";
+import { Truck } from "lucide-react";
 import Image from 'next/image';
 import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
@@ -16,11 +17,7 @@ function CourierServiceCards({ rates, cartGroupId }: { rates: ICourierServiceRat
 
   // handle empty state
   if (!rates || rates.length === 0) {
-    return (
-      <div className="flex-center h-28 bg-white">
-        <p className="text-gray-500">No shipping services available for this product.</p>
-      </div>
-    )
+    return <EmptyCourierServices />
   }
 
   return (
@@ -49,4 +46,19 @@ function CourierServiceCards({ rates, cartGroupId }: { rates: ICourierServiceRat
   )
 }
 
-export default CourierServiceCards
+export default CourierServiceCards;
+
+export const EmptyCourierServices = () => {
+  return <div
+    className={`flex flex-col items-center px-5 py-8 text-center`}
+  >
+    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-200">
+      <Truck className="text-slate-800" size={28} strokeWidth={2} />
+    </div>
+
+    <p className="mt-4 text-lg font-semibold text-black">No courier services available</p>
+    <p className="mt-1 max-w-sm text-sm leading-snug text-gray-600">
+      We couldn’t find a courier that delivers to this address. Try a different address or check back later.
+    </p>
+  </div>
+}

@@ -20,8 +20,7 @@ export default function CartDropDown() {
 
   const { isLoading, data, isSuccess } = useGetMyCartItemsQuery();
 
-  const itemsCount =
-    data?.data?.reduce(
+  const itemsCount = data?.data?.reduce(
       (acc: number, cartGroup: ICartGroup) =>
         acc + (cartGroup?.items?.length || 0),
       0
@@ -34,7 +33,7 @@ export default function CartDropDown() {
 
         {isSuccess && itemsCount > 0 && (
           <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 px-[3px] py-0.5 text-[10px] text-white">
-            {itemsCount}
+            {itemsCount < 100 ? itemsCount : `100+`}
           </span>
         )}
 

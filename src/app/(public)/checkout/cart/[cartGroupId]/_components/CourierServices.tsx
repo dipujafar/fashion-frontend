@@ -8,7 +8,7 @@ import {
 import { Truck } from 'lucide-react';
 import { getCheckoutShippingRates } from '@/lib/services/Cartprods';
 import { ICourierServiceRates } from '@/types';
-import CourierServiceCards from './CourierServiceCards';
+import CourierServiceCards, { EmptyCourierServices } from './CourierServiceCards';
 
 
 function CourierServices({ cartGroupId }: { cartGroupId: string }) {
@@ -43,11 +43,7 @@ const ShippingServices = async ({ shippingPromise, cartGroupId }: { shippingProm
     const data = await shippingPromise;
 
     if (!data?.data?.rates) {
-        return (
-            <div className="flex-center h-28 bg-white">
-                <p className="text-gray-500">Make sure to enter your shipping details.</p>
-            </div>
-        )
+        return <EmptyCourierServices />
     }
 
     return (
@@ -56,3 +52,4 @@ const ShippingServices = async ({ shippingPromise, cartGroupId }: { shippingProm
         </div>
     )
 }
+

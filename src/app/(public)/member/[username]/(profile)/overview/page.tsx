@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { GetCharityAbout } from '@/lib/services/UserDetails';
 import { IUser } from '@/types';
 import { defaultImg } from '@/utils/defaultImg';
-import { BookImage, File, LucideIcon, Shirt } from 'lucide-react';
+import { BookImage, File, Heart, LucideIcon, Shirt } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -55,7 +55,8 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                 <p className="text-[12.5px] text-white mb-4 leading-relaxed">FASHION doesn't take a cut. Donate directly from this page.</p>
 
                 <CharityDonationFormDialog>
-                    <button className="block text-center w-full bg-[#f59e0b] hover:bg-[#d97706] text-[#0f172a] font-bold py-2.5 rounded-lg text-sm cursor-pointer">
+                    <button className="text-center w-full bg-[#f59e0b] hover:bg-[#d97706] text-[#0f172a] font-bold py-2.5 rounded-lg text-sm cursor-pointer flex justify-center items-center gap-1.5">
+                        <Heart size={20} />
                         Make your donation
                     </button>
                 </CharityDonationFormDialog>
@@ -98,7 +99,7 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                         placeholder="Website not added yet"
                     />
 
-                    <SocialRow icon={Facebook} value={user?.data?.facebook} href={user?.data?.facebook} placeholder="Facebook not added yet"/>
+                    <SocialRow icon={Facebook} value={user?.data?.facebook} href={user?.data?.facebook} placeholder="Facebook not added yet" />
 
                     {user?.data?.instagram && (
                         <SocialRow icon={Instagram} value={user?.data?.instagram} href={user?.data?.instagram} placeholder="Instagram not added yet" />

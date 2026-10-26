@@ -1,7 +1,7 @@
 "use client"
 import { useSellerSellCharitySupportStatsQuery } from '@/redux/api/donation.api'
 import { defaultImg } from '@/utils/defaultImg';
-import { ChevronRight, HeartHandshake, Info } from 'lucide-react';
+import { ChevronRight, HandHeart, HeartHandshake, Info } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
@@ -50,7 +50,7 @@ function SupportStats({ userName }: { userName: string }) {
                 </div>
             </section>
 
-            {(isSuccess && data?.data?.donationsByCharity.length > 0) && <div>
+            {(isSuccess && data?.data?.donationsByCharity.length > 0) ? <div>
                 <div className="mb-4 flex items-baseline justify-between">
                     <h3 className="text-lg font-semibold text-foreground">Supported charities</h3>
                 </div>
@@ -119,7 +119,25 @@ function SupportStats({ userName }: { userName: string }) {
                         </div>
                     ))}
                 </div>
+            </div> : <div className="py-20 md:py-24 lg:py-28 max-w-md mx-auto">
+                <div className='bg-green-600/10 p-3 h-20 w-20 flex-center rounded-full mx-auto'>
+                    <HandHeart size={45} />
+                </div>
+
+                <p className="text-center text-gray-900 font-semibold text-base md:text-xl lg:text-2xl mb-2">No charity support yet</p>
+
+                <p className="text-center text-gray-600 text-sm lg:text-base">This seller hasn't selected a charity for any listings yet. When they choose to donate a percentage of their sales, it will appear here and help support verified charities.</p>
+
+                <Link href={`/help/charity-support`} className='flex flex-row gap-x-1 items-center underline text-gray-700 justify-center mt-2'>
+                    <p>Learn more</p>
+                    <Info size={16} />
+                </Link>
             </div>}
+
+
+
+
+
 
         </div>
     )

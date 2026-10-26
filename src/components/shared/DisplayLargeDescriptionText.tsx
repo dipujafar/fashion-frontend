@@ -23,7 +23,7 @@ export default function DisplayLargeDescriptionText({
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
         >
-          <p className="text-gray-800 leading-relaxed">
+          <pre className="text-gray-800 leading-relaxed whitespace-pre-wrap break-words font-figtree">
             {openAllText ? data : shortText}
             {isLong && (
               <button
@@ -33,7 +33,19 @@ export default function DisplayLargeDescriptionText({
                 {openAllText ? "Read Less" : "Read More"}
               </button>
             )}
-          </p>
+          </pre>
+
+          {/* <p className="text-gray-800 leading-relaxed">
+            {openAllText ? data : shortText}
+            {isLong && (
+              <button
+                onClick={() => setOpenAllText((prev) => !prev)}
+                className="text-black font-semibold underline ml-1 hover:opacity-75 transition-opacity cursor-pointer"
+              >
+                {openAllText ? "Read Less" : "Read More"}
+              </button>
+            )}
+          </p> */}
         </motion.div>
       </AnimatePresence>
     </div>
