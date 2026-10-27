@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const ITEM_TYPES = [
+export const ITEM_TYPES = [
   "T-Shirts",
   "Shirts",
   "Jumpers & Hoodies",
@@ -20,58 +20,66 @@ const ITEM_TYPES = [
   "Other Clothing",
 ] as const
 
-const BAG_CONTENTS = [
+export const BAG_CONTENTS = [
   "Women - mixed clothes",
   "Men - mixed clothes",
   "Kids - mixed clothes",
   "Unisex - mixed",
   "Home textiles",
-  "Not sure / mixed bag"
+  "Not sure / mixed bag",
 ] as const
 
-const SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const
-const CONDITIONS = ["New", "Like New", "3 Months Used", "6 Months Used", "1 Year Used", "Well Used", "Other"] as const
-const WASHED_OPTIONS = ["Recently Washed", "All Washed", "Not Washed"] as const
-const GENDERS = ["Women", "Men", "Kids", "Baby", "Unisex"] as const
+export const SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const
 
-export const singleItemSchema = z.object({
-  itemType: z.array(z.string()).min(1, "Please select at least one item type"),
-  gender: z.string().optional(),
-  brand: z.string().optional(),
-  condition: z.string().min(1, "Please select a condition"),
-  washed: z.string().min(1, "Please select wash status"),
-  description: z.string().optional(),
-  photos: z.array(z.instanceof(File)).optional(),
-})
+export const CONDITIONS = [
+  "New with Tags",
+  "New",
+  "Like New",
+  "3 Months Used",
+  "6 Months Used",
+  "1 Year Used",
+  "Well Used",
+  "Other",
+] as const
 
-export const bagItemSchema = z.object({
-  bagContents: z.array(z.string()).min(1, "Please select at least one bag content"),
+export const BAG_CONDITIONS = [
+  "Mixed (some good, some worn)",
+  "Mostly good",
+  "Mostly worn",
+  "Like new",
+] as const
+
+export const ITEMS_COUNT_OPTIONS = [
+  { label: "5-10 items", value: "5-10" },
+  { label: "10-20 items", value: "10-20" },
+  { label: "20-30 items", value: "20-30" },
+  { label: "30-50 items", value: "30-50" },
+  { label: "50+ items", value: "50+" },
+] as const
+
+export const WASHED_OPTIONS = [
+  { label: "Recently Washed", value: "RECENT_WASHED" },
+  { label: "All Washed", value: "WASHED" },
+  { label: "Not Washed", value: "UNWASHED" },
+] as const
+
+export const GENDERS = ["Women", "Men", "Kids", "Baby", "Unisex"] as const
+
+export const donationSchema = z.object({
+  donationType: z.enum(["SINGLE", "MULTIPLE"]),
   itemTypes: z.array(z.string()).min(1, "Please select at least one item type"),
-  mainBrands: z.string().optional(),
-  approxItems: z.string().min(1, "Please select approximate number of items"),
-  condition: z.string().min(1, "Please select overall condition"),
-  washed: z.string().min(1, "Please select wash status"),
+  personTypes: z.array(z.string()).min(1, "Please select who it is for"),
+  brands: z.array(z.string()).optional(),
+  itemsCount: z.string().min(1, "Please select approximate number of items"),
+  condition: z.string().min(1, "Please select a condition"),
+  washedType: z
+    .string({ required_error: "Please select wash status" })
+    .min(1, "Please select wash status")
+    .refine(
+      (val) => ["RECENT_WASHED", "WASHED", "UNWASHED"].includes(val),
+      "Please select a valid wash status"
+    ),
   description: z.string().optional(),
-  photos: z.array(z.instanceof(File)).optional(),
 })
 
-export const donationSchema = z
-  .object({
-    donationType: z.enum(["single", "bag"]),
-    singleItems: z.array(singleItemSchema).optional(),
-    bagItems: bagItemSchema.optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.donationType === "single") return !!data.singleItems?.length
-      if (data.donationType === "bag") return !!data.bagItems
-      return false
-    },
-    { message: "Please fill in the required fields" },
-  )
-
-export { ITEM_TYPES, BAG_CONTENTS, SIZES, CONDITIONS, WASHED_OPTIONS, GENDERS }
-
-export type SingleItem = z.infer<typeof singleItemSchema>
-export type BagItem = z.infer<typeof bagItemSchema>
 export type Donation = z.infer<typeof donationSchema>

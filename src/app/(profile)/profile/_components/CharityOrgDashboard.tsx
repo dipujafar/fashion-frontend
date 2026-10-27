@@ -1,0 +1,284 @@
+"use client";
+
+import React, { useMemo, useState } from "react";
+import {
+  useGetCharityDonationChartQuery,
+  useGetCharityStatsQuery,
+} from "@/redux/api/dashboard.api";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { HandCoins, Users, Wallet, Calendar } from "lucide-react";
+
+const DEFAULT_MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+function formatAmount(value: string | number | undefined): string {
+  const num = Number(value ?? 0);
+  if (Number.isNaN(num)) return "0.00";
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function CharityOrgDashboard() {
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState<string>(String(currentYear));
+
+  const yearOptions = useMemo(() => {
+    return Array.from({ length: 5 }, (_, idx) => String(currentYear - idx));
+  }, [currentYear]);
+
+  const { data: statsRes, isLoading: isStatsLoading } = useGetCharityStatsQuery(
+    undefined,
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const {
+    data: chartRes,
+    isLoading: isChartLoading,
+    isFetching: isChartFetching,
+  } = useGetCharityDonationChartQuery(
+    { JoinYear: Number(selectedYear) },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const stats = statsRes?.data;
+
+  const chartData = useMemo(() => {
+    const raw = chartRes?.data;
+    if (!raw || !Array.isArray(raw) || raw.length === 0) {
+      return DEFAULT_MONTHS.map((month) => ({
+        month,
+        shortMonth: month.slice(0, 3),
+        sellDonationAmount: 0,
+        directDonationAmount: 0,
+      }));
+    }
+
+    return raw.map((item) => ({
+      ...item,
+      shortMonth: item.month ? item.month.slice(0, 3) : "",
+      sellDonationAmount: Number(item.sellDonationAmount || 0),
+      directDonationAmount: Number(item.directDonationAmount || 0),
+    }));
+  }, [chartRes]);
+
+  return (
+    <div className="space-y-6 mt-4 pb-10 min-w-0">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Total Raised */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs flex items-start justify-between">
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Total Raised
+            </p>
+            {isStatsLoading ? (
+              <Skeleton className="h-8 w-28 rounded-md" />
+            ) : (
+              <p className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900">
+                ${formatAmount(stats?.totalRaised)}
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Combined sell & direct donations
+            </p>
+          </div>
+          <div className="rounded-lg bg-black/5 p-3 text-gray-900">
+            <HandCoins className="size-5" />
+          </div>
+        </div>
+
+        {/* Total Donors */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs flex items-start justify-between">
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Total Donors
+            </p>
+            {isStatsLoading ? (
+              <Skeleton className="h-8 w-20 rounded-md" />
+            ) : (
+              <p className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900">
+                {stats?.totalDonor ?? 0}
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Supporters who contributed
+            </p>
+          </div>
+          <div className="rounded-lg bg-black/5 p-3 text-gray-900">
+            <Users className="size-5" />
+          </div>
+        </div>
+
+        {/* Balance */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-xs flex items-start justify-between">
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Available Balance
+            </p>
+            {isStatsLoading ? (
+              <Skeleton className="h-8 w-28 rounded-md" />
+            ) : (
+              <p className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900">
+                ${formatAmount(stats?.balance)}
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Current account balance
+            </p>
+          </div>
+          <div className="rounded-lg bg-black/5 p-3 text-gray-900">
+            <Wallet className="size-5" />
+          </div>
+        </div>
+      </div>
+
+      {/* Donation Chart Section */}
+      <div className="rounded-xl border border-gray-200 bg-white p-4 sm:p-5 md:p-6 shadow-xs overflow-hidden min-w-0 max-w-[calc(100vw-2rem)] sm:max-w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 className="text-base md:text-lg font-semibold text-gray-900">
+              Donations Overview
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Monthly breakdown of sell donations and direct monetary donations
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <Calendar className="size-4 text-muted-foreground" />
+            <Select value={selectedYear} onValueChange={setSelectedYear}>
+              <SelectTrigger className="w-[120px] h-9 bg-white border-gray-200">
+                <SelectValue placeholder="Select Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {yearOptions.map((year) => (
+                  <SelectItem key={year} value={year}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {isChartLoading || isChartFetching ? (
+          <div className="h-[340px] w-full flex flex-col justify-end gap-3 p-4">
+            <Skeleton className="h-full w-full rounded-lg" />
+          </div>
+        ) : (
+          <div className="w-full overflow-x-auto pb-2">
+            <div className="h-[320px] sm:h-[340px] min-w-[650px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
+                  barGap={6}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="#e5e7eb"
+                  />
+                  <XAxis
+                    dataKey="shortMonth"
+                    interval={0}
+                    tickLine={false}
+                    axisLine={false}
+                    tick={{ fontSize: 12, fill: "#6b7280" }}
+                  />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fontSize: 12, fill: "#6b7280" }}
+                  tickFormatter={(value) => `$${value}`}
+                />
+                <Tooltip
+                  cursor={{ fill: "rgba(0, 0, 0, 0.04)" }}
+                  content={({ active, payload }) => {
+                    if (!active || !payload || !payload.length) return null;
+                    const dataPoint = payload[0]?.payload;
+                    return (
+                      <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-md text-xs space-y-1.5">
+                        <p className="font-semibold text-gray-900">
+                          {dataPoint?.month} {selectedYear}
+                        </p>
+                        {payload.map((entry, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center justify-between gap-4"
+                          >
+                            <span className="flex items-center gap-1.5 text-gray-600">
+                              <span
+                                className="inline-block size-2.5 rounded-xs"
+                                style={{ backgroundColor: entry.color }}
+                              />
+                              {entry.name}:
+                            </span>
+                            <span className="font-medium text-gray-900">
+                              ${formatAmount(entry.value as number)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }}
+                />
+                <Legend
+                  wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }}
+                />
+                <Bar
+                  dataKey="sellDonationAmount"
+                  name="Sell Donations"
+                  fill="#18181b"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={32}
+                />
+                <Bar
+                  dataKey="directDonationAmount"
+                  name="Direct Donations"
+                  fill="#9ca3af"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={32}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default CharityOrgDashboard;

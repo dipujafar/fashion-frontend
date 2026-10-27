@@ -153,7 +153,9 @@ const SIgnInForm = () => {
           })
         );
         toast.success("Login successful");
-        window.location.href = callbackUrl || "/profile";
+        router.refresh();
+        router.replace(callbackUrl || "/profile");
+        // window.location.href = callbackUrl || "/profile";
       }
     } catch (error: any) {
       handleAuthError(error);
@@ -172,7 +174,9 @@ const SIgnInForm = () => {
           })
         );
         toast.success("Login successful");
-        window.location.href = callbackUrl || "/profile";
+        router.refresh();
+        router.replace(callbackUrl || "/profile");
+        // window.location.href = callbackUrl || "/profile";
       }
     } catch (error: any) {
       handleAuthError(error);

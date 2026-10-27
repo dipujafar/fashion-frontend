@@ -17,7 +17,7 @@ export default function ClothesDonationDialog({ className, children, charityId }
                 <DialogTrigger asChild>
                     {children}
                 </DialogTrigger>
-                <DialogContent className="max-h-[90vh] sm:max-w-2xl overflow-y-auto scroll-hide">
+                <DialogContent className="max-h-[90vh] sm:max-w-2xl overflow-y-auto scroll-hide rounded">
                     <DialogHeader>
                         <DialogTitle>Donate Clothes</DialogTitle>
                         <DialogDescription>Tell us what you are sending to the charity we accept it.</DialogDescription>

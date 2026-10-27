@@ -21,3 +21,23 @@ export const DonateDirectMoney = async ({ payload }: { payload: { "charityId": s
         };
     }
 }
+
+export const CreateClothDonation = async ({ payload }: { payload: FormData }) => {
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: "/cloth-donations", method: "POST" });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Cloth donation submitted successfully",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to submit cloth donation",
+            data: null,
+        };
+    }
+}

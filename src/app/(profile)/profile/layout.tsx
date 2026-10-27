@@ -1,15 +1,26 @@
 import Container from '@/components/shared/Container';
 import ProfileSMSideBar from '@/components/shared/UserProfile/ProfileSMSideBar';
-import { profileRouts } from '@/lib/profileRoutes';
+import { getRoutesByRole, profileRouts } from '@/lib/profileRoutes';
+import { GetMyProfile } from '@/lib/services/UserDetails';
+import { IUser } from '@/types';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import React from 'react'
 
-function ProfileLayout({
+async function ProfileLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
 
+    const profile = await GetMyProfile() as { data: IUser };
+    const user = profile?.data;
+
+    if (!user) {
+        return notFound()
+    }
+
+    const routes = getRoutesByRole(user.auth?.role);
 
     return (
         <div className='relative h-full'>
@@ -20,7 +31,7 @@ function ProfileLayout({
                 <div className='grid grid-cols-4 gap-5 pt-5 bg-white'>
 
                     <div className='hidden lg:block lg:col-span-1 rounded-md p-8 pt-4 self-start'>
-                        {profileRouts.map((route) => (
+                        {routes.map((route) => (
                             <div key={route.id} className='mb-6'>
                                 <h6 className='font-medium text-gray-900'>{route.title}</h6>
                                 <ul className='mt-1.5'>

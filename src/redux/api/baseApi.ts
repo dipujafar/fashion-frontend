@@ -47,6 +47,7 @@ const baseQueryWithRefreshToken = async (
   if (result?.error?.status === 401) {
     const res = await fetch(`${EnvConfig.baseUrl}/auth/refresh`, {
       method: "POST",
+      body : JSON.stringify({ refreshToken: (api.getState() as any).auth.refreshToken }),
       credentials: "include",
     });
 

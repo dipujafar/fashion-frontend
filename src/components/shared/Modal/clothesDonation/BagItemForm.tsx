@@ -1,55 +1,92 @@
 "use client";
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { X } from "lucide-react"
-import { ITEM_TYPES, BAG_CONTENTS, WASHED_OPTIONS } from "./schema";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Camera, X } from "lucide-react";
+import {
+  ITEM_TYPES,
+  BAG_CONTENTS,
+  BAG_CONDITIONS,
+  ITEMS_COUNT_OPTIONS,
+  WASHED_OPTIONS,
+} from "./schema";
 import { cn } from "@/lib/utils";
+import { DonationPhotoBoxItem } from "./SingleItemForm";
 
+const MAX_PHOTOS = 8;
+const BAG_PHOTO_INPUT_ID = "bag-donation-photo-uploader";
 
-
-interface FormProps {
-  form: any
-  itemCount?: number
+interface BagItemFormProps {
+  form: any;
+  images: File[];
+  onAddFiles: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEditImage: (index: number) => void;
+  onRemoveImage: (index: number) => void;
 }
-export default function BagItemForm({ form }: FormProps) {
-  const [selectedContents, setSelectedContents] = useState<string[]>([])
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+
+export default function BagItemForm({
+  form,
+  images,
+  onAddFiles,
+  onEditImage,
+  onRemoveImage,
+}: BagItemFormProps) {
+  const selectedContents: string[] = form.watch("personTypes") || [];
+  const selectedTypes: string[] = form.watch("itemTypes") || [];
+  const selectedBrands: string[] = form.watch("brands") || [];
 
   const toggleContent = (content: string) => {
     const updated = selectedContents.includes(content)
       ? selectedContents.filter((c) => c !== content)
-      : [...selectedContents, content]
-    setSelectedContents(updated)
-    form.setValue("bagItems.bagContents", updated)
-  }
+      : [...selectedContents, content];
+    form.setValue("personTypes", updated, { shouldValidate: true });
+  };
 
   const toggleItemType = (type: string) => {
-    const updated = selectedTypes.includes(type) ? selectedTypes.filter((t) => t !== type) : [...selectedTypes, type]
-    setSelectedTypes(updated)
-    form.setValue("bagItems.itemTypes", updated)
-  }
+    const updated = selectedTypes.includes(type)
+      ? selectedTypes.filter((t) => t !== type)
+      : [...selectedTypes, type];
+    form.setValue("itemTypes", updated, { shouldValidate: true });
+  };
+
+  const visibleSlots = Math.min(images.length + 1, MAX_PHOTOS);
+  const boxes = Array.from({ length: visibleSlots });
 
   return (
     <div className="space-y-5">
-      {/* What is in the bag */}
+      {/* What is in the bag (Multiple selection) */}
       <FormField
         control={form.control}
-        name="bagItems.bagContents"
-        render={({ field }) => (
+        name="personTypes"
+        render={() => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">What is in the bag?</FormLabel>
-            <div className="mt-3 space-y-3">
-              <div className="flex flex-wrap gap-2">
+            <FormLabel className="text-base font-semibold text-gray-900">
+              What is in the bag?
+            </FormLabel>
+
+            {selectedContents.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
                 {selectedContents.map((content) => (
                   <Badge
                     key={content}
                     variant="secondary"
-                    className="cursor-pointer gap-2 pl-2"
+                    className="cursor-pointer gap-1.5 pl-2.5 pr-2 py-1 rounded bg-black text-white hover:bg-neutral-800"
                     onClick={() => toggleContent(content)}
                   >
                     {content}
@@ -57,88 +94,135 @@ export default function BagItemForm({ form }: FormProps) {
                   </Badge>
                 ))}
               </div>
-            </div>
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-              {BAG_CONTENTS.map((content) => (
-                <Button
-                  key={content}
-                  type="button"
-                  variant={selectedContents.includes(content) ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleContent(content)}
-                  className={cn("text-xs", !selectedContents.includes(content) && "bg-gray-100")}
-                >
-                  {content}
-                </Button>
-              ))}
+            )}
+
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2 pt-1">
+              {BAG_CONTENTS.map((content) => {
+                const isSelected = selectedContents.includes(content);
+                return (
+                  <Button
+                    key={content}
+                    type="button"
+                    variant={isSelected ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleContent(content)}
+                    className={cn(
+                      "text-xs rounded shadow-none cursor-pointer transition-colors h-9",
+                      !isSelected &&
+                        "bg-white border-[#e1e1e1] text-gray-800 hover:bg-gray-50 hover:border-primary-black"
+                    )}
+                  >
+                    {content}
+                  </Button>
+                );
+              })}
             </div>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      {/* Item Type Selection */}
+      {/* Item Type Selection (Multiple selection) */}
       <FormField
         control={form.control}
-        name="bagItems.itemTypes"
-        render={({ field }) => (
+        name="itemTypes"
+        render={() => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">Item type</FormLabel>
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-              {ITEM_TYPES.map((type) => (
-                <Button
-                  key={type}
-                  type="button"
-                  variant={selectedTypes.includes(type) ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleItemType(type)}
-                  className={cn("text-xs", !selectedTypes.includes(type) && "bg-gray-100")}
-                >
-                  {type}
-                </Button>
-              ))}
+            <FormLabel className="text-base font-semibold text-gray-900">
+              Item type
+            </FormLabel>
+
+            {selectedTypes.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {selectedTypes.map((type) => (
+                  <Badge
+                    key={type}
+                    variant="secondary"
+                    className="cursor-pointer gap-1.5 pl-2.5 pr-2 py-1 rounded bg-black text-white hover:bg-neutral-800"
+                    onClick={() => toggleItemType(type)}
+                  >
+                    {type}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-3 pt-1">
+              {ITEM_TYPES.map((type) => {
+                const isSelected = selectedTypes.includes(type);
+                return (
+                  <Button
+                    key={type}
+                    type="button"
+                    variant={isSelected ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleItemType(type)}
+                    className={cn(
+                      "text-xs rounded shadow-none cursor-pointer transition-colors h-9",
+                      !isSelected &&
+                        "bg-white border-[#e1e1e1] text-gray-800 hover:bg-gray-50 hover:border-primary-black"
+                    )}
+                  >
+                    {type}
+                  </Button>
+                );
+              })}
             </div>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      {/* Main Brands */}
+      {/* Main Brands (Comma-separated tag input like AddProductForm) */}
       <FormField
         control={form.control}
-        name="bagItems.mainBrands"
+        name="brands"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">
-              Main brands <span className="text-sm font-normal text-muted-foreground">(Optional)</span>
+            <FormLabel className="text-base font-semibold text-gray-900">
+              Main brands{" "}
+              <span className="text-sm font-normal text-muted-foreground">
+                (Optional)
+              </span>
             </FormLabel>
             <FormControl>
-              <Input className="bg-gray-100 py-5" placeholder="Enter main brands" {...field} />
+              <BrandTagInput
+                value={selectedBrands}
+                onChange={field.onChange}
+                placeholder="Type brand and press comma or Enter..."
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      {/* Approx Number of Items */}
+      {/* Approx. Number of Items */}
       <FormField
         control={form.control}
-        name="bagItems.approxItems"
+        name="itemsCount"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">Approx. number of items</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormLabel className="text-base font-semibold text-gray-900">
+              Approx. number of items
+            </FormLabel>
+            <Select onValueChange={field.onChange} value={field.value || ""}>
               <FormControl>
-                <SelectTrigger className="bg-gray-100 py-5 w-full">
+                <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer focus-within:border-primary-black">
                   <SelectValue placeholder="Select number of items" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent>
-                <SelectItem value="5-10">5-10 items</SelectItem>
-                <SelectItem value="10-20">10-20 items</SelectItem>
-                <SelectItem value="20-30">20-30 items</SelectItem>
-                <SelectItem value="30-50">30-50 items</SelectItem>
-                <SelectItem value="50+">50+ items</SelectItem>
+              <SelectContent className="p-0 rounded-none">
+                {ITEMS_COUNT_OPTIONS.map((option) => (
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    className="rounded-none cursor-pointer py-2.5 px-3 text-base"
+                  >
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <FormMessage />
@@ -149,21 +233,28 @@ export default function BagItemForm({ form }: FormProps) {
       {/* Overall Condition */}
       <FormField
         control={form.control}
-        name="bagItems.condition"
+        name="condition"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">Overall condition</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormLabel className="text-base font-semibold text-gray-900">
+              Overall condition
+            </FormLabel>
+            <Select onValueChange={field.onChange} value={field.value || ""}>
               <FormControl>
-                <SelectTrigger className="bg-gray-100 py-5 w-full">
+                <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer focus-within:border-primary-black">
                   <SelectValue placeholder="Select condition" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent>
-                <SelectItem value="mixed-some-good-some-worn">Mixed - some good, some worn</SelectItem>
-                <SelectItem value="mostly-good">Mostly good</SelectItem>
-                <SelectItem value="mostly-worn">Mostly worn</SelectItem>
-                <SelectItem value="like-new">Like new</SelectItem>
+              <SelectContent className="p-0 rounded-none">
+                {BAG_CONDITIONS.map((condition) => (
+                  <SelectItem
+                    key={condition}
+                    value={condition}
+                    className="rounded-none cursor-pointer py-2.5 px-3 text-base"
+                  >
+                    {condition}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <FormMessage />
@@ -174,20 +265,26 @@ export default function BagItemForm({ form }: FormProps) {
       {/* Washed */}
       <FormField
         control={form.control}
-        name="bagItems.washed"
+        name="washedType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">Washed?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormLabel className="text-base font-semibold text-gray-900">
+              Washed?
+            </FormLabel>
+            <Select onValueChange={field.onChange} value={field.value || ""}>
               <FormControl>
-                <SelectTrigger  className="bg-gray-100 py-5 w-full">
+                <SelectTrigger className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base !py-5 px-3 w-full cursor-pointer focus-within:border-primary-black">
                   <SelectValue placeholder="Select wash status" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent>
+              <SelectContent className="p-0 rounded-none">
                 {WASHED_OPTIONS.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    className="rounded-none cursor-pointer py-2.5 px-3 text-base"
+                  >
+                    {option.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -200,41 +297,164 @@ export default function BagItemForm({ form }: FormProps) {
       {/* Bag Description */}
       <FormField
         control={form.control}
-        name="bagItems.description"
+        name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-base font-semibold">
-              Bag description <span className="text-sm font-normal text-muted-foreground">(Optional)</span>
+            <FormLabel className="text-base font-semibold text-gray-900">
+              Bag description{" "}
+              <span className="text-sm font-normal text-muted-foreground">
+                (Optional)
+              </span>
             </FormLabel>
             <FormControl>
-              <Textarea  className="bg-gray-100  w-full" placeholder="Colours, size, fit, anything else helpful..." {...field} />
+              <Textarea
+                className="bg-white border-[#e1e1e1] rounded shadow-none focus-visible:ring-0 focus:ring-0 focus:border focus-visible:border-primary-black !text-base px-3"
+                placeholder="Colours, size, fit, anything else helpful..."
+                rows={4}
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      {/* Photos */}
-      <FormField
-        control={form.control}
-        name="bagItems.photos"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-base font-semibold">
-              Photos <span className="text-sm font-normal text-muted-foreground">(Optional)</span>
-            </FormLabel>
-            <FormControl>
-              <div className="rounded-lg border-2 border-dashed border-primary p-6 text-center bg-gray-100">
-                <Input  type="file" multiple accept="image/*" className="hidden" id="bag-photos" />
-                <label htmlFor="bag-photos" className="cursor-pointer">
-                  <div className="text-primary">+ Add photos</div>
-                </label>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+      {/* Photos (1 by 1 like AddProductForm) */}
+      <div className="space-y-2">
+        <div>
+          <p className="text-base font-semibold text-gray-900">Photos</p>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Add up to {MAX_PHOTOS} photos in JPEG or PNG format.
+          </p>
+        </div>
+
+        <input
+          id={BAG_PHOTO_INPUT_ID}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="hidden"
+          onChange={onAddFiles}
+        />
+
+        <div className="mt-3 grid grid-cols-3 md:grid-cols-4 gap-3">
+          {boxes.map((_, i) => {
+            const file = images[i];
+
+            if (file) {
+              return (
+                <DonationPhotoBoxItem
+                  key={i}
+                  file={file}
+                  index={i}
+                  onEdit={onEditImage}
+                  onRemove={onRemoveImage}
+                />
+              );
+            }
+
+            return (
+              <label
+                key={i}
+                htmlFor={BAG_PHOTO_INPUT_ID}
+                className="aspect-square rounded border border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 transition-all cursor-pointer hover:border-black hover:text-black hover:bg-gray-50"
+              >
+                <Camera size={22} strokeWidth={1.75} />
+                <span className="text-[11px] font-medium mt-1 text-gray-500">
+                  {i === 0 ? "Add Photo" : "Add More"}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Brand Tag Input (like TagInput in AddProductForm, supporting comma & Enter) ─
+
+function BrandTagInput({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string[];
+  onChange: (brands: string[]) => void;
+  placeholder?: string;
+}) {
+  const [inputValue, setInputValue] = useState("");
+
+  const addBrandsFromString = (raw: string) => {
+    const parts = raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (parts.length === 0) return;
+
+    const next = [...value];
+    for (const part of parts) {
+      if (!next.includes(part)) {
+        next.push(part);
+      }
+    }
+    onChange(next);
+    setInputValue("");
+  };
+
+  const removeBrand = (brand: string) => {
+    onChange(value.filter((b) => b !== brand));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val.includes(",")) {
+      addBrandsFromString(val);
+    } else {
+      setInputValue(val);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addBrandsFromString(inputValue);
+    } else if (e.key === "Backspace" && !inputValue && value.length > 0) {
+      removeBrand(value[value.length - 1]);
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 py-1 px-3 bg-white border border-[#e1e1e1] focus-within:border-primary-black rounded focus-visible:border-primary-black !text-base">
+      {value.map((brand, i) => (
+        <span
+          key={i}
+          className="flex items-center bg-black text-white px-2 py-0.5 rounded-full gap-1 text-sm"
+        >
+          {brand}
+          <button
+            type="button"
+            onClick={() => removeBrand(brand)}
+            className="text-white/80 hover:text-red-500 duration-500 cursor-pointer"
+          >
+            <X size={14} />
+          </button>
+        </span>
+      ))}
+
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        onBlur={() => {
+          if (inputValue.trim()) {
+            addBrandsFromString(inputValue);
+          }
+        }}
+        placeholder={value.length === 0 ? placeholder : ""}
+        className="flex-1 bg-transparent outline-none text-sm py-2 min-w-[120px]"
       />
     </div>
-  )
+  );
 }
