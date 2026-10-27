@@ -1,5 +1,4 @@
 import ProfileIcon from "./NavIconsWithDropDown/ProfileIcon";
-import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import NotificationIcon from "./NavIconsWithDropDown/NotificationIcon";
 import WishListDropDown from "./NavIconsWithDropDown/WishListDropDown";
 import CartDropDown from "./NavIconsWithDropDown/CartDropDown";
@@ -8,37 +7,24 @@ import MessageDropDown from "./NavIconsWithDropDown/MessageDropDown";
 const SearchAndNavIcon = () => {
 
   return (
-    <>
+    <div className="flex flex-row items-center gap-x-1">
 
-      <Menubar className="border-none shadow-none">
+      <div className="mr-2">
+        <MessageDropDown />
+      </div>
 
-        <div className="mr-2">
-          <MessageDropDown />
-        </div>
+      <WishListDropDown />
 
-        <div>
-          <MenubarMenu>
-            <WishListDropDown />
-          </MenubarMenu>
-        </div>
 
-        <MenubarMenu>
-          <NotificationIcon />
-        </MenubarMenu>
+      <NotificationIcon />
 
-        <div>
-          <MenubarMenu>
-            <CartDropDown />
-          </MenubarMenu>
-        </div>
 
-        <MenubarMenu>
-          <ProfileIcon />
-        </MenubarMenu>
+      <CartDropDown />
 
-      </Menubar>
 
-    </>
+      <ProfileIcon />
+
+    </div>
 
   );
 };

@@ -1,10 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+
 import {
-  MenubarContent,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { HeartIcon } from "@/icons";
 import { defaultImg } from "@/utils/defaultImg";
 import Image from "next/image";
@@ -13,17 +17,21 @@ import DltToFavourite from "./DltToFavourite";
 import { useMyFavoriteProductsQuery } from "@/redux/api/favoriteProductApi";
 import { IFavoriteItem } from "@/app/(public)/favourites/_components/WishListContainer";
 import { useCurrency } from "@/hooks/useCurrency";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function WishListDropDown() {
+  const [open, setOpen] = useState(false);
+  const closeMenu = () => setOpen(false);
 
   const { isLoading, data } = useMyFavoriteProductsQuery();
 
   return (
-    <>
-      <MenubarTrigger className="cursor-pointer relative">
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger className={cn("cursor-pointer relative focus-within:outline-none focus-within:ring-0 focus-within:ring-primary-black p-1.5", open && "bg-gray-100 rounded-md")}>
         <HeartIcon className="size-5 lg:size-6 " />
-      </MenubarTrigger>
-      <MenubarContent className="rounded-none w-xs">
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="rounded-none w-xs" align="start">
 
         <div className="border-b border-gray-200 py-2 px-3 sticky top-0 bg-white z-10">
           <p className="text-base font-medium text-center">Favourites</p>
@@ -33,8 +41,8 @@ export default function WishListDropDown() {
           <span className="loaderDark !w-10"> </span>
         </div> : <FavProds favoriteProds={data?.data?.data || []} />}
 
-      </MenubarContent>
-    </>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

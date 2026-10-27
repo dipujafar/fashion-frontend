@@ -9,6 +9,10 @@ import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFo
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { CartIcon } from "@/icons";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
+import { baseApi } from "@/redux/api/baseApi";
 
 const navLinksFotProfileIcon = [
   {
@@ -97,6 +101,16 @@ export function SheetContentContainer({
 }) {
 
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.refresh();
+    dispatch(baseApi.util.resetApiState());
+    router.refresh();
+  };
 
   return (
     <div className="flex h-full flex-col bg-background overflow-y-auto scroll-hide">
@@ -208,6 +222,8 @@ export function SheetContentContainer({
           ))}
         </nav>
       </div>
+
+      <Button variant="destructive" className="rounded-none m-2 mt-0" onClick={handleLogout}>Logout</Button>
     </div>
   );
 }

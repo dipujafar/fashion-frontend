@@ -16,6 +16,7 @@ import {
     Instagram,
     Twitter,
 } from "lucide-react";
+import ClothesDonationDialog from '@/components/shared/Modal/clothesDonation/ClothesDonationDialog';
 
 async function CharityDetails({ params }: { params: Promise<{ username: string }> }) {
     const { username } = await params;
@@ -76,13 +77,14 @@ const OverViewDetails = async ({ userPromise }: { userPromise: Promise<{ data: I
                         <p className="text-sm leading-snug text-indigo-800">
                             Give your pre-loved clothes a new home and support this charity.
                         </p>
-                        <button
-                            type="button"
-                            className="mt-2 w-full rounded-md border border-black bg-white px-4 py-1.5 text-sm text-black transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 font-semibold cursor-pointer"
-                        >
-                            Donate clothes
-                        </button>
-
+                        <ClothesDonationDialog charityId={user?.data?.id}>
+                            <button
+                                type="button"
+                                className="mt-2 w-full rounded-md border border-black bg-white px-4 py-1.5 text-sm text-black transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 font-semibold cursor-pointer"
+                            >
+                                Donate clothes
+                            </button>
+                        </ClothesDonationDialog>
                     </div>
                 </div>
             </section>

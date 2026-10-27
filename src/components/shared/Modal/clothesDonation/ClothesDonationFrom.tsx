@@ -20,9 +20,10 @@ import BagItemForm from "./BagItemForm"
 
 interface DonationFormProps {
     onSubmit?: () => void
+    charityId: string
 }
 
-export function DonationForm({ onSubmit }: DonationFormProps) {
+export function DonationForm({ onSubmit, charityId }: DonationFormProps) {
     const [donationType, setDonationType] = useState<"single" | "bag">("single")
     const [addedItems, setAddedItems] = useState<number>(1)
 

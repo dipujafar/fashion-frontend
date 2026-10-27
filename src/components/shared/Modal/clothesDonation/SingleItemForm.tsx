@@ -44,7 +44,7 @@ export default function SingleItemForm({ form, itemCount = 1 }: FormProps) {
           <FormItem>
             <FormLabel className="text-base font-semibold">What are you donating?</FormLabel>
             <FormDescription>Select the type of item.</FormDescription>
-            <div className="mt-3 space-y-3">
+            <div className="space-y-3">
               <div className="flex flex-wrap gap-2">
                 {selectedTypes.map((type) => (
                   <Badge
@@ -58,7 +58,6 @@ export default function SingleItemForm({ form, itemCount = 1 }: FormProps) {
                   </Badge>
                 ))}
               </div>
-              {selectedTypes.length === 0 && <p className="text-sm text-muted-foreground">Select the type of item.</p>}
             </div>
             <FormMessage />
           </FormItem>

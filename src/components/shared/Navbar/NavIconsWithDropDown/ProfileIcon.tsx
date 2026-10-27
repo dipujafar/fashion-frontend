@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -20,13 +20,17 @@ import {
   Wallet,
 } from "lucide-react";
 
+
 import {
-  MenubarContent,
-  MenubarItem,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut
+} from "@/components/ui/dropdown-menu"
+
 import {
   Tooltip,
   TooltipContent,
@@ -38,6 +42,7 @@ import { CharityDonationFormDialog } from "../../Modal/Charity/CharityDonationFo
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/authSlice";
 import { baseApi } from "@/redux/api/baseApi";
+import { cn } from "@/lib/utils";
 
 type NavLink = {
   icon: React.ReactNode;
@@ -83,6 +88,8 @@ function AssistedSellerLabel() {
 }
 
 export default function ProfileIcon() {
+  const [open, setOpen] = useState(false);
+  const closeMenu = () => setOpen(false);
   const user = useSelector((state: any) => state.auth.user);
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -144,26 +151,28 @@ export default function ProfileIcon() {
   ];
 
   return (
-    <>
-      <MenubarTrigger className="md:flex hidden cursor-pointer">
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger className={cn("cursor-pointer relative focus-within:outline-none focus-within:ring-0 focus-within:ring-primary-black p-1.5 md:flex hidden", open && "bg-gray-100 rounded-md")}>
         <ProfileNavIcon />
-      </MenubarTrigger>
+      </DropdownMenuTrigger>
 
-      <MenubarContent
+      <DropdownMenuContent
         align="end"
         className="md:min-w-xs overflow-y-auto max-h-96 p-0 rounded-none"
       >
         {navLinks.map((item) => (
-          <Link href={item.link} key={item.name}>
-            <MenubarItem className={itemClass}>
+          <Link href={item.link} key={item.name} onClick={closeMenu}>
+            <DropdownMenuItem className={itemClass}>
               <div className="flex h-6 w-6 items-center justify-center text-muted-foreground">
                 {item.icon}
               </div>
+
               <div className="text-base">{item.label ?? item.name}</div>
-              <MenubarShortcut>
+              <DropdownMenuShortcut>
                 <ChevronRight className="group-hover:translate-x-2 transition-all duration-300" />
-              </MenubarShortcut>
-            </MenubarItem>
+              </DropdownMenuShortcut>
+
+            </DropdownMenuItem>
           </Link>
         ))}
 
@@ -174,18 +183,18 @@ export default function ProfileIcon() {
               <LifeBuoy className="flex size-5 items-center justify-center text-muted-foreground" />
               Donate Now
             </div>
-            <MenubarSeparator />
+            <DropdownMenuSeparator />
           </div>
         </CharityDonationFormDialog>
 
         {/* Logout */}
-        <MenubarItem onClick={handleLogout} className={itemClass}>
+        <DropdownMenuItem onClick={handleLogout} className={itemClass}>
           <div className="flex items-center gap-x-2 pl-1">
             <LogOut className="size-5" />
             <p className="text-base">Logout</p>
           </div>
-        </MenubarItem>
-      </MenubarContent>
-    </>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

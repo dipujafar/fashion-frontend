@@ -2,11 +2,6 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  MenubarContent,
-  MenubarItem,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 import { NotificationBellIcon } from "@/icons";
 import { useNotificationsQuery, useReadAllNotificationsMutation } from "@/redux/api/notification.api";
 import moment from "moment";
@@ -15,7 +10,19 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { NotificationRender } from "./NotificationRender";
 
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
 export default function NotificationIcon() {
+  const [open, setOpen] = useState(false);
+  const closeMenu = () => setOpen(false);
 
   const { data: notifications, isLoading, isSuccess } = useNotificationsQuery({});
 
@@ -32,13 +39,13 @@ export default function NotificationIcon() {
   const unreadCount = notifications?.data?.unReadCount || 0;
 
   return (
-    <>
-      <MenubarTrigger className="cursor-pointer relative">
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger className={cn("cursor-pointer relative focus-within:outline-none focus-within:ring-0 focus-within:ring-primary-black p-1.5", open && "bg-gray-100 rounded-md")}>
         <NotificationBellIcon className="size-5 lg:size-6" />
 
-        {(isSuccess && notifications?.data?.unReadCount > 0) && <span className="absolute top right grid min-h-[20px] min-w-[20px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-600 px-[3px] py-0.5 text-[10px] text-white">{unreadCount < 100 ? unreadCount : `100+`}</span>}
-      </MenubarTrigger>
-      <MenubarContent className="rounded-none w-[340px]">
+        {(isSuccess && notifications?.data?.unReadCount > 0) && <span className="absolute top-2 right-2 grid min-h-[20px] min-w-[20px] translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-red-600 px-0.75 py-0.5 text-[10px] text-white">{unreadCount < 100 ? unreadCount : `100+`}</span>}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="rounded-none w-[340px]" align="start">
 
         <div className="overflow-y-auto max-h-[450px]">
 
@@ -62,8 +69,8 @@ export default function NotificationIcon() {
                 const renderNotification = NotificationRender({ notification });
 
                 return <div key={notification?.id}>
-                  <MenubarItem className="flex-none focus:bg-transparent">
-                    <Link href={renderNotification?.link || "#"} className="w-full">
+                  <DropdownMenuItem className="flex-none focus:bg-transparent">
+                    <Link href={renderNotification?.link || "#"} onClick={closeMenu} className="w-full">
                       <Card className="p-4 shadow-none rounded">
                         <div className="flex items-start gap-3">
                           <Avatar className="size-8 bg-gray-900  flex justify-center items-center flex-shrink-0">
@@ -71,7 +78,7 @@ export default function NotificationIcon() {
                           </Avatar>
 
                           <div className="flex flex-row gap-x-1 items-start justify-between">
-                            
+
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                               <div className="flex-1 min-w-0">
 
@@ -108,7 +115,7 @@ export default function NotificationIcon() {
 
                       </Card>
                     </Link>
-                  </MenubarItem>
+                  </DropdownMenuItem>
                 </div>
               })}
 
@@ -128,12 +135,12 @@ export default function NotificationIcon() {
           }
         </div>
 
-        {(isSuccess && notifications?.data?.data?.length > 0) && <Link href={"/notifications"}>
+        {(isSuccess && notifications?.data?.data?.length > 0) && <Link onClick={closeMenu} href={"/notifications"}>
           <Button variant={"default"} className="w-full mt-2 rounded-none py-4 border-2 border-primary-black cursor-pointer font-medium">View All</Button>
         </Link>}
 
 
-      </MenubarContent>
-    </>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
