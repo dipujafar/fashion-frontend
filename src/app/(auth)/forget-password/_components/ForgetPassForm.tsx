@@ -12,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import CommonButton from "@/components/ui/common-button";
 import { useRouter } from "next/navigation";
 import { useForgotPasswordMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
@@ -36,26 +35,25 @@ const ForgetPassForm = () => {
     try {
       const res = await forgetPass(data).unwrap();
       if (res?.data?.token) {
+        sessionStorage.removeItem("signUpToken");
         sessionStorage.setItem("forgotPasswordToken", res?.data?.token);
+        sessionStorage.setItem("otpEmail", data?.email);
         toast.success("Please verify your email with OTP, which has been sent to your email.");
-        router.push(`/verify-otp?status=forgot&email=${data?.email}`);
+        router.push(`/verify-otp?status=forgot`);
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
     }
-
   };
 
   return (
-    <Card
-      className="max-w-lg mx-auto shadow-none border-none"
-    >
-
+    <Card className="max-w-lg mx-auto shadow-none border-none">
       <CardContent>
-
         <div className="my-8 space-y-2">
           <h3 className="text-3xl font-bold text-center">Forgot Your Password?</h3>
-          <p className="text-secondary-gray">Enter the email address associated with your account and we'll send you a link to reset your password.</p>
+          <p className="text-secondary-gray">
+            Enter the email address associated with your account and we&apos;ll send you a link to reset your password.
+          </p>
         </div>
 
         <Form {...form}>
@@ -81,7 +79,14 @@ const ForgetPassForm = () => {
               )}
             />
 
-            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Submit"}</Button>
+            <Button
+              variant={"default"}
+              disabled={isLoading}
+              type="submit"
+              className="rounded-full h-11 w-full cursor-pointer text-base"
+            >
+              {isLoading ? <span className="loader"></span> : "Submit"}
+            </Button>
           </form>
         </Form>
       </CardContent>

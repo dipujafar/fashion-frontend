@@ -124,8 +124,10 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
     try {
       const res = await createAccount({ ...data, role }).unwrap();
       if (res?.data?.otpToken) {
+        sessionStorage.removeItem("signUpToken");
         sessionStorage.setItem("verifyOtpToken", res?.data?.otpToken);
         sessionStorage.setItem("signupRole", role);
+        sessionStorage.setItem("otpEmail", data.email);
         toast.success("Account created successfully");
         toast.success(
           "Please verify your email with OTP, which has been sent to your email.",

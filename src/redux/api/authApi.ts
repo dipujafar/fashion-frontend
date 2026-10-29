@@ -28,6 +28,16 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+    resendOtp: builder.mutation<
+      { success: boolean; message?: string; data?: { token?: string; otpToken?: string } },
+      { email: string }
+    >({
+      query: (data) => ({
+        url: "/auth/resend-otp",
+        method: "POST",
+        body: data,
+      }),
+    }),
     verifyPhoneOtp: builder.mutation<{ success: boolean; message?: string; data?: any }, { token: string; otp: string }>({
       query: (data) => ({
         url: "/auth/verify-phone-otp",
@@ -106,6 +116,7 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useCreateUserMutation,
   useVerifyOtpMutation,
+  useResendOtpMutation,
   useLoginMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
