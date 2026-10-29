@@ -24,7 +24,7 @@ async function Dashboardpage() {
     return (
         <div className=''>
 
-            <div className='mb-2 flex lg:flex-row gap-3 items-center justify-between'>
+            <div className='mb-2 flex flex-col lg:flex-row gap-3 items-start lg:items-center justify-start lg:justify-between'>
                 <div className=''>
                     <h2 className='text-xl font-semibold'>Welcome back, @{user?.userName}</h2>
                     <p className='text-base text-muted-foreground'>Here's an overview of your account.</p>

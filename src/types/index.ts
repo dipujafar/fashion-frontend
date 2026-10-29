@@ -206,8 +206,111 @@ export interface IUser {
   charityGalleries: { id: string, url: string, caption: string }[]
   vacationMode: boolean,
   lastOnlineAt: Date | null,
-  countryAvaialblity : {name : string, code : string} | null
+  countryAvaialblity: { name: string, code: string } | null
+
+  charitableOrganization: CharitableOrganization | null;
+  charityShop: CharityShop | null;
+  ecoFriendlyStore: EcoFriendlyStore | null;
+  celebrity: Celebrity | null;
+  ambassador: Ambassador | null;
+  professionalSeller: ProfessionalSeller | null;
 }
+
+
+// =================Roles specifiq fields======================
+
+export interface IndividualVerification {
+  id: string;
+  userId: string;
+  dateOfBirth?: Date | null;
+  identityType?: string | null;
+  identityCountry?: string | null;
+  identityNumber?: string | null;
+  identityDocumentKey?: string | null;
+  identityBackKey?: string | null;
+}
+
+export interface CharitableOrganization {
+  id: string;
+  userId: string;
+  legalName: string;
+  registrationNumber?: string | null;
+  registrationCountry: string;
+  registeredAddress?: string | null;
+  authorizedPersonName: string;
+  authorizedPersonRole: string;
+  registrationDocumentKey?: string | null;
+  authorizationDocumentKey?: string | null;
+}
+
+export interface CharityShop {
+  id: string;
+  userId: string;
+  shopName: string;
+  operatorType: string;
+  legalBusinessName?: string | null;
+  businessRegistrationNumber?: string | null;
+  registrationCountry?: string | null;
+  charityRegistrationNumber?: string | null;
+  charityRelationship?: string | null;
+  authorizationDocumentKey?: string | null;
+  registrationDocumentKey?: string | null;
+}
+
+export interface EcoFriendlyStore {
+  id: string;
+  userId: string;
+  storeName: string;
+  legalBusinessName?: string | null;
+  businessRegistrationNumber?: string | null;
+  registrationCountry?: string | null;
+  sustainabilityDescription: string;
+  certificationName?: string | null;
+  certificationIssuer?: string | null;
+  certificationNumber?: string | null;
+  certificationDocumentKey?: string | null;
+}
+
+export interface Celebrity {
+  id: string;
+  userId: string;
+  legalName: string;
+  publicName: string;
+  profession?: string | null;
+  officialWebsite?: string | null;
+  officialProfileUrls: string[];
+  identityDocumentKey?: string | null;
+  publicIdentityEvidenceKey?: string | null;
+}
+
+export interface Ambassador {
+  id: string;
+  userId: string;
+  ambassadorType: string;
+  representedBrand?: string | null;
+  representedOrganization?: string | null;
+  authorizationDocumentKey?: string | null;
+  agreementVersion?: string | null;
+  agreementAcceptedAt?: Date | null;
+}
+
+export interface ProfessionalSeller {
+  id: string;
+  userId: string;
+  legalBusinessName: string;
+  tradingName?: string | null;
+  businessType: string;
+  businessRegistrationNumber?: string | null;
+  registrationCountry: string;
+  registeredAddress?: string | null;
+  registrationDocumentKey?: string | null;
+  taxIdentificationNumber?: string | null;
+}
+
+// =================Roles specifiq fields ends======================
+
+
+
 
 export interface INotification {
   id: string
@@ -338,6 +441,20 @@ export interface IMeta {
   limit: number,
 }
 
+export type TThanksMessageType = "SELL" | "DIRECT" | "CLOTH";
+
+export interface IDonationThanksMsg {
+  id: string;
+  donorId: string;
+  sellDonationId?: string | null;
+  directDonationId?: string | null;
+  clothDonationId?: string | null;
+  message: string;
+  msgType: TThanksMessageType;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+}
+
 export interface ISelldonation {
   id: string,
   amount: number,
@@ -351,7 +468,9 @@ export interface ISelldonation {
   charityId: string,
   charity: IUser,
   orderItem: IOrderItem,
-  donatedAt: Date | null
+  donatedAt: Date | null,
+  thanksMessage?: IDonationThanksMsg | null,
+  thanksMsg?: IDonationThanksMsg | null,
 }
 
 enum SellDonationStatus {
@@ -380,6 +499,8 @@ export interface IDirectDonation {
 
   donatedAt: Date | null
   createdAt: Date
+  thanksMsg?: IDonationThanksMsg | null
+  thanksMessage?: IDonationThanksMsg | null
 }
 
 export interface ITreeDonation {
@@ -441,7 +562,7 @@ export interface IOrder {
   createdAt: Date,
 
   extraDonation: number,
-  allowedAuthentication : boolean,
+  allowedAuthentication: boolean,
 
   bundleDiscountPercent: number,
 
@@ -668,7 +789,7 @@ export interface IAssitedSellRequest {
   deliveryCharge: number | null,
   status: AssistentSellStatus,
   listings: IProduct[],
-  shipment : IShipment | null,
+  shipment: IShipment | null,
   sellerId: string,
   seller: IUser,
   createdAt: Date,
@@ -774,8 +895,8 @@ export enum PayoutStatus {
 
 export interface IShipment {
   id: string,
-  order : IOrder | null,
-  authOrder : IOrder | null,
+  order: IOrder | null,
+  authOrder: IOrder | null,
   assitentSellId: string | null,
   assitentSell: IAssitedSellRequest | null,
   returnId: string | null,

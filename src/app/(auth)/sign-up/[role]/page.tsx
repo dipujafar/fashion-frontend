@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import React from 'react'
 import SignUpForm from '../components/SignUpForm';
 
-async function SignupPage({ params, }: { params: Promise<{ role: string }> }) {
+async function SignupPage({ params}: { params: Promise<{ role: string }> }) {
   const { role } = await params;
   const db_role = roleOptions[role];
 

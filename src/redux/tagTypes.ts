@@ -12,6 +12,7 @@ export const tagTypes = {
   folowings: "folowings",
   folowers: "folowers",
   review: "review",
+  cloth_donation: "cloth_donation",
 };
 
 export const tagTypesList = [
@@ -28,4 +29,5 @@ export const tagTypesList = [
   tagTypes.folowings,
   tagTypes.folowers,
   tagTypes.review,
+  tagTypes.cloth_donation,
 ];

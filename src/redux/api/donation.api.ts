@@ -1,34 +1,278 @@
+import {
+  IDirectDonation,
+  IDonationThanksMsg,
+  IMeta,
+  ISelldonation,
+  IShipment,
+  TThanksMessageType,
+} from "@/types";
+import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
+export interface IContributionStats {
+  totalSellDonationAmount: number;
+  totalDirectDonationAmount: number;
+}
+
+export type TDonationType = "SINGLE" | "MULTIPLE";
+export type TWashedType = "RECENT_WASHED" | "WASHED" | "UNWASHED";
+export type TClothDonationStatus =
+  | "PENDING"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "COMPLETED";
+
+export interface IClothDonationPhoto {
+  id: string;
+  donationId: string;
+  url: string;
+  key: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IClothDonationUser {
+  id: string;
+  userName: string;
+  email: string;
+  fname?: string;
+  lname?: string | null;
+  picture: { url: string; key: string } | null;
+  charityThumbnail?: { url: string; key: string } | null;
+}
+
+export interface IClothDonation {
+  id: string;
+  photos: IClothDonationPhoto[];
+  donorId: string;
+  donor: IClothDonationUser;
+  charityId: string;
+  charity: IClothDonationUser;
+  donationType: TDonationType;
+  itemsCount?: string | null;
+  itemTypes: string[];
+  personTypes: string[];
+  brands: string[];
+  condition: string;
+  washedType: TWashedType;
+  description?: string | null;
+  status: TClothDonationStatus;
+  shipment?: IShipment | null;
+  thanksMsg?: IDonationThanksMsg | null;
+  thanksMessage?: IDonationThanksMsg | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IRaisedDonationQueryParams {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+}
+
+export interface IClothDonationQueryParams {
+  page?: number;
+  limit?: number;
+  donationType?: string;
+  status?: string;
+  searchTerm?: string;
+}
+
 const donationApi = baseApi.injectEndpoints({
-    endpoints: (builder) => ({
+  endpoints: (builder) => ({
+    sellerSellCharitySupportStats: builder.query<
+      {
+        message: string;
+        data: {
+          sellDonatedAmount: number;
+          avgSellDonationPercentage: number;
+          totalCharitiesToSupport: number;
+          donationsByCharity: {
+            charityId: string;
+            charityBio: string | null;
+            charityName: string;
+            lname: string;
+            fname: string;
+            userName: string;
+            charityImage: string;
+            totalDonation: number;
+            productsSupported: number;
+          }[];
+        };
+      },
+      { userName: string }
+    >({
+      query: ({ userName }) => ({
+        url: `/donations/seller-charity-support/${userName}`,
+      }),
+    }),
 
+    getContributionStats: builder.query<
+      {
+        message: string;
+        data: IContributionStats;
+      },
+      void
+    >({
+      query: () => ({
+        url: "/donations/contribution-stats",
+        method: "GET",
+      }),
+    }),
 
-        sellerSellCharitySupportStats: builder.query<{
-            message: string, data: {
-                sellDonatedAmount: number,
-                avgSellDonationPercentage: number,
-                totalCharitiesToSupport: number,
-                donationsByCharity: {
-                    "charityId": string,
-                    charityBio : string | null,
-                    "charityName": string,
-                    lname: string,
-                    fname: string,
-                    userName : string,
-                    "charityImage": string,
-                    "totalDonation": number,
-                    productsSupported : number
-                }[]
-            }
-        }, { userName: string }>({
-            query: ({ userName }) => ({
-                url: `/donations/seller-charity-support/${userName}`,
-            }),
-        }),
+    getSellDonationContributed: builder.query<
+      {
+        message: string;
+        data: ISelldonation[] | { data: ISelldonation[]; meta?: IMeta };
+      },
+      Record<string, unknown> | void
+    >({
+      query: (params) => ({
+        url: "/donations/sell-contributed",
+        method: "GET",
+        params: params || undefined,
+      }),
+    }),
 
-    })
+    getDirectDonationContributed: builder.query<
+      {
+        message: string;
+        data: IDirectDonation[] | { data: IDirectDonation[]; meta?: IMeta };
+      },
+      Record<string, unknown> | void
+    >({
+      query: (params) => ({
+        url: "/donations/direct-contributed",
+        method: "GET",
+        params: params || undefined,
+      }),
+    }),
 
-})
+    getMyClothDonations: builder.query<
+      {
+        message: string;
+        data: { data: IClothDonation[]; meta: IMeta } | IClothDonation[];
+        meta?: IMeta;
+      },
+      IClothDonationQueryParams | void
+    >({
+      query: (params) => ({
+        url: "/cloth-donations/my-donations",
+        method: "GET",
+        params: params || undefined,
+      }),
+      providesTags: [tagTypes.cloth_donation],
+    }),
 
-export const { useSellerSellCharitySupportStatsQuery } = donationApi;
+    getCharityClothDonations: builder.query<
+      {
+        message: string;
+        data: { data: IClothDonation[]; meta: IMeta };
+      },
+      IClothDonationQueryParams | void
+    >({
+      query: (params) => ({
+        url: "/cloth-donations/charity",
+        method: "GET",
+        params: params || undefined,
+      }),
+      providesTags: [tagTypes.cloth_donation],
+    }),
+
+    updateClothDonationStatus: builder.mutation<
+      {
+        message: string;
+        data: IClothDonation;
+      },
+      { id: string; status: "ACCEPTED" | "REJECTED" }
+    >({
+      query: ({ id, status }) => ({
+        url: `/cloth-donations/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: [tagTypes.cloth_donation],
+    }),
+
+    getSellDonationsRaisedList: builder.query<
+      {
+        message: string;
+        data: { data: ISelldonation[]; meta: IMeta } | ISelldonation[];
+        meta?: IMeta;
+      },
+      IRaisedDonationQueryParams | void
+    >({
+      query: (params) => ({
+        url: "/donations/sell-raised-list",
+        method: "GET",
+        params: params || undefined,
+      }),
+      providesTags: [tagTypes.cloth_donation],
+    }),
+
+    getDirectDonationsRaisedList: builder.query<
+      {
+        message: string;
+        data: { data: IDirectDonation[]; meta: IMeta } | IDirectDonation[];
+        meta?: IMeta;
+      },
+      IRaisedDonationQueryParams | void
+    >({
+      query: (params) => ({
+        url: "/donations/direct-raised-list",
+        method: "GET",
+        params: params || undefined,
+      }),
+      providesTags: [tagTypes.cloth_donation],
+    }),
+
+    getExtraDonationsRaisedList: builder.query<
+      {
+        message: string;
+        data: { data: ISelldonation[]; meta: IMeta } | ISelldonation[];
+        meta?: IMeta;
+      },
+      IRaisedDonationQueryParams | void
+    >({
+      query: (params) => ({
+        url: "/donations/extra-raised-list",
+        method: "GET",
+        params: params || undefined,
+      }),
+      providesTags: [tagTypes.cloth_donation],
+    }),
+
+    sendThanksMessage: builder.mutation<
+      {
+        message: string;
+        data: IDonationThanksMsg;
+      },
+      {
+        referenceId: string;
+        msgType: TThanksMessageType;
+        message: string;
+      }
+    >({
+      query: (body) => ({
+        url: "/donations/thanks-message",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [tagTypes.cloth_donation],
+    }),
+  }),
+});
+
+export const {
+  useSellerSellCharitySupportStatsQuery,
+  useGetContributionStatsQuery,
+  useGetSellDonationContributedQuery,
+  useGetDirectDonationContributedQuery,
+  useGetMyClothDonationsQuery,
+  useGetCharityClothDonationsQuery,
+  useUpdateClothDonationStatusMutation,
+  useGetSellDonationsRaisedListQuery,
+  useGetDirectDonationsRaisedListQuery,
+  useGetExtraDonationsRaisedListQuery,
+  useSendThanksMessageMutation,
+} = donationApi;

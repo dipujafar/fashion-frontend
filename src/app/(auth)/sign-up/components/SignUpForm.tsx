@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -125,11 +125,12 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
       const res = await createAccount({ ...data, role }).unwrap();
       if (res?.data?.otpToken) {
         sessionStorage.setItem("verifyOtpToken", res?.data?.otpToken);
+        sessionStorage.setItem("signupRole", role);
         toast.success("Account created successfully");
         toast.success(
           "Please verify your email with OTP, which has been sent to your email.",
         );
-        router.push("/verify-otp");
+        router.push(`/verify-otp`);
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "An error occurred while creating the account.");
@@ -145,7 +146,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
     });
 
     const res = await signInWithPopup(auth, provider);
-    const { displayName, email, photoURL } = res.user;
+    const { displayName } = res.user;
     const token = await res.user.getIdToken(true);
 
     setSocialLoginToken({ token, name: displayName });
@@ -161,7 +162,7 @@ const SignUpForm = ({ isCharity = false, role }: { isCharity?: boolean; role: Us
 
     const result = await signInWithPopup(auth, provider);
 
-    const { displayName, email, photoURL } = result.user;
+    const { displayName } = result.user;
 
     const token = await result.user.getIdToken(true);
 

@@ -24,7 +24,7 @@ async function ProfileLayout({
 
     return (
         <div className='relative h-full'>
-            <ProfileSMSideBar />
+            <ProfileSMSideBar routes={routes}/>
 
             <Container>
 

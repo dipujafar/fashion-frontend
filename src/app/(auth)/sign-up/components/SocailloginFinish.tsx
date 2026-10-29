@@ -22,6 +22,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/redux/hooks';
 import { setUser } from '@/redux/features/authSlice';
 import { userNameSchema } from './SignSchema';
+import { getRoleKey } from '@/data/dummyData.tsx/userRoleData';
 
 const formSchema = z.object({
   fname: z
@@ -33,7 +34,7 @@ const formSchema = z.object({
 
 function SocailloginFinish({ socialLoginToken, role, isCharity = false }: { socialLoginToken: { token: string, name: string | null }, role: UserRole, isCharity?: boolean }) {
 
-  const [createAccount, { isLoading,isError, error }] = useSocialSignupMutation();
+  const [createAccount, { isLoading }] = useSocialSignupMutation();
   const [checkUsername] = useCheckUsernameMutation();
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
@@ -128,6 +129,21 @@ function SocailloginFinish({ socialLoginToken, role, isCharity = false }: { soci
 
     try {
       const res = await createAccount({ ...data, role: role, idToken: socialLoginToken?.token }).unwrap();
+
+      if (role !== UserRole.INDIVIDUAL_USER) {
+        const finishToken = res?.data?.accessToken;
+        if (finishToken) {
+          sessionStorage.setItem("signUpToken", finishToken);
+        }
+        sessionStorage.setItem("signupRole", role);
+        toast.success("Account created! Please complete your verification details.");
+
+        const encodeRole = getRoleKey(role);
+
+        router.replace(`/sign-up/${encodeRole}/finish`);
+        return;
+      }
+
       if (res?.data?.user?.auth?.role) {
         dispatch(
           setUser({
@@ -157,7 +173,7 @@ function SocailloginFinish({ socialLoginToken, role, isCharity = false }: { soci
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit, onError)}
           className="md:space-y-6 space-y-4">
 
           <FormField

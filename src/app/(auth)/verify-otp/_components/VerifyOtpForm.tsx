@@ -10,7 +10,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import CommonButton from "@/components/ui/common-button";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   InputOTP,
@@ -19,8 +18,10 @@ import {
 } from "@/components/ui/input-otp";
 import { useVerifyOtpMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
-import { useAppDispatch } from "@/redux/hooks";
 import { Button } from "@/components/ui/button";
+import { UserRole } from "@/types";
+import { jwtDecode } from "jwt-decode";
+import { getRoleKey, roleOptions } from "@/data/dummyData.tsx/userRoleData";
 
 // ✅ Define form validation schema using Zod
 const formSchema = z.object({
@@ -34,8 +35,9 @@ const formSchema = z.object({
 const VerifyOtpForm = () => {
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const router = useRouter();
-  const status = useSearchParams().get("status");
-  const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const status = searchParams.get("status");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,7 +46,6 @@ const VerifyOtpForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-
     if (status === "forgot") {
       try {
         const res = await verifyOtp(data).unwrap();
@@ -54,18 +55,35 @@ const VerifyOtpForm = () => {
           toast.success("OTP verified successfully! Please reset your password.");
           router.push("/set-new-password");
         }
-      }
-      catch (error: any) {
+      } catch (error: any) {
         toast.error(error?.data?.message || "Something went wrong");
       }
-    }
-
-    else {
+    } else {
       try {
-        await verifyOtp(data).unwrap();
-        toast.success("OTP verified successfully! Please login.");
+        const currentOtpToken = sessionStorage.getItem("verifyOtpToken");
+        const res = await verifyOtp(data).unwrap();
+
+        const finishToken = res?.data?.accessToken;
+
+        const resolvedRole: UserRole | null = (sessionStorage.getItem("signupRole") as UserRole | null);
+
         sessionStorage.removeItem("verifyOtpToken");
-        router.push("/sign-in");
+
+        if (resolvedRole && resolvedRole !== UserRole.INDIVIDUAL_USER) {
+
+           const encodeRole = getRoleKey(resolvedRole);
+
+          if (finishToken) {
+            sessionStorage.setItem("signUpToken", finishToken);
+          }
+          sessionStorage.setItem("signupRole", resolvedRole);
+          toast.success("OTP verified! Please complete your verification details.");
+          router.push(`/sign-up/${encodeRole}/finish`);
+        } else {
+          sessionStorage.removeItem("signupRole");
+          toast.success("OTP verified successfully! Please login.");
+          router.push("/sign-in");
+        }
       } catch (error: any) {
         toast.error(error?.data?.message || "Something went wrong");
       }
@@ -73,15 +91,13 @@ const VerifyOtpForm = () => {
   };
 
   return (
-    <Card
-      className="max-w-lg mx-auto shadow-none border-none"
-    >
-
+    <Card className="max-w-lg mx-auto shadow-none border-none">
       <CardContent>
-
         <div className="my-5 lg:my-8 space-y-2">
           <h3 className="text-2xl md:text-3xl font-bold text-center">Verify Your Email</h3>
-          <p className="text-secondary-gray">A 6-digit code has been sent to your email address. Please enter the code below to verify your email.</p>
+          <p className="text-secondary-gray">
+            A 6-digit code has been sent to your email address. Please enter the code below to verify your email.
+          </p>
         </div>
 
         <Form {...form}>
@@ -120,7 +136,14 @@ const VerifyOtpForm = () => {
               )}
             />
 
-            <Button variant={"default"} disabled={isLoading} type="submit" className="rounded-full h-11 w-full cursor-pointer text-base">{isLoading ? <span className="loader"></span> : "Verify Code"}</Button>
+            <Button
+              variant={"default"}
+              disabled={isLoading}
+              type="submit"
+              className="rounded-full h-11 w-full cursor-pointer text-base"
+            >
+              {isLoading ? <span className="loader"></span> : "Verify Code"}
+            </Button>
           </form>
         </Form>
       </CardContent>

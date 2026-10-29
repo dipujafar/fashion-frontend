@@ -91,3 +91,9 @@ export const roleOptions: Record<string, UserRole> = {
   "ambassador": UserRole.AMBASSADOR,
   "professional-seller": UserRole.PROFESSIONAL_SELLER
 }
+
+export const getRoleKey = (role: UserRole): string | undefined => {
+  return Object.entries(roleOptions).find(
+    ([, value]) => value === role
+  )?.[0];
+};

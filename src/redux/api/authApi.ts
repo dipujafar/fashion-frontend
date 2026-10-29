@@ -88,6 +88,18 @@ const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    finishAuth: builder.mutation<
+      { success: boolean; message?: string; data?: any },
+      { formData: FormData; token?: string }
+    >({
+      query: ({ formData, token }) => ({
+        url: "/auth/finish",
+        method: "POST",
+        headers: token ? { token } : undefined,
+        body: formData,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
   }),
 });
 
@@ -101,5 +113,6 @@ export const {
   useSocialLoginMutation,
   useCheckUsernameMutation,
   useVerifyPhoneOtpMutation,
-  useResendPhoneOtpMutation
+  useResendPhoneOtpMutation,
+  useFinishAuthMutation,
 } = authApi;
