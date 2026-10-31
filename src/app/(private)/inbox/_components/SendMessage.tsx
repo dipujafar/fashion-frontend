@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 
 const MAX_FILES = 5;
 
-function SendMessage({ username }: { username: string }) {
+function SendMessage({ chatId }: { chatId: string }) {
 
     const [handleSendMessage, { isLoading }] = useSendNewMsgMutation();
     const [files, setFiles] = React.useState<File[]>([]);
@@ -54,7 +54,7 @@ function SendMessage({ username }: { username: string }) {
             const msgInput = form?.message as HTMLFormElement;
 
             const formData = new FormData();
-            formData.append("data", JSON.stringify({ text: msgInput?.value, receiverUserName: username }));
+            formData.append("data", JSON.stringify({ text: msgInput?.value, chatId }));
 
             for (let i = 0; i < files.length; i++) {
                 formData.append("files", files[i]);

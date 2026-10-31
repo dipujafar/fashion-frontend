@@ -2,11 +2,9 @@ import Container from '@/components/shared/Container'
 import React from 'react'
 import ChatList from './_components/ChatList'
 
-async function InboxLayout({ children, params, }: { children: React.ReactNode, params: Promise<{ userName?: string }> }) {
+async function InboxLayout({ children, params }: { children: React.ReactNode, params: Promise<{ userName?: string }> }) {
 
     const par = await params;
-
-    console.log(par)
 
     return (
         <Container>

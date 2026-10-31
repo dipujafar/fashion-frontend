@@ -33,12 +33,12 @@ const formatChatDate = (date: Date | string) => {
 
 
 function PreMessage({
-    friendUserName,
+    chatId,
     scrollToBottom,
     containerRef,
     updatedMsgs
 }: {
-    friendUserName: string;
+    chatId: string;
     scrollToBottom: (behavior?: ScrollBehavior) => void;
     containerRef: React.RefObject<HTMLDivElement | null>;
     updatedMsgs: IMessage[];
@@ -63,7 +63,7 @@ function PreMessage({
         }
 
         try {
-            const res = await loadProds({ friendUserName, params: { page, limit: 30 } }).unwrap();
+            const res = await loadProds({ chatId, params: { page, limit: 30 } }).unwrap();
             const raw = res?.data?.data || [];
 
             // raw is frozen (Immer/RTK Query) -> copy before mutating

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-function NewMessages({ userName, scrollToBottom, setUpdatedMsgs, updatedMsgs }: { userName: string; scrollToBottom: () => void; setUpdatedMsgs: React.Dispatch<React.SetStateAction<IMessage[]>>, updatedMsgs: IMessage[] }) {
+function NewMessages({ chatId, scrollToBottom, setUpdatedMsgs, updatedMsgs }: { chatId: string; scrollToBottom: () => void; setUpdatedMsgs: React.Dispatch<React.SetStateAction<IMessage[]>>, updatedMsgs: IMessage[] }) {
 
     const { socket } = useSocket();
     const user = useSelector((state: RootState) => state?.auth?.user);
@@ -21,31 +21,21 @@ function NewMessages({ userName, scrollToBottom, setUpdatedMsgs, updatedMsgs }: 
 
         if (!socket) return;
 
+        socket.emit(`join-chat`, { chatId }, (res : any) => {
+            console.log(res);
+        });
+
         //  receive my sent message & receive
-
-        socket.on(`new-message::${userName}`, (res: IMessage) => {
+        socket.on(`new-message`, (res: IMessage) => {
 
             setNewMessages((prev) => [...prev, res]);
             socket?.emit(`seen`, { chatId: res?.chatId })
         });
 
-        socket.on(`new-message::${user?.id}`, (res: IMessage) => {
-
-            setNewMessages((prev) => [...prev, res]);
-            socket?.emit(`seen`, { chatId: res?.chatId })
-
-        });
-
-        socket.on(`update-message::${userName}`, (res: IMessage) => {
+        socket.on(`update-message`, (res: IMessage) => {
 
             setUpdatedMsgs((prev) => [...prev, res]);
             // socket?.emit(`seen`, { chatId: res?.chatId })
-        });
-
-        socket.on(`update-message::${user?.id}`, (res: IMessage) => {
-
-            setUpdatedMsgs((prev) => [...prev, res]);
-
         });
 
 
@@ -59,14 +49,12 @@ function NewMessages({ userName, scrollToBottom, setUpdatedMsgs, updatedMsgs }: 
             if (socket) {
                 // socket.off(`message`);
                 socket.off(`seen`);
-                socket.off(`new-message::${userName}`);
-                socket.off(`new-message::${user?.id}`);
-                socket.off(`update-message::${userName}`);
-                socket.off(`update-message::${user?.id}`);
+                socket.off(`new-message`);
+                socket.off(`update-message`);
             }
         };
 
-    }, [socket, userName, user])
+    }, [socket, chatId, user])
 
     useEffect(() => {
         scrollToBottom();

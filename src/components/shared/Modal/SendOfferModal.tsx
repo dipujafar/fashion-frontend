@@ -95,7 +95,7 @@ export default function SendOfferModal({
         <div className="space-y-4">
 
           <div className="border-b border-gray-200 pb-4">
-            <div className="">
+            <div className="space-y-2">
               {(expanded ? products : products.slice(0, 3)).map((product, index) => <div className="flex flex-row  gap-x-4">
                 <div className="relative">
                   <Image
@@ -105,7 +105,7 @@ export default function SendOfferModal({
                     height={500}
                     placeholder="blur"
                     blurDataURL={defaultImg?.placeholderImg}
-                    className="size-24 rounded object-cover"
+                    className="size-20 rounded object-cover"
                   />
                 </div>
 

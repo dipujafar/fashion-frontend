@@ -4,7 +4,7 @@ import NewMessages from './NewMessages';
 import { useRef, useState } from 'react';
 import { IMessage } from '@/types';
 
-function MessageBox({ userName }: { userName: string }) {
+function MessageBox({ chatId }: { chatId: string }) {
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
     const [updatedMsgs, setUpdatedMsgs] = useState<IMessage[]>([]);
@@ -17,15 +17,15 @@ function MessageBox({ userName }: { userName: string }) {
 
     return (
         <div ref={chatContainerRef} className="overflow-y-auto h-full space-y-6 px-5 pt-5 bg-zinc-50">
-            {userName && (
+            {chatId && (
                 <PreMessage
-                    friendUserName={userName}
+                    chatId={chatId}
                     scrollToBottom={scrollToBottom}
                     containerRef={chatContainerRef}
                     updatedMsgs={updatedMsgs}
                 />
             )}
-            <NewMessages userName={userName} scrollToBottom={scrollToBottom} setUpdatedMsgs={setUpdatedMsgs} updatedMsgs={updatedMsgs} />
+            <NewMessages chatId={chatId} scrollToBottom={scrollToBottom} setUpdatedMsgs={setUpdatedMsgs} updatedMsgs={updatedMsgs} />
             <div ref={bottomRef}></div>
         </div>
     )

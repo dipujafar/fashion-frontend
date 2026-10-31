@@ -9,7 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 
-const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) => {
+const UserCard = ({ chat }: { chat: IChatUser }) => {
 
   const user = useSelector((state: RootState) => state?.auth?.user);
 
@@ -17,7 +17,7 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
 
   const friendUser = chat?.user1?.id === user?.id ? chat?.user2 : chat?.user1;
 
-  const active = pathName === `/inbox/${friendUser?.userName}`;
+  const active = pathName === `/inbox/${chat?.id}`;
 
   const unreadCount = chat?._count?.messages || 0;
 
@@ -30,48 +30,13 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
         offer?.status === "PENDING" ? "🏷️Waiting for offer response" : "🏷️Offer cancelled" : "";
 
   const lastFullMsg = chat?.messages[0];
-  const remainingCount = (offer?.offerItems || []).length - 3;
+  const remainingCount = (chat?.items || []).length - 3;
 
-  console.log(offer);
-
-  const lastmsg = lastFullMsg?.text ? <p className="line-clamp-1 text-sm text-black/60">{lastFullMsg?.text}</p> : lastFullMsg?.files?.length > 0 ? <p className="line-clamp-1 text-sm text-black/60">Sent an attachment</p> : offer ?
-    <div>
-      <p className="text-sm text-black/60">{offerStatusMsg}</p>
-
-      <div className={cn(
-        "flex gap-2 cursor-pointer justify-start"
-      )}>
-        {offer?.offerItems.map((item, i) => (
-          <Image
-            src={item?.product?.images[0]?.url || defaultImg?.product}
-            alt={`item-${i}`}
-            key={i}
-            width={500}
-            height={500}
-            placeholder="blur"
-            blurDataURL={defaultImg?.placeholderImg}
-            className="h-10 w-10 rounded object-cover"
-          />
-        ))}
-
-        {remainingCount > 0 && (
-          <button
-            // onClick={() => setOpen(true)}
-            className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100"
-          >
-            <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-sm font-medium text-white">
-              +{remainingCount}
-            </span>
-          </button>
-        )}
-      </div>
-
-    </div>
-    : <p className="line-clamp-1 text-sm text-black/60">No messages yet</p>;
+  const lastmsg = lastFullMsg?.text ? <p className="line-clamp-1 text-sm text-black/60">{lastFullMsg?.text}</p> : lastFullMsg?.files?.length > 0 ? <p className="line-clamp-1 text-sm text-black/60">Sent an attachment</p> : <p className="line-clamp-1 text-sm text-black/60">No messages yet</p>;
 
   return (
     <Link
-      href={`/inbox/${friendUser?.userName}`}>
+      href={`/inbox/${chat?.id}`}>
       <div
         className={`flex items-start p-3 py-4 gap-x-3 border-b border-gray-200 hover:bg-zinc-100 duration-150 ${active ? "bg-zinc-100" : ""}`}
       >
@@ -94,7 +59,40 @@ const UserCard = ({ chat, userName }: { chat: IChatUser, userName?: string }) =>
           </div>
 
           <div className="flex items-center justify-between">
-            {lastmsg}
+
+            <div>
+              {offer? <p className="text-sm text-black/60">{offerStatusMsg}</p> : lastmsg}
+
+              <div className={cn(
+                "flex gap-2 cursor-pointer justify-start"
+              )}>
+                {chat?.items?.map((item, i) => (
+                  <Image
+                    src={item?.product?.images[0]?.url || defaultImg?.product}
+                    alt={`item-${i}`}
+                    key={i}
+                    width={500}
+                    height={500}
+                    placeholder="blur"
+                    blurDataURL={defaultImg?.placeholderImg}
+                    className="h-10 w-10 rounded object-cover"
+                  />
+                ))}
+
+                {remainingCount > 0 && (
+                  <button
+                    // onClick={() => setOpen(true)}
+                    className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100"
+                  >
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-sm font-medium text-white">
+                      +{remainingCount}
+                    </span>
+                  </button>
+                )}
+              </div>
+
+            </div>
+
             {unreadCount > 0 && <p className={`text-xs w-5 h-5 flex justify-center items-center rounded-full font-semibold text-secondary-2  bg-primary-black text-white`}>{unreadCount}</p>}
 
           </div>

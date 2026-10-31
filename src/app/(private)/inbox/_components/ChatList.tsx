@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import emptyChat from "@/assets/images/chat/empty-chat-icon.png"
 
-function ChatList({ userName }: { userName?: string }) {
+function ChatList() {
 
     const { socket } = useSocket();
     const [chatList, setChatList] = useState<IChatUser[]>([]);
@@ -53,7 +53,7 @@ function ChatList({ userName }: { userName?: string }) {
     return (
         <div className={cn(pathName !== "/inbox" && "hidden lg:block", "h-[calc(100vh-190px)]")}>
 
-            <div className="border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+            <div className="border-b border-gray-200 px-4 py-2 flex items-center justify-between">
                 <h4 className="text-lg font-semibold">Messages</h4>
             </div>
 
@@ -72,7 +72,6 @@ function ChatList({ userName }: { userName?: string }) {
                         <UserCard
                             key={chat?.id}
                             chat={chat}
-                            userName={userName}
                         />
                     ))}
 

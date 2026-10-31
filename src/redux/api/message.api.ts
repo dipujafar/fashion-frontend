@@ -1,8 +1,26 @@
-import { IMessage, IMeta } from "@/types";
+import { IMessage, IMeta, IProduct, IUser } from "@/types";
 import { baseApi } from "./baseApi";
 
 const messageApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+
+        getChatDetails: builder.query<{
+            data: {
+                id: string,
+                user: IUser,
+                items: {
+                    id: string,
+                    product: IProduct
+                }[],
+                itemsPrice: number,
+                isUnavailable: boolean
+            },
+        }, { chatId: string }>({
+            query: ({chatId }) => ({
+                url: `/chats/${chatId}`,
+                method: "GET"
+            }),
+        }),
 
         totalUnreadMsgCount: builder.query<{
             data: number
@@ -18,9 +36,9 @@ const messageApi = baseApi.injectEndpoints({
                 data: IMessage[],
                 meta: IMeta
             }
-        }, { friendUserName: string, params: {} }>({
-            query: ({ params, friendUserName }) => ({
-                url: `/messages/pre-messages/${friendUserName}`,
+        }, { chatId: string, params: {} }>({
+            query: ({ params, chatId }) => ({
+                url: `/messages/pre-messages/${chatId}`,
                 method: "GET",
                 params,
             }),
@@ -39,4 +57,4 @@ const messageApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useLazyGetMyMessagesQuery, useSendNewMsgMutation, useTotalUnreadMsgCountQuery } = messageApi;
+export const { useGetChatDetailsQuery, useLazyGetMyMessagesQuery, useSendNewMsgMutation, useTotalUnreadMsgCountQuery } = messageApi;
