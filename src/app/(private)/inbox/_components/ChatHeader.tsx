@@ -1,10 +1,8 @@
 "use client"
 import { ReportDialog } from '@/components/shared/Message/ReportDialog'
 import Image from 'next/image'
-import React from 'react'
-import { useGetUserByUsernameQuery } from '@/redux/api/userApi';
+import React, { useState, useTransition } from 'react'
 import { Skeleton } from '@/components/ui/skeleton';
-import { defaultImg } from '@/utils/defaultImg';
 import moment from 'moment';
 import Link from 'next/link';
 import CustomAvatar from '@/components/shared/CustomAvatar';
@@ -14,6 +12,9 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, Plus, X } from 'lucide-react';
 import SendOfferModal from '@/components/shared/Modal/SendOfferModal';
+import { BuyFromChat } from '@/lib/Actions/Product.api';
+import { toast } from 'sonner';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
 function formatLastActive(date: Date | string) {
     const activeDate = moment(date);
@@ -56,7 +57,7 @@ function ChatHeader({ chatId }: { chatId: string }) {
                 </div>
             </div>
 
-            {isSuccess && <ChatHeaderDetails data={userData?.data} />}
+            {isSuccess && <ChatHeaderDetails data={userData?.data} chatId={chatId} />}
 
         </div> : <></>
     )
@@ -77,7 +78,7 @@ interface ChatHeaderDetailsProps {
 
 }
 
-const ChatHeaderDetails = ({ data }: { data: ChatHeaderDetailsProps }) => {
+const ChatHeaderDetails = ({ data, chatId }: { data: ChatHeaderDetailsProps, chatId: string }) => {
     const isSingleItem = data?.items?.length === 1;
     const router = useRouter();
 
@@ -98,7 +99,7 @@ const ChatHeaderDetails = ({ data }: { data: ChatHeaderDetailsProps }) => {
                 {isSingleItem ? <SingleItemHeader data={data} /> : <MultipleItemsHeader data={data} />}
             </div>
 
-            {!data?.isUnavailable && <ActionButtons items={data?.items} sellerId={data?.user?.id} />}
+            {!data?.isUnavailable && <ActionButtons items={data?.items} sellerId={data?.user?.id} chatId={data?.id || chatId} />}
         </div>
 
         {openItemDetails && <div className='w-full bg-white absolute top-0 left-0 z-10 shadow'>
@@ -203,9 +204,12 @@ const MultipleItemsHeader = ({ data }: { data: ChatHeaderDetailsProps }) => {
     </div>
 }
 
-const ActionButtons = ({ items, sellerId }: { items: ChatHeaderDetailsProps['items'], sellerId: string }) => {
+const ActionButtons = ({ items, sellerId, chatId }: { items: ChatHeaderDetailsProps['items'], sellerId: string, chatId: string }) => {
 
     const [openOfferModal, setOpenOfferModal] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     const products = items?.map((item) => item?.product);
 
@@ -214,9 +218,53 @@ const ActionButtons = ({ items, sellerId }: { items: ChatHeaderDetailsProps['ite
         setOpenOfferModal(true);
     }
 
+    const handleBuyNow = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+
+        if (!items || items.length === 0) return;
+
+        if (items.length === 1) {
+            const productId = items[0]?.product?.id;
+            if (!productId) return;
+            startTransition(() => {
+                router.push(`/checkout/listing/${productId}`);
+            });
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await BuyFromChat({
+                payload: {
+                    chatId,
+                    sellerId,
+                },
+            });
+
+            if (!res.success || !res?.data?.id) {
+                throw new Error(res.message || "Failed to initiate checkout");
+            }
+
+            startTransition(() => {
+                router.push(`/checkout/offer/${res.data!.id}`);
+            });
+        } catch (error: any) {
+            if (isRedirectError(error)) {
+                throw error;
+            }
+            toast.error(error?.message || "Failed to initiate checkout");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const isBuying = loading || isPending;
+
     return <div className='flex flex-row gap-x-2'>
         <Button variant="outline" className='cursor-pointer' onClick={handlemakeOffer}>Make an offer</Button>
-        <Button className='cursor-pointer'>Buy Now</Button>
+        <Button className='cursor-pointer min-w-[92px]' disabled={isBuying} onClick={handleBuyNow}>
+            {isBuying ? <div className="w-5 aspect-square rounded-full border-[2px] border-primary-black border-r-gray-500 animate-spin"></div> : "Buy Now"}
+        </Button>
 
         <SendOfferModal open={openOfferModal} setOpen={setOpenOfferModal} products={products} sellerId={sellerId} />
 

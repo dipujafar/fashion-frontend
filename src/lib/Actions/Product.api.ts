@@ -103,3 +103,27 @@ export const DropPrice = async ({ payload }: { payload: { productId: string, new
         };
     }
 }
+
+export const BuyFromChat = async ({ payload }: { payload: { chatId: string, sellerId: string } }): Promise<{
+    success: boolean;
+    message: string;
+    data: { id: string } | null;
+}> => {
+    try {
+        const res = await serverQueryWithReauth({ payload, endPoint: `/chats/buy`, method: "POST" });
+        return {
+            success: res?.success !== undefined ? Boolean(res.success) : true,
+            message: res?.message || "Proceeding to checkout",
+            data: res?.data !== undefined ? res.data : (res ?? null),
+        };
+    } catch (error: any) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        return {
+            success: false,
+            message: error?.message || "Failed to proceed to checkout",
+            data: null,
+        };
+    }
+}
